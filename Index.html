@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoneyMore — How We Work</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Sora:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --dark:    #0F0E0A;
+    --dark2:   #181610;
+    --dark3:   #201E16;
+    --dark4:   #272419;
+    --border:  #343020;
+    --border2: #3E3A28;
+    --muted:   #8A8270;
+    --muted2:  #B0A890;
+    --cream:   #F5F2E8;
+    --offW:    #DDD8C8;
+    --body:    #C8C2B0;
+    --pu:      #7068D4;
+    --pu-dim:  #534AB7;
+    --pu-l:    #252060;
+    --pu-glow: rgba(112,104,212,0.15);
+    --te:      #1AA880;
+    --te-dim:  #0D8A64;
+    --te-l:    #0A3D2C;
+    --te-glow: rgba(26,168,128,0.15);
+    --am:      #D4A820;
+    --am-dim:  #C49A0A;
+    --am-l:    #3A2D00;
+    --am-glow: rgba(212,168,32,0.15);
+    --co:      #C05030;
+    --co-dim:  #993C1D;
+    --co-l:    #4A1E0E;
+    --co-glow: rgba(192,80,48,0.15);
+    --gr:      #52881A;
+    --gr-dim:  #3B6D11;
+    --gr-l:    #1C3508;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--dark);
+    color: var(--cream);
+    font-family: 'Sora', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrap { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 48px 32px 96px; }
+
+  /* ── HEADER ── */
+  .header { margin-bottom: 44px; }
+  .eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .title {
+    font-size: clamp(30px, 4vw, 46px);
+    font-weight: 700;
+    color: var(--cream);
+    line-height: 1.08;
+    margin-bottom: 12px;
+    letter-spacing: -0.02em;
+  }
+  .subtitle {
+    font-size: 14px;
+    color: var(--body);
+    font-weight: 400;
+    max-width: 580px;
+    line-height: 1.7;
+  }
+
+  /* ── FILTER BAR ── */
+  .filter-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 36px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .filter-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-right: 4px;
+  }
+  .btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 3px;
+    border: 1px solid var(--border2);
+    background: var(--dark3);
+    color: var(--muted2);
+    font-family: 'Sora', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.18s;
+    letter-spacing: 0.01em;
+    user-select: none;
+  }
+  .btn:hover { border-color: var(--muted); color: var(--cream); background: var(--dark4); }
+  .btn .dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+  .btn.active-all    { background: var(--dark4); border-color: var(--cream); color: var(--cream); }
+  .btn.active-prod   { background: var(--pu-l); border-color: var(--pu); color: var(--cream); }
+  .btn.active-eng    { background: var(--te-l); border-color: var(--te); color: var(--cream); }
+  .btn.active-design { background: var(--co-l); border-color: var(--co); color: var(--cream); }
+  .btn.active-mktg   { background: var(--am-l); border-color: var(--am); color: var(--cream); }
+
+  /* ── GATE STRIP ── */
+  .gate-strip {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 36px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    align-items: center;
+  }
+  .gate-item {
+    flex-shrink: 0;
+    background: var(--dark2);
+    border: 1px solid var(--border2);
+    border-radius: 4px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .gate-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-weight: 500;
+  }
+  .gate-num.g1, .gate-num.g2 { background: var(--pu-l); color: var(--pu); border: 1px solid var(--pu-dim); }
+  .gate-num.g3               { background: var(--te-l); color: var(--te); border: 1px solid var(--te-dim); }
+  .gate-num.g4               { background: var(--am-l); color: var(--am); border: 1px solid var(--am-dim); }
+  .gate-num.g5               { background: var(--gr-l); color: var(--gr); border: 1px solid var(--gr-dim); }
+  .gate-name { font-size: 11px; font-weight: 600; color: var(--cream); line-height: 1.2; }
+  .gate-owner { font-size: 10px; color: var(--muted2); margin-top: 2px; }
+  .gate-arrow { font-size: 16px; color: var(--border2); flex-shrink: 0; }
+
+  /* ── SECTION HEAD ── */
+  .section-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+    margin-top: 52px;
+  }
+  .section-head-line { flex: 1; height: 1px; background: var(--border); }
+  .section-head-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  /* ── HORIZON LABELS ── */
+  .horizons-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 10px;
+  }
+  .horizon-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding-left: 2px;
+  }
+  .horizon-label span { display: block; font-size: 9px; margin-top: 3px; color: var(--muted); opacity: 0.7; }
+
+  /* ── PIPELINE ── */
+  .pipeline {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 0;
+    position: relative;
+  }
+  .pipeline::before, .pipeline::after {
+    content: '→';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: var(--border2);
+    z-index: 2;
+    pointer-events: none;
+  }
+  .pipeline::before { left: calc(33.33% - 11px); }
+  .pipeline::after  { left: calc(66.66% - 11px); }
+
+  .horizon {
+    background: var(--dark2);
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.25s;
+  }
+  .horizon::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+  .horizon.h1::before { background: var(--te); }
+  .horizon.h2::before { background: var(--pu); }
+  .horizon.h3::before { background: var(--am); }
+
+  .horizon-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 3px;
+  }
+  .h1 .horizon-title { color: var(--te); }
+  .h2 .horizon-title { color: var(--pu); }
+  .h3 .horizon-title { color: var(--am); }
+
+  .horizon-desc { font-size: 11px; color: var(--muted2); margin-bottom: 16px; line-height: 1.5; }
+
+  /* ── FUNCTION ROWS ── */
+  .fn-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 11px 0;
+    border-top: 1px solid var(--border);
+    transition: opacity 0.22s, filter 0.22s;
+  }
+  .fn-row:first-of-type { border-top: none; padding-top: 0; }
+  .fn-row.dimmed { opacity: 0.1; filter: saturate(0.05); pointer-events: none; }
+
+  .fn-tag {
+    flex-shrink: 0;
+    width: 76px;
+    font-family: 'DM Mono', monospace;
+    font-size: 8.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 6px;
+    border-radius: 2px;
+    text-align: center;
+    margin-top: 2px;
+    font-weight: 500;
+  }
+  .fn-tag.prod   { background: var(--pu-l); color: var(--pu);  border: 1px solid var(--pu-dim); }
+  .fn-tag.eng    { background: var(--te-l); color: var(--te);  border: 1px solid var(--te-dim); }
+  .fn-tag.design { background: var(--co-l); color: var(--co);  border: 1px solid var(--co-dim); }
+  .fn-tag.mktg   { background: var(--am-l); color: var(--am);  border: 1px solid var(--am-dim); }
+
+  .fn-content { flex: 1; }
+  .fn-action {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--cream);
+    line-height: 1.3;
+    margin-bottom: 4px;
+  }
+  .fn-detail { font-size: 11.5px; color: var(--body); line-height: 1.6; }
+
+  /* ── SPRINT TIMELINE ── */
+  .sprint-track {
+    background: var(--dark2);
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .sprint-header {
+    display: grid;
+    grid-template-columns: 110px repeat(10, 1fr);
+    background: var(--dark3);
+    border-bottom: 1px solid var(--border2);
+  }
+  .day-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--muted2);
+    text-align: center;
+    padding: 9px 4px;
+    border-left: 1px solid var(--border);
+  }
+  .day-label:first-child { border-left: none; }
+  .sprint-role-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    padding: 9px 14px;
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .sprint-row {
+    display: grid;
+    grid-template-columns: 110px repeat(10, 1fr);
+    border-top: 1px solid var(--border);
+    min-height: 56px;
+    align-items: stretch;
+    transition: opacity 0.22s, filter 0.22s;
+  }
+  .sprint-row.dimmed { opacity: 0.08; filter: saturate(0); pointer-events: none; }
+
+  .role-cell {
+    padding: 12px 10px;
+    display: flex;
+    align-items: center;
+    border-right: 1px solid var(--border2);
+  }
+  .role-pill {
+    font-family: 'DM Mono', monospace;
+    font-size: 8.5px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 2px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .role-pill.prod   { background: var(--pu-l); color: var(--pu);  border: 1px solid var(--pu-dim); }
+  .role-pill.eng    { background: var(--te-l); color: var(--te);  border: 1px solid var(--te-dim); }
+  .role-pill.design { background: var(--co-l); color: var(--co);  border: 1px solid var(--co-dim); }
+  .role-pill.mktg   { background: var(--am-l); color: var(--am);  border: 1px solid var(--am-dim); }
+
+  .day-cell {
+    border-left: 1px solid var(--border);
+    position: relative;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .event-block {
+    border-radius: 3px;
+    padding: 5px 6px;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1.25;
+    text-align: center;
+    width: 100%;
+    cursor: default;
+    position: relative;
+    color: var(--cream);
+  }
+  .event-block.prod   { background: var(--pu-l);  border: 1px solid var(--pu-dim); }
+  .event-block.eng    { background: var(--te-l);  border: 1px solid var(--te-dim); }
+  .event-block.design { background: var(--co-l);  border: 1px solid var(--co-dim); }
+  .event-block.mktg   { background: var(--am-l);  border: 1px solid var(--am-dim); }
+  .event-block.all    { background: var(--dark4); border: 1px solid var(--border2); }
+  .event-block.build  { background: rgba(26,168,128,0.08); border: 1px solid var(--border); color: var(--te); }
+
+  /* Tooltip */
+  .event-block { overflow: visible; }
+  .event-block:hover .tooltip { display: block; }
+  .tooltip {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--dark4);
+    border: 1px solid var(--border2);
+    border-radius: 5px;
+    padding: 12px 14px;
+    width: 220px;
+    z-index: 200;
+    pointer-events: none;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+  }
+  .tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: var(--border2);
+  }
+  .tooltip-title { font-size: 11px; font-weight: 700; color: var(--cream); margin-bottom: 5px; }
+  .tooltip-body  { font-size: 11px; color: var(--body); line-height: 1.6; }
+
+  /* ── MEETINGS GRID ── */
+  .meetings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(268px, 1fr));
+    gap: 12px;
+  }
+
+  .meeting-card {
+    background: var(--dark2);
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    padding: 18px;
+    position: relative;
+    overflow: hidden;
+    transition: opacity 0.22s, filter 0.22s, border-color 0.2s;
+  }
+  .meeting-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+  }
+  .meeting-card.prod::before   { background: var(--pu); }
+  .meeting-card.eng::before    { background: var(--te); }
+  .meeting-card.design::before { background: var(--co); }
+  .meeting-card.mktg::before   { background: var(--am); }
+  .meeting-card.all::before    { background: var(--muted); }
+  .meeting-card.dimmed { opacity: 0.08; filter: saturate(0); pointer-events: none; }
+
+  .meeting-freq {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted2);
+    margin-bottom: 7px;
+  }
+  .meeting-title { font-size: 13px; font-weight: 700; color: var(--cream); margin-bottom: 8px; line-height: 1.3; }
+
+  .meeting-who { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
+  .who-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 8.5px;
+    padding: 2px 7px;
+    border-radius: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    font-weight: 500;
+  }
+  .who-tag.prod   { background: var(--pu-l); color: var(--pu); border: 1px solid var(--pu-dim); }
+  .who-tag.eng    { background: var(--te-l); color: var(--te); border: 1px solid var(--te-dim); }
+  .who-tag.design { background: var(--co-l); color: var(--co); border: 1px solid var(--co-dim); }
+  .who-tag.mktg   { background: var(--am-l); color: var(--am); border: 1px solid var(--am-dim); }
+
+  .meeting-desc { font-size: 12px; color: var(--body); line-height: 1.65; }
+  .meeting-output {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--muted2);
+    line-height: 1.5;
+  }
+  .meeting-output strong { color: var(--offW); font-weight: 600; }
+
+  /* ── ENG NOTE ── */
+  .eng-note {
+    background: linear-gradient(135deg, var(--te-l) 0%, rgba(10,61,44,0.4) 100%);
+    border: 1px solid var(--te-dim);
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin-top: 32px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .eng-note-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .eng-note-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--te);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .eng-note-body { font-size: 12.5px; color: var(--body); line-height: 1.7; }
+  .eng-note-body strong { color: var(--cream); font-weight: 600; }
+
+  /* ── LEGEND ── */
+  .legend {
+    display: flex;
+    gap: 22px;
+    flex-wrap: wrap;
+    margin-top: 36px;
+    padding-top: 22px;
+    border-top: 1px solid var(--border);
+    align-items: center;
+  }
+  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--body); }
+  .legend-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+  .legend-url {
+    margin-left: auto;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .horizon, .meeting-card {
+    animation: fadeUp 0.4s ease both;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="eyebrow">MoneyMore · Growth & Product OS</div>
+    <h1 class="title">How we work.</h1>
+    <p class="subtitle">Three horizons run in parallel at all times — what is being built now, what is being prepared for next sprint, and what is being discovered for the sprint after. Nothing arrives at engineering as a surprise.</p>
+  </div>
+
+  <!-- FILTER -->
+  <div class="filter-bar">
+    <span class="filter-label">Show</span>
+    <button class="btn active-all" data-filter="all" onclick="setFilter('all',this)">
+      <span class="dot" style="background:var(--cream)"></span> All functions
+    </button>
+    <button class="btn" data-filter="prod" onclick="setFilter('prod',this)">
+      <span class="dot" style="background:var(--pu)"></span> Product
+    </button>
+    <button class="btn" data-filter="eng" onclick="setFilter('eng',this)">
+      <span class="dot" style="background:var(--te)"></span> Engineering
+    </button>
+    <button class="btn" data-filter="design" onclick="setFilter('design',this)">
+      <span class="dot" style="background:var(--co)"></span> Design
+    </button>
+    <button class="btn" data-filter="mktg" onclick="setFilter('mktg',this)">
+      <span class="dot" style="background:var(--am)"></span> Growth Marketing
+    </button>
+  </div>
+
+  <!-- GATE STRIP -->
+  <div class="gate-strip">
+    <div class="gate-item">
+      <div class="gate-num g1">1</div>
+      <div>
+        <div class="gate-name">Problem definition</div>
+        <div class="gate-owner">Product</div>
+      </div>
+    </div>
+    <div class="gate-arrow">→</div>
+    <div class="gate-item">
+      <div class="gate-num g2">2</div>
+      <div>
+        <div class="gate-name">Evidence check</div>
+        <div class="gate-owner">Product · RICE scoring</div>
+      </div>
+    </div>
+    <div class="gate-arrow">→</div>
+    <div class="gate-item">
+      <div class="gate-num g3">3</div>
+      <div>
+        <div class="gate-name">Solution design</div>
+        <div class="gate-owner">Product + Eng Lead + Design</div>
+      </div>
+    </div>
+    <div class="gate-arrow">→</div>
+    <div class="gate-item">
+      <div class="gate-num g4">4</div>
+      <div>
+        <div class="gate-name">Validation</div>
+        <div class="gate-owner">Product + Design</div>
+      </div>
+    </div>
+    <div class="gate-arrow">→</div>
+    <div class="gate-item">
+      <div class="gate-num g5">5</div>
+      <div>
+        <div class="gate-name">Build brief + sprint</div>
+        <div class="gate-owner">Product → Engineering</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- THREE HORIZONS -->
+  <div class="section-head">
+    <div class="section-head-line"></div>
+    <div class="section-head-label">Three horizons — always running in parallel</div>
+    <div class="section-head-line"></div>
+  </div>
+
+  <div class="horizons-header">
+    <div class="horizon-label">Horizon 1 — Now<span>Engineering builds · Days 1–10</span></div>
+    <div class="horizon-label">Horizon 2 — Next sprint<span>Product & Design prepare · Gates 3–5</span></div>
+    <div class="horizon-label">Horizon 3 — Future<span>Product discovers · Gates 1–2</span></div>
+  </div>
+
+  <div class="pipeline">
+
+    <!-- HORIZON 1 -->
+    <div class="horizon h1">
+      <div class="horizon-title">Current sprint</div>
+      <div class="horizon-desc">Engineering owns delivery. Product supports. No new scope introduced.</div>
+
+      <div class="fn-row" data-fn="eng">
+        <div class="fn-tag eng">Eng</div>
+        <div class="fn-content">
+          <div class="fn-action">Building committed stories</div>
+          <div class="fn-detail">Engineering works from Stories product wrote. Engineers create and own their own Tasks — product does not assign technical work.</div>
+        </div>
+      </div>
+
+      <div class="fn-row" data-fn="eng">
+        <div class="fn-tag eng">Eng</div>
+        <div class="fn-content">
+          <div class="fn-action">#tech-signals post (Day 5)</div>
+          <div class="fn-detail">Eng Lead posts technical observations with user-facing consequences — silent failures, crash rates, permission errors, performance drops. Product reviews and logs actionable items into Fix Track.</div>
+        </div>
+      </div>
+
+      <div class="fn-row" data-fn="design">
+        <div class="fn-tag design">Design</div>
+        <div class="fn-content">
+          <div class="fn-action">Available for questions</div>
+          <div class="fn-detail">No new design work during the sprint. Available for Figma clarifications from engineering only.</div>
+        </div>
+      </div>
+
+      <div class="fn-row" data-fn="prod">
+        <div class="fn-tag prod">Product</div>
+        <div class="fn-content">
+          <div class="fn-action">Wednesday touchpoint (Day 3 + Day 8)</div>
+          <div class="fn-detail">20 minutes. Blockers raised and resolved on the spot. Product makes decisions immediately or commits to 24 hours. No status updates, no slides.</div>
+        </div>
+      </div>
+
+      <div class="fn-row" data-fn="mktg">
+        <div class="fn-tag mktg">Mktg</div>
+        <div class="fn-content">
+          <div class="fn-action">User signals 3× per week</div>
+          <div class="fn-detail">NPS responses, support tickets, interview clips posted to #user-signals. Tagged by type and segment. Everyone reads.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HORIZON 2 -->
+    <div class="horizon h2">
+      <div class="horizon-title">Preparing next sprint</div>
+      <div class="horizon-desc">Gates 3, 4, and 5. Runs during the current sprint so everything is ready on Day 1 of the next.</div>
+
+      <div class="fn-row" data-fn="prod">
+        <div class="fn-tag prod">Product</div>
+        <div class="fn-content">
+          <div class="fn-action">Gate 3 feasibility session (Days 1–5)</div>
+          <div class="fn-detail">Product + Eng Lead + Design Lead. 30–45 min per feature. Product presents the user flow in words. Eng Lead gives feasibility read and rough size. Design Lead confirms scope. Scheduled by product in the first half of the sprint — before design work begins.</div>
+        </div>
+      </div>
+
+      <div class="fn-row" data-fn="eng">
+        <div class="fn-tag eng">Eng</div>
+        <div class="fn-content">
+          <div class="fn-action">Gate 3 input (Days 1–5)</div>
+          <div class="fn-detail">Eng Lead attends Gate 3 session. Reviews proposed solution, flags technical risks, gives rough size estimate. One session per feature — 30 to 45 minutes.</div>
+        </div>
+      </div>
+
+      <div class="fn-row" data-fn="design">
+        <div class="fn-tag design">Design</div>
+        <div class="fn-content">
+          <div class="fn-action">Figma production (Days 3–8)</div>
+          <div class="fn-detail">Designer works from the Design Brief. All screens and states produced. Android and iOS. English and Arabic. Complete before pre-sprint planning on Day 9.</div>
+        </div>
+      </div>
+
+      <div class="fn-row" data-fn="prod">
+        <div class="fn-tag prod">Product</div>
+        <div class="fn-content">
+          <div class="fn-action">Stories and tickets (Days 6–8)</div>
+          <div class="fn-detail">User Stories written with full acceptance criteria, Figma link, and definition of done. MoSCoW classification applied. Must Have capped at 60% of capacity.</div>
+        </div>
+      </div>
+
+      <div class="fn-row" data-fn="prod">
+        <div class="fn-tag prod">Product</div>
+        <div class="fn-content">
+          <div class="fn-action">Pre-sprint planning (Day 9)</div>
+          <div class="fn-detail">Product + Eng Lead. 60 min. Stories reviewed and sized. Capacity confirmed. 35% Fix Track / 65% Build Track. Accepted backlog locked before sprint starts.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HORIZON 3 -->
+    <div class="horizon h3">
+      <div class="horizon-title">Discovering the future</div>
+      <div class="horizon-desc">Gates 1 and 2. Continuous work — not a scheduled event.</div>
+
+      <div class="fn-row" data-fn="prod">
+        <div class="fn-tag prod">Product</div>
+        <div class="fn-content">
+          <div class="fn-action">Gate 1 — Problem definition</div>
+          <div class="fn-detail">Is there a real user problem with at least two independent sources of evidence? If yes, it enters the pipeline. If not, it does not proceed.</div>
+        </div>
+      </div>
+
+      <div class="fn-row" data-fn="prod">
+        <div class="fn-tag prod">Product</div>
+        <div class="fn-content">
+          <div class="fn-action">Gate 2 — Evidence check + RICE</div>
+          <div class="fn-detail">Evidence strength rated Strong, Moderate, or Weak. Weak means stop. RICE score calculated — Effort estimate comes from Eng Lead. Feature enters Evidence Backlog only if Moderate or Strong.</div>
+        </div>
+      </div>
+
+      <div class="fn-row" data-fn="mktg">
+        <div class="fn-tag mktg">Mktg</div>
+        <div class="fn-content">
+          <div class="fn-action">Signal review (Day 5 each sprint)</div>
+          <div class="fn-detail">Growth Marketing and Product review all user signals from the sprint together — NPS, support tickets, interviews, app store reviews. Patterns identified. Research Archive updated. Evidence Backlog scores upgraded where new data changes the picture.</div>
+        </div>
+      </div>
+
+      <div class="fn-row" data-fn="prod">
+        <div class="fn-tag prod">Product</div>
+        <div class="fn-content">
+          <div class="fn-action">Monthly experience audit</div>
+          <div class="fn-detail">Five-layer audit of all primary flows — Clarity, Confidence, Friction, Delight, Polish. Score 1 findings go directly into Fix Track Backlog as Fix Briefs.</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /pipeline -->
+
+  <!-- SPRINT TIMELINE -->
+  <div class="section-head">
+    <div class="section-head-line"></div>
+    <div class="section-head-label">Sprint day-by-day (10 working days)</div>
+    <div class="section-head-line"></div>
+  </div>
+
+  <div class="sprint-track">
+    <div class="sprint-header">
+      <div class="sprint-role-label">Function</div>
+      <div class="day-label">D1</div>
+      <div class="day-label">D2</div>
+      <div class="day-label">D3</div>
+      <div class="day-label">D4</div>
+      <div class="day-label">D5</div>
+      <div class="day-label">D6</div>
+      <div class="day-label">D7</div>
+      <div class="day-label">D8</div>
+      <div class="day-label">D9</div>
+      <div class="day-label">D10</div>
+    </div>
+
+    <!-- Product -->
+    <div class="sprint-row" data-fn="prod">
+      <div class="role-cell"><div class="role-pill prod">Product</div></div>
+      <div class="day-cell">
+        <div class="event-block prod" style="font-size:9px">Sprint planning
+          <div class="tooltip"><div class="tooltip-title">Sprint planning</div><div class="tooltip-body">Full team. 90 min. Engineering self-assigns Stories. Engineers create their own Tasks — product does not assign technical work.</div></div>
+        </div>
+      </div>
+      <div class="day-cell">
+        <div class="event-block prod" style="font-size:9px; opacity:0.6">Gate 3 window
+          <div class="tooltip"><div class="tooltip-title">Gate 3 window opens</div><div class="tooltip-body">Product schedules Gate 3 feasibility sessions for next sprint features. Must happen by Day 5 so design has time to produce Figma before Day 9.</div></div>
+        </div>
+      </div>
+      <div class="day-cell">
+        <div class="event-block prod" style="font-size:9px">Wed touchpoint
+          <div class="tooltip"><div class="tooltip-title">Wednesday touchpoint</div><div class="tooltip-body">20 min. Blockers only. Product makes decisions on the spot or commits to 24 hours. No status updates.</div></div>
+        </div>
+      </div>
+      <div class="day-cell"></div>
+      <div class="day-cell">
+        <div class="event-block prod" style="font-size:9px">Signal review
+          <div class="tooltip"><div class="tooltip-title">Signal review</div><div class="tooltip-body">Growth Marketing + Product review all user signals from the sprint — NPS, support tickets, interviews. Patterns identified. Research Archive updated. Backlog evidence upgraded.</div></div>
+        </div>
+      </div>
+      <div class="day-cell">
+        <div class="event-block prod" style="font-size:9px; opacity:0.6">Stories
+          <div class="tooltip"><div class="tooltip-title">Writing Stories</div><div class="tooltip-body">User Stories written with acceptance criteria, Figma link, definition of done. MoSCoW applied. Must be complete before Day 9.</div></div>
+        </div>
+      </div>
+      <div class="day-cell">
+        <div class="event-block prod" style="font-size:9px; opacity:0.6">Stories
+          <div class="tooltip"><div class="tooltip-title">Writing Stories</div><div class="tooltip-body">Continued. All next sprint Stories must be complete before pre-sprint planning on Day 9.</div></div>
+        </div>
+      </div>
+      <div class="day-cell">
+        <div class="event-block prod" style="font-size:9px">Wed touchpoint
+          <div class="tooltip"><div class="tooltip-title">Wednesday touchpoint (week 2)</div><div class="tooltip-body">Same format. 20 min. Blockers for the final push before sprint close.</div></div>
+        </div>
+      </div>
+      <div class="day-cell">
+        <div class="event-block prod" style="font-size:9px">Pre-sprint
+          <div class="tooltip"><div class="tooltip-title">Pre-sprint planning</div><div class="tooltip-body">Product + Eng Lead. 60 min. Next sprint Stories reviewed and sized. Capacity confirmed. Accepted backlog locked.</div></div>
+        </div>
+      </div>
+      <div class="day-cell">
+        <div class="event-block all" style="font-size:9px">Review + Retro
+          <div class="tooltip"><div class="tooltip-title">Sprint review + retrospective</div><div class="tooltip-body">What shipped vs committed. Delivery rate logged. One process change agreed. Monthly metrics review also happens here at end of month.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Engineering -->
+    <div class="sprint-row" data-fn="eng">
+      <div class="role-cell"><div class="role-pill eng">Engineering</div></div>
+      <div class="day-cell">
+        <div class="event-block eng" style="font-size:9px">Planning + Tasks
+          <div class="tooltip"><div class="tooltip-title">Sprint planning + Task creation</div><div class="tooltip-body">Engineering self-assigns Stories. Each engineer creates their own Tasks under each Story. Engineering owns the how — product owns the what.</div></div>
+        </div>
+      </div>
+      <div class="day-cell">
+        <div class="event-block build" style="font-size:9px">Building
+          <div class="tooltip"><div class="tooltip-title">Building</div><div class="tooltip-body">Engineering builds committed Stories. Product does not introduce new scope during the sprint.</div></div>
+        </div>
+      </div>
+      <div class="day-cell">
+        <div class="event-block eng" style="font-size:9px">Gate 3
+          <div class="tooltip"><div class="tooltip-title">Gate 3 feasibility session</div><div class="tooltip-body">Eng Lead attends Gate 3 for next sprint features. Reviews proposed solution. Flags technical risks. Gives rough size estimate. 30–45 min per feature.</div></div>
+        </div>
+      </div>
+      <div class="day-cell">
+        <div class="event-block build" style="font-size:9px">Building
+          <div class="tooltip"><div class="tooltip-title">Building</div><div class="tooltip-body">Continued sprint build work.</div></div>
+        </div>
+      </div>
+      <div class="day-cell">
+        <div class="event-block eng" style="font-size:9px">#tech-signals
+          <div class="tooltip"><div class="tooltip-title">#tech-signals post</div><div class="tooltip-body">Eng Lead posts technical observations with user-facing impact. Crash rates, silent failures, permission errors, performance drops. Product reviews and logs actionable items into Fix Track Backlog.</div></div>
+        </div>
+      </div>
+      <div class="day-cell">
+        <div class="event-block build" style="font-size:9px">Building
+          <div class="tooltip"><div class="tooltip-title">Building</div><div class="tooltip-body">Continued sprint build work.</div></div>
+        </div>
+      </div>
+      <div class="day-cell">
+        <div class="event-block build" style="font-size:9px">Building
+          <div class="tooltip"><div class="tooltip-title">Building</div><div class="tooltip-body">Continued sprint build work.</div></div>
+        </div>
+      </div>
+      <div class="day-cell">
+        <div class="event-block build" style="font-size:9px">Building
+          <div class="tooltip"><div class="tooltip-title">Building</div><div class="tooltip-body">Continued sprint build work. Staging validation begins for completed Stories.</div></div>
+        </div>
+      </div>
+      <div class="day-cell">
+        <div class="event-block eng" style="font-size:9px">Pre-sprint
+          <div class="tooltip"><div class="tooltip-title">Pre-sprint planning</div><div class="tooltip-body">Eng Lead reviews next sprint Stories with Product. Sizes confirmed. Technical blockers flagged before Day 1 of next sprint.</div></div>
+        </div>
+      </div>
+      <div class="day-cell">
+        <div class="event-block all" style="font-size:9px">Review + Retro
+          <div class="tooltip"><div class="tooltip-title">Sprint review + retrospective</div><div class="tooltip-body">Delivery rate reviewed. What shipped vs committed. One process change agreed and committed.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Design -->
+    <div class="sprint-row" data-fn="design">
+      <div class="role-cell"><div class="role-pill design">Design</div></div>
+      <div class="day-cell">
+        <div class="event-block all" style="font-size:9px">Planning
+          <div class="tooltip"><div class="tooltip-title">Sprint planning</div><div class="tooltip-body">Attends sprint planning. No design work assigned during the sprint — design work runs ahead of engineering, not alongside it.</div></div>
+        </div>
+      </div>
+      <div class="day-cell">
+        <div class="event-block design" style="font-size:9px; opacity:0.5">Available
+          <div class="tooltip"><div class="tooltip-title">Available for engineering</div><div class="tooltip-body">No new design work during the sprint. Available to answer Figma questions from engineering only.</div></div>
+        </div>
+      </div>
+      <div class="day-cell">
+        <div class="event-block design" style="font-size:9px">Gate 3
+          <div class="tooltip"><div class="tooltip-title">Gate 3 feasibility session</div><div class="tooltip-body">Design Lead attends Gate 3. Confirms scope of what needs to be designed for the next sprint feature.</div></div>
+        </div>
+      </div>
+      <div class="day-cell">
+        <div class="event-block design" style="font-size:9px">Figma
+          <div class="tooltip"><div class="tooltip-title">Figma production begins</div><div class="tooltip-body">Designer works from the Design Brief product wrote. All screens, all states, both platforms, English and Arabic.</div></div>
+        </div>
+      </div>
+      <div class="day-cell">
+        <div class="event-block design" style="font-size:9px">Figma
+          <div class="tooltip"><div class="tooltip-title">Figma production continues</div><div class="tooltip-body">Continued. All states must be covered before design review.</div></div>
+        </div>
+      </div>
+      <div class="day-cell">
+        <div class="event-block design" style="font-size:9px">Design review
+          <div class="tooltip"><div class="tooltip-title">Design review</div><div class="tooltip-body">Product reviews Figma against the Design Brief. 30 min. Reviewed against brief criteria — not personal taste. Changes requested if needed.</div></div>
+        </div>
+      </div>
+      <div class="day-cell">
+        <div class="event-block design" style="font-size:9px; opacity:0.5">Revisions
+          <div class="tooltip"><div class="tooltip-title">Revisions if needed</div><div class="tooltip-body">Any changes from the design review addressed. Figma signed off before Day 9 pre-sprint planning.</div></div>
+        </div>
+      </div>
+      <div class="day-cell"></div>
+      <div class="day-cell"></div>
+      <div class="day-cell">
+        <div class="event-block all" style="font-size:9px">Review + Retro
+          <div class="tooltip"><div class="tooltip-title">Sprint review + retrospective</div><div class="tooltip-body">Attends sprint review. Sees what shipped.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Growth Marketing -->
+    <div class="sprint-row" data-fn="mktg">
+      <div class="role-cell"><div class="role-pill mktg">Mktg</div></div>
+      <div class="day-cell">
+        <div class="event-block mktg" style="font-size:9px">Weekly digest
+          <div class="tooltip"><div class="tooltip-title">Weekly digest published</div><div class="tooltip-body">Monday. What shipped last sprint, what is being prepared, what signals came in. Written and published — no meeting required. Everyone reads it.</div></div>
+        </div>
+      </div>
+      <div class="day-cell"></div>
+      <div class="day-cell">
+        <div class="event-block mktg" style="font-size:9px">#user-signals
+          <div class="tooltip"><div class="tooltip-title">User signals posted</div><div class="tooltip-body">NPS, support tickets, interview clips posted to #user-signals. Tagged by insight type and user segment. Everyone reads.</div></div>
+        </div>
+      </div>
+      <div class="day-cell"></div>
+      <div class="day-cell">
+        <div class="event-block mktg" style="font-size:9px">Signal review
+          <div class="tooltip"><div class="tooltip-title">Signal review</div><div class="tooltip-body">Growth Marketing + Product review all signals from the sprint together. Patterns identified. Research Archive updated. Evidence Backlog upgraded with new findings.</div></div>
+        </div>
+      </div>
+      <div class="day-cell"></div>
+      <div class="day-cell">
+        <div class="event-block mktg" style="font-size:9px">#user-signals
+          <div class="tooltip"><div class="tooltip-title">User signals posted (week 2)</div><div class="tooltip-body">Second post of the sprint. Keeps signal flow continuous between synthesis sessions.</div></div>
+        </div>
+      </div>
+      <div class="day-cell"></div>
+      <div class="day-cell"></div>
+      <div class="day-cell">
+        <div class="event-block mktg" style="font-size:9px">Experiment review
+          <div class="tooltip"><div class="tooltip-title">Experiment review</div><div class="tooltip-body">All running experiments checked. Learnings logged. Hypotheses updated. Next experiments briefed for the following sprint.</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /sprint-track -->
+
+  <!-- MEETINGS -->
+  <div class="section-head">
+    <div class="section-head-line"></div>
+    <div class="section-head-label">All recurring touchpoints</div>
+    <div class="section-head-line"></div>
+  </div>
+
+  <div class="meetings-grid">
+
+    <div class="meeting-card prod" data-fn="prod">
+      <div class="meeting-freq">Every sprint · Day 1 · 90 min</div>
+      <div class="meeting-title">Sprint planning</div>
+      <div class="meeting-who">
+        <span class="who-tag prod">Product</span>
+        <span class="who-tag eng">Engineering</span>
+        <span class="who-tag design">Design</span>
+      </div>
+      <div class="meeting-desc">Full team. Engineering self-assigns Stories. Engineers create their own Tasks under each Story — product does not assign technical work. Sprint board populated by end of session.</div>
+      <div class="meeting-output"><strong>Output:</strong> Sprint board live. Everyone knows what they are building and why.</div>
+    </div>
+
+    <div class="meeting-card eng" data-fn="eng">
+      <div class="meeting-freq">Every sprint · Days 3 + 8 · 20 min</div>
+      <div class="meeting-title">Wednesday touchpoint</div>
+      <div class="meeting-who">
+        <span class="who-tag prod">Product</span>
+        <span class="who-tag eng">Engineering</span>
+      </div>
+      <div class="meeting-desc">Blockers raised — not stored in heads. Product makes decisions on the spot or commits to 24 hours. No status updates. No slides. If there are no blockers, the meeting ends in five minutes.</div>
+      <div class="meeting-output"><strong>Output:</strong> Blockers cleared. Sprint continues without interruption.</div>
+    </div>
+
+    <div class="meeting-card eng" data-fn="eng">
+      <div class="meeting-freq">Every sprint · Days 1–5 · 30–45 min per feature</div>
+      <div class="meeting-title">Gate 3 feasibility session</div>
+      <div class="meeting-who">
+        <span class="who-tag prod">Product</span>
+        <span class="who-tag eng">Eng Lead</span>
+        <span class="who-tag design">Design Lead</span>
+      </div>
+      <div class="meeting-desc">Product presents the proposed solution as a user flow in words — not a Figma, not a brief. Eng Lead gives a feasibility read and rough size. Design Lead confirms scope. This is not a discussion of whether to build — that was Gate 2. Scheduled by product at sprint start, must happen by Day 5.</div>
+      <div class="meeting-output"><strong>Output:</strong> Feasibility confirmed. Design Brief can be written. Feature moves to Gate 4.</div>
+    </div>
+
+    <div class="meeting-card prod" data-fn="prod">
+      <div class="meeting-freq">Every sprint · Day 9 · 60 min</div>
+      <div class="meeting-title">Pre-sprint planning</div>
+      <div class="meeting-who">
+        <span class="who-tag prod">Product</span>
+        <span class="who-tag eng">Eng Lead</span>
+      </div>
+      <div class="meeting-desc">Product presents all next sprint Stories with fields complete — acceptance criteria, Figma link, definition of done. Eng Lead reviews, confirms sizing, flags any blockers. Capacity confirmed at 35% Fix / 65% Build. MoSCoW verified — Must Have cannot exceed 60% of capacity.</div>
+      <div class="meeting-output"><strong>Output:</strong> Accepted sprint backlog. Engineering starts Day 1 with everything they need.</div>
+    </div>
+
+    <div class="meeting-card all" data-fn="all">
+      <div class="meeting-freq">Every sprint · Day 10 · 60 min</div>
+      <div class="meeting-title">Sprint review + retrospective</div>
+      <div class="meeting-who">
+        <span class="who-tag prod">Product</span>
+        <span class="who-tag eng">Engineering</span>
+        <span class="who-tag design">Design</span>
+        <span class="who-tag mktg">Growth Mktg</span>
+      </div>
+      <div class="meeting-desc">Review: what shipped versus what was committed. Delivery rate logged — no blame, just data. Retro: what worked, what did not. One process change agreed and committed. Not a list — one specific change that takes effect next sprint.</div>
+      <div class="meeting-output"><strong>Output:</strong> Delivery data logged. One improvement committed.</div>
+    </div>
+
+    <div class="meeting-card mktg" data-fn="mktg">
+      <div class="meeting-freq">Every sprint · Day 5 · 45 min</div>
+      <div class="meeting-title">Signal review</div>
+      <div class="meeting-who">
+        <span class="who-tag prod">Product</span>
+        <span class="who-tag mktg">Growth Mktg</span>
+      </div>
+      <div class="meeting-desc">Growth Marketing and Product sit together and review all user signals from the sprint — NPS responses, support tickets, interview clips, app store reviews. Not just reading them — identifying patterns and asking what they tell us about the backlog. Research Archive updated. Evidence Backlog scores upgraded where new signals change the picture.</div>
+      <div class="meeting-output"><strong>Output:</strong> Research Archive entries written. Backlog evidence updated.</div>
+    </div>
+
+    <div class="meeting-card prod" data-fn="prod">
+      <div class="meeting-freq">Monthly · Start of month</div>
+      <div class="meeting-title">Experience audit</div>
+      <div class="meeting-who">
+        <span class="who-tag prod">Product</span>
+      </div>
+      <div class="meeting-desc">Product scores all primary flows against the five-layer audit: Clarity, Confidence, Friction, Delight, and Polish. Any flow scoring 1 generates a Fix Brief that goes directly into the Fix Track Backlog. This is the primary source of Fix Track items.</div>
+      <div class="meeting-output"><strong>Output:</strong> Fix Track items logged. Audit scores recorded.</div>
+    </div>
+
+    <div class="meeting-card mktg" data-fn="mktg">
+      <div class="meeting-freq">Monthly · Mid-month</div>
+      <div class="meeting-title">Metrics review</div>
+      <div class="meeting-who">
+        <span class="who-tag prod">Product</span>
+        <span class="who-tag mktg">Growth Mktg</span>
+      </div>
+      <div class="meeting-desc">North star dashboard reviewed. Growth model actuals replace assumptions. Experiment results assessed. Backlog priorities confirmed or adjusted against real data — not gut feel.</div>
+      <div class="meeting-output"><strong>Output:</strong> Growth model updated. Backlog reprioritised if data warrants it.</div>
+    </div>
+
+  </div>
+
+  <!-- ENG NOTE -->
+  <div class="eng-note">
+    <div class="eng-note-icon">⚙️</div>
+    <div>
+      <div class="eng-note-eyebrow">Engineering — your voice in the system</div>
+      <div class="eng-note-body">Engineering is not sitting at Gate 5 waiting. <strong>Gate 3 is your earliest input point</strong> — and it is where your technical read shapes the solution before design and documentation are written. The <strong>#tech-signals post on Day 5</strong> is your formal channel to surface technical observations with user-facing consequences. Crash rates, silent failures, permission errors — Product reviews these every sprint and logs actionable items directly into the Fix Track. Your visibility into the technical layer is a genuine product input. The Effort score you provide in RICE scoring directly affects which features get prioritised. Without your input, prioritisation scores are unreliable.</div>
+    </div>
+  </div>
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:var(--pu)"></div>Product</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--te)"></div>Engineering</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--co)"></div>Design</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--am)"></div>Growth Marketing</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--muted)"></div>All functions</div>
+    <div class="legend-url">moneymo.re/ops</div>
+  </div>
+
+</div><!-- /wrap -->
+
+<script>
+  let current = 'all';
+
+  function setFilter(f, btn) {
+    current = f;
+    document.querySelectorAll('.btn').forEach(b => {
+      b.className = 'btn';
+    });
+    btn.classList.add('active-' + f);
+    apply();
+  }
+
+  function apply() {
+    document.querySelectorAll('[data-fn]').forEach(el => {
+      const fn = el.getAttribute('data-fn');
+      if (current === 'all' || fn === current || fn === 'all') {
+        el.classList.remove('dimmed');
+      } else {
+        el.classList.add('dimmed');
+      }
+    });
+  }
+
+  // stagger cards on load
+  document.querySelectorAll('.horizon').forEach((el, i) => {
+    el.style.animationDelay = (i * 0.06) + 's';
+  });
+  document.querySelectorAll('.meeting-card').forEach((el, i) => {
+    el.style.animationDelay = (i * 0.04) + 's';
+  });
+</script>
+</body>
+</html>
