@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CleverTap Guide — MoneyMore</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+:root {
+  --ink:    #1A1714; --ink2:  #3A3530; --ink3:  #6A6258;
+  --bg:     #FDFCF9; --bg2:   #F5F3EE; --bg3:   #EDE9E0;
+  --border: #DDD9D0; --border2:#C8C4BA;
+  --or:     #B04A10; --or-l:  #FEF2EA;
+  --pu:     #4A42A8; --pu-l:  #EEEDFC;
+  --te:     #0A7A56; --te-l:  #E6F5EF;
+  --am:     #A87010; --am-l:  #FEF5E6;
+  --rd:     #A02020; --rd-l:  #FDEAEA;
+  --gr:     #346010; --gr-l:  #EDF5E6;
+  --bl:     #1A5A9A; --bl-l:  #E8F1FB;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased}
+
+.shell{display:flex;min-height:100vh}
+
+/* SIDEBAR */
+.sidebar{width:264px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--border);position:fixed;top:0;left:0;bottom:0;overflow-y:auto;padding:28px 0}
+.sidebar-logo{padding:0 20px 20px;border-bottom:1px solid var(--border);margin-bottom:16px}
+.sidebar-logo-name{font-family:'DM Mono',monospace;font-size:11px;font-weight:500;color:var(--or);letter-spacing:.1em;text-transform:uppercase}
+.sidebar-logo-sub{font-size:12px;color:var(--ink3);margin-top:2px}
+.sidebar-section{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink3);padding:10px 20px 6px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 20px;cursor:pointer;border-left:2px solid transparent;transition:all .15s;font-size:13px;color:var(--ink2)}
+.nav-item:hover{background:var(--bg3);color:var(--ink)}
+.nav-item.active{background:var(--or-l);border-left-color:var(--or);color:var(--or);font-weight:600}
+.nav-item .num{font-family:'DM Mono',monospace;font-size:10px;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--bg3);color:var(--ink3);flex-shrink:0}
+.nav-item.active .num{background:var(--or);color:white}
+
+/* MAIN */
+.main{margin-left:264px;flex:1;max-width:860px;padding:52px 56px}
+.section{display:none}
+.section.active{display:block}
+
+/* PROGRESS */
+.progress-wrap{position:fixed;top:0;left:264px;right:0;height:3px;background:var(--bg3);z-index:100}
+.progress-bar{height:100%;background:var(--or);transition:width .4s ease}
+
+/* TYPOGRAPHY */
+.section-eyebrow{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--or);margin-bottom:10px;font-weight:500}
+.section-title{font-family:'Lora',serif;font-size:clamp(26px,3vw,36px);font-weight:600;color:var(--ink);line-height:1.2;margin-bottom:10px}
+.section-intro{font-size:16px;color:var(--ink2);line-height:1.75;max-width:640px;margin-bottom:36px;padding-bottom:28px;border-bottom:1px solid var(--border)}
+h2{font-family:'Lora',serif;font-size:20px;font-weight:600;color:var(--ink);margin:36px 0 12px}
+h3{font-size:13px;font-weight:600;color:var(--ink);text-transform:uppercase;letter-spacing:.06em;margin:28px 0 10px;font-family:'DM Mono',monospace}
+p{color:var(--ink2);margin-bottom:14px}
+
+/* CALLOUT */
+.callout{border-left:3px solid var(--or);background:var(--or-l);border-radius:0 6px 6px 0;padding:14px 18px;margin:20px 0;font-size:14px;color:var(--ink2);line-height:1.65}
+.callout.blue  {border-color:var(--bl);background:var(--bl-l)}
+.callout.green {border-color:var(--te);background:var(--te-l)}
+.callout.amber {border-color:var(--am);background:var(--am-l)}
+.callout.red   {border-color:var(--rd);background:var(--rd-l)}
+.callout.purple{border-color:var(--pu);background:var(--pu-l)}
+.callout .callout-title{font-weight:600;color:var(--ink);margin-bottom:4px;font-size:13px}
+
+/* STEP BOX */
+.step-box{display:flex;gap:16px;align-items:flex-start;padding:16px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;margin:10px 0}
+.step-num{width:28px;height:28px;border-radius:50%;background:var(--or);color:white;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:12px;font-weight:500;flex-shrink:0;margin-top:1px}
+.step-title{font-weight:600;color:var(--ink);margin-bottom:4px;font-size:14px}
+.step-desc{font-size:13.5px;color:var(--ink2);line-height:1.6}
+
+/* DEFINITION */
+.definition{border:1px solid var(--border);border-radius:6px;overflow:hidden;margin:12px 0}
+.def-term{background:var(--bg3);padding:10px 14px;font-weight:600;font-size:13.5px;color:var(--ink);border-bottom:1px solid var(--border)}
+.def-body{padding:12px 14px;font-size:13.5px;color:var(--ink2);line-height:1.65}
+.def-example{font-family:'DM Mono',monospace;font-size:11px;color:var(--or);background:var(--or-l);padding:6px 10px;border-radius:4px;margin-top:8px;display:inline-block}
+
+/* CAMPAIGN CARD */
+.campaign-card{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:18px;margin:12px 0;position:relative;overflow:hidden}
+.campaign-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--or)}
+.campaign-card.blue::before  {background:var(--bl)}
+.campaign-card.green::before {background:var(--te)}
+.campaign-card.purple::before{background:var(--pu)}
+.campaign-card.amber::before {background:var(--am)}
+.campaign-type{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--or);margin-bottom:4px;font-weight:500}
+.campaign-card.blue .campaign-type  {color:var(--bl)}
+.campaign-card.green .campaign-type {color:var(--te)}
+.campaign-card.purple .campaign-type{color:var(--pu)}
+.campaign-card.amber .campaign-type {color:var(--am)}
+.campaign-name{font-weight:600;font-size:15px;color:var(--ink);margin-bottom:6px}
+.campaign-trigger{font-family:'DM Mono',monospace;font-size:11px;color:var(--ink3);margin-bottom:8px;padding:4px 8px;background:var(--bg2);border-radius:3px;display:inline-block}
+.campaign-desc{font-size:13.5px;color:var(--ink2);line-height:1.6;margin-bottom:10px}
+.campaign-copy{background:var(--bg2);border-radius:5px;padding:12px 14px;margin-top:8px}
+.copy-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);margin-bottom:5px;font-weight:500}
+.copy-en{font-size:13px;color:var(--ink);font-weight:500;margin-bottom:3px}
+.copy-ar{font-size:13px;color:var(--ink2);direction:rtl;text-align:right}
+.copy-rules{margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:12px;color:var(--ink3);font-family:'DM Mono',monospace;line-height:1.7}
+
+/* SURVEY CARD */
+.survey-card{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:18px;margin:14px 0;overflow:hidden;position:relative}
+.survey-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%}
+.survey-card.s1::before{background:var(--pu)}
+.survey-card.s2::before{background:var(--te)}
+.survey-card.s3::before{background:var(--or)}
+.survey-card.s4::before{background:var(--am)}
+.survey-card.s5::before{background:var(--bl)}
+.survey-id{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px;font-weight:500}
+.survey-card.s1 .survey-id{color:var(--pu)}
+.survey-card.s2 .survey-id{color:var(--te)}
+.survey-card.s3 .survey-id{color:var(--or)}
+.survey-card.s4 .survey-id{color:var(--am)}
+.survey-card.s5 .survey-id{color:var(--bl)}
+.survey-q{font-weight:600;font-size:14px;color:var(--ink);margin-bottom:6px}
+.survey-trigger{font-family:'DM Mono',monospace;font-size:11px;color:var(--ink3);margin-bottom:8px}
+.survey-options{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.survey-opt{padding:4px 10px;background:var(--bg2);border:1px solid var(--border);border-radius:14px;font-size:12px;color:var(--ink2)}
+.survey-status{display:inline-flex;align-items:center;gap:5px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:2px;font-weight:500}
+.survey-status.now  {background:var(--te-l);color:var(--te);border:1px solid rgba(10,122,86,.25)}
+.survey-status.restr{background:var(--am-l);color:var(--am);border:1px solid rgba(168,112,16,.25)}
+
+/* TABLE */
+.data-table{width:100%;border-collapse:collapse;font-size:13px;margin:16px 0}
+.data-table th{background:var(--bg3);color:var(--ink);font-weight:600;padding:10px 12px;text-align:left;border:1px solid var(--border);font-size:12px}
+.data-table td{padding:9px 12px;border:1px solid var(--border);color:var(--ink2);vertical-align:top}
+.data-table tr:nth-child(even) td{background:var(--bg2)}
+.data-table .mono{font-family:'DM Mono',monospace;font-size:11px;color:var(--pu)}
+.data-table .or  {font-family:'DM Mono',monospace;font-size:11px;color:var(--or)}
+
+/* RULE BOX */
+.rule-box{background:var(--rd-l);border:1px solid var(--rd);border-radius:6px;padding:14px 18px;margin:16px 0}
+.rule-box .rule-title{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--rd);margin-bottom:8px;font-weight:500}
+.rule-row{display:flex;align-items:flex-start;gap:10px;font-size:13.5px;color:var(--ink2);margin-bottom:6px;padding-bottom:6px;border-bottom:1px solid rgba(160,32,32,.15)}
+.rule-row:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none}
+.rule-icon{flex-shrink:0;font-size:14px;margin-top:1px}
+
+/* CHECKLIST */
+.checklist{margin:16px 0}
+.check-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:13.5px;color:var(--ink2);cursor:pointer}
+.check-item:last-child{border-bottom:none}
+.check-box{width:18px;height:18px;border:2px solid var(--border2);border-radius:3px;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.check-item.checked .check-box{background:var(--te);border-color:var(--te);color:white;font-size:11px}
+.check-item.checked{color:var(--ink3);text-decoration:line-through}
+
+/* QUIZ */
+.quiz-box{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:20px;margin:24px 0}
+.quiz-q{font-family:'Lora',serif;font-size:16px;font-weight:600;color:var(--ink);margin-bottom:14px}
+.quiz-options{display:flex;flex-direction:column;gap:8px}
+.quiz-option{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg);border:1px solid var(--border);border-radius:5px;cursor:pointer;font-size:13.5px;color:var(--ink2);transition:all .15s;user-select:none}
+.quiz-option:hover{border-color:var(--or);background:var(--or-l)}
+.quiz-option.correct{border-color:var(--te);background:var(--te-l);color:var(--te)}
+.quiz-option.wrong  {border-color:var(--rd);background:var(--rd-l);color:var(--rd)}
+.quiz-option .opt-letter{width:22px;height:22px;border-radius:50%;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:10px;font-weight:500;flex-shrink:0}
+.quiz-result{margin-top:12px;font-size:13.5px;display:none;padding:10px 14px;border-radius:5px}
+.quiz-result.show{display:block}
+.quiz-result.correct{background:var(--te-l);color:var(--te);border:1px solid var(--te)}
+.quiz-result.wrong  {background:var(--rd-l);color:var(--rd);border:1px solid var(--rd)}
+
+/* NAV BUTTONS */
+.nav-buttons{display:flex;justify-content:space-between;align-items:center;margin-top:52px;padding-top:24px;border-top:1px solid var(--border)}
+.nav-btn{display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:5px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--border);background:var(--bg);color:var(--ink2);transition:all .15s}
+.nav-btn:hover{border-color:var(--or);color:var(--or)}
+.nav-btn.primary{background:var(--or);border-color:var(--or);color:white}
+.nav-btn.primary:hover{background:#9A3E0A}
+.nav-btn:disabled{opacity:.3;cursor:default}
+
+/* BADGE */
+.badge{display:inline-block;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:3px;font-weight:500}
+.badge.or{background:var(--or-l);color:var(--or)}
+.badge.te{background:var(--te-l);color:var(--te)}
+.badge.rd{background:var(--rd-l);color:var(--rd)}
+.badge.am{background:var(--am-l);color:var(--am)}
+
+@media(max-width:768px){.sidebar{display:none}.main{margin-left:0;padding:28px 20px}.progress-wrap{left:0}}
+</style>
+</head>
+<body>
+
+<div class="progress-wrap"><div class="progress-bar" id="progress"></div></div>
+
+<div class="shell">
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sidebar-logo">
+    <div class="sidebar-logo-name">MoneyMore</div>
+    <div class="sidebar-logo-sub">CleverTap Guide for Product</div>
+  </div>
+
+  <div class="sidebar-section">Getting started</div>
+  <div class="nav-item active" onclick="goTo(0,this)"><span class="num">1</span>What is CleverTap?</div>
+  <div class="nav-item" onclick="goTo(1,this)"><span class="num">2</span>How it connects to Mixpanel</div>
+
+  <div class="sidebar-section">Core concepts</div>
+  <div class="nav-item" onclick="goTo(2,this)"><span class="num">3</span>Segments</div>
+  <div class="nav-item" onclick="goTo(3,this)"><span class="num">4</span>Campaign types</div>
+  <div class="nav-item" onclick="goTo(4,this)"><span class="num">5</span>The global frequency cap</div>
+
+  <div class="sidebar-section">Our campaigns</div>
+  <div class="nav-item" onclick="goTo(5,this)"><span class="num">6</span>The notification framework</div>
+  <div class="nav-item" onclick="goTo(6,this)"><span class="num">7</span>The five micro-surveys</div>
+  <div class="nav-item" onclick="goTo(7,this)"><span class="num">8</span>Configuring a survey</div>
+
+  <div class="sidebar-section">Reading & improving</div>
+  <div class="nav-item" onclick="goTo(8,this)"><span class="num">9</span>Reading campaign analytics</div>
+  <div class="nav-item" onclick="goTo(9,this)"><span class="num">10</span>A/B testing</div>
+
+  <div class="sidebar-section">Day-to-day</div>
+  <div class="nav-item" onclick="goTo(10,this)"><span class="num">11</span>Before every campaign</div>
+  <div class="nav-item" onclick="goTo(11,this)"><span class="num">12</span>Things to never do</div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+<!-- S1 -->
+<div class="section active" id="s0">
+  <div class="section-eyebrow">Getting started · Chapter 1</div>
+  <h1 class="section-title">What is CleverTap?</h1>
+  <p class="section-intro">CleverTap is where we act on what Mixpanel tells us. If Mixpanel shows us what users are doing, CleverTap is how we respond — with a push notification, an in-app message, or a survey at exactly the right moment.</p>
+
+  <h2>The simplest way to understand it</h2>
+  <p>CleverTap is a campaign tool that lets you send the right message to the right user at the right time — automatically. You set the rules once. CleverTap runs the campaign for every user who matches those rules, forever, without you doing anything again.</p>
+
+  <div class="callout">
+    <div class="callout-title">Why CleverTap specifically?</div>
+    CleverTap combines user behaviour data, segmentation, and campaign delivery in one tool. It receives real-time events from the MoneyMore app, builds user profiles from those events, and lets you trigger campaigns based on exactly what a user just did — or did not do.
+  </div>
+
+  <h2>What CleverTap can send</h2>
+
+  <div class="definition">
+    <div class="def-term">Push notification</div>
+    <div class="def-body">A message that appears on the user's phone screen even when the app is not open. This is the highest-reach channel — any user who has granted notification permission can receive it.
+      <div class="def-example">e.g. "You've used 80% of your Food & Dining budget this month"</div>
+    </div>
+  </div>
+
+  <div class="definition">
+    <div class="def-term">In-app message</div>
+    <div class="def-body">A message that appears inside the app while the user is actively using it. Can be a banner, a card, or a full-screen overlay. Only reaches users who are currently in the app.
+      <div class="def-example">e.g. A card that appears on the home screen offering to help set a first budget</div>
+    </div>
+  </div>
+
+  <div class="definition">
+    <div class="def-term">In-app survey</div>
+    <div class="def-body">A one or two question prompt that appears inside the app at a specific moment. Used to collect structured user feedback at high-signal moments — immediately after a user action.
+      <div class="def-example">e.g. "Did we get the category right?" — shown after the first transaction is categorised</div>
+    </div>
+  </div>
+
+  <h2>MoneyMore's CleverTap account at a glance</h2>
+  <p>In the last 90 days, MoneyMore's CleverTap data shows:</p>
+  <table class="data-table">
+    <thead><tr><th>Signal</th><th>Volume</th><th>What it means</th></tr></thead>
+    <tbody>
+      <tr><td>Push Notification Received</td><td>100</td><td>Push campaigns are active but early stage</td></tr>
+      <tr><td>Push Notification Clicked</td><td>12</td><td>12% click-through rate — reasonable for early campaigns</td></tr>
+      <tr><td>Push Notification Dismissed</td><td>40</td><td>40% dismiss rate — messages may need better targeting or copy</td></tr>
+      <tr><td>Budget Alert Received</td><td>6</td><td>Budget alerts are live but low volume — will grow as Budget Created grows</td></tr>
+    </tbody>
+  </table>
+
+  <div class="nav-buttons">
+    <button class="nav-btn" disabled>← Previous</button>
+    <button class="nav-btn primary" onclick="goTo(1,null)">Next: How it connects to Mixpanel →</button>
+  </div>
+</div>
+
+<!-- S2 -->
+<div class="section" id="s1">
+  <div class="section-eyebrow">Getting started · Chapter 2</div>
+  <h1 class="section-title">How CleverTap connects to Mixpanel</h1>
+  <p class="section-intro">Mixpanel and CleverTap are two separate tools that work together. Understanding how they connect is the most important concept in this guide — because a mistake in this connection is what causes campaigns to never fire or to reach the wrong users.</p>
+
+  <h2>The flow of data</h2>
+
+  <div class="step-box">
+    <div class="step-num">1</div>
+    <div class="step-content">
+      <div class="step-title">A user does something in the MoneyMore app</div>
+      <div class="step-desc">For example: they successfully save a budget for the first time.</div>
+    </div>
+  </div>
+  <div class="step-box">
+    <div class="step-num">2</div>
+    <div class="step-content">
+      <div class="step-title">The app fires a Mixpanel event</div>
+      <div class="step-desc">The Budget Created event fires in Mixpanel with its properties — Budget Amount, Category, Status: success.</div>
+    </div>
+  </div>
+  <div class="step-box">
+    <div class="step-num">3</div>
+    <div class="step-content">
+      <div class="step-title">The same event is also sent to CleverTap</div>
+      <div class="step-desc">Engineering instruments both Mixpanel and CleverTap simultaneously. The same event fires in both tools at the same time.</div>
+    </div>
+  </div>
+  <div class="step-box">
+    <div class="step-num">4</div>
+    <div class="step-content">
+      <div class="step-title">CleverTap checks whether any campaign is triggered by that event</div>
+      <div class="step-desc">If you have configured a campaign to fire when Budget Created occurs, CleverTap checks whether this specific user matches all the conditions — and sends the campaign if they do.</div>
+    </div>
+  </div>
+
+  <div class="callout red">
+    <div class="callout-title">The most common mistake — and how to avoid it</div>
+    Configuring a CleverTap campaign based on an event that does not exist in the app, is misspelled, or is firing incorrectly. Before you configure any campaign, open Mixpanel and confirm the trigger event is live and firing correctly. If the event is not in Mixpanel, it is not in CleverTap either.
+  </div>
+
+  <h2>Event names must match exactly</h2>
+  <p>When you configure a campaign trigger in CleverTap, you type or select the event name. This name must match exactly what engineering instrumented — including capitalisation and spaces. MoneyMore's live events use Title Case with spaces:</p>
+
+  <table class="data-table">
+    <thead><tr><th>Correct in CleverTap</th><th>Wrong — will not work</th></tr></thead>
+    <tbody>
+      <tr><td class="or">Budget Created</td><td class="mono">budget_created · Budget created · BudgetCreated</td></tr>
+      <tr><td class="or">Sign Up Completed</td><td class="mono">sign_up_completed · signup completed</td></tr>
+      <tr><td class="or">Sms Import Completed</td><td class="mono">SMS Import Completed · sms_import_completed</td></tr>
+      <tr><td class="or">App Opened</td><td class="mono">app_opened · AppOpened</td></tr>
+    </tbody>
+  </table>
+
+  <div class="quiz-box">
+    <div class="quiz-q">You want to trigger a campaign when a user creates a budget. Which event name do you enter in CleverTap?</div>
+    <div class="quiz-options">
+      <div class="quiz-option" onclick="quiz(this,'wrong','A')"><span class="opt-letter">A</span>budget_created</div>
+      <div class="quiz-option" onclick="quiz(this,'correct','B')"><span class="opt-letter">B</span>Budget Created</div>
+      <div class="quiz-option" onclick="quiz(this,'wrong','C')"><span class="opt-letter">C</span>BudgetCreated</div>
+      <div class="quiz-option" onclick="quiz(this,'wrong','D')"><span class="opt-letter">D</span>budget created</div>
+    </div>
+    <div class="quiz-result" id="qr0"></div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="nav-btn" onclick="goTo(0,null)">← What is CleverTap?</button>
+    <button class="nav-btn primary" onclick="goTo(2,null)">Next: Segments →</button>
+  </div>
+</div>
+
+<!-- S3 -->
+<div class="section" id="s2">
+  <div class="section-eyebrow">Core concepts · Chapter 3</div>
+  <h1 class="section-title">Segments</h1>
+  <p class="section-intro">A segment is a group of users who share something in common. Segments are what make CleverTap powerful — instead of sending the same message to everyone, you send the right message to the right group.</p>
+
+  <h2>Two types of segments in CleverTap</h2>
+
+  <div class="definition">
+    <div class="def-term">Live segment</div>
+    <div class="def-body">A segment that updates in real time as users meet or stop meeting the criteria. If a user fires the qualifying event, they enter the segment immediately. If they no longer qualify, they leave it.
+      <div class="def-example">Live segment: "Users who have fired Budget Created at least once" — updates the moment a new user creates a budget</div>
+    </div>
+  </div>
+
+  <div class="definition">
+    <div class="def-term">Static segment (manual)</div>
+    <div class="def-body">A snapshot of users who met the criteria at a specific point in time. Does not update automatically. Used for one-off campaigns or exports.
+      <div class="def-example">Static segment: "All users who signed up in March 2026" — fixed list, does not change</div>
+    </div>
+  </div>
+
+  <h2>The segments that matter most for MoneyMore right now</h2>
+
+  <table class="data-table">
+    <thead><tr><th>Segment name</th><th>Criteria</th><th>Why it matters</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Activated users</strong></td>
+        <td>Have fired <span class="or">Sms Import Completed</span> at least once</td>
+        <td>Users who have seen their first value. Base for retention campaigns.</td>
+      </tr>
+      <tr>
+        <td><strong>Budget creators</strong></td>
+        <td>Have fired <span class="or">Budget Created</span> with Status = success at least once</td>
+        <td>Highest-retention users. Seed audience for budget-related campaigns.</td>
+      </tr>
+      <tr>
+        <td><strong>Non-budget users</strong></td>
+        <td>Have fired <span class="or">Sms Import Completed</span> but have NOT fired <span class="or">Budget Created</span></td>
+        <td>Largest opportunity for retention lift. Target for budget activation campaigns.</td>
+      </tr>
+      <tr>
+        <td><strong>At-risk inactive</strong></td>
+        <td>No <span class="or">App Opened</span> in last 5 days, but had 3+ sessions in prior 7 days</td>
+        <td>Recently active users who are going quiet. Prime target for re-engagement.</td>
+      </tr>
+      <tr>
+        <td><strong>New users — day 1</strong></td>
+        <td>Fired <span class="or">Sign Up Completed</span> in the last 24 hours</td>
+        <td>Onboarding window. First 24 hours are critical for habit formation.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout amber">
+    <div class="callout-title">The segment we cannot build yet</div>
+    We cannot build segments by salary worker, freelancer, or student because the segment user property does not exist in CleverTap or Mixpanel yet. Every segment we build today is based on behaviour, not identity. When user_segment_identified is added in the restructure, we can start personalising campaigns by segment.
+  </div>
+
+  <div class="nav-buttons">
+    <button class="nav-btn" onclick="goTo(1,null)">← Mixpanel connection</button>
+    <button class="nav-btn primary" onclick="goTo(3,null)">Next: Campaign types →</button>
+  </div>
+</div>
+
+<!-- S4 -->
+<div class="section" id="s3">
+  <div class="section-eyebrow">Core concepts · Chapter 4</div>
+  <h1 class="section-title">Campaign types</h1>
+  <p class="section-intro">CleverTap has several campaign types. For MoneyMore, we use three: push notifications, in-app messages, and in-app surveys. Each has a different use case, a different reach, and a different level of interruption.</p>
+
+  <h2>When to use each type</h2>
+
+  <table class="data-table">
+    <thead><tr><th>Type</th><th>Reach</th><th>Use when</th><th>Do not use when</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Push notification</strong></td>
+        <td>All users with permission — app does not need to be open</td>
+        <td>User needs to know about something now. Budget alert. Re-engagement nudge.</td>
+        <td>Message is not urgent. User is already in the app.</td>
+      </tr>
+      <tr>
+        <td><strong>In-app message</strong></td>
+        <td>Only users currently using the app</td>
+        <td>Surfacing a feature the user has not discovered. Confirming something they just did.</td>
+        <td>User needs to take action when they are not in the app.</td>
+      </tr>
+      <tr>
+        <td><strong>In-app survey</strong></td>
+        <td>Only users currently in the app at a specific moment</td>
+        <td>Collecting feedback immediately after a meaningful action.</td>
+        <td>General feedback — surveys must be tied to a specific moment to be useful.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Campaign delivery types</h2>
+
+  <div class="definition">
+    <div class="def-term">Event-triggered campaign</div>
+    <div class="def-body">Fires automatically when a user performs a specific action. Most powerful type — the campaign reaches the user at exactly the right moment.
+      <div class="def-example">Trigger: Budget Created → Send: "Budget set. We'll track it automatically and alert you when you're getting close."</div>
+    </div>
+  </div>
+
+  <div class="definition">
+    <div class="def-term">Segment-based campaign</div>
+    <div class="def-body">Sends to everyone in a defined segment at a scheduled time. Used for broadcasts and rhythmic communications like the weekly spending summary.
+      <div class="def-example">Every Monday at 9am → Send to all activated users: "Here's your spending from last week"</div>
+    </div>
+  </div>
+
+  <div class="definition">
+    <div class="def-term">Inactivity-triggered campaign</div>
+    <div class="def-body">Fires when a user has not performed a specific action within a defined time window. Used for re-engagement and churn prevention.
+      <div class="def-example">No App Opened for 5 days → Send: "Quick question — what would bring you back?"</div>
+    </div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="nav-btn" onclick="goTo(2,null)">← Segments</button>
+    <button class="nav-btn primary" onclick="goTo(4,null)">Next: The global frequency cap →</button>
+  </div>
+</div>
+
+<!-- S5 -->
+<div class="section" id="s4">
+  <div class="section-eyebrow">Core concepts · Chapter 5</div>
+  <h1 class="section-title">The global frequency cap</h1>
+  <p class="section-intro">The frequency cap is the single most important rule governing every campaign we send. Understanding it — and never bypassing it — is non-negotiable.</p>
+
+  <h2>What it is</h2>
+  <p>A frequency cap limits how many messages a user can receive in a given time period. Without a cap, a user could theoretically trigger multiple campaigns in a single day and receive five push notifications — which would cause them to immediately disable notifications or uninstall the app.</p>
+
+  <div class="rule-box">
+    <div class="rule-title">MoneyMore global notification rules — never override these</div>
+    <div class="rule-row"><span class="rule-icon">🔴</span><div><strong>Maximum 2 push notifications per user per day.</strong> Across all campaigns combined. If a user has already received 2 pushes today, no further push campaigns fire for them today regardless of how many they qualify for.</div></div>
+    <div class="rule-row"><span class="rule-icon">🔴</span><div><strong>60-minute gap between a push and an SMS.</strong> If a push notification was sent in the last 60 minutes, do not also send an SMS. And vice versa.</div></div>
+    <div class="rule-row"><span class="rule-icon">🔴</span><div><strong>Quiet hours: 11pm–7am.</strong> No push notifications or SMS between 11pm and 7am. Schedule campaigns to respect local time zones.</div></div>
+    <div class="rule-row"><span class="rule-icon">🔴</span><div><strong>Maximum 1 survey per user per week across all survey campaigns combined.</strong> Set this as a global cap in the CleverTap account settings — not just per campaign.</div></div>
+  </div>
+
+  <h2>Where to set the global cap in CleverTap</h2>
+  <div class="step-box">
+    <div class="step-num">1</div>
+    <div class="step-content">
+      <div class="step-title">Go to Settings in the left sidebar</div>
+      <div class="step-desc">Look for the gear icon or Settings menu.</div>
+    </div>
+  </div>
+  <div class="step-box">
+    <div class="step-num">2</div>
+    <div class="step-content">
+      <div class="step-title">Find "Global frequency caps" or "DND settings"</div>
+      <div class="step-desc">CleverTap calls this DND (Do Not Disturb) in some views. It is the account-level setting that overrides all individual campaign caps.</div>
+    </div>
+  </div>
+  <div class="step-box">
+    <div class="step-num">3</div>
+    <div class="step-content">
+      <div class="step-title">Set push cap to 2 per day and DND hours to 11pm–7am</div>
+      <div class="step-desc">These settings apply to every campaign in the account. Individual campaign caps can be more restrictive but cannot exceed the global cap.</div>
+    </div>
+  </div>
+
+  <div class="callout red">
+    <div class="callout-title">What happens if you do not set this</div>
+    Without a global cap, a user who creates a budget, then views their spending summary, then opens the app for the fifth time in one day could receive three separate push notifications in an hour. They will disable notifications permanently. Once a user disables push, you cannot reach them again without them going into their phone settings to re-enable — which almost never happens.
+  </div>
+
+  <div class="quiz-box">
+    <div class="quiz-q">A user fires Budget Created at 2pm, triggering a push. At 3pm they trigger a re-engagement campaign push. At 4pm they trigger a third campaign. What happens?</div>
+    <div class="quiz-options">
+      <div class="quiz-option" onclick="quiz(this,'wrong','A1')"><span class="opt-letter">A</span>All three pushes are sent — each campaign fires independently</div>
+      <div class="quiz-option" onclick="quiz(this,'correct','B1')"><span class="opt-letter">B</span>The first two pushes send. The third is blocked by the 2-per-day global cap.</div>
+      <div class="quiz-option" onclick="quiz(this,'wrong','C1')"><span class="opt-letter">C</span>Only the first push sends — one push per day is the rule</div>
+      <div class="quiz-option" onclick="quiz(this,'wrong','D1')"><span class="opt-letter">D</span>All three are queued and sent the next morning</div>
+    </div>
+    <div class="quiz-result" id="qr1"></div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="nav-btn" onclick="goTo(3,null)">← Campaign types</button>
+    <button class="nav-btn primary" onclick="goTo(5,null)">Next: The notification framework →</button>
+  </div>
+</div>
+
+<!-- S6 -->
+<div class="section" id="s5">
+  <div class="section-eyebrow">Our campaigns · Chapter 6</div>
+  <h1 class="section-title">The notification framework</h1>
+  <p class="section-intro">MoneyMore has a defined notification framework — eight programmes that cover the full user lifecycle. Every campaign we run sits inside one of these eight programmes. Nothing is sent outside this framework.</p>
+
+  <h2>The eight programmes</h2>
+
+  <div class="campaign-card">
+    <div class="campaign-type">Programme 1 · Push</div>
+    <div class="campaign-name">Activation</div>
+    <div class="campaign-trigger">Trigger: Sign Up Completed → no Sms Import Completed within 24 hours</div>
+    <div class="campaign-desc">Users who sign up but do not connect their bank SMS within 24 hours. This is the most critical activation nudge — without SMS import, the user never sees their spending and the app has no value for them.</div>
+    <div class="campaign-copy">
+      <div class="copy-label">English</div>
+      <div class="copy-en">Your account is ready. Connect your bank SMS to see where your money is going.</div>
+      <div class="copy-label" style="margin-top:8px">Arabic</div>
+      <div class="copy-ar">حسابك جاهز. اربط رسائل البنك لترى أين تذهب أموالك.</div>
+      <div class="copy-rules">Deep link: SMS import screen · Frequency cap: once per user · Quiet hours apply</div>
+    </div>
+  </div>
+
+  <div class="campaign-card green">
+    <div class="campaign-type">Programme 2 · Push + In-app</div>
+    <div class="campaign-name">First value</div>
+    <div class="campaign-trigger">Trigger: Sms Import Completed with Success = true</div>
+    <div class="campaign-desc">The moment a user successfully imports their first bank SMS. They have just seen their spending for the first time. This is the highest-signal moment to reinforce the value and encourage the next action — setting a budget.</div>
+    <div class="campaign-copy">
+      <div class="copy-label">English</div>
+      <div class="copy-en">Your transactions are in. Now set a budget to take control of your spending.</div>
+      <div class="copy-label" style="margin-top:8px">Arabic</div>
+      <div class="copy-ar">معاملاتك جاهزة. حدد الآن ميزانية للسيطرة على إنفاقك.</div>
+      <div class="copy-rules">Deep link: Budgets tab · Frequency cap: once per user · Do not send if user has already created a budget</div>
+    </div>
+  </div>
+
+  <div class="campaign-card amber">
+    <div class="campaign-type">Programme 4 · Push</div>
+    <div class="campaign-name">Spending intelligence</div>
+    <div class="campaign-trigger">Trigger: Scheduled — end of each month for activated users</div>
+    <div class="campaign-desc">Monthly spending summary delivered at the end of the month. The user sees where their money went across categories. Reinforces the core value loop and encourages return visits.</div>
+    <div class="campaign-copy">
+      <div class="copy-label">English</div>
+      <div class="copy-en">Your [month] spending summary is ready. See where your money went.</div>
+      <div class="copy-label" style="margin-top:8px">Arabic</div>
+      <div class="copy-ar">ملخص إنفاقك لـ[الشهر] جاهز. اعرف أين ذهبت أموالك.</div>
+      <div class="copy-rules">Deep link: Home — spending summary · Frequency cap: once per month · Quiet hours apply</div>
+    </div>
+  </div>
+
+  <div class="campaign-card">
+    <div class="campaign-type">Programme 5 · Push</div>
+    <div class="campaign-name">80% budget alert</div>
+    <div class="campaign-trigger">Trigger: Budget Created event where Percentage Spent >= 80</div>
+    <div class="campaign-desc">Fires when a user has used 80% of their monthly budget for a category. The most time-sensitive notification we send — the user still has time to adjust their behaviour before going over. This is the notification that proves the app's value.</div>
+    <div class="campaign-copy">
+      <div class="copy-label">English</div>
+      <div class="copy-en">You've used 80% of your [category] budget. [amount] remaining for [days] days.</div>
+      <div class="copy-label" style="margin-top:8px">Arabic</div>
+      <div class="copy-ar">استخدمت 80٪ من ميزانية [الفئة]. تبقى [المبلغ] لمدة [الأيام] يوماً.</div>
+      <div class="copy-rules">Deep link: Budget detail screen · Frequency cap: once per category per month · Quiet hours apply</div>
+    </div>
+  </div>
+
+  <div class="campaign-card purple">
+    <div class="campaign-type">Programme 7 · Push</div>
+    <div class="campaign-name">Churn prevention</div>
+    <div class="campaign-trigger">Trigger: No App Opened for 5 consecutive days after 3+ sessions in prior 7 days</div>
+    <div class="campaign-desc">Users who were recently active and have gone quiet. The 5-day window catches users before they have fully churned. The message is a question, not a feature push — this respects the user's autonomy and generates signal about why they left.</div>
+    <div class="campaign-copy">
+      <div class="copy-label">English</div>
+      <div class="copy-en">Quick question — what would bring you back?</div>
+      <div class="copy-label" style="margin-top:8px">Arabic</div>
+      <div class="copy-ar">سؤال سريع — ما الذي سيجعلك تعود؟</div>
+      <div class="copy-rules">Opens Survey 4 (re-engagement signal) · Frequency cap: once per 30 days · Maximum twice ever per user</div>
+    </div>
+  </div>
+
+  <div class="callout purple">
+    <div class="callout-title">Programme 3 — Goal Bridge — is future state</div>
+    Programme 3 covers goal-setting campaigns. Goals are not in the current restructure. This programme activates when the Goals feature is formally introduced in a future phase. Do not configure it now.
+  </div>
+
+  <div class="nav-buttons">
+    <button class="nav-btn" onclick="goTo(4,null)">← Frequency cap</button>
+    <button class="nav-btn primary" onclick="goTo(6,null)">Next: The five micro-surveys →</button>
+  </div>
+</div>
+
+<!-- S7 -->
+<div class="section" id="s6">
+  <div class="section-eyebrow">Our campaigns · Chapter 7</div>
+  <h1 class="section-title">The five micro-surveys</h1>
+  <p class="section-intro">Micro-surveys are one-question prompts that appear at specific moments in the app to collect structured feedback. They are not generic "rate us" requests — each one is tied to a precise user action and asks only what is relevant at that moment.</p>
+
+  <h2>The rule for all five surveys</h2>
+  <div class="rule-box">
+    <div class="rule-title">Survey rules — apply to every survey without exception</div>
+    <div class="rule-row"><span class="rule-icon">📋</span><div>Maximum one question per survey — never two questions in the same prompt.</div></div>
+    <div class="rule-row"><span class="rule-icon">📋</span><div>Maximum one survey per user per week — across all five surveys combined. Set globally in CleverTap account settings.</div></div>
+    <div class="rule-row"><span class="rule-icon">📋</span><div>Always dismissible with one tap — never force a response.</div></div>
+    <div class="rule-row"><span class="rule-icon">📋</span><div>Never show during onboarding — wait until the user has completed at least one session.</div></div>
+  </div>
+
+  <h2>The five surveys and their status</h2>
+
+  <div class="survey-card s1">
+    <div class="survey-id">Survey 1 — Category accuracy</div>
+    <div class="survey-q">"Did we get the category right?"</div>
+    <div class="survey-trigger">Trigger: first_transaction_categorised — fires once per user lifetime</div>
+    <div class="survey-options">
+      <span class="survey-opt">Yes, looks right</span>
+      <span class="survey-opt">No, it should be something else</span>
+    </div>
+    <p style="font-size:12px;color:var(--ink3);margin-bottom:8px">If No: "What category would you choose?" — free text, optional, 60 character limit.</p>
+    <span class="survey-status restr">⏳ Activate when restructure ships — trigger event not yet live</span>
+  </div>
+
+  <div class="survey-card s2">
+    <div class="survey-id">Survey 2 — Spending summary usefulness</div>
+    <div class="survey-q">"Is this useful?"</div>
+    <div class="survey-trigger">Trigger: home_screen_viewed with transaction_count ≥ 3 AND session_number = 1</div>
+    <div class="survey-options">
+      <span class="survey-opt">Yes, this is what I needed</span>
+      <span class="survey-opt">Somewhat</span>
+      <span class="survey-opt">Not really</span>
+    </div>
+    <p style="font-size:12px;color:var(--ink3);margin-bottom:8px">If Somewhat or Not really: "What would make it more useful?" — free text, optional, 100 character limit. Shown after 8 seconds on home screen.</p>
+    <span class="survey-status restr">⏳ Activate when restructure ships — trigger event not yet live</span>
+  </div>
+
+  <div class="survey-card s3">
+    <div class="survey-id">Survey 3 — Budget confidence</div>
+    <div class="survey-q">"How confident are you about this limit?"</div>
+    <div class="survey-trigger">Trigger: Budget Created — fires on first budget creation only</div>
+    <div class="survey-options">
+      <span class="survey-opt">Just guessing</span>
+      <span class="survey-opt">Pretty sure</span>
+      <span class="survey-opt">Very confident</span>
+    </div>
+    <p style="font-size:12px;color:var(--ink3);margin-bottom:8px">No follow-up question. Shown inline below the budget creation confirmation. Once per user ever.</p>
+    <span class="survey-status now">✅ Activate now — Budget Created is live (170 events)</span>
+  </div>
+
+  <div class="survey-card s4">
+    <div class="survey-id">Survey 4 — Re-engagement signal</div>
+    <div class="survey-q">"What would bring you back?"</div>
+    <div class="survey-trigger">Trigger: CleverTap inactivity — no session in 5 days after 3+ sessions in prior 7 days</div>
+    <div class="survey-options">
+      <span class="survey-opt">Something new to see</span>
+      <span class="survey-opt">A reminder of my spending</span>
+      <span class="survey-opt">I forgot the app existed</span>
+      <span class="survey-opt">Something else</span>
+    </div>
+    <p style="font-size:12px;color:var(--ink3);margin-bottom:8px">Delivered as a push notification that opens the survey in-app. Frequency: once per 30 days, maximum twice ever per user.</p>
+    <span class="survey-status now">✅ Activate now — uses CleverTap inactivity segment, no missing events</span>
+  </div>
+
+  <div class="survey-card s5">
+    <div class="survey-id">Survey 5 — Navigation confusion</div>
+    <div class="survey-q">"Can't find what you're looking for?"</div>
+    <div class="survey-trigger">Trigger: home_screen_idle_30s — 30 seconds of inactivity on home screen</div>
+    <div class="survey-options">
+      <span class="survey-opt">Yes, I'm a bit lost</span>
+      <span class="survey-opt">No, just browsing</span>
+    </div>
+    <p style="font-size:12px;color:var(--ink3);margin-bottom:8px">If Yes: "What were you looking for?" — free text, optional, 80 character limit. Not shown in first session. Once per 14 days.</p>
+    <span class="survey-status restr">⏳ Activate when restructure ships — trigger event not yet live</span>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="nav-btn" onclick="goTo(5,null)">← Notification framework</button>
+    <button class="nav-btn primary" onclick="goTo(7,null)">Next: Configuring a survey →</button>
+  </div>
+</div>
+
+<!-- S8 -->
+<div class="section" id="s7">
+  <div class="section-eyebrow">Our campaigns · Chapter 8</div>
+  <h1 class="section-title">Configuring a survey step by step</h1>
+  <p class="section-intro">This chapter walks you through configuring Survey 3 — the budget confidence check — from start to finish. Survey 3 can be activated right now because Budget Created is already live in Mixpanel.</p>
+
+  <div class="callout green">
+    <div class="callout-title">Before you start — confirm the trigger event is live</div>
+    Open Mixpanel. Go to the Events report. Search for "Budget Created". Confirm it is showing events in the last 30 days. The volume should be around 170 for a 90-day period. If you see zero events, stop and tell engineering before proceeding.
+  </div>
+
+  <h2>Configuring Survey 3 in CleverTap</h2>
+
+  <div class="step-box">
+    <div class="step-num">1</div>
+    <div class="step-content">
+      <div class="step-title">Go to Campaigns → Create Campaign → In-App Notification</div>
+      <div class="step-desc">In-app surveys are configured as in-app notifications in CleverTap. Select "In-App Notification" from the campaign creation menu.</div>
+    </div>
+  </div>
+
+  <div class="step-box">
+    <div class="step-num">2</div>
+    <div class="step-content">
+      <div class="step-title">Name the campaign: "Survey 3 — Budget Confidence Check"</div>
+      <div class="step-desc">Use a consistent naming convention so campaigns are easy to find later. Always include the survey number and a plain language description.</div>
+    </div>
+  </div>
+
+  <div class="step-box">
+    <div class="step-num">3</div>
+    <div class="step-content">
+      <div class="step-title">Set the target segment: users who have fired Budget Created</div>
+      <div class="step-desc">In the "Who" section, select "Users who have done" → Budget Created → Status = success → at least once. This ensures only users who have successfully created a budget see the survey.</div>
+    </div>
+  </div>
+
+  <div class="step-box">
+    <div class="step-num">4</div>
+    <div class="step-content">
+      <div class="step-title">Set the trigger: Budget Created with Status = success</div>
+      <div class="step-desc">In the "When" section, select "When user performs event" → Budget Created → add filter: Status equals "success". The survey fires immediately when a successful budget creation happens.</div>
+    </div>
+  </div>
+
+  <div class="step-box">
+    <div class="step-num">5</div>
+    <div class="step-content">
+      <div class="step-title">Add the frequency cap: once per user, ever</div>
+      <div class="step-desc">In the delivery settings, set "User receives this campaign" to "Only once". This is critical — a user who creates a second budget should not see the survey again.</div>
+    </div>
+  </div>
+
+  <div class="step-box">
+    <div class="step-num">6</div>
+    <div class="step-content">
+      <div class="step-title">Create the message — English version first</div>
+      <div class="step-desc">Question text: "How confident are you about this limit?" — Answer options as three buttons: "Just guessing" · "Pretty sure" · "Very confident". No follow-up question. Keep the design minimal — one question, three buttons, dismiss option.</div>
+    </div>
+  </div>
+
+  <div class="step-box">
+    <div class="step-num">7</div>
+    <div class="step-content">
+      <div class="step-title">Create the Arabic version</div>
+      <div class="step-desc">Question: "ما مدى ثقتك في هذا الحد؟" — Answers: "مجرد تخمين" · "متأكد إلى حد ما" · "واثق جداً". Set text direction to right-to-left. Have a native Arabic speaker review before activating.</div>
+    </div>
+  </div>
+
+  <div class="step-box">
+    <div class="step-num">8</div>
+    <div class="step-content">
+      <div class="step-title">Set the display timing: show immediately after Budget Created fires</div>
+      <div class="step-desc">No delay needed — the user is on the confirmation screen. The survey should appear inline below the confirmation message, not as a popup overlay.</div>
+    </div>
+  </div>
+
+  <div class="step-box">
+    <div class="step-num">9</div>
+    <div class="step-content">
+      <div class="step-title">Test in staging before activating</div>
+      <div class="step-desc">Use a test device to create a budget in the staging environment and confirm the survey appears correctly, the Arabic version renders right-to-left, and the dismiss button works.</div>
+    </div>
+  </div>
+
+  <div class="step-box">
+    <div class="step-num">10</div>
+    <div class="step-content">
+      <div class="step-title">Activate and monitor for 48 hours</div>
+      <div class="step-desc">After activating, check CleverTap analytics after 48 hours to confirm impressions are being recorded. Check Mixpanel to confirm Budget Created is still firing correctly after the campaign goes live.</div>
+    </div>
+  </div>
+
+  <div class="callout amber">
+    <div class="callout-title">What to do with the responses</div>
+    Growth Marketing reviews survey responses every sprint in the signal review session. If more than 40% of responses say "Just guessing" — this is a direct signal that the budget creation screen is not giving users enough context about what a reasonable limit looks like. That finding escalates to the Product backlog as a Fix Brief for the budget creation UX.
+  </div>
+
+  <div class="nav-buttons">
+    <button class="nav-btn" onclick="goTo(6,null)">← The five surveys</button>
+    <button class="nav-btn primary" onclick="goTo(8,null)">Next: Reading campaign analytics →</button>
+  </div>
+</div>
+
+<!-- S9 -->
+<div class="section" id="s8">
+  <div class="section-eyebrow">Reading & improving · Chapter 9</div>
+  <h1 class="section-title">Reading campaign analytics</h1>
+  <p class="section-intro">Every campaign you send generates data. Reading that data correctly tells you whether the campaign is working, who it is reaching, and what to change.</p>
+
+  <h2>The four numbers that matter for every campaign</h2>
+
+  <table class="data-table">
+    <thead><tr><th>Metric</th><th>What it means</th><th>What is good</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Sent</strong></td>
+        <td>How many users the campaign was sent to</td>
+        <td>Tells you the size of your qualified audience. If lower than expected, check your segment criteria.</td>
+      </tr>
+      <tr>
+        <td><strong>Delivered</strong></td>
+        <td>How many of the sent messages actually reached the device</td>
+        <td>Should be above 95% of sent. If it is lower, users may have uninstalled the app or revoked notification permission.</td>
+      </tr>
+      <tr>
+        <td><strong>CTR (Click-through rate)</strong></td>
+        <td>Percentage of delivered messages that were tapped</td>
+        <td>For MoneyMore push notifications, above 10% is good. Below 5% means the message or timing needs improvement.</td>
+      </tr>
+      <tr>
+        <td><strong>Conversion</strong></td>
+        <td>Percentage of users who completed a defined goal action after receiving the campaign</td>
+        <td>This is the most important metric. Define the goal before the campaign launches — not after.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>For survey campaigns — the four additional metrics</h2>
+
+  <table class="data-table">
+    <thead><tr><th>Metric</th><th>What it means</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Impressions</strong></td><td>How many times the survey was shown to users</td></tr>
+      <tr><td><strong>Response rate</strong></td><td>Percentage of users who answered vs dismissed. Below 30% means the timing or question is wrong.</td></tr>
+      <tr><td><strong>Answer distribution</strong></td><td>The breakdown of how users answered. This is the actual signal you are collecting.</td></tr>
+      <tr><td><strong>Free text responses</strong></td><td>Optional open-text answers. Read these individually — they often contain the most actionable insights.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>How to tell if a push notification is underperforming</h2>
+  <p>If a push notification has a CTR below 5% after at least 50 delivered messages, it is underperforming. The most common causes:</p>
+
+  <div class="step-box">
+    <div class="step-num">1</div>
+    <div class="step-content">
+      <div class="step-title">The message is too generic</div>
+      <div class="step-desc">Messages with personalised variables (actual amounts, category names, days remaining) consistently outperform generic messages. Add personalisation if it is missing.</div>
+    </div>
+  </div>
+  <div class="step-box">
+    <div class="step-num">2</div>
+    <div class="step-content">
+      <div class="step-title">The timing is wrong</div>
+      <div class="step-desc">A budget alert sent at 11pm will be ignored. Check what time of day your delivered messages are reaching users and whether it aligns with when they are likely to act.</div>
+    </div>
+  </div>
+  <div class="step-box">
+    <div class="step-num">3</div>
+    <div class="step-content">
+      <div class="step-title">The segment is too broad</div>
+      <div class="step-desc">A message sent to all users regardless of their behaviour is less relevant than a message sent to users who just did something specific. Tighten the segment before changing the copy.</div>
+    </div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="nav-btn" onclick="goTo(7,null)">← Configuring a survey</button>
+    <button class="nav-btn primary" onclick="goTo(9,null)">Next: A/B testing →</button>
+  </div>
+</div>
+
+<!-- S10 -->
+<div class="section" id="s9">
+  <div class="section-eyebrow">Reading & improving · Chapter 10</div>
+  <h1 class="section-title">A/B testing</h1>
+  <p class="section-intro">A/B testing lets you send two versions of the same campaign to two groups of users to see which performs better. It is how you improve campaigns based on evidence rather than opinion.</p>
+
+  <h2>When to run an A/B test</h2>
+  <p>A/B testing only makes sense when you have enough volume to get a statistically meaningful result. For MoneyMore's current user base, this means:</p>
+
+  <div class="callout amber">
+    <div class="callout-title">Minimum volume for an A/B test at MoneyMore's current scale</div>
+    You need at least 200 users per variant to draw a meaningful conclusion. If your campaign is only reaching 100 users total, do not run an A/B test — pick the better option based on judgement and test later when volume is higher.
+  </div>
+
+  <h2>What to A/B test and what not to</h2>
+
+  <table class="data-table">
+    <thead><tr><th>Worth testing</th><th>Not worth testing yet</th></tr></thead>
+    <tbody>
+      <tr><td>Two different message copies for the same campaign</td><td>Completely different campaign strategies</td></tr>
+      <tr><td>Sending at 9am vs 12pm for the same campaign</td><td>Different trigger events</td></tr>
+      <tr><td>With personalisation vs without personalisation</td><td>Segment criteria differences</td></tr>
+      <tr><td>English copy variations</td><td>Arabic copy variations (get a native speaker to review instead)</td></tr>
+    </tbody>
+  </table>
+
+  <h2>How to set up an A/B test in CleverTap</h2>
+  <div class="step-box">
+    <div class="step-num">1</div>
+    <div class="step-content">
+      <div class="step-title">Create the campaign as normal — then look for "A/B test" option</div>
+      <div class="step-desc">CleverTap offers A/B testing within the campaign builder. After setting your audience and trigger, look for the "Create variants" or "A/B test" option before finalising the message.</div>
+    </div>
+  </div>
+  <div class="step-box">
+    <div class="step-num">2</div>
+    <div class="step-content">
+      <div class="step-title">Create variant A and variant B — change only one thing</div>
+      <div class="step-desc">The golden rule of A/B testing: change exactly one thing between variants. If you change both the copy and the timing, you will not know which change drove the difference.</div>
+    </div>
+  </div>
+  <div class="step-box">
+    <div class="step-num">3</div>
+    <div class="step-content">
+      <div class="step-title">Set the split to 50/50 and define the winning metric before launch</div>
+      <div class="step-desc">Decide before launching: "The winner is the variant with the higher CTR after 500 delivered messages." Write this down. Do not change the winning metric after you see early results.</div>
+    </div>
+  </div>
+  <div class="step-box">
+    <div class="step-num">4</div>
+    <div class="step-content">
+      <div class="step-title">Wait for the defined volume then declare a winner</div>
+      <div class="step-desc">Do not check results hourly. Check once you have hit the minimum volume. Then roll out the winning variant to 100% of users and document what you learned.</div>
+    </div>
+  </div>
+
+  <div class="callout green">
+    <div class="callout-title">Log every A/B test result in the Experiment Tracker</div>
+    Every A/B test result — win, loss, or inconclusive — goes into the Experiment Tracker Excel file. This prevents the team from re-testing things that have already been tested and builds a library of what works for MoneyMore users specifically.
+  </div>
+
+  <div class="nav-buttons">
+    <button class="nav-btn" onclick="goTo(8,null)">← Campaign analytics</button>
+    <button class="nav-btn primary" onclick="goTo(10,null)">Next: Before every campaign →</button>
+  </div>
+</div>
+
+<!-- S11 -->
+<div class="section" id="s10">
+  <div class="section-eyebrow">Day-to-day · Chapter 11</div>
+  <h1 class="section-title">Before every campaign</h1>
+  <p class="section-intro">Every campaign — push notification, in-app message, or survey — goes through this checklist before it goes live. No exceptions.</p>
+
+  <h2>Pre-launch checklist</h2>
+
+  <div class="checklist">
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div><strong>Trigger event verified in Mixpanel.</strong> Confirm the event is live, firing at the correct moment, and carrying the correct properties. Check the last 7 days in the Events report.</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div><strong>Event name matches exactly.</strong> Check capitalisation and spaces. Open the CleverTap campaign builder and verify the event name in the trigger matches what you see in Mixpanel character for character.</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div><strong>Segment criteria reviewed.</strong> The audience the campaign will reach makes sense for the message. Not too broad, not so narrow that fewer than 50 users qualify.</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div><strong>Frequency cap set.</strong> Per-campaign cap is set. Global cap (2 pushes per day, 1 survey per week) is confirmed active in account settings.</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div><strong>Quiet hours respected.</strong> Campaign is not scheduled to deliver between 11pm and 7am.</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div><strong>English copy reviewed.</strong> Clear, direct, calm. No exclamation marks. No alarming language about money. Personalisation variables use the correct variable names.</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div><strong>Arabic copy reviewed by a native speaker.</strong> Not machine translated. RTL layout confirmed. Variable placeholders in correct position.</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div><strong>Deep link tested.</strong> If the campaign has a deep link, confirm it opens the correct screen in the app on both Android and iOS (when iOS is live).</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div><strong>Tested on a staging device.</strong> The campaign has been triggered on a test device and the message appeared correctly.</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div><strong>Success metric defined.</strong> Written down before launch: "This campaign is successful if [metric] reaches [threshold] within [time period]."</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div><strong>Review scheduled.</strong> A calendar reminder exists to check campaign analytics 48 hours after launch.</div>
+    </div>
+  </div>
+
+  <div class="callout green">
+    <div class="callout-title">When to escalate before launching</div>
+    If the trigger event has zero volume in Mixpanel, or if the segment has fewer than 50 users, or if you are not sure whether the event fires at the right moment — stop and bring it to the signal review session before activating. It is better to delay by one sprint than to launch a campaign that wastes user attention on a broken experience.
+  </div>
+
+  <div class="nav-buttons">
+    <button class="nav-btn" onclick="goTo(9,null)">← A/B testing</button>
+    <button class="nav-btn primary" onclick="goTo(11,null)">Next: Things to never do →</button>
+  </div>
+</div>
+
+<!-- S12 -->
+<div class="section" id="s11">
+  <div class="section-eyebrow">Day-to-day · Chapter 12</div>
+  <h1 class="section-title">Things to never do</h1>
+  <p class="section-intro">The fastest way to damage the MoneyMore notification channel is to send the wrong message at the wrong time to the wrong person. These are the most important rules.</p>
+
+  <div class="callout red">
+    <div class="callout-title">Never launch a campaign without verifying the trigger event in Mixpanel first</div>
+    A campaign with a non-existent or broken trigger event will either never fire, or fire at the wrong moment for the wrong users. This wastes user attention — which is a finite resource. Two wasted notifications and a user disables push forever.
+  </div>
+
+  <div class="callout red">
+    <div class="callout-title">Never use placeholder copy in a live campaign</div>
+    If you see "[category]" or "[amount]" appearing literally in the message rather than the actual value, the personalisation variable is broken. Test every variable in staging before activating. A message that says "You've used 80% of your [category] budget" is worse than no message at all.
+  </div>
+
+  <div class="callout red">
+    <div class="callout-title">Never bypass the global frequency cap</div>
+    If you think a campaign is "important enough" to send even though a user has already received 2 pushes today — it is not. There are no exceptions to the daily cap. The cap exists to protect the channel. Breaking it costs more long-term than any short-term gain from the extra message.
+  </div>
+
+  <div class="callout red">
+    <div class="callout-title">Never send push notifications during quiet hours</div>
+    A budget alert at 2am causes two things: the user is annoyed, and they disable notifications. Both outcomes are permanently damaging. Quiet hours are 11pm–7am. Respect them unconditionally.
+  </div>
+
+  <div class="callout red">
+    <div class="callout-title">Never change a campaign while it is live without telling Product</div>
+    If you edit the copy, segment, or trigger of a live campaign, the data collected before and after the change is no longer comparable. If a campaign needs to change, pause it first, make the change, document what changed and why, then reactivate. Always tell Product before pausing or changing a live campaign.
+  </div>
+
+  <h2>Your quick reference card</h2>
+
+  <table class="data-table">
+    <thead><tr><th>When you want to...</th><th>Do this first</th><th>Then</th></tr></thead>
+    <tbody>
+      <tr><td>Activate a new campaign</td><td>Verify trigger event in Mixpanel</td><td>Run full pre-launch checklist</td></tr>
+      <tr><td>Activate Survey 3</td><td>Confirm Budget Created is live in Mixpanel</td><td>Follow the step-by-step in Chapter 8</td></tr>
+      <tr><td>Activate Survey 4</td><td>Confirm inactivity segment is correctly defined in CleverTap</td><td>Test on a staging device first</td></tr>
+      <tr><td>Check if a campaign is working</td><td>Open CleverTap campaign analytics</td><td>Check Sent → Delivered → CTR → Conversion in that order</td></tr>
+      <tr><td>Improve a low-CTR campaign</td><td>Check if the issue is timing, copy, or segment</td><td>Change one thing at a time and A/B test if volume allows</td></tr>
+      <tr><td>Present survey results</td><td>Export answer distribution from CleverTap</td><td>Read all free-text responses individually before the signal review session</td></tr>
+      <tr><td>Add a new campaign type</td><td>Confirm it fits within one of the eight notification framework programmes</td><td>Get Product sign-off before configuring</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout green" style="margin-top:28px">
+    <div class="callout-title">You have completed the guide</div>
+    You now understand how CleverTap connects to Mixpanel, how to build segments, which campaign types to use when, why the global frequency cap is non-negotiable, how all eight notification programmes work, how to configure Survey 3 and 4 from scratch, how to read campaign analytics, and what not to do. The next step is to activate Survey 3 and Survey 4 following the pre-launch checklist in Chapter 11. Both can go live this sprint.
+  </div>
+
+  <div class="nav-buttons">
+    <button class="nav-btn" onclick="goTo(10,null)">← Before every campaign</button>
+    <button class="nav-btn" disabled>You have finished the guide ✓</button>
+  </div>
+</div>
+
+</div>
+</div>
+
+<script>
+const TOTAL = 12;
+let current = 0;
+const navItems = document.querySelectorAll('.nav-item');
+
+function goTo(n, btn) {
+  document.getElementById('s'+current).classList.remove('active');
+  current = n;
+  document.getElementById('s'+n).classList.add('active');
+  navItems.forEach(i => i.classList.remove('active'));
+  navItems[n].classList.add('active');
+  document.getElementById('progress').style.width = ((n+1)/TOTAL*100)+'%';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function quiz(el, result, id) {
+  const box = el.closest('.quiz-box');
+  box.querySelectorAll('.quiz-option').forEach(o => {
+    o.style.pointerEvents = 'none';
+    o.classList.remove('correct','wrong');
+  });
+  el.classList.add(result);
+  const resEl = box.querySelector('.quiz-result');
+  resEl.classList.add('show', result);
+  resEl.textContent = result === 'correct'
+    ? '✓ Correct. Title Case with spaces — exactly as it appears in Mixpanel.'
+    : '✗ Not quite. CleverTap event names must match Mixpanel exactly — Title Case with spaces.';
+  if (id === 'A1' || id === 'B1' || id === 'C1' || id === 'D1') {
+    resEl.textContent = result === 'correct'
+      ? '✓ Correct. The global cap of 2 pushes per day blocks the third campaign from firing, even if the user qualifies for it.'
+      : '✗ Not quite. The global cap of 2 pushes per day means the third campaign is blocked — not sent, not queued.';
+  }
+}
+
+function toggleCheck(el) {
+  el.classList.toggle('checked');
+  el.querySelector('.check-box').textContent = el.classList.contains('checked') ? '✓' : '';
+}
+
+document.getElementById('progress').style.width = (1/TOTAL*100)+'%';
+</script>
+</body>
+</html>
