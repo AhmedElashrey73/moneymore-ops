@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoneyMore — Event Taxonomy Evaluation v2.1</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Sora:wght@300;400;500;600;700&display=swap');
+  :root {
+    --dark:#0F0E0A; --dark2:#181610; --dark3:#1C1A14; --dark4:#232018;
+    --border:#343020; --border2:#3E3A28;
+    --muted:#8A8270; --muted2:#B0A890; --body:#C8C2B0;
+    --cream:#F5F2E8; --offW:#DDD8C8;
+    --pu:#7068D4; --pu-l:#252060;
+    --te:#1AA880; --te-l:#0A3D2C;
+    --am:#D4A820; --am-l:#3A2D00;
+    --co:#C05030; --co-l:#4A1E0E;
+    --gr:#52881A; --gr-l:#1C3508;
+    --rd:#C03030; --rd-l:#4A1010;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--dark);color:var(--cream);font-family:'Sora',sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1280px;margin:0 auto;padding:48px 32px 96px}
+
+  .header{margin-bottom:36px}
+  .eyebrow{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.22em;color:var(--muted);text-transform:uppercase;margin-bottom:12px}
+  .title{font-size:clamp(28px,4vw,42px);font-weight:700;color:var(--cream);letter-spacing:-.02em;line-height:1.08;margin-bottom:10px}
+  .subtitle{font-size:14px;color:var(--body);line-height:1.7;max-width:640px}
+
+  /* BUGS BANNER */
+  .bugs-banner{background:var(--rd-l);border:1px solid var(--rd);border-radius:6px;padding:16px 20px;margin-bottom:24px;display:flex;gap:14px}
+  .bugs-icon{font-size:20px;flex-shrink:0;margin-top:2px}
+  .bugs-title{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--rd);margin-bottom:6px;font-weight:500}
+  .bugs-body{font-size:12px;color:var(--body);line-height:1.7}
+  .bugs-body strong{color:var(--cream);font-weight:600}
+
+  /* NAMING NOTE */
+  .naming-note{background:var(--am-l);border:1px solid var(--am);border-radius:6px;padding:12px 18px;margin-bottom:24px;font-size:12px;color:var(--body);line-height:1.65}
+  .naming-note strong{color:var(--am);font-weight:600}
+
+  /* CORRECTION NOTE */
+  .correction-note{background:var(--te-l);border:1px solid var(--te);border-radius:6px;padding:12px 18px;margin-bottom:24px;font-size:12px;color:var(--body);line-height:1.65}
+  .correction-note strong{color:var(--te);font-weight:600}
+
+  /* SUMMARY */
+  .summary{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;margin-bottom:32px}
+  .summary-card{background:var(--dark2);border:1px solid var(--border2);border-radius:6px;padding:16px 18px;position:relative;overflow:hidden}
+  .summary-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+  .summary-card.bug::before{background:var(--rd)}
+  .summary-card.live::before{background:var(--te)}
+  .summary-card.fix::before{background:var(--am)}
+  .summary-card.pre::before{background:var(--pu)}
+  .summary-card.restr::before{background:var(--co)}
+  .summary-num{font-size:40px;font-weight:700;line-height:1;margin-bottom:6px}
+  .summary-card.bug .summary-num{color:var(--rd)}
+  .summary-card.live .summary-num{color:var(--te)}
+  .summary-card.fix .summary-num{color:var(--am)}
+  .summary-card.pre .summary-num{color:var(--pu)}
+  .summary-card.restr .summary-num{color:var(--co)}
+  .summary-label{font-size:11px;color:var(--muted2);line-height:1.4}
+
+  /* FILTERS */
+  .filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px;align-items:center}
+  .filter-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;color:var(--muted);text-transform:uppercase;margin-right:4px}
+  .btn{display:flex;align-items:center;gap:8px;padding:7px 14px;border-radius:3px;border:1px solid var(--border2);background:var(--dark3);color:var(--muted2);font-family:'Sora',sans-serif;font-size:12px;font-weight:500;cursor:pointer;transition:all .18s;user-select:none}
+  .btn:hover{border-color:var(--muted);color:var(--cream)}
+  .btn .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+  .btn.active{border-color:var(--cream);color:var(--cream);background:var(--dark4)}
+
+  /* SECTION HEAD */
+  .section-head{display:flex;align-items:center;gap:14px;margin-bottom:16px;margin-top:36px}
+  .section-line{flex:1;height:1px;background:var(--border)}
+  .section-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+
+  /* GRID */
+  .events-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px}
+  .event-card{background:var(--dark2);border:1px solid var(--border2);border-radius:6px;padding:16px;position:relative;overflow:hidden;transition:border-color .2s}
+  .event-card:hover{border-color:var(--muted)}
+  .event-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%}
+  .event-card.status-bug::before{background:var(--rd)}
+  .event-card.status-live::before{background:var(--te)}
+  .event-card.status-fix::before{background:var(--am)}
+  .event-card.status-pre::before{background:var(--pu)}
+  .event-card.status-restr::before{background:var(--co)}
+
+  .event-name{font-family:'DM Mono',monospace;font-size:11px;font-weight:500;color:var(--cream);margin-bottom:6px}
+  .event-status{display:inline-flex;align-items:center;gap:5px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:2px;margin-bottom:8px;font-weight:500}
+  .event-status.bug  {background:var(--rd-l);color:var(--rd);border:1px solid rgba(192,48,48,.3)}
+  .event-status.live {background:var(--te-l);color:var(--te);border:1px solid rgba(26,168,128,.3)}
+  .event-status.fix  {background:var(--am-l);color:var(--am);border:1px solid rgba(212,168,32,.3)}
+  .event-status.pre  {background:var(--pu-l);color:var(--pu);border:1px solid rgba(112,104,212,.3)}
+  .event-status.restr{background:var(--co-l);color:var(--co);border:1px solid rgba(192,80,48,.3)}
+
+  .event-vol{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:6px}
+  .event-layer{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:7px}
+  .layer-tag{font-family:'DM Mono',monospace;font-size:9px;padding:2px 6px;border-radius:2px;border:1px solid var(--border2);color:var(--muted2)}
+  .event-desc{font-size:11.5px;color:var(--body);line-height:1.6;margin-bottom:8px}
+  .event-props{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;border-top:1px solid var(--border);padding-top:8px;margin-top:8px;line-height:1.6}
+  .event-action{font-size:11px;font-weight:600;margin-top:6px}
+  .event-action.bug  {color:var(--rd)}
+  .event-action.live {color:var(--te)}
+  .event-action.fix  {color:var(--am)}
+  .event-action.pre  {color:var(--pu)}
+  .event-action.restr{color:var(--co)}
+
+  .corrected-badge{display:inline-block;font-family:'DM Mono',monospace;font-size:8px;padding:1px 6px;border-radius:2px;background:var(--te-l);color:var(--te);border:1px solid rgba(26,168,128,.3);margin-left:6px;vertical-align:middle}
+
+  /* LEGEND */
+  .legend{display:flex;gap:20px;flex-wrap:wrap;margin-top:40px;padding-top:20px;border-top:1px solid var(--border);align-items:center}
+  .legend-item{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--body)}
+  .legend-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+  .legend-url{margin-left:auto;font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.1em}
+  .version-badge{font-family:'DM Mono',monospace;font-size:9px;padding:2px 8px;border-radius:2px;background:var(--te-l);color:var(--te);border:1px solid rgba(26,168,128,.3)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <div class="eyebrow">MoneyMore · Event Taxonomy Evaluation <span class="version-badge">v2.1 — Lexicon verified</span></div>
+    <h1 class="title">Event health check.</h1>
+    <p class="subtitle">Based on full Mixpanel Lexicon export (100 events, 90 days). Statuses corrected from v2.0 after Lexicon review revealed events previously marked missing are actually live.</p>
+  </div>
+
+  <!-- BUGS BANNER -->
+  <div class="bugs-banner">
+    <div class="bugs-icon">🚨</div>
+    <div>
+      <div class="bugs-title">Four live bugs found — Fix Briefs written for all four</div>
+      <div class="bugs-body">
+        <strong>FIX-001 CRITICAL:</strong> /budgets/monthly returns 404 on every dashboard load for every user. Escalate this sprint.<br>
+        <strong>FIX-003 CRITICAL:</strong> OTP Delivery Failed (5,931) exceeds Otp Verified (5,213). More sign-up failures than successes. Escalate this sprint.<br>
+        <strong>FIX-002 HIGH:</strong> /transactions/manual-cash returns 400 validation error. Manual transaction entry broken.<br>
+        <strong>FIX-004 HIGH:</strong> Category Spending Error fires 935 times — 5.3% of home screen loads show no spending data.
+      </div>
+    </div>
+  </div>
+
+  <!-- CORRECTIONS NOTE -->
+  <div class="correction-note">
+    <strong>Corrections from v2.0:</strong> Three events previously marked "Missing — add pre-restructure" are actually live in Mixpanel. <strong>Budget Created</strong> (170 events), <strong>Goal Created</strong> (211 events), and <strong>Otp Requested</strong> (6,516 events) all exist. The v2.0 evaluation was based on a small CSV sample. This v2.1 is based on the full Lexicon of 100 events.
+  </div>
+
+  <!-- NAMING NOTE -->
+  <div class="naming-note">
+    <strong>Naming convention:</strong> All live events use Title Case with spaces. The taxonomy recommends snake_case for new events in the restructure. Engineering and product must agree on one convention before the restructure ships and apply it consistently going forward.
+  </div>
+
+  <!-- SUMMARY -->
+  <div class="summary">
+    <div class="summary-card bug"><div class="summary-num">4</div><div class="summary-label">Live bugs — Fix Briefs written</div></div>
+    <div class="summary-card live"><div class="summary-num">41</div><div class="summary-label">Live and broadly correct</div></div>
+    <div class="summary-card fix"><div class="summary-num">7</div><div class="summary-label">Live but needs fixing or enrichment</div></div>
+    <div class="summary-card pre"><div class="summary-num">5</div><div class="summary-label">Missing — add pre-restructure</div></div>
+    <div class="summary-card restr"><div class="summary-num">10</div><div class="summary-label">Missing — add in restructure</div></div>
+  </div>
+
+  <!-- FILTERS -->
+  <div class="filter-bar">
+    <span class="filter-label">Show</span>
+    <button class="btn active" onclick="setFilter('all',this)"><span class="dot" style="background:var(--cream)"></span>All (67)</button>
+    <button class="btn" onclick="setFilter('bug',this)"><span class="dot" style="background:var(--rd)"></span>Live bugs (4)</button>
+    <button class="btn" onclick="setFilter('live',this)"><span class="dot" style="background:var(--te)"></span>Live & correct (41)</button>
+    <button class="btn" onclick="setFilter('fix',this)"><span class="dot" style="background:var(--am)"></span>Needs fixing (7)</button>
+    <button class="btn" onclick="setFilter('pre',this)"><span class="dot" style="background:var(--pu)"></span>Add pre-restructure (5)</button>
+    <button class="btn" onclick="setFilter('restr',this)"><span class="dot" style="background:var(--co)"></span>Add in restructure (10)</button>
+  </div>
+
+  <div class="events-grid" id="grid"></div>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:var(--rd)"></div>Live bug — fix this sprint</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--te)"></div>Live &amp; correct</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--am)"></div>Live but needs fixing</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--pu)"></div>Missing — add pre-restructure</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--co)"></div>Missing — add in restructure</div>
+    <div class="legend-url">moneymo.re/ops · v2.1</div>
+  </div>
+</div>
+
+<script>
+const EVENTS = [
+  // ── LIVE BUGS ──────────────────────────────────────────────────────────────
+  {name:"Api Error: /budgets/monthly",status:"bug",label:"Live Bug — FIX-001 Critical",vol:"Fires on every session for every user",
+   layers:["Confidence","Friction"],flow:"Home",corrected:false,
+   desc:"404 Resource not found on every dashboard load. Budget data cannot display. Affects every user on every session.",
+   props:"Endpoint, Error Message, Http Status",
+   action:"FIX-001 written — escalate to engineering this sprint"},
+
+  {name:"Otp Delivery Failed",status:"bug",label:"Live Bug — FIX-003 Critical",vol:"5,931 — exceeds Otp Verified (5,213)",
+   layers:["Confidence"],flow:"Onboarding",corrected:false,
+   desc:"More OTP delivery failures than successful verifications. Blocking a significant share of new user sign-ups. The most critical activation failure in the system.",
+   props:"Method, Country Code",
+   action:"FIX-003 written — escalate to engineering this sprint alongside FIX-001"},
+
+  {name:"Api Error: /transactions/manual-cash",status:"bug",label:"Live Bug — FIX-002 High",vol:"Repeated failures per user",
+   layers:["Friction"],flow:"Transactions",corrected:false,
+   desc:"400 validation error blocks manual transaction entry. Same user, repeated failures, no recovery path.",
+   props:"Endpoint, Error Message, Http Status",
+   action:"FIX-002 written — add to Fix Track next sprint"},
+
+  {name:"Category Spending Error",status:"bug",label:"Live Bug — FIX-004 High",vol:"935 (5.3% of Category Spending Loaded)",
+   layers:["Confidence","Friction"],flow:"Home",corrected:false,
+   desc:"Category spending data fails to load on home screen for 5.3% of sessions. Core value proposition failing. Additional Home Data Load Error fires 277 times separately.",
+   props:"Date Range, Error Message",
+   action:"FIX-004 written — add to Fix Track next sprint"},
+
+  // ── LIVE & CORRECT ─────────────────────────────────────────────────────────
+  {name:"App Opened",status:"live",label:"Live — correct",vol:"9,330",
+   layers:["Acquisition","Retention"],flow:"All",corrected:false,
+   desc:"Core session start signal. Fires on every app open.",
+   props:"Platform (system)",action:"No action needed"},
+
+  {name:"First App Open / $ae_first_open",status:"live",label:"Live — correct",vol:"4,530",
+   layers:["Acquisition"],flow:"Onboarding",corrected:false,
+   desc:"Fires once on very first app open. Critical top-of-funnel signal.",
+   props:"Platform",action:"No action needed"},
+
+  {name:"App Session / $ae_session",status:"live",label:"Live — correct",vol:"8,786",
+   layers:["Retention"],flow:"All",corrected:false,
+   desc:"Session end event with session length. Core engagement depth signal.",
+   props:"Session Length (seconds)",action:"No action needed"},
+
+  {name:"Screen Viewed",status:"live",label:"Live — correct",vol:"81,467 — highest volume",
+   layers:["All"],flow:"All",corrected:false,
+   desc:"Most comprehensive navigation signal. Covers all key screens including Home, Transactions, Budgets, Goals, Sign Up, SMS Import.",
+   props:"Screen Name, Screen Class",action:"Ensure all restructure screens added to Screen Name values"},
+
+  {name:"Bottom Navigation Click",status:"live",label:"Live — correct",vol:"16,908",
+   layers:["Engagement"],flow:"All",corrected:false,
+   desc:"Tracks tab switching between Home, Transactions, Budgets, Goals. Shows navigation patterns.",
+   props:"Screen Name (destination), Button Name (source tab)",action:"Ensure new restructure tabs included"},
+
+  {name:"Otp Requested",status:"live",label:"Live — correct",vol:"6,516",
+   layers:["Acquisition"],flow:"Onboarding",corrected:true,
+   desc:"Fires when user requests OTP. WAS incorrectly marked missing in v2.0. Fully live. Paired with Otp Delivery Failed (5,931) — see FIX-003.",
+   props:"Country Code, Method",action:"No action on event — fix the delivery rate (FIX-003)"},
+
+  {name:"Otp Verified",status:"live",label:"Live — correct",vol:"5,213",
+   layers:["Acquisition"],flow:"Onboarding",corrected:false,
+   desc:"Fires on successful OTP verification. Has Is New User and Method. Delivery failure rate is alarming — see FIX-003.",
+   props:"Method, Success, Is New User, Error Code, Error Message",action:"No action needed on event itself"},
+
+  {name:"Otp Resent",status:"live",label:"Live — correct",vol:"415",
+   layers:["Acquisition"],flow:"Onboarding",corrected:false,
+   desc:"Users resending OTP. High alongside delivery failures — retry is not solving the underlying issue.",
+   props:"Method",action:"Fix FIX-003. Monitor whether resend rate drops after fix."},
+
+  {name:"Phone Number Valid",status:"live",label:"Live — correct",vol:"9,251",
+   layers:["Acquisition"],flow:"Onboarding",corrected:false,
+   desc:"Fires when phone number passes validation on sign up screen.",
+   props:"Is Valid Number",action:"No action needed"},
+
+  {name:"Sign Up Completed",status:"live",label:"Live — correct",vol:"5,028",
+   layers:["Acquisition"],flow:"Onboarding",corrected:false,
+   desc:"Fires on sign up completion. Marks end of auth funnel.",
+   props:"Method, Success",action:"No action needed"},
+
+  {name:"User Identified",status:"live",label:"Live — correct",vol:"2,544",
+   layers:["Acquisition"],flow:"Onboarding",corrected:false,
+   desc:"Mixpanel identity resolution — ties anonymous events to known user ID.",
+   props:"Method, Is New User, User Id",action:"No action needed"},
+
+  {name:"Login Completed",status:"live",label:"Live — correct",vol:"280",
+   layers:["Retention"],flow:"Onboarding",corrected:false,
+   desc:"Fires when returning user logs back in. Separate from Sign Up Completed.",
+   props:"Method, Success",action:"No action needed"},
+
+  {name:"Logout",status:"live",label:"Live — correct",vol:"287",
+   layers:["Retention"],flow:"Profile",corrected:false,
+   desc:"Fires when user logs out.",
+   props:"No custom properties",action:"No action needed"},
+
+  {name:"Sms Permission Requested",status:"live",label:"Live — correct",vol:"2,478",
+   layers:["Activation"],flow:"SMS Import",corrected:false,
+   desc:"Start of critical permission funnel.",
+   props:"No custom properties",action:"No action needed"},
+
+  {name:"Sms Access Granted",status:"live",label:"Live — correct",vol:"2,608",
+   layers:["Activation"],flow:"SMS Import",corrected:false,
+   desc:"Fires when user grants SMS permission.",
+   props:"Access Granted (boolean)",action:"No action needed"},
+
+  {name:"Sms Import Started",status:"live",label:"Live — correct",vol:"2,049",
+   layers:["Activation"],flow:"SMS Import",corrected:false,
+   desc:"Fires when SMS reading begins on device.",
+   props:"No custom properties",action:"Consider adding transactions_found count property"},
+
+  {name:"Sms Import Completed",status:"live",label:"Live — correct",vol:"1,863",
+   layers:["Activation"],flow:"SMS Import",corrected:false,
+   desc:"Fires when SMS import finishes. Has Success boolean.",
+   props:"Auto Triggered (boolean), Success (boolean)",action:"No action needed"},
+
+  {name:"Notification Permission Requested",status:"live",label:"Live — correct",vol:"2,724",
+   layers:["Retention"],flow:"Onboarding",corrected:false,
+   desc:"Push permission request. Good for permission grant rate analysis.",
+   props:"No custom properties",action:"No action needed"},
+
+  {name:"Notification Access Granted",status:"live",label:"Live — correct",vol:"2,604",
+   layers:["Retention"],flow:"Onboarding",corrected:false,
+   desc:"User grants push notification permission.",
+   props:"Enabled (boolean)",action:"No action needed"},
+
+  {name:"Push Notification Received",status:"live",label:"Live — correct",vol:"100",
+   layers:["Retention"],flow:"Notifications",corrected:false,
+   desc:"Push notification delivery tracking. Low volume — CleverTap campaigns are early stage.",
+   props:"Notification Id, Notification Title, Notification Type",action:"Monitor volume as campaigns scale"},
+
+  {name:"Push Notification Clicked",status:"live",label:"Live — correct",vol:"12",
+   layers:["Retention"],flow:"Notifications",corrected:false,
+   desc:"Push notification tap tracking. Has Deep Link property.",
+   props:"Clevertap Id, Deep Link, Notification Id, Notification Title, Notification Type, Source",action:"Monitor CTR as campaigns scale"},
+
+  {name:"Push Notification Dismissed",status:"live",label:"Live — correct",vol:"40",
+   layers:["Retention"],flow:"Notifications",corrected:false,
+   desc:"Push notification dismissal tracking. Useful for notification relevance analysis.",
+   props:"Notification Id, Notification Type",action:"No action needed"},
+
+  {name:"Transaction Added",status:"live",label:"Live — correct",vol:"568",
+   layers:["Activation","Engagement"],flow:"Transactions",corrected:false,
+   desc:"Fires on manual transaction add. Has Amount, Category, Status, Type. Status: fail appearing due to FIX-002.",
+   props:"Amount, Category, Date, Merchant, Status, Type, Error Message",action:"Fix FIX-002 first. Verify Status: success appears after."},
+
+  {name:"Goal Create Initiated",status:"live",label:"Live — correct",vol:"525",
+   layers:["Activation","Retention"],flow:"Goals",corrected:false,
+   desc:"Fires when user starts the goal creation flow. 525 initiations vs 211 completions — 60% drop-off in goal creation funnel.",
+   props:"No custom properties",action:"Investigate the goal creation drop-off rate"},
+
+  {name:"Goal Created",status:"live",label:"Live — correct",vol:"211",
+   layers:["Activation","Retention"],flow:"Goals",corrected:true,
+   desc:"WAS incorrectly marked missing in v2.0. Fully live. 211 goals created. 525 initiations vs 211 completions — investigate drop-off.",
+   props:"Form Name, Goal Amount, Goal Name, Status, Time Spent Sec",action:"No action on event. Investigate creation funnel drop-off."},
+
+  {name:"Goal Money Added",status:"live",label:"Live — correct",vol:"63",
+   layers:["Retention"],flow:"Goals",corrected:false,
+   desc:"Users adding money toward goals. Key retention engagement signal.",
+   props:"Amount Added, Goal Id",action:"No action needed"},
+
+  {name:"Budget Created",status:"live",label:"Live — correct",vol:"170",
+   layers:["Activation","Retention"],flow:"Budgets",corrected:true,
+   desc:"WAS incorrectly marked missing in v2.0. Fully live. 170 budgets created. This is also the trigger event for CleverTap Survey 3.",
+   props:"Budget Amount, Budget Name, Category, Error Message, Status",action:"No action on event. This is the Survey 3 trigger — activate CleverTap campaign."},
+
+  {name:"Budget Deleted",status:"live",label:"Live — correct",vol:"102",
+   layers:["Retention"],flow:"Budgets",corrected:false,
+   desc:"Fires when a budget is deleted. Retention disengagement signal.",
+   props:"Budget Id, Budget Name, Date, Goal Id",action:"No action needed — monitor deletion rate"},
+
+  {name:"Budget Alert Received",status:"live",label:"Live — correct",vol:"6 — very low",
+   layers:["Retention"],flow:"Budgets",corrected:false,
+   desc:"Budget alert delivery to device. Very low volume — CleverTap budget campaigns are early stage.",
+   props:"Budget Id, Budget Name, Percentage Spent, Over By",action:"Monitor volume as budget feature usage grows"},
+
+  {name:"Account Deleted",status:"live",label:"Live — correct",vol:"104",
+   layers:["Retention"],flow:"Profile",corrected:false,
+   desc:"Users are deleting accounts. Not previously documented anywhere. Important churn signal. Review Delete Reason values.",
+   props:"Delete Reason, Delete Reason Detail, Success",action:"Add to Research Archive as churn signal. Review Delete Reason values quarterly."},
+
+  {name:"Delete Account Flow Started",status:"live",label:"Live — correct",vol:"551",
+   layers:["Retention"],flow:"Profile",corrected:false,
+   desc:"551 started vs 104 completed deletion — 447 users stopped mid-flow. Large churn signal or retention opportunity.",
+   props:"No custom properties",action:"Investigate the 447 who did not complete. What stopped them?"},
+
+  {name:"Profile Setting Change",status:"live",label:"Live — correct",vol:"379",
+   layers:["Engagement"],flow:"Profile",corrected:false,
+   desc:"Users changing profile settings. Not previously documented.",
+   props:"Screen Name, Setting Chosen, Setting Name",action:"No action needed — add to taxonomy"},
+
+  {name:"Privacy Policy Accepted",status:"live",label:"Live — correct",vol:"6 — very low",
+   layers:["Acquisition"],flow:"Onboarding",corrected:false,
+   desc:"Very low volume — may be tied to specific onboarding prompt.",
+   props:"No custom properties",action:"No action needed"},
+
+  {name:"Security Threat Detected",status:"live",label:"Live — correct",vol:"185",
+   layers:["Confidence"],flow:"All",corrected:false,
+   desc:"App has a security threat detection mechanism. Not in any documentation previously.",
+   props:"Threat Type",action:"Understand Threat Type values. Add to #tech-signals awareness."},
+
+  {name:"Transaction Reported",status:"live",label:"Live — correct",vol:"108",
+   layers:["Engagement"],flow:"Transactions",corrected:false,
+   desc:"Users can report incorrect transactions. Not previously documented. Review for categorisation patterns.",
+   props:"Description Length, Status, Transaction Id",action:"Review report patterns for categorisation improvement signals"},
+
+  {name:"Popup Viewed",status:"live",label:"Live — correct",vol:"1,099",
+   layers:["Engagement"],flow:"All",corrected:false,
+   desc:"In-app popup impressions. Covers offers and budget prompts.",
+   props:"Offer Name, Popup Name, Screen Name",action:"No action needed"},
+
+  {name:"Home Refresh Triggered",status:"live",label:"Live — correct",vol:"1,289",
+   layers:["Engagement"],flow:"Home",corrected:false,
+   desc:"Users manually refreshing home. High rate may indicate awareness that data is not loading (FIX-001 and FIX-004).",
+   props:"No custom properties",action:"Monitor — expect this to drop after FIX-001 and FIX-004 are resolved"},
+
+  {name:"Onboarding Started",status:"live",label:"Live — correct",vol:"77 — very low vs App Opened (9,330)",
+   layers:["Activation"],flow:"Onboarding",corrected:false,
+   desc:"Very low volume relative to App Opened. Most users are not going through a formal onboarding flow. Investigate.",
+   props:"Is Campaign User, Onboarding Type",action:"Investigate why volume is so low — is onboarding being skipped?"},
+
+  {name:"Spending Summary Loaded",status:"live",label:"Live — correct",vol:"452",
+   layers:["Engagement"],flow:"Home",corrected:false,
+   desc:"A distinct spending summary feature separate from Dashboard Loaded and Category Spending Loaded.",
+   props:"Date Range, Total Spending, Transaction Count",action:"No action needed"},
+
+  // ── LIVE — NEEDS FIXING ────────────────────────────────────────────────────
+  {name:"Button Clicked",status:"fix",label:"Live — needs fixing",vol:"28,592 — second highest volume",
+   layers:["Engagement"],flow:"All",corrected:false,
+   desc:"Extremely high volume but inconsistent Button Name values — 'add_budget', 'Phone Number Hint Dismissed', 'claim_your_reward' all in the same event with no convention.",
+   props:"Auto Triggered, Button Name, Screen Name, Terms Condition Type, Terms Condition Version",
+   action:"Define Button Name convention — snake_case or Title Case. Document every valid value. Critical before restructure."},
+
+  {name:"Form Started",status:"fix",label:"Live — incomplete",vol:"3,936",
+   layers:["Friction"],flow:"All",corrected:false,
+   desc:"Has no Form Completed or Form Abandoned counterpart. Cannot measure form completion or drop-off rate for any form in the app.",
+   props:"Form Name, Form Type, Screen Name",action:"Add Form Completed and Form Abandoned as pre-restructure work"},
+
+  {name:"Budgets Loaded",status:"fix",label:"Live — enrichment needed",vol:"8,849",
+   layers:["Engagement"],flow:"Budgets",corrected:false,
+   desc:"Budget Created IS live (170 events) but no funnel view connects them. Budget creation conversion rate is unmeasured.",
+   props:"Count, Month",action:"Build Budgets funnel in Mixpanel: Budgets Loaded → Budget Created. Conversion is very low."},
+
+  {name:"Notifications Unread Count Loaded",status:"fix",label:"Live — broken property",vol:"16,895",
+   layers:["Engagement"],flow:"Notifications",corrected:false,
+   desc:"Count property appears to always be 0 in live data. Notification bell may not be populating correctly. Separate from Push Notification events.",
+   props:"Count (always 0)",action:"Investigate why Count is always 0. Confirm whether in-app notification bell is working."},
+
+  {name:"Category Spending Loaded",status:"fix",label:"Live — broken property",vol:"16,691",
+   layers:["Engagement"],flow:"Home",corrected:false,
+   desc:"Total Spending property appears as 0 in raw data. Category Spending Error (935) is the companion bug — see FIX-004.",
+   props:"Categories Count, Date Range, Total Spending (broken)",action:"Fix FIX-004. After fix verify Total Spending populates correctly."},
+
+  {name:"Transactions Loaded",status:"fix",label:"Live — broken property",vol:"9,482",
+   layers:["Engagement"],flow:"Transactions",corrected:false,
+   desc:"Actual New property always 0 — not being populated. No pagination event for when users scroll to load more transactions.",
+   props:"Actual New (broken), Api Count, Has More, Offset, Total",action:"Investigate Actual New. Add Transaction List Scrolled event."},
+
+  {name:"Dashboard Loaded",status:"fix",label:"Live — needs fix first",vol:"16,884",
+   layers:["Engagement"],flow:"Home",corrected:false,
+   desc:"Rich properties including Budgets Count and Goals Count. But every instance is preceded by the FIX-001 /budgets/monthly 404 error.",
+   props:"Budgets Count, Goals Count, Suggested Goals Count, Screen Name, Total Savings",action:"Fix FIX-001. Verify event fires cleanly after."},
+
+  // ── MISSING — PRE-RESTRUCTURE ──────────────────────────────────────────────
+  {name:"user_segment_identified [new]",status:"pre",label:"Missing — add pre-restructure",vol:"0 — does not exist",
+   layers:["All"],flow:"Onboarding",corrected:false,
+   desc:"No user segment property set anywhere in Mixpanel. Cannot filter any report by salary worker, freelancer, or student. All segmented analysis is impossible. Highest priority missing event.",
+   props:"segment: string (salary_worker|freelancer|student), income_type: string",
+   action:"Add as user property set during onboarding. Required before any segment analysis."},
+
+  {name:"form_completed [new]",status:"pre",label:"Missing — add pre-restructure",vol:"0 — does not exist",
+   layers:["Friction"],flow:"All",corrected:false,
+   desc:"Pair to Form Started (3,936). Cannot measure form completion rate without this.",
+   props:"form_name: string, form_type: string, screen_name: string, success: boolean",
+   action:"Add alongside form_abandoned. Cover all screens that currently fire Form Started."},
+
+  {name:"form_abandoned [new]",status:"pre",label:"Missing — add pre-restructure",vol:"0 — does not exist",
+   layers:["Friction"],flow:"All",corrected:false,
+   desc:"Cannot see when users start and abandon any form. Highest-friction invisible signal.",
+   props:"form_name: string, form_type: string, screen_name: string, last_field_touched: string",
+   action:"Add alongside form_completed."},
+
+  {name:"sms_access_denied [new]",status:"pre",label:"Missing — add pre-restructure",vol:"0 — does not exist",
+   layers:["Activation"],flow:"SMS Import",corrected:false,
+   desc:"Sms Access Granted (2,608) exists but denial is invisible. Permission denial rate is a critical activation metric.",
+   props:"platform: string",action:"Add as counterpart to Sms Access Granted."},
+
+  {name:"notification_permission_denied [new]",status:"pre",label:"Missing — add pre-restructure",vol:"0 — does not exist",
+   layers:["Retention"],flow:"Onboarding",corrected:false,
+   desc:"Notification Access Granted (2,604) exists but denial is invisible. Cannot measure push opt-in rate.",
+   props:"platform: string",action:"Add as counterpart to Notification Access Granted."},
+
+  // ── MISSING — IN RESTRUCTURE ───────────────────────────────────────────────
+  {name:"home_screen_viewed [new]",status:"restr",label:"Add in restructure",vol:"0",
+   layers:["Engagement"],flow:"Home",corrected:false,
+   desc:"Restructured Home tab needs a specific event capturing user data state on arrival. Needed for CleverTap Survey 2 trigger (transaction_count >= 3, session_number = 1).",
+   props:"transaction_count: number, session_number: number, has_budget: boolean, has_goal: boolean",
+   action:"Add as part of Home tab restructure. Required for Survey 2."},
+
+  {name:"home_screen_idle_30s [new]",status:"restr",label:"Add in restructure",vol:"0",
+   layers:["Friction"],flow:"Home",corrected:false,
+   desc:"Needed for CleverTap Survey 5 — navigation confusion detection.",
+   props:"session_number: number, idle_duration_seconds: number",
+   action:"Add as part of Home tab restructure."},
+
+  {name:"first_transaction_categorised [new]",status:"restr",label:"Add in restructure",vol:"0",
+   layers:["Activation"],flow:"Transactions",corrected:false,
+   desc:"The most critical first value moment. Needed for CleverTap Survey 1 trigger. Must fire exactly once per user lifetime.",
+   props:"category: string, transaction_amount: number, is_first: boolean, source: string",
+   action:"Engineering must confirm fires exactly once per user lifetime."},
+
+  {name:"offer_viewed [new]",status:"restr",label:"Add in restructure",vol:"0",
+   layers:["Revenue"],flow:"Offers",corrected:false,
+   desc:"No Offers events currently exist beyond Popup Viewed. Restructured Offers tab needs full event set.",
+   props:"offer_id: string, offer_name: string, offer_category: string, screen_position: number",
+   action:"Add as part of Offers tab restructure. Also add offer_tapped."},
+
+  {name:"offer_tapped [new]",status:"restr",label:"Add in restructure",vol:"0",
+   layers:["Revenue"],flow:"Offers",corrected:false,
+   desc:"Needed to measure offer engagement rate and distinguish impressions from interest.",
+   props:"offer_id: string, offer_name: string, offer_category: string",
+   action:"Add as part of Offers tab restructure."},
+
+  {name:"budget_limit_approached [new]",status:"restr",label:"Add in restructure",vol:"0",
+   layers:["Retention"],flow:"Budgets",corrected:false,
+   desc:"Trigger for CleverTap 80% budget alert. Budget Alert Received (6) is push receipt — this is the user behaviour event that triggers the campaign.",
+   props:"category: string, budget_amount: number, amount_spent: number, percent_used: number",
+   action:"Engineering must confirm fires max once per category per month."},
+
+  {name:"budget_exceeded [new]",status:"restr",label:"Add in restructure",vol:"0",
+   layers:["Retention"],flow:"Budgets",corrected:false,
+   desc:"Trigger for budget exceeded push notification.",
+   props:"category: string, budget_amount: number, amount_spent: number, overspend_amount: number",
+   action:"Add as part of Budgets tab restructure."},
+
+  {name:"budget_progress_viewed [new]",status:"restr",label:"Add in restructure",vol:"0",
+   layers:["Engagement","Retention"],flow:"Budgets",corrected:false,
+   desc:"How frequently users check budget status is a key engagement signal. Budget Group Detail Loaded (3,587) exists but is property-poor.",
+   props:"category: string, percent_used: number, days_remaining: number",
+   action:"Add as part of Budgets tab restructure."},
+
+  {name:"signup_step_completed [new]",status:"restr",label:"Add in restructure",vol:"0",
+   layers:["Acquisition"],flow:"Sign Up",corrected:false,
+   desc:"Restructured sign up needs step-level tracking. Current events only cover start and end.",
+   props:"step_number: number, step_name: string, platform: string",
+   action:"Add as part of Sign Up flow restructure."},
+
+  {name:"onboarding_completed [new]",status:"restr",label:"Add in restructure",vol:"0",
+   layers:["Activation"],flow:"Onboarding",corrected:false,
+   desc:"Clear activation milestone. Onboarding Started (77) exists but completion is not tracked.",
+   props:"time_to_complete_seconds: number, transactions_imported: number",
+   action:"Add as part of Sign Up and SMS Import restructure."},
+];
+
+function renderEvents(filter) {
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  const filtered = filter === 'all' ? EVENTS : EVENTS.filter(e => e.status === filter);
+  filtered.forEach(e => {
+    const card = document.createElement('div');
+    card.className = `event-card status-${e.status}`;
+    card.innerHTML = `
+      <div class="event-name">${e.name}${e.corrected ? '<span class="corrected-badge">corrected in v2.1</span>' : ''}</div>
+      <span class="event-status ${e.status}">${e.label}</span>
+      <div class="event-vol">${e.vol}</div>
+      <div class="event-layer">${e.layers.map(l=>`<span class="layer-tag">${l}</span>`).join('')}<span class="layer-tag" style="opacity:.5">${e.flow}</span></div>
+      <div class="event-desc">${e.desc}</div>
+      <div class="event-props">Props: ${e.props}</div>
+      <div class="event-action ${e.status}">→ ${e.action}</div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function setFilter(f, btn) {
+  document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderEvents(f);
+}
+renderEvents('all');
+</script>
+</body>
+</html>

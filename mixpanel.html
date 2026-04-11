@@ -1,0 +1,1423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mixpanel Guide — MoneyMore</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+:root {
+  --ink:      #1A1714;
+  --ink2:     #3A3530;
+  --ink3:     #6A6258;
+  --bg:       #FDFCF9;
+  --bg2:      #F5F3EE;
+  --bg3:      #EDE9E0;
+  --border:   #DDD9D0;
+  --border2:  #C8C4BA;
+  --pu:       #4A42A8;
+  --pu-l:     #EEEDFC;
+  --te:       #0A7A56;
+  --te-l:     #E6F5EF;
+  --am:       #A87010;
+  --am-l:     #FEF5E6;
+  --co:       #B03010;
+  --co-l:     #FEF0EB;
+  --rd:       #A02020;
+  --rd-l:     #FDEAEA;
+  --gr:       #346010;
+  --gr-l:     #EDF5E6;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── LAYOUT ── */
+.shell { display: flex; min-height: 100vh; }
+
+/* SIDEBAR */
+.sidebar {
+  width: 260px;
+  flex-shrink: 0;
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  overflow-y: auto;
+  padding: 28px 0;
+}
+.sidebar-logo {
+  padding: 0 20px 20px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+.sidebar-logo-name {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--pu);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.sidebar-logo-sub {
+  font-size: 12px;
+  color: var(--ink3);
+  margin-top: 2px;
+}
+.sidebar-section {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  padding: 10px 20px 6px;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 20px;
+  cursor: pointer;
+  border-left: 2px solid transparent;
+  transition: all 0.15s;
+  font-size: 13px;
+  color: var(--ink2);
+  text-decoration: none;
+}
+.nav-item:hover { background: var(--bg3); color: var(--ink); }
+.nav-item.active { background: var(--pu-l); border-left-color: var(--pu); color: var(--pu); font-weight: 600; }
+.nav-item .num {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--bg3);
+  color: var(--ink3);
+  flex-shrink: 0;
+}
+.nav-item.active .num { background: var(--pu); color: white; }
+
+/* MAIN */
+.main {
+  margin-left: 260px;
+  flex: 1;
+  max-width: 860px;
+  padding: 52px 56px;
+}
+
+/* ── SECTIONS ── */
+.section { display: none; }
+.section.active { display: block; }
+
+/* ── TYPOGRAPHY ── */
+.section-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--pu);
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+.section-title {
+  font-family: 'Lora', serif;
+  font-size: clamp(26px, 3vw, 36px);
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.2;
+  margin-bottom: 10px;
+}
+.section-intro {
+  font-size: 16px;
+  color: var(--ink2);
+  line-height: 1.75;
+  max-width: 640px;
+  margin-bottom: 36px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--border);
+}
+h2 {
+  font-family: 'Lora', serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 36px 0 12px;
+}
+h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 28px 0 10px;
+  font-family: 'DM Mono', monospace;
+}
+p { color: var(--ink2); margin-bottom: 14px; }
+p:last-child { margin-bottom: 0; }
+
+/* ── COMPONENTS ── */
+.callout {
+  border-left: 3px solid var(--pu);
+  background: var(--pu-l);
+  border-radius: 0 6px 6px 0;
+  padding: 14px 18px;
+  margin: 20px 0;
+  font-size: 14px;
+  color: var(--ink2);
+  line-height: 1.65;
+}
+.callout.green { border-color: var(--te); background: var(--te-l); }
+.callout.amber  { border-color: var(--am); background: var(--am-l); }
+.callout.red    { border-color: var(--rd); background: var(--rd-l); }
+.callout .callout-title { font-weight: 600; color: var(--ink); margin-bottom: 4px; font-size: 13px; }
+
+/* EVENT PILL */
+.event-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11.5px;
+  color: var(--pu);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.event-pill .vol {
+  font-size: 10px;
+  color: var(--ink3);
+  font-weight: 400;
+}
+
+/* EVENT CARD */
+.event-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 18px;
+  margin: 12px 0;
+  position: relative;
+  overflow: hidden;
+}
+.event-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--pu);
+}
+.event-card.green::before { background: var(--te); }
+.event-card.amber::before  { background: var(--am); }
+.event-card.red::before    { background: var(--rd); }
+
+.event-card-name {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--pu);
+  margin-bottom: 4px;
+}
+.event-card.green .event-card-name { color: var(--te); }
+.event-card.amber .event-card-name  { color: var(--am); }
+
+.event-card-vol {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--ink3);
+  margin-bottom: 8px;
+}
+.event-card-desc {
+  font-size: 13.5px;
+  color: var(--ink2);
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+.event-card-props {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--ink3);
+  background: var(--bg2);
+  border-radius: 4px;
+  padding: 8px 10px;
+  line-height: 1.7;
+}
+.prop-row { display: flex; gap: 8px; margin-bottom: 3px; }
+.prop-name { color: var(--pu); font-weight: 500; flex-shrink: 0; }
+.prop-type { color: var(--ink3); font-style: italic; }
+.prop-ex   { color: var(--ink2); }
+
+/* STEP BOX */
+.step-box {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 16px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin: 10px 0;
+}
+.step-num {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--pu);
+  color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.step-content { flex: 1; }
+.step-title { font-weight: 600; color: var(--ink); margin-bottom: 4px; font-size: 14px; }
+.step-desc  { font-size: 13.5px; color: var(--ink2); line-height: 1.6; }
+
+/* QUIZ */
+.quiz-box {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px;
+  margin: 24px 0;
+}
+.quiz-q {
+  font-family: 'Lora', serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 14px;
+}
+.quiz-options { display: flex; flex-direction: column; gap: 8px; }
+.quiz-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 13.5px;
+  color: var(--ink2);
+  transition: all 0.15s;
+  user-select: none;
+}
+.quiz-option:hover { border-color: var(--pu); background: var(--pu-l); }
+.quiz-option.correct { border-color: var(--te); background: var(--te-l); color: var(--te); }
+.quiz-option.wrong   { border-color: var(--rd); background: var(--rd-l); color: var(--rd); }
+.quiz-option .opt-letter {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--bg3);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+.quiz-result { margin-top: 12px; font-size: 13.5px; display: none; padding: 10px 14px; border-radius: 5px; }
+.quiz-result.show { display: block; }
+.quiz-result.correct { background: var(--te-l); color: var(--te); border: 1px solid var(--te); }
+.quiz-result.wrong   { background: var(--rd-l); color: var(--rd); border: 1px solid var(--rd); }
+
+/* FUNNEL VIZ */
+.funnel { margin: 20px 0; }
+.funnel-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+.funnel-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10.5px;
+  color: var(--ink2);
+  width: 200px;
+  flex-shrink: 0;
+}
+.funnel-bar-wrap { flex: 1; background: var(--bg3); border-radius: 3px; height: 28px; overflow: hidden; }
+.funnel-bar {
+  height: 100%;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: white;
+  transition: width 0.8s ease;
+}
+.funnel-pct {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--ink3);
+  width: 50px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* TABLE */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin: 16px 0;
+}
+.data-table th {
+  background: var(--bg3);
+  color: var(--ink);
+  font-weight: 600;
+  padding: 10px 12px;
+  text-align: left;
+  border: 1px solid var(--border);
+  font-size: 12px;
+}
+.data-table td {
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  color: var(--ink2);
+  vertical-align: top;
+}
+.data-table tr:nth-child(even) td { background: var(--bg2); }
+.data-table .mono { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--pu); }
+
+/* CHECKLIST */
+.checklist { margin: 16px 0; }
+.check-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13.5px;
+  color: var(--ink2);
+  cursor: pointer;
+}
+.check-item:last-child { border-bottom: none; }
+.check-box {
+  width: 18px; height: 18px;
+  border: 2px solid var(--border2);
+  border-radius: 3px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+}
+.check-item.checked .check-box {
+  background: var(--te);
+  border-color: var(--te);
+  color: white;
+  font-size: 11px;
+}
+.check-item.checked { color: var(--ink3); text-decoration: line-through; }
+
+/* PROGRESS BAR */
+.progress-wrap {
+  position: fixed;
+  top: 0; left: 260px; right: 0;
+  height: 3px;
+  background: var(--bg3);
+  z-index: 100;
+}
+.progress-bar {
+  height: 100%;
+  background: var(--pu);
+  transition: width 0.4s ease;
+}
+
+/* NAV BUTTONS */
+.nav-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 52px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+.nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--ink2);
+  transition: all 0.15s;
+}
+.nav-btn:hover { border-color: var(--pu); color: var(--pu); }
+.nav-btn.primary { background: var(--pu); border-color: var(--pu); color: white; }
+.nav-btn.primary:hover { background: #3D36A0; }
+.nav-btn:disabled { opacity: 0.3; cursor: default; }
+
+/* DIVIDER */
+.divider { height: 1px; background: var(--border); margin: 28px 0; }
+
+/* BADGE */
+.badge {
+  display: inline-block;
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-weight: 500;
+}
+.badge.pu { background: var(--pu-l); color: var(--pu); }
+.badge.te { background: var(--te-l); color: var(--te); }
+.badge.rd { background: var(--rd-l); color: var(--rd); }
+.badge.am { background: var(--am-l); color: var(--am); }
+
+/* DEFINITION */
+.definition {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  margin: 12px 0;
+}
+.def-term {
+  background: var(--bg3);
+  padding: 10px 14px;
+  font-weight: 600;
+  font-size: 13.5px;
+  color: var(--ink);
+  border-bottom: 1px solid var(--border);
+}
+.def-body {
+  padding: 12px 14px;
+  font-size: 13.5px;
+  color: var(--ink2);
+  line-height: 1.65;
+}
+.def-example {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--pu);
+  background: var(--pu-l);
+  padding: 6px 10px;
+  border-radius: 4px;
+  margin-top: 8px;
+  display: inline-block;
+}
+
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; padding: 28px 20px; }
+  .progress-wrap { left: 0; }
+}
+</style>
+</head>
+<body>
+
+<div class="progress-wrap"><div class="progress-bar" id="progress"></div></div>
+
+<div class="shell">
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sidebar-logo">
+    <div class="sidebar-logo-name">MoneyMore</div>
+    <div class="sidebar-logo-sub">Mixpanel Guide for Product</div>
+  </div>
+
+  <div class="sidebar-section">Getting started</div>
+  <div class="nav-item active" onclick="goTo(0,this)"><span class="num">1</span>What is Mixpanel?</div>
+  <div class="nav-item" onclick="goTo(1,this)"><span class="num">2</span>How the data is structured</div>
+
+  <div class="sidebar-section">Core concepts</div>
+  <div class="nav-item" onclick="goTo(2,this)"><span class="num">3</span>Events</div>
+  <div class="nav-item" onclick="goTo(3,this)"><span class="num">4</span>Properties</div>
+  <div class="nav-item" onclick="goTo(4,this)"><span class="num">5</span>User profiles</div>
+
+  <div class="sidebar-section">Reading reports</div>
+  <div class="nav-item" onclick="goTo(5,this)"><span class="num">6</span>The Events report</div>
+  <div class="nav-item" onclick="goTo(6,this)"><span class="num">7</span>Funnels</div>
+  <div class="nav-item" onclick="goTo(7,this)"><span class="num">8</span>Retention</div>
+
+  <div class="sidebar-section">Building reports</div>
+  <div class="nav-item" onclick="goTo(8,this)"><span class="num">9</span>Your first report</div>
+  <div class="nav-item" onclick="goTo(9,this)"><span class="num">10</span>Filtering by segment</div>
+
+  <div class="sidebar-section">Day-to-day work</div>
+  <div class="nav-item" onclick="goTo(10,this)"><span class="num">11</span>The signal review session</div>
+  <div class="nav-item" onclick="goTo(11,this)"><span class="num">12</span>Things to never do</div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+<!-- SECTION 1 -->
+<div class="section active" id="s0">
+  <div class="section-eyebrow">Getting started · Chapter 1</div>
+  <h1 class="section-title">What is Mixpanel?</h1>
+  <p class="section-intro">Mixpanel is the tool that tells us what users are actually doing in the MoneyMore app — not what we think they are doing, and not what they say they are doing. It records real user behaviour in real time.</p>
+
+  <h2>The honest answer in one sentence</h2>
+  <p>Mixpanel records every meaningful action a user takes in the app, and then lets us count, filter, and analyse those actions to understand how people actually use MoneyMore.</p>
+
+  <div class="callout">
+    <div class="callout-title">Why this matters for your role</div>
+    Every campaign you configure in CleverTap needs to be triggered by something. That something is a Mixpanel event. If you do not understand what events exist and what they mean, your campaigns will either not fire, fire at the wrong moment, or reach the wrong users. Mixpanel is the foundation that CleverTap is built on.
+  </div>
+
+  <h2>What Mixpanel is not</h2>
+  <p>Mixpanel is not a customer database — it does not store names, phone numbers, or personal details. It stores anonymous identifiers tied to behaviour. When you look at a user in Mixpanel, you see what they did, not who they are.</p>
+  <p>Mixpanel is not a real-time dashboard for business KPIs — it is a behavioural analytics tool. For high-level business metrics, that is what our other dashboards are for. Mixpanel is for understanding the how and why behind the numbers.</p>
+
+  <h2>MoneyMore's Mixpanel account at a glance</h2>
+  <p>In the last 90 days, MoneyMore's Mixpanel account has recorded <strong>100 different event types</strong> with millions of individual event fires. The most important number to know:</p>
+
+  <div class="funnel">
+    <div class="funnel-row">
+      <div class="funnel-label">Screen Viewed</div>
+      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:100%;background:var(--pu)">81,467</div></div>
+      <div class="funnel-pct">100%</div>
+    </div>
+    <div class="funnel-row">
+      <div class="funnel-label">Bottom Navigation Click</div>
+      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:70%;background:var(--pu)">16,908</div></div>
+      <div class="funnel-pct"></div>
+    </div>
+    <div class="funnel-row">
+      <div class="funnel-label">Dashboard Loaded</div>
+      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:70%;background:var(--te)">16,884</div></div>
+      <div class="funnel-pct"></div>
+    </div>
+    <div class="funnel-row">
+      <div class="funnel-label">App Opened</div>
+      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:38%;background:var(--am)">9,330</div></div>
+      <div class="funnel-pct"></div>
+    </div>
+    <div class="funnel-row">
+      <div class="funnel-label">Sign Up Completed</div>
+      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:21%;background:var(--am)">5,028</div></div>
+      <div class="funnel-pct"></div>
+    </div>
+  </div>
+  <p style="font-size:12px;color:var(--ink3);margin-top:4px">Top 5 events by volume · 90 days · MoneyMore Mixpanel account</p>
+
+  <div class="nav-buttons">
+    <button class="nav-btn" disabled>← Previous</button>
+    <button class="nav-btn primary" onclick="goTo(1,null)">Next: How data is structured →</button>
+  </div>
+</div>
+
+<!-- SECTION 2 -->
+<div class="section" id="s1">
+  <div class="section-eyebrow">Getting started · Chapter 2</div>
+  <h1 class="section-title">How the data is structured</h1>
+  <p class="section-intro">Before you can read a Mixpanel report, you need to understand the three building blocks that everything is made from: events, properties, and user profiles. Everything in Mixpanel is a combination of these three things.</p>
+
+  <div class="definition">
+    <div class="def-term">Event</div>
+    <div class="def-body">
+      A specific action that a user took at a specific moment in time. Every event has a name and a timestamp.
+      <div class="def-example">e.g. "Screen Viewed" — fired at 14:23:07 on 10 April 2026</div>
+    </div>
+  </div>
+
+  <div class="definition">
+    <div class="def-term">Property</div>
+    <div class="def-body">
+      Additional information attached to an event that describes what happened in more detail. An event without properties just tells you something happened. Properties tell you what, where, how, and who.
+      <div class="def-example">e.g. Screen Viewed + Screen Name: "BudgetsOverview" + Screen Class: "BudgetsOverviewScreen"</div>
+    </div>
+  </div>
+
+  <div class="definition">
+    <div class="def-term">User Profile</div>
+    <div class="def-body">
+      A collection of persistent facts about a user that do not change with each event — things like when they signed up, what platform they are on, and how many total sessions they have had.
+      <div class="def-example">e.g. platform: "android" · created_at: 1775865037 · $ae_total_app_sessions: 12</div>
+    </div>
+  </div>
+
+  <div class="callout green">
+    <div class="callout-title">The mental model that makes Mixpanel click</div>
+    Think of it like this. An event is a sentence: "Something happened." A property is a detail that completes the sentence: "A user viewed the Budgets screen." A user profile is the biography of the person who did it.
+  </div>
+
+  <h2>How these connect in practice</h2>
+  <p>When a MoneyMore user taps the Budgets tab, this is what Mixpanel receives:</p>
+
+  <div class="event-card">
+    <div class="event-card-name">Bottom Navigation Click</div>
+    <div class="event-card-vol">Fired at: 10 April 2026 · 14:23:07</div>
+    <div class="event-card-desc">The user tapped the Budgets tab in the bottom navigation bar.</div>
+    <div class="event-card-props">
+      <div class="prop-row"><span class="prop-name">Screen Name</span><span class="prop-type">(string)</span><span class="prop-ex">→ "BUDGET"</span></div>
+      <div class="prop-row"><span class="prop-name">Button Name</span><span class="prop-type">(string)</span><span class="prop-ex">→ "home" (where they came from)</span></div>
+      <div class="prop-row"><span class="prop-name">$os</span><span class="prop-type">(string)</span><span class="prop-ex">→ "Android"</span></div>
+      <div class="prop-row"><span class="prop-name">$city</span><span class="prop-type">(string)</span><span class="prop-ex">→ "Alexandria"</span></div>
+    </div>
+  </div>
+
+  <div class="quiz-box">
+    <div class="quiz-q">Quick check: What does a Mixpanel property tell you?</div>
+    <div class="quiz-options">
+      <div class="quiz-option" onclick="quiz(this,'wrong','A')"><span class="opt-letter">A</span>The name of the event that fired</div>
+      <div class="quiz-option" onclick="quiz(this,'correct','B')"><span class="opt-letter">B</span>Additional detail about what happened when the event fired</div>
+      <div class="quiz-option" onclick="quiz(this,'wrong','C')"><span class="opt-letter">C</span>The user's phone number and personal details</div>
+      <div class="quiz-option" onclick="quiz(this,'wrong','D')"><span class="opt-letter">D</span>When the next event will fire</div>
+    </div>
+    <div class="quiz-result" id="qr0"></div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="nav-btn" onclick="goTo(0,null)">← What is Mixpanel?</button>
+    <button class="nav-btn primary" onclick="goTo(2,null)">Next: Events →</button>
+  </div>
+</div>
+
+<!-- SECTION 3 -->
+<div class="section" id="s2">
+  <div class="section-eyebrow">Core concepts · Chapter 3</div>
+  <h1 class="section-title">Events</h1>
+  <p class="section-intro">An event is the most important concept in Mixpanel. Everything you will ever do in Mixpanel — building reports, configuring campaigns, measuring funnels — starts with an event.</p>
+
+  <h2>MoneyMore's most important events</h2>
+  <p>The MoneyMore Mixpanel account has 100 event types. You do not need to know all of them. Here are the ones you will work with most frequently:</p>
+
+  <h3>Activation events — getting users to their first value</h3>
+
+  <div class="event-card">
+    <div class="event-card-name">Otp Requested</div>
+    <div class="event-card-vol">6,516 fires in 90 days</div>
+    <div class="event-card-desc">Fires when a user enters their phone number and taps Continue on the sign-up screen. This is the very first action in the MoneyMore user journey.</div>
+    <div class="event-card-props">
+      <div class="prop-row"><span class="prop-name">Country Code</span><span class="prop-ex">→ "+2" (Egypt)</span></div>
+      <div class="prop-row"><span class="prop-name">Method</span><span class="prop-ex">→ "mobile_otp"</span></div>
+    </div>
+  </div>
+
+  <div class="event-card red">
+    <div class="event-card-name">Otp Delivery Failed</div>
+    <div class="event-card-vol">5,931 fires in 90 days — ⚠️ more than Otp Verified (5,213)</div>
+    <div class="event-card-desc">Fires when the OTP SMS fails to deliver. This is a live bug (FIX-003). More deliveries are failing than succeeding — a significant portion of new users cannot sign up.</div>
+    <div class="event-card-props">
+      <div class="prop-row"><span class="prop-name">Method</span><span class="prop-ex">→ "mobile_otp"</span></div>
+    </div>
+  </div>
+
+  <div class="event-card green">
+    <div class="event-card-name">Sign Up Completed</div>
+    <div class="event-card-vol">5,028 fires in 90 days</div>
+    <div class="event-card-desc">Fires when a user successfully completes registration. This is your top-of-funnel activation milestone.</div>
+    <div class="event-card-props">
+      <div class="prop-row"><span class="prop-name">Method</span><span class="prop-ex">→ "mobile_otp"</span></div>
+      <div class="prop-row"><span class="prop-name">Success</span><span class="prop-ex">→ true</span></div>
+    </div>
+  </div>
+
+  <div class="event-card green">
+    <div class="event-card-name">Sms Import Completed</div>
+    <div class="event-card-vol">1,863 fires in 90 days</div>
+    <div class="event-card-desc">Fires when the app finishes reading the user's bank SMS messages and categorising their transactions. This is the first value moment — the user sees their spending for the first time.</div>
+    <div class="event-card-props">
+      <div class="prop-row"><span class="prop-name">Success</span><span class="prop-ex">→ true / false</span></div>
+      <div class="prop-row"><span class="prop-name">Auto Triggered</span><span class="prop-ex">→ true / false</span></div>
+    </div>
+  </div>
+
+  <h3>Engagement events — users returning and doing things</h3>
+
+  <div class="event-card">
+    <div class="event-card-name">Budget Created</div>
+    <div class="event-card-vol">170 fires in 90 days</div>
+    <div class="event-card-desc">Fires when a user successfully saves a monthly budget for a spending category. This is one of the most important retention signals — users who set budgets are significantly more likely to keep using the app.</div>
+    <div class="event-card-props">
+      <div class="prop-row"><span class="prop-name">Budget Amount</span><span class="prop-ex">→ 2000 (EGP)</span></div>
+      <div class="prop-row"><span class="prop-name">Budget Name</span><span class="prop-ex">→ "Food Budget"</span></div>
+      <div class="prop-row"><span class="prop-name">Category</span><span class="prop-ex">→ "Food & Dining"</span></div>
+      <div class="prop-row"><span class="prop-name">Status</span><span class="prop-ex">→ "success" / "fail"</span></div>
+    </div>
+  </div>
+
+  <div class="event-card">
+    <div class="event-card-name">Goal Created</div>
+    <div class="event-card-vol">211 fires in 90 days</div>
+    <div class="event-card-desc">Fires when a user creates a savings goal. Note: 525 users initiated goal creation but only 211 completed it — a 60% drop-off that needs investigation.</div>
+    <div class="event-card-props">
+      <div class="prop-row"><span class="prop-name">Goal Name</span><span class="prop-ex">→ "Emergency Fund"</span></div>
+      <div class="prop-row"><span class="prop-name">Goal Amount</span><span class="prop-ex">→ 5000 (EGP)</span></div>
+      <div class="prop-row"><span class="prop-name">Status</span><span class="prop-ex">→ "success"</span></div>
+    </div>
+  </div>
+
+  <div class="callout amber">
+    <div class="callout-title">Important: event naming in MoneyMore</div>
+    All live events in MoneyMore use Title Case with spaces — "Screen Viewed" not "screen_viewed". When you search for events in Mixpanel, use the exact capitalisation you see in this guide. Mixpanel is not always case-sensitive but being precise avoids confusion.
+  </div>
+
+  <div class="nav-buttons">
+    <button class="nav-btn" onclick="goTo(1,null)">← Data structure</button>
+    <button class="nav-btn primary" onclick="goTo(3,null)">Next: Properties →</button>
+  </div>
+</div>
+
+<!-- SECTION 4 -->
+<div class="section" id="s3">
+  <div class="section-eyebrow">Core concepts · Chapter 4</div>
+  <h1 class="section-title">Properties</h1>
+  <p class="section-intro">Properties are the detail layer that makes events useful. Without properties, you know something happened. With properties, you know what happened, to whom, where, and in what context.</p>
+
+  <h2>Two types of properties</h2>
+
+  <div class="definition">
+    <div class="def-term">Event properties — attached to a specific event</div>
+    <div class="def-body">These describe the specific action. They only exist in the context of the event they belong to. Every event can have different properties.
+      <div class="def-example">Budget Created → Category: "Food & Dining" · Budget Amount: 2000</div>
+    </div>
+  </div>
+
+  <div class="definition">
+    <div class="def-term">User properties — attached to the user permanently</div>
+    <div class="def-body">These describe the user themselves and persist across all their events. When a user property changes, it updates the user's profile everywhere.
+      <div class="def-example">platform: "android" · $ae_total_app_sessions: 24 · created_at: 1775865037</div>
+    </div>
+  </div>
+
+  <h2>MoneyMore's most useful event properties</h2>
+
+  <table class="data-table">
+    <thead><tr><th>Property</th><th>Type</th><th>Appears on</th><th>Example</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">Screen Name</td><td>string</td><td>Screen Viewed, Button Clicked, many others</td><td>"BudgetsOverview", "Home", "Transactions"</td></tr>
+      <tr><td class="mono">Button Name</td><td>string</td><td>Button Clicked, Bottom Navigation Click</td><td>"add_budget", "BUDGET", "HOME"</td></tr>
+      <tr><td class="mono">Status</td><td>string</td><td>Budget Created, Transaction Added, Sign Up Completed</td><td>"success" or "fail"</td></tr>
+      <tr><td class="mono">Category</td><td>string</td><td>Budget Created, Transaction Added</td><td>"Food & Dining", "Transport"</td></tr>
+      <tr><td class="mono">Method</td><td>string</td><td>Otp Requested, Otp Verified, Login Completed</td><td>"mobile_otp"</td></tr>
+      <tr><td class="mono">Is New User</td><td>boolean</td><td>Otp Verified, User Identified</td><td>true or false</td></tr>
+      <tr><td class="mono">Success</td><td>boolean</td><td>Sms Import Completed, Sign Up Completed</td><td>true or false</td></tr>
+      <tr><td class="mono">Endpoint</td><td>string</td><td>Api Error</td><td>"/budgets/monthly", "/transactions/manual-cash"</td></tr>
+      <tr><td class="mono">Http Status</td><td>number</td><td>Api Error</td><td>404, 400, 500</td></tr>
+    </tbody>
+  </table>
+
+  <h2>System properties — the ones Mixpanel adds automatically</h2>
+  <p>Beyond the properties engineering sets, Mixpanel automatically attaches system properties to every event. You will see these in every event. You do not need to configure them:</p>
+
+  <table class="data-table">
+    <thead><tr><th>Property</th><th>What it tells you</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">$city</td><td>The city the user was in when the event fired — "Alexandria", "Cairo", "Giza"</td></tr>
+      <tr><td class="mono">$os</td><td>Operating system — "Android" for all current users</td></tr>
+      <tr><td class="mono">$os_version</td><td>Android version — "15", "10", "8.1.0"</td></tr>
+      <tr><td class="mono">$brand</td><td>Device brand — "OPPO", "HUAWEI", "Samsung", "Infinix"</td></tr>
+      <tr><td class="mono">$model</td><td>Device model — "CPH2577", "DUB-LX1"</td></tr>
+      <tr><td class="mono">mp_country_code</td><td>Country — "EG" for Egypt for all current users</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <div class="callout-title">Using properties to answer real questions</div>
+    Properties are what make the difference between "how many budgets were created?" (an event count) and "how many budgets were created successfully for the Food & Dining category by users in Cairo?" (a filtered, segmented answer). Whenever you need a specific answer, you are using properties to filter.
+  </div>
+
+  <div class="quiz-box">
+    <div class="quiz-q">You want to see only the Budget Created events where the budget was saved successfully. Which property do you filter by?</div>
+    <div class="quiz-options">
+      <div class="quiz-option" onclick="quiz(this,'wrong','A1')"><span class="opt-letter">A</span>Screen Name = "BudgetsOverview"</div>
+      <div class="quiz-option" onclick="quiz(this,'correct','B1')"><span class="opt-letter">B</span>Status = "success"</div>
+      <div class="quiz-option" onclick="quiz(this,'wrong','C1')"><span class="opt-letter">C</span>Method = "mobile_otp"</div>
+      <div class="quiz-option" onclick="quiz(this,'wrong','D1')"><span class="opt-letter">D</span>$os = "Android"</div>
+    </div>
+    <div class="quiz-result" id="qr1"></div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="nav-btn" onclick="goTo(2,null)">← Events</button>
+    <button class="nav-btn primary" onclick="goTo(4,null)">Next: User profiles →</button>
+  </div>
+</div>
+
+<!-- SECTION 5 -->
+<div class="section" id="s4">
+  <div class="section-eyebrow">Core concepts · Chapter 5</div>
+  <h1 class="section-title">User profiles</h1>
+  <p class="section-intro">A user profile in Mixpanel is the persistent record of everything we know about a specific user across all their sessions. While events are individual moments, the user profile is the ongoing story.</p>
+
+  <h2>What MoneyMore user profiles contain</h2>
+  <p>Every MoneyMore user profile currently has these properties set automatically:</p>
+
+  <table class="data-table">
+    <thead><tr><th>Property</th><th>Type</th><th>What it means</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">platform</td><td>string</td><td>Which platform the user is on — "android" for all current users</td></tr>
+      <tr><td class="mono">created_at</td><td>number</td><td>When the account was created (Unix timestamp)</td></tr>
+      <tr><td class="mono">is_new_user</td><td>string</td><td>Whether the user is new — should be a boolean, currently stored as a string</td></tr>
+      <tr><td class="mono">$ae_total_app_sessions</td><td>number</td><td>Total number of sessions this user has had — auto-computed by Mixpanel</td></tr>
+      <tr><td class="mono">$ae_total_app_session_length</td><td>number</td><td>Total seconds this user has spent in the app — auto-computed</td></tr>
+      <tr><td class="mono">$android_app_version</td><td>string</td><td>The app version the user is currently on</td></tr>
+      <tr><td class="mono">$android_os_version</td><td>string</td><td>The Android version on the user's device</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout red">
+    <div class="callout-title">The most important gap in our user profiles</div>
+    There is no <strong>segment</strong> property on any user profile. This means we cannot filter any Mixpanel report by salary worker, freelancer, or student. Every report you build today shows all users together with no way to separate them by who they are. This is being fixed in the restructure — but for now, be aware that your reports are always showing the full mixed user base.
+  </div>
+
+  <h2>How to look at a specific user profile</h2>
+  <div class="step-box">
+    <div class="step-num">1</div>
+    <div class="step-content">
+      <div class="step-title">Go to Users in the left sidebar</div>
+      <div class="step-desc">Click the Users icon (looks like a person). This opens the user explorer.</div>
+    </div>
+  </div>
+  <div class="step-box">
+    <div class="step-num">2</div>
+    <div class="step-content">
+      <div class="step-title">Search for a user by their distinct ID or filter by property</div>
+      <div class="step-desc">If you have a user's ID from a support ticket, you can search directly. Or use filters to find users who match certain criteria — for example users who have fired Budget Created.</div>
+    </div>
+  </div>
+  <div class="step-box">
+    <div class="step-num">3</div>
+    <div class="step-content">
+      <div class="step-title">View their activity stream</div>
+      <div class="step-desc">Click on any user to see a chronological timeline of every event they have ever fired in the app. This is the most powerful debugging tool available — you can see exactly what a specific user did, in what order, and what happened.</div>
+    </div>
+  </div>
+
+  <div class="callout green">
+    <div class="callout-title">When to look at individual user profiles</div>
+    When a customer contacts support with a problem, pull up their user profile in Mixpanel before responding. You will immediately see what they actually did in the app — which screens they visited, whether they completed the action they claim to have completed, and what errors they encountered. This saves significant back-and-forth.
+  </div>
+
+  <div class="nav-buttons">
+    <button class="nav-btn" onclick="goTo(3,null)">← Properties</button>
+    <button class="nav-btn primary" onclick="goTo(5,null)">Next: The Events report →</button>
+  </div>
+</div>
+
+<!-- SECTION 6 -->
+<div class="section" id="s5">
+  <div class="section-eyebrow">Reading reports · Chapter 6</div>
+  <h1 class="section-title">The Events report</h1>
+  <p class="section-intro">The Events report is the simplest report in Mixpanel. It shows you how many times specific events fired over a time period. This is where you start when you want to answer "how often does X happen?"</p>
+
+  <h2>How to read an Events report</h2>
+  <p>The Events report shows a line chart or bar chart with time on the X axis and event count on the Y axis. Each line is one event type. The number you see is the total count of times that event fired in the selected time period.</p>
+
+  <div class="callout amber">
+    <div class="callout-title">Event count vs unique users — know the difference</div>
+    An event count tells you how many times the event fired. A unique user count tells you how many distinct users fired it at least once. These are very different numbers. Budget Created firing 170 times could mean 170 different users each created one budget, or it could mean 85 users each created two budgets. Always check which you are measuring.
+  </div>
+
+  <h2>The five most useful things to track in the Events report</h2>
+
+  <table class="data-table">
+    <thead><tr><th>What to track</th><th>Event to use</th><th>Why it matters</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>Are users signing up?</td>
+        <td><span class="mono">Sign Up Completed</span></td>
+        <td>Your top-of-funnel health check. If this drops, something is broken in onboarding.</td>
+      </tr>
+      <tr>
+        <td>Are users importing their SMS?</td>
+        <td><span class="mono">Sms Import Completed</span></td>
+        <td>The activation milestone. Users who do not import SMS never see their first value.</td>
+      </tr>
+      <tr>
+        <td>Are users creating budgets?</td>
+        <td><span class="mono">Budget Created</span></td>
+        <td>The key retention behaviour. 170 events in 90 days — we need this to grow.</td>
+      </tr>
+      <tr>
+        <td>Are there API errors?</td>
+        <td><span class="mono">Api Error</span></td>
+        <td>33,686 in 90 days. Filter by Endpoint to see which API is broken. /budgets/monthly is the current critical bug.</td>
+      </tr>
+      <tr>
+        <td>Are users opening the app regularly?</td>
+        <td><span class="mono">App Opened</span></td>
+        <td>9,330 in 90 days. The baseline engagement signal. Watch for drops.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>The Api Error event — your most important debugging tool</h2>
+  <p>The Api Error event deserves special attention. It fires every time the app makes an API call that fails. It carries three critical properties:</p>
+
+  <div class="event-card red">
+    <div class="event-card-name">Api Error</div>
+    <div class="event-card-vol">33,686 fires in 90 days — every backend failure is here</div>
+    <div class="event-card-desc">Fires on every failed API call. The three properties below tell you everything about what failed and why.</div>
+    <div class="event-card-props">
+      <div class="prop-row"><span class="prop-name">Endpoint</span><span class="prop-ex">→ "/budgets/monthly" (the URL that failed)</span></div>
+      <div class="prop-row"><span class="prop-name">Error Message</span><span class="prop-ex">→ "Resource not found." (what the server said)</span></div>
+      <div class="prop-row"><span class="prop-name">Http Status</span><span class="prop-ex">→ 404 (the error code)</span></div>
+    </div>
+  </div>
+
+  <p>To find which API endpoints are failing: open the Events report → select Api Error → break down by Endpoint property. You will immediately see a ranked list of every broken endpoint and how often it is failing.</p>
+
+  <div class="nav-buttons">
+    <button class="nav-btn" onclick="goTo(4,null)">← User profiles</button>
+    <button class="nav-btn primary" onclick="goTo(6,null)">Next: Funnels →</button>
+  </div>
+</div>
+
+<!-- SECTION 7 -->
+<div class="section" id="s6">
+  <div class="section-eyebrow">Reading reports · Chapter 7</div>
+  <h1 class="section-title">Funnels</h1>
+  <p class="section-intro">A funnel shows you how many users complete a sequence of events in order. It answers the question: "Of all the users who did step 1, how many went on to complete step 2, then step 3?"</p>
+
+  <h2>Why funnels matter for MoneyMore</h2>
+  <p>Funnels reveal where users drop off. A user who signs up but never imports their SMS is lost before they see the app's core value. A user who starts creating a goal but never completes it is a friction problem. Funnels make these invisible drop-offs visible.</p>
+
+  <h2>The most important funnel to know: the sign-up to activation funnel</h2>
+  <p>Here is the MoneyMore activation funnel with real numbers from the last 90 days:</p>
+
+  <div class="funnel">
+    <div class="funnel-row">
+      <div class="funnel-label">Otp Requested</div>
+      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:100%;background:var(--pu)">6,516</div></div>
+      <div class="funnel-pct">100%</div>
+    </div>
+    <div class="funnel-row">
+      <div class="funnel-label">Otp Verified</div>
+      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:80%;background:var(--pu)">5,213</div></div>
+      <div class="funnel-pct">80%</div>
+    </div>
+    <div class="funnel-row">
+      <div class="funnel-label">Sign Up Completed</div>
+      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:77%;background:var(--am)">5,028</div></div>
+      <div class="funnel-pct">77%</div>
+    </div>
+    <div class="funnel-row">
+      <div class="funnel-label">Sms Import Completed</div>
+      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:29%;background:var(--am)">1,863</div></div>
+      <div class="funnel-pct">29%</div>
+    </div>
+  </div>
+
+  <div class="callout red">
+    <div class="callout-title">The 20% OTP drop-off is FIX-003</div>
+    The gap between Otp Requested (6,516) and Otp Verified (5,213) is partly explained by the Otp Delivery Failed event firing 5,931 times. Many of these users never received their OTP. This is being fixed — but it is the reason the top of the funnel has a significant drop.
+  </div>
+
+  <h2>The goal creation funnel — a hidden drop-off</h2>
+  <div class="funnel">
+    <div class="funnel-row">
+      <div class="funnel-label">Goal Create Initiated</div>
+      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:100%;background:var(--te)">525</div></div>
+      <div class="funnel-pct">100%</div>
+    </div>
+    <div class="funnel-row">
+      <div class="funnel-label">Goal Created</div>
+      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:40%;background:var(--am)">211</div></div>
+      <div class="funnel-pct">40%</div>
+    </div>
+  </div>
+  <p>60% of users who start creating a goal do not finish. This is a significant friction signal that is not yet fully understood.</p>
+
+  <h2>How to read a funnel in Mixpanel</h2>
+  <div class="step-box">
+    <div class="step-num">1</div>
+    <div class="step-content">
+      <div class="step-title">Look at the conversion rate between each step</div>
+      <div class="step-desc">Mixpanel shows you the percentage of users who completed each step out of those who completed the previous one. A sudden large drop means something is breaking or confusing users at that step.</div>
+    </div>
+  </div>
+  <div class="step-box">
+    <div class="step-num">2</div>
+    <div class="step-content">
+      <div class="step-title">Check the time to convert</div>
+      <div class="step-desc">Mixpanel also shows how long users take to move between steps. If users take 3 days to go from sign up to budget creation, that tells you the feature is not being discovered immediately — navigation or onboarding might need improvement.</div>
+    </div>
+  </div>
+  <div class="step-box">
+    <div class="step-num">3</div>
+    <div class="step-content">
+      <div class="step-title">Break down by a property to find patterns</div>
+      <div class="step-desc">Adding a breakdown by city or device model can reveal if the drop-off is specific to certain groups. If 90% of Cairo users convert but only 40% of Alexandria users do, that is a meaningful geographic signal.</div>
+    </div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="nav-btn" onclick="goTo(5,null)">← Events report</button>
+    <button class="nav-btn primary" onclick="goTo(7,null)">Next: Retention →</button>
+  </div>
+</div>
+
+<!-- SECTION 8 -->
+<div class="section" id="s7">
+  <div class="section-eyebrow">Reading reports · Chapter 8</div>
+  <h1 class="section-title">Retention</h1>
+  <p class="section-intro">Retention tells you whether users come back. A user who signs up once and never returns is not a retained user. Retention is the single most important metric for MoneyMore's long-term health.</p>
+
+  <h2>How Mixpanel measures retention</h2>
+  <p>Mixpanel's retention report works like this: it takes a group of users who did something on Day 0 (for example, signed up), then tracks what percentage of them came back and did something else (for example, opened the app again) on Day 1, Day 7, Day 14, and Day 30.</p>
+
+  <div class="callout">
+    <div class="callout-title">The two retention numbers that matter most for MoneyMore</div>
+    <strong>D14 retention</strong> — of users who signed up, what percentage opened the app again 14 days later? This is the medium-term retention signal. Our target is 42%.<br><br>
+    <strong>D30 retention</strong> — same but 30 days later. Our target is 30%. If D30 is strong, users have formed a habit. If it is weak, the app is not sticky enough to survive a month.
+  </div>
+
+  <h2>How to build a retention report in Mixpanel</h2>
+  <div class="step-box">
+    <div class="step-num">1</div>
+    <div class="step-content">
+      <div class="step-title">Go to Retention in the left sidebar</div>
+      <div class="step-desc">The Retention report is usually under the Insights or Analysis section.</div>
+    </div>
+  </div>
+  <div class="step-box">
+    <div class="step-num">2</div>
+    <div class="step-content">
+      <div class="step-title">Set the "Born on" event to Sign Up Completed</div>
+      <div class="step-desc">This tells Mixpanel: start counting from the day a user signed up.</div>
+    </div>
+  </div>
+  <div class="step-box">
+    <div class="step-num">3</div>
+    <div class="step-content">
+      <div class="step-title">Set the "Retained by" event to App Opened</div>
+      <div class="step-desc">This tells Mixpanel: count a user as retained if they opened the app again on that day.</div>
+    </div>
+  </div>
+  <div class="step-box">
+    <div class="step-num">4</div>
+    <div class="step-content">
+      <div class="step-title">Read the retention table</div>
+      <div class="step-desc">Each row is a cohort of users who signed up in a given week. Each column is how far after sign-up you are checking. The percentage in each cell is how many of that cohort were still active on that day.</div>
+    </div>
+  </div>
+
+  <div class="callout green">
+    <div class="callout-title">The most important retention insight in the MoneyMore data</div>
+    Users who create a budget retain at significantly higher rates than users who do not. This is the single strongest product insight we have. It means every campaign you run to drive Budget Created events is directly contributing to retention — not just engagement.
+  </div>
+
+  <div class="nav-buttons">
+    <button class="nav-btn" onclick="goTo(6,null)">← Funnels</button>
+    <button class="nav-btn primary" onclick="goTo(8,null)">Next: Building your first report →</button>
+  </div>
+</div>
+
+<!-- SECTION 9 -->
+<div class="section" id="s8">
+  <div class="section-eyebrow">Building reports · Chapter 9</div>
+  <h1 class="section-title">Your first report</h1>
+  <p class="section-intro">This chapter walks you through building a real report from scratch. By the end you will have built the budget creation report — a report you will actually use every sprint.</p>
+
+  <h2>The report: how many budgets are being created each week?</h2>
+  <p>This is one of the most important weekly metrics to track. Here is how to build it:</p>
+
+  <div class="step-box">
+    <div class="step-num">1</div>
+    <div class="step-content">
+      <div class="step-title">Open Insights from the left sidebar</div>
+      <div class="step-desc">Insights is the main report builder in Mixpanel. Click the chart icon.</div>
+    </div>
+  </div>
+  <div class="step-box">
+    <div class="step-num">2</div>
+    <div class="step-content">
+      <div class="step-title">Click "Add event" and search for Budget Created</div>
+      <div class="step-desc">Type "Budget" in the search box. Select "Budget Created" from the dropdown.</div>
+    </div>
+  </div>
+  <div class="step-box">
+    <div class="step-num">3</div>
+    <div class="step-content">
+      <div class="step-title">Change the metric from "Total" to "Unique"</div>
+      <div class="step-desc">Click the dropdown next to Budget Created and change from Total (how many times it fired) to Unique (how many distinct users fired it). This tells you how many users created budgets, not how many budgets were created total.</div>
+    </div>
+  </div>
+  <div class="step-box">
+    <div class="step-num">4</div>
+    <div class="step-content">
+      <div class="step-title">Set the date range to Last 90 days, grouped by Week</div>
+      <div class="step-desc">The date picker is in the top right. Select Last 90 days. Change the interval dropdown from Day to Week for a cleaner view.</div>
+    </div>
+  </div>
+  <div class="step-box">
+    <div class="step-num">5</div>
+    <div class="step-content">
+      <div class="step-title">Add a filter: Status = success</div>
+      <div class="step-desc">Click "Filter" and add the property Status equals "success". This removes failed budget creation attempts and shows only successful creations.</div>
+    </div>
+  </div>
+  <div class="step-box">
+    <div class="step-num">6</div>
+    <div class="step-content">
+      <div class="step-title">Save the report</div>
+      <div class="step-desc">Click Save in the top right. Name it "Budget Created — weekly unique users". Add it to the MoneyMore dashboard.</div>
+    </div>
+  </div>
+
+  <div class="callout green">
+    <div class="callout-title">You have now built a report that matters</div>
+    This report tells you whether the number of users creating budgets is growing, flat, or declining week over week. If it drops after a release, something in the restructure may have broken the budget creation flow. If it grows after a CleverTap campaign, your campaign is working.
+  </div>
+
+  <div class="nav-buttons">
+    <button class="nav-btn" onclick="goTo(7,null)">← Retention</button>
+    <button class="nav-btn primary" onclick="goTo(9,null)">Next: Filtering by segment →</button>
+  </div>
+</div>
+
+<!-- SECTION 10 -->
+<div class="section" id="s9">
+  <div class="section-eyebrow">Building reports · Chapter 10</div>
+  <h1 class="section-title">Filtering by segment</h1>
+  <p class="section-intro">Filtering lets you narrow a report to a specific group of users or events. This is where Mixpanel becomes truly useful — not just knowing what happened, but knowing what happened to which users.</p>
+
+  <h2>Two ways to filter in Mixpanel</h2>
+
+  <div class="definition">
+    <div class="def-term">Filter by event property</div>
+    <div class="def-body">Narrows the events included in the report based on a property attached to that event. Applied within the report builder.
+      <div class="def-example">Budget Created where Status = "success" — only shows successful budget creations</div>
+    </div>
+  </div>
+
+  <div class="definition">
+    <div class="def-term">Filter by user property (cohort)</div>
+    <div class="def-body">Narrows the users included in the report based on a persistent user property. Applied at the user level.
+      <div class="def-example">Only show events from users where $android_os_version = "10" — to check if a bug is Android 10 specific</div>
+    </div>
+  </div>
+
+  <div class="callout red">
+    <div class="callout-title">The segment filter we cannot use yet</div>
+    We cannot filter by salary worker, freelancer, or student because the segment property does not exist on user profiles yet. Until it is added in the restructure, all reports show the full mixed user base. When you present findings from Mixpanel, always note that you cannot currently separate by segment.
+  </div>
+
+  <h2>Filters you can use right now</h2>
+
+  <table class="data-table">
+    <thead><tr><th>To filter by</th><th>Property to use</th><th>Example value</th></tr></thead>
+    <tbody>
+      <tr><td>Android version</td><td class="mono">$os_version</td><td>"10", "8.1.0", "15"</td></tr>
+      <tr><td>Device brand</td><td class="mono">$brand</td><td>"HUAWEI", "OPPO", "Samsung"</td></tr>
+      <tr><td>City</td><td class="mono">$city</td><td>"Cairo", "Alexandria", "Giza"</td></tr>
+      <tr><td>App version</td><td class="mono">$android_app_version</td><td>"1.8.0"</td></tr>
+      <tr><td>Language</td><td class="mono">Device Language</td><td>"ar" (Arabic), "en" (English)</td></tr>
+      <tr><td>New vs returning</td><td class="mono">Is New User</td><td>true / false</td></tr>
+      <tr><td>Which screen</td><td class="mono">Screen Name</td><td>"BudgetsOverview", "Home"</td></tr>
+      <tr><td>Success vs failure</td><td class="mono">Status</td><td>"success", "fail"</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout green">
+    <div class="callout-title">A useful filter for debugging</div>
+    When a bug is reported, filter Api Error by Endpoint = the broken endpoint, then break down by $brand or $os_version. If the error is only happening on specific devices, it is likely a client-side issue. If it is happening across all devices equally, it is a backend issue.
+  </div>
+
+  <div class="nav-buttons">
+    <button class="nav-btn" onclick="goTo(8,null)">← Your first report</button>
+    <button class="nav-btn primary" onclick="goTo(10,null)">Next: The signal review session →</button>
+  </div>
+</div>
+
+<!-- SECTION 11 -->
+<div class="section" id="s10">
+  <div class="section-eyebrow">Day-to-day work · Chapter 11</div>
+  <h1 class="section-title">The signal review session</h1>
+  <p class="section-intro">Every sprint on Day 5, you sit with Product to review all user signals together. This is the most important regular meeting for your role. Mixpanel is your primary input for this session.</p>
+
+  <h2>What you are doing in the signal review</h2>
+  <p>You are not just reading numbers. You are identifying patterns. A single data point is trivia. A pattern across multiple signals is a product insight that should affect the backlog.</p>
+
+  <h2>Your preparation checklist before every signal review</h2>
+
+  <div class="checklist" id="checklist1">
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div>Open Mixpanel and check the Api Error event for the last 7 days. Filter by Endpoint and note any endpoints with unusually high error volume.</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div>Check Budget Created for the last 7 days (unique users). Is it up, flat, or down vs the previous 7 days?</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div>Check Sign Up Completed for the last 7 days. Is new user acquisition healthy?</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div>Check Otp Delivery Failed. Is the rate improving after FIX-003 is deployed?</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div>Check App Opened for the last 7 days vs the previous 7 days. Overall engagement trend.</div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div>Note any event that has changed significantly (up or down more than 20%) since the last sprint. These are the signals worth discussing.</div>
+    </div>
+  </div>
+
+  <h2>How to present a Mixpanel finding</h2>
+  <p>When you bring a Mixpanel finding to the signal review, structure it as:</p>
+
+  <div class="step-box">
+    <div class="step-num">1</div>
+    <div class="step-content">
+      <div class="step-title">What I observed</div>
+      <div class="step-desc">State the data fact. "Budget Created fired 28 times in unique users this week, down from 42 last week — a 33% drop."</div>
+    </div>
+  </div>
+  <div class="step-box">
+    <div class="step-num">2</div>
+    <div class="step-content">
+      <div class="step-title">What might explain it</div>
+      <div class="step-desc">State possible explanations — not conclusions. "This could be related to the /budgets/monthly 404 error making budgets less visible on home. Or it could be a seasonal pattern."</div>
+    </div>
+  </div>
+  <div class="step-box">
+    <div class="step-num">3</div>
+    <div class="step-content">
+      <div class="step-title">What I think we should do</div>
+      <div class="step-desc">State a recommended action. "I recommend we confirm whether this is related to FIX-001 before treating it as a separate signal."</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-title">The rule about drawing conclusions from Mixpanel</div>
+    Mixpanel tells you what happened. It rarely tells you why. When you present a finding, be clear about which part is data and which part is your interpretation. "The data shows X. I believe this is because Y" is honest. "The data proves Y" is almost never true.
+  </div>
+
+  <div class="nav-buttons">
+    <button class="nav-btn" onclick="goTo(9,null)">← Filtering by segment</button>
+    <button class="nav-btn primary" onclick="goTo(11,null)">Next: Things to never do →</button>
+  </div>
+</div>
+
+<!-- SECTION 12 -->
+<div class="section" id="s11">
+  <div class="section-eyebrow">Day-to-day work · Chapter 12</div>
+  <h1 class="section-title">Things to never do</h1>
+  <p class="section-intro">Just as important as knowing how to use Mixpanel is knowing what not to do. These are the most common mistakes that lead to bad decisions.</p>
+
+  <div class="callout red">
+    <div class="callout-title">Never treat a single data point as a trend</div>
+    If Budget Created spikes to 50 on one day, that is interesting but not a trend. A trend requires at least 3 comparable data points over time. One anomalous day could be a bug, a test account, or a coincidence.
+  </div>
+
+  <div class="callout red">
+    <div class="callout-title">Never confuse event count with unique user count</div>
+    If App Opened fired 9,330 times, that does not mean 9,330 users opened the app. One user opening the app 10 times counts as 10 events but 1 unique user. Always check whether you are looking at total events or unique users — and always state which one you are reporting.
+  </div>
+
+  <div class="callout red">
+    <div class="callout-title">Never build a CleverTap campaign based on an event you have not verified</div>
+    Before you configure a CleverTap campaign triggered by a Mixpanel event, confirm the event is actually firing correctly in Mixpanel. Check the event stream. Look at the properties. Confirm the volume makes sense. If you configure a campaign based on a broken event, the campaign will never fire — or will fire for the wrong users.
+  </div>
+
+  <div class="callout red">
+    <div class="callout-title">Never report a finding without noting the date range</div>
+    "Budget Created is at 170" means nothing without knowing the time period. Always state the date range with every number you report. "Budget Created: 170 unique users in the last 90 days."
+  </div>
+
+  <div class="callout red">
+    <div class="callout-title">Never assume the data is complete</div>
+    Events can be missing, broken, or firing incorrectly. The taxonomy evaluation shows six events that are live but have broken or missing properties. If a number seems surprisingly low or high, investigate whether the underlying event is instrumented correctly before drawing conclusions.
+  </div>
+
+  <h2>Your quick reference card</h2>
+
+  <table class="data-table">
+    <thead><tr><th>When you want to know...</th><th>Use this event</th><th>Filter or breakdown</th></tr></thead>
+    <tbody>
+      <tr><td>Are sign-ups working?</td><td class="mono">Sign Up Completed</td><td>Status = success</td></tr>
+      <tr><td>What API errors are live?</td><td class="mono">Api Error</td><td>Break down by Endpoint</td></tr>
+      <tr><td>Are users creating budgets?</td><td class="mono">Budget Created</td><td>Status = success · Unique users</td></tr>
+      <tr><td>Are SMS imports working?</td><td class="mono">Sms Import Completed</td><td>Success = true</td></tr>
+      <tr><td>What screens are users visiting?</td><td class="mono">Screen Viewed</td><td>Break down by Screen Name</td></tr>
+      <tr><td>Are push notifications being received?</td><td class="mono">Push Notification Received</td><td>Break down by Notification Type</td></tr>
+      <tr><td>Are users deleting their accounts?</td><td class="mono">Account Deleted</td><td>Break down by Delete Reason</td></tr>
+      <tr><td>Are goals being created?</td><td class="mono">Goal Created</td><td>Status = success</td></tr>
+      <tr><td>What tabs are most used?</td><td class="mono">Bottom Navigation Click</td><td>Break down by Screen Name</td></tr>
+      <tr><td>Is OTP delivery working after FIX-003?</td><td class="mono">Otp Delivery Failed</td><td>Watch volume drop after fix</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout green" style="margin-top:28px">
+    <div class="callout-title">You have completed the guide</div>
+    You now understand the core concepts, the most important MoneyMore events, how to read the three main report types, how to build a report, how to filter, and what not to do. The next step is to open Mixpanel and spend 30 minutes exploring — building the budget report from Chapter 9 is a good starting point. If you have questions about a specific event or report, bring them to the signal review session.
+  </div>
+
+  <div class="nav-buttons">
+    <button class="nav-btn" onclick="goTo(10,null)">← Signal review session</button>
+    <button class="nav-btn" disabled>You have finished the guide ✓</button>
+  </div>
+</div>
+
+</div><!-- /main -->
+</div><!-- /shell -->
+
+<script>
+const TOTAL = 12;
+let current = 0;
+const navItems = document.querySelectorAll('.nav-item');
+
+function goTo(n, btn) {
+  document.getElementById('s' + current).classList.remove('active');
+  document.querySelectorAll('.section')[current].classList.remove('active');
+  current = n;
+  document.getElementById('s' + n).classList.add('active');
+
+  navItems.forEach(i => i.classList.remove('active'));
+  navItems[n].classList.add('active');
+
+  const pct = ((n + 1) / TOTAL) * 100;
+  document.getElementById('progress').style.width = pct + '%';
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function quiz(el, result, id) {
+  const box = el.closest('.quiz-box');
+  box.querySelectorAll('.quiz-option').forEach(o => {
+    o.style.pointerEvents = 'none';
+    o.classList.remove('correct', 'wrong');
+  });
+  el.classList.add(result);
+
+  const resEl = box.querySelector('.quiz-result');
+  resEl.classList.add('show', result);
+  resEl.textContent = result === 'correct'
+    ? '✓ Correct. Properties are the detail layer that make events meaningful.'
+    : '✗ Not quite. Properties describe what happened in more detail — the context around the event.';
+}
+
+function toggleCheck(el) {
+  el.classList.toggle('checked');
+  const box = el.querySelector('.check-box');
+  box.textContent = el.classList.contains('checked') ? '✓' : '';
+}
+
+// Set initial progress
+document.getElementById('progress').style.width = (1 / TOTAL * 100) + '%';
+</script>
+</body>
+</html>
