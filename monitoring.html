@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoneyMore — Product Monitoring Requirements</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+:root{
+  --navy:#1A3C5E; --navy-l:#EEF3F8; --navy-m:#2A5080;
+  --green:#2A8050; --green-l:#EAF4EE;
+  --red:#B83020; --red-l:#FDECEA;
+  --gold:#B87818; --gold-l:#FDF4E0;
+  --blue:#1A5898; --blue-l:#EAF0FB;
+  --pu:#5850B8; --pu-l:#EEEDFB;
+  --page:#F8F7F4; --white:#FFFFFF;
+  --s2:#F3F2EE; --s3:#E8E5E0;
+  --t1:#1A1814; --t2:#3A3530; --t3:#6A6560; --t4:#A8A4A0;
+  --b1:#E8E5E0; --b2:#D0CDC8;
+  --sans:'Plus Jakarta Sans',sans-serif;
+  --mono:'DM Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--page);color:var(--t1);font-family:var(--sans);-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.6}
+
+/* NAV */
+.topnav{background:var(--navy);position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.15)}
+.topnav-inner{max-width:1280px;margin:0 auto;padding:0 32px;display:flex;align-items:center;height:50px;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;flex-shrink:0;margin-right:8px}
+.brand-icon{width:26px;height:26px;background:rgba(255,255,255,0.12);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px}
+.brand-name{font-family:var(--mono);font-size:11px;font-weight:500;color:white;letter-spacing:.06em}
+.nav-pills{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;flex:1}
+.nav-pills::-webkit-scrollbar{display:none}
+.npill{padding:5px 13px;border-radius:3px;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,0.5);cursor:pointer;white-space:nowrap;transition:all .15s;border:none;background:transparent}
+.npill:hover{color:white}
+.npill.active{color:var(--navy);background:rgba(255,255,255,0.92);font-weight:500}
+.nav-meta{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,0.35);letter-spacing:.1em;flex-shrink:0}
+
+.wrap{max-width:1280px;margin:0 auto;padding:0 32px}
+
+/* HERO */
+.hero{background:var(--navy);padding:44px 0 40px;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;top:-60px;right:-80px;width:400px;height:400px;background:radial-gradient(circle,rgba(42,128,80,0.12) 0%,transparent 70%);pointer-events:none}
+.eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:rgba(255,255,255,0.4);text-transform:uppercase;margin-bottom:12px}
+.hero-title{font-size:clamp(24px,3.5vw,38px);font-weight:700;color:white;letter-spacing:-.025em;line-height:1.1;margin-bottom:12px}
+.hero-title em{font-style:normal;color:#6BD4A8}
+.hero-sub{font-size:13px;color:rgba(255,255,255,0.6);line-height:1.75;max-width:600px;margin-bottom:28px}
+.meta-strip{display:flex;gap:6px;flex-wrap:wrap}
+.meta-chip{display:flex;align-items:center;gap:6px;padding:5px 11px;border:1px solid rgba(255,255,255,0.12);border-radius:3px;font-family:var(--mono);font-size:9px;color:rgba(255,255,255,0.5);letter-spacing:.06em}
+.meta-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+
+/* STATS BAR */
+.stats-bar{background:var(--white);border-bottom:1px solid var(--b1);padding:20px 0;box-shadow:0 1px 4px rgba(0,0,0,0.04)}
+.stats-inner{display:flex;gap:32px;align-items:center;flex-wrap:wrap}
+.stat{display:flex;flex-direction:column;gap:3px}
+.stat-num{font-family:var(--mono);font-size:28px;font-weight:500;line-height:1;letter-spacing:-.02em}
+.stat-num.navy{color:var(--navy)} .stat-num.red{color:var(--red)} .stat-num.gold{color:var(--gold)} .stat-num.pu{color:var(--pu)} .stat-num.green{color:var(--green)}
+.stat-lbl{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--t4)}
+.stat-div{width:1px;height:36px;background:var(--b1)}
+
+/* SECTION */
+.section{padding:36px 0;border-bottom:1px solid var(--b1)}
+.section-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--t4);margin-bottom:14px}
+.section-title{font-size:20px;font-weight:700;color:var(--t1);letter-spacing:-.02em;margin-bottom:8px}
+.section-desc{font-size:13px;color:var(--t3);line-height:1.7;max-width:680px;margin-bottom:24px}
+
+/* IMPACT LEGEND */
+.impact-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.impact-card{background:var(--white);border:1px solid var(--b1);border-radius:8px;padding:16px 18px;box-shadow:0 1px 4px rgba(0,0,0,0.05);position:relative;overflow:hidden}
+.impact-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.impact-card.unusable::before{background:var(--red)}
+.impact-card.broken::before{background:var(--gold)}
+.impact-card.degraded::before{background:var(--pu)}
+.impact-card.watching::before{background:var(--green)}
+.impact-badge{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:500;padding:3px 9px;border-radius:3px;margin-bottom:8px;letter-spacing:.06em}
+.impact-card.unusable .impact-badge{background:var(--red-l);color:var(--red);border:1px solid rgba(184,48,32,.2)}
+.impact-card.broken .impact-badge{background:var(--gold-l);color:var(--gold);border:1px solid rgba(184,120,24,.2)}
+.impact-card.degraded .impact-badge{background:var(--pu-l);color:var(--pu);border:1px solid rgba(88,80,184,.2)}
+.impact-card.watching .impact-badge{background:var(--green-l);color:var(--green);border:1px solid rgba(42,128,80,.2)}
+.impact-title{font-size:12px;font-weight:700;color:var(--t1);margin-bottom:4px}
+.impact-desc{font-size:11.5px;color:var(--t3);line-height:1.55}
+
+/* TEMPLATE BOX */
+.template-box{background:var(--white);border:1px solid var(--b1);border-left:3px solid var(--navy);border-radius:0 8px 8px 0;padding:20px 24px;box-shadow:0 1px 4px rgba(0,0,0,0.05)}
+.template-label{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--navy);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--b1)}
+.tfields{display:flex;flex-direction:column;gap:7px}
+.tfield{display:flex;align-items:flex-start;gap:12px;padding:9px 12px;background:var(--s2);border-radius:6px;border:1px solid var(--b1)}
+.tfield-emoji{font-size:14px;flex-shrink:0;margin-top:1px}
+.tfield-key{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--t3);min-width:80px;flex-shrink:0;padding-top:1px}
+.tfield-val{font-size:12px;color:var(--t3);font-style:italic;line-height:1.5}
+.tfield-val strong{color:var(--gold);font-style:normal;font-weight:700}
+
+/* TABS */
+.tab-nav{display:flex;gap:2px;border-bottom:2px solid var(--b1);margin-bottom:24px}
+.tab-btn{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:9px 18px;background:none;border:none;cursor:pointer;color:var(--t4);border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s;display:flex;align-items:center;gap:8px}
+.tab-btn:hover{color:var(--t1)}
+.tab-btn.active{color:var(--navy);border-bottom-color:var(--navy);font-weight:500}
+.tab-count{background:var(--s2);color:var(--t4);font-size:9px;padding:2px 7px;border-radius:3px;border:1px solid var(--b1)}
+.tab-btn.active .tab-count{background:var(--navy-l);color:var(--navy);border-color:rgba(26,60,94,.15)}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+/* FILTER BAR */
+.filter-bar{display:flex;align-items:center;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+.filter-label{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--t4)}
+.filter-btns{display:flex;gap:6px;flex-wrap:wrap}
+.fbtn{font-family:var(--mono);font-size:9px;letter-spacing:.06em;padding:4px 11px;border-radius:3px;border:1px solid var(--b2);background:var(--white);color:var(--t3);cursor:pointer;transition:all .15s}
+.fbtn:hover{border-color:var(--navy);color:var(--navy)}
+.fbtn.active{background:var(--navy);border-color:var(--navy);color:white}
+.fbtn.f-unusable.active{background:var(--red);border-color:var(--red);color:white}
+.fbtn.f-broken.active{background:var(--gold);border-color:var(--gold);color:white}
+.fbtn.f-degraded.active{background:var(--pu);border-color:var(--pu);color:white}
+.fbtn.f-watching.active{background:var(--green);border-color:var(--green);color:white}
+.search-wrap{margin-left:auto}
+.search-input{font-family:var(--mono);font-size:11px;padding:6px 12px;border:1px solid var(--b2);border-radius:6px;background:var(--white);color:var(--t1);outline:none;width:200px;transition:border-color .15s}
+.search-input:focus{border-color:var(--navy)}
+.search-input::placeholder{color:var(--t4)}
+
+/* MONITOR GROUPS */
+.monitor-group{margin-bottom:12px}
+.group-header{display:flex;align-items:center;gap:10px;padding:9px 14px;background:var(--navy);border-radius:6px 6px 0 0;cursor:pointer;user-select:none;transition:background .15s}
+.group-header:hover{background:var(--navy-m)}
+.group-header.collapsed{border-radius:6px}
+.group-icon{font-size:14px}
+.group-title{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:white;flex:1;font-weight:500}
+.group-count{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,0.4);letter-spacing:.06em}
+.group-chev{color:rgba(255,255,255,0.4);font-size:11px;transition:transform .2s}
+.group-header.collapsed .group-chev{transform:rotate(-90deg)}
+.group-body{border:1px solid var(--b1);border-top:none;border-radius:0 0 6px 6px;overflow:hidden;background:var(--white);box-shadow:0 1px 4px rgba(0,0,0,0.04)}
+.group-body.hidden{display:none}
+
+/* MONITOR ROW */
+.mrow{border-bottom:1px solid var(--b1);transition:background .12s}
+.mrow:last-child{border-bottom:none}
+.mrow:hover{background:var(--s2)}
+.mrow.hidden{display:none}
+.mrow-main{display:grid;grid-template-columns:36px 1fr 170px 28px;align-items:center;padding:12px 14px;gap:12px;cursor:pointer}
+.mrow-num{font-family:var(--mono);font-size:10px;color:var(--t4)}
+.mrow-ux{font-size:13px;color:var(--t1);line-height:1.4;font-weight:500}
+.badge{display:inline-flex;align-items:center;font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:.06em;padding:2px 8px;border-radius:3px;text-transform:uppercase}
+.badge.unusable{background:var(--red-l);color:var(--red);border:1px solid rgba(184,48,32,.2)}
+.badge.broken{background:var(--gold-l);color:var(--gold);border:1px solid rgba(184,120,24,.2)}
+.badge.degraded{background:var(--pu-l);color:var(--pu);border:1px solid rgba(88,80,184,.2)}
+.badge.watching{background:var(--green-l);color:var(--green);border:1px solid rgba(42,128,80,.2)}
+.mrow-chev{color:var(--t4);font-size:11px;transition:transform .2s;text-align:right}
+.mrow.open .mrow-chev{transform:rotate(90deg)}
+
+/* EXPANDED DETAIL */
+.mrow-detail{display:none;padding:0 14px 16px 62px;background:var(--s2);border-top:1px solid var(--b1)}
+.mrow.open .mrow-detail{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding-top:14px}
+.detail-block-title{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--t4);margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--b1)}
+.detail-signal{font-family:var(--mono);font-size:11px;color:var(--navy);background:var(--navy-l);border:1px solid rgba(26,60,94,.15);padding:8px 10px;border-radius:5px;line-height:1.55}
+.detail-threshold{font-family:var(--mono);font-size:11px;color:var(--t3);background:var(--white);border:1px solid var(--b1);padding:8px 10px;border-radius:5px;line-height:1.55;font-style:italic}
+.known-bug{display:inline-flex;align-items:center;gap:5px;background:var(--red-l);border:1px solid rgba(184,48,32,.2);border-radius:3px;padding:3px 8px;margin-top:8px;font-family:var(--mono);font-size:9px;color:var(--red)}
+
+/* WEEKLY CARDS */
+.weekly-section{padding:36px 0 60px}
+.weekly-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;margin-top:20px}
+.weekly-card{background:var(--white);border:1px solid var(--b1);border-radius:8px;padding:18px;box-shadow:0 1px 4px rgba(0,0,0,0.05);transition:box-shadow .15s;position:relative;overflow:hidden}
+.weekly-card:hover{box-shadow:0 3px 12px rgba(0,0,0,0.08)}
+.weekly-card::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--navy)}
+.weekly-num{font-family:var(--mono);font-size:9px;color:var(--t4);margin-bottom:8px;letter-spacing:.08em}
+.weekly-what{font-size:13px;font-weight:600;color:var(--t1);margin-bottom:8px;line-height:1.4}
+.weekly-looks{font-size:12px;color:var(--t3);margin-bottom:10px;line-height:1.55}
+.weekly-source{font-family:var(--mono);font-size:9px;color:var(--navy);background:var(--navy-l);border:1px solid rgba(26,60,94,.15);padding:3px 9px;border-radius:3px;display:inline-block}
+
+/* FOOTER */
+.site-footer{background:var(--navy);padding:24px 0}
+.footer-inner{display:flex;align-items:center;justify-content:space-between}
+.footer-text{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,0.35);letter-spacing:.08em}
+
+@media(max-width:900px){
+  .impact-grid{grid-template-columns:1fr 1fr}
+  .mrow-main{grid-template-columns:28px 1fr 120px 24px}
+  .mrow.open .mrow-detail{grid-template-columns:1fr}
+  .wrap{padding:0 16px}
+  .topnav-inner{padding:0 16px}
+}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <div class="brand">
+      <div class="brand-icon">💰</div>
+      <span class="brand-name">MoneyMore</span>
+    </div>
+    <div class="nav-pills">
+      <button class="npill active" onclick="scrollTo(0,0)">Overview</button>
+      <button class="npill" onclick="go('impact')">Impact levels</button>
+      <button class="npill" onclick="go('template')">Response format</button>
+      <button class="npill" onclick="go('monitoring')">New Relic</button>
+      <button class="npill" onclick="go('monitoring');setTimeout(()=>switchTab('cf',document.querySelectorAll('.tab-btn')[1]),120)">Crashlytics</button>
+      <button class="npill" onclick="go('weekly')">Weekly update</button>
+    </div>
+    <div class="nav-meta">v1.0 · Apr 2026</div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow">MoneyMore · Product Monitoring Requirements</div>
+    <h1 class="hero-title">What we cannot afford<br>to <em>break</em> for users</h1>
+    <p class="hero-sub">Product defines what matters. Engineering defines the thresholds, sets up the alerts, and tells us when something breaks — and how hard the fix is. No technical knowledge required to read this document.</p>
+    <div class="meta-strip">
+      <div class="meta-chip"><div class="meta-dot" style="background:#6BD4A8"></div>Tools: New Relic · Firebase Crashlytics</div>
+      <div class="meta-chip"><div class="meta-dot" style="background:#F0C84A"></div>Environments: Production · Staging</div>
+      <div class="meta-chip"><div class="meta-dot" style="background:rgba(255,255,255,0.4)"></div>Definition owner: Head of Growth & Product</div>
+      <div class="meta-chip"><div class="meta-dot" style="background:rgba(255,255,255,0.4)"></div>Implementation: Engineering Lead</div>
+    </div>
+  </div>
+</section>
+
+<div class="stats-bar">
+  <div class="wrap">
+    <div class="stats-inner">
+      <div class="stat"><div class="stat-num navy">45</div><div class="stat-lbl">Total signals</div></div>
+      <div class="stat-div"></div>
+      <div class="stat"><div class="stat-num red">9</div><div class="stat-lbl">App unusable</div></div>
+      <div class="stat-div"></div>
+      <div class="stat"><div class="stat-num gold">17</div><div class="stat-lbl">Broken flow</div></div>
+      <div class="stat-div"></div>
+      <div class="stat"><div class="stat-num pu">17</div><div class="stat-lbl">Degraded UX</div></div>
+      <div class="stat-div"></div>
+      <div class="stat"><div class="stat-num green">2</div><div class="stat-lbl">Worth watching</div></div>
+    </div>
+  </div>
+</div>
+
+<section class="section" id="impact">
+  <div class="wrap">
+    <div class="section-eyebrow">Impact levels — shared language for every conversation</div>
+    <h2 class="section-title">Four levels. One shared vocabulary.</h2>
+    <p class="section-desc">Every monitored experience is tagged with one of these four levels. Use this language in standups, sprint reviews, and Slack. When engineering posts an alert update, they use these exact words.</p>
+    <div class="impact-grid">
+      <div class="impact-card unusable">
+        <div class="impact-badge">App unusable</div>
+        <div class="impact-title">Core action completely broken</div>
+        <div class="impact-desc">Happening to all or most users. No workaround exists. Engineering drops everything. Fix or rollback same day.</div>
+      </div>
+      <div class="impact-card broken">
+        <div class="impact-badge">Broken flow</div>
+        <div class="impact-title">A specific journey is broken end-to-end</div>
+        <div class="impact-desc">A subset of users cannot complete a flow. Acknowledge same day. Fix within 48 hours or sprint Fix Track.</div>
+      </div>
+      <div class="impact-card degraded">
+        <div class="impact-badge">Degraded UX</div>
+        <div class="impact-title">Works but users notice something wrong</div>
+        <div class="impact-desc">Slow, inconsistent, or partially incorrect. Ticket in Fix Track if not immediately fixable.</div>
+      </div>
+      <div class="impact-card watching">
+        <div class="impact-badge">Worth watching</div>
+        <div class="impact-title">Trending wrong, not breaking yet</div>
+        <div class="impact-desc">No immediate action. Surface in the weekly signal update and review at sprint close.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="template">
+  <div class="wrap">
+    <div class="section-eyebrow">Required communication format</div>
+    <h2 class="section-title">How engineering tells us when something breaks</h2>
+    <p class="section-desc">When an alert fires, engineering posts the following in the Slack channel. This is not optional. The Fix size field is the most important one — it tells product whether this goes into the current sprint, the Fix Track backlog, or needs escalation.</p>
+    <div class="template-box">
+      <div class="template-label">Post this in the channel every time an alert fires — no exceptions</div>
+      <div class="tfields">
+        <div class="tfield"><div class="tfield-emoji">🚨</div><div class="tfield-key">Alert</div><div class="tfield-val">[Name of the alert that fired]</div></div>
+        <div class="tfield"><div class="tfield-emoji">👤</div><div class="tfield-key">User sees</div><div class="tfield-val">[Describe in plain language what a user experiences right now]</div></div>
+        <div class="tfield"><div class="tfield-emoji">📊</div><div class="tfield-key">Scale</div><div class="tfield-val">[How many users affected? All users or a subset? Which platform?]</div></div>
+        <div class="tfield"><div class="tfield-emoji">🔧</div><div class="tfield-key">Fix size</div><div class="tfield-val"><strong>Quick</strong> — under 2 hrs &nbsp;/&nbsp; <strong>Medium</strong> — same day &nbsp;/&nbsp; <strong>Large</strong> — needs a sprint ticket</div></div>
+        <div class="tfield"><div class="tfield-emoji">📋</div><div class="tfield-key">Plan</div><div class="tfield-val">[What is happening next and who owns it]</div></div>
+        <div class="tfield"><div class="tfield-emoji">✅</div><div class="tfield-key">Resolved</div><div class="tfield-val">[Post when fixed, with a one-line summary of what the fix was]</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="monitoring">
+  <div class="wrap">
+    <div class="section-eyebrow">Monitoring registry</div>
+    <h2 class="section-title">User experiences to monitor</h2>
+    <p class="section-desc">Click any row to see the technical signal and what engineering needs to define. The signal column tells engineering where to look — the threshold column is theirs to set based on their knowledge of the system.</p>
+
+    <div class="tab-nav">
+      <button class="tab-btn active" onclick="switchTab('nr',this)">New Relic <span class="tab-count">28</span></button>
+      <button class="tab-btn" onclick="switchTab('cf',this)">Crashlytics <span class="tab-count">17</span></button>
+    </div>
+
+    <div class="filter-bar">
+      <span class="filter-label">Filter</span>
+      <div class="filter-btns">
+        <button class="fbtn active" onclick="setFilter('all',this)">All</button>
+        <button class="fbtn f-unusable" onclick="setFilter('unusable',this)">App unusable</button>
+        <button class="fbtn f-broken" onclick="setFilter('broken',this)">Broken flow</button>
+        <button class="fbtn f-degraded" onclick="setFilter('degraded',this)">Degraded UX</button>
+        <button class="fbtn f-watching" onclick="setFilter('watching',this)">Worth watching</button>
+      </div>
+      <div class="search-wrap">
+        <input class="search-input" type="text" placeholder="Search…" oninput="doSearch(this.value)">
+      </div>
+    </div>
+
+    <div class="tab-panel active" id="panel-nr"></div>
+    <div class="tab-panel" id="panel-cf"></div>
+  </div>
+</section>
+
+<section class="weekly-section" id="weekly">
+  <div class="wrap">
+    <div class="section-eyebrow">Weekly cadence</div>
+    <h2 class="section-title">What engineering shares every Friday</h2>
+    <p class="section-desc">Every Friday before the sprint Day 5 signal review, engineering posts the following in the Slack channel. This is how product stays informed without logging into any tool directly.</p>
+    <div class="weekly-grid" id="weekly-grid"></div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-inner">
+      <div class="footer-text">MoneyMore · Product Monitoring Requirements v1.0 · April 2026 · Internal</div>
+      <div class="footer-text">Definition owner: Head of Growth & Product</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const NR=[
+  {section:'Sign up and login',icon:'🔐',items:[
+    {n:'1',ux:'User enters their phone number and taps Continue — nothing happens or they get an error',impact:'unusable',signal:'Error rate on the OTP request endpoint',threshold:'Engineering to set based on baseline error rate',bug:'FIX-003 — OTP delivery currently failing at a high rate'},
+    {n:'2',ux:'User receives the OTP SMS and enters it — verification fails or times out',impact:'unusable',signal:'Error rate on OTP verification endpoint · OTP delivery failure rate',threshold:'Engineering to set based on baseline'},
+    {n:'3',ux:'User completes sign-up but the app does not proceed to the next screen',impact:'unusable',signal:'Error rate on account creation or session initialisation endpoint',threshold:'Engineering to set based on baseline'},
+    {n:'4',ux:'Returning user opens the app and cannot log in — session refresh fails',impact:'unusable',signal:'Error rate on token refresh or session validation endpoint',threshold:'Engineering to set based on baseline'},
+  ]},
+  {section:'Home screen and dashboard',icon:'🏠',items:[
+    {n:'5',ux:'User opens the app and the home screen shows a blank state or loads forever',impact:'unusable',signal:'Error rate and response time on the main dashboard data endpoint',threshold:'Engineering to set based on baseline'},
+    {n:'6',ux:"User sees spending data from a previous period — today's data is not loading",impact:'broken',signal:'Error rate and staleness signal on transaction data fetch for current period',threshold:'Engineering to set based on baseline'},
+    {n:'7',ux:'Budget summary on the home screen shows an error or does not load',impact:'unusable',signal:'Error rate on the /budgets/monthly endpoint',threshold:'Alert must fire immediately when error rate > 0%',bug:'FIX-001 — currently returning 404 on every session for every user'},
+    {n:'8',ux:'Spending by category chart does not load or shows incorrect totals',impact:'degraded',signal:'Error rate and data correctness signal on category spending endpoint',threshold:'Engineering to set based on baseline'},
+    {n:'9',ux:'Home screen loads significantly slower than usual — user waits more than 3 seconds',impact:'degraded',signal:'P95 response time on dashboard data endpoint',threshold:'Flag if P95 exceeds 3 seconds — calibrated for Egyptian mobile networks'},
+  ]},
+  {section:'SMS reading and transaction import',icon:'📩',items:[
+    {n:'10',ux:'App stops reading bank SMS messages — no new transactions appear for a user who receives SMS',impact:'unusable',signal:'Volume drop on the SMS import or parsing pipeline',threshold:'Flag if volume drops more than 40% vs rolling 7-day average'},
+    {n:'11',ux:'SMS messages are being read but transactions are not being categorised',impact:'broken',signal:'Volume drop on the categorisation step downstream of SMS import',threshold:'Engineering to set — flag if categorisation rate drops significantly'},
+    {n:'12',ux:'Transactions are appearing with wrong categories consistently',impact:'degraded',signal:'Error rate or mismatch rate on the categorisation model or rule engine',threshold:'Engineering to set based on acceptable error rate'},
+    {n:'13',ux:'Duplicate transactions appear for the same SMS message',impact:'degraded',signal:'Duplicate detection signal on transaction ingestion',threshold:'Zero tolerance — any confirmed duplicate volume should alert'},
+    {n:'14',ux:'User tries to add a manual transaction and gets an error',impact:'broken',signal:'Error rate on the manual transaction endpoint',threshold:'Alert must fire immediately',bug:'FIX-002 — currently returning 400 on every manual entry attempt'},
+  ]},
+  {section:'Budgets',icon:'🎯',items:[
+    {n:'15',ux:'User opens the Budgets tab and sees an error or blank screen',impact:'broken',signal:'Error rate on the budgets list endpoint',threshold:'Engineering to set — connects to FIX-001 fix'},
+    {n:'16',ux:'User creates a budget and the save fails silently — no confirmation, budget not saved',impact:'broken',signal:'Error rate on budget creation endpoint',threshold:'Engineering to set based on baseline'},
+    {n:'17',ux:'Budget progress is not updating after new transactions arrive',impact:'degraded',signal:'Lag between transaction ingestion and budget recalculation',threshold:'Flag if lag exceeds 15 minutes'},
+    {n:'18',ux:"Budget alert notifications are not firing when users hit 80% of their limit",impact:'degraded',signal:'Delivery rate on budget threshold notification job',threshold:'Any drop in delivery rate is significant — engineering to set baseline'},
+  ]},
+  {section:'Transactions list',icon:'↕️',items:[
+    {n:'19',ux:'User opens Transactions tab and sees an error or infinite load',impact:'broken',signal:'Error rate and response time on the transaction list endpoint',threshold:'Engineering to set based on baseline'},
+    {n:'20',ux:'Transaction list loads but is missing recent transactions',impact:'degraded',signal:'Data freshness signal — lag between SMS import and list appearance',threshold:'Flag if lag exceeds 10 minutes'},
+    {n:'21',ux:'User applies a filter or search and gets an error',impact:'degraded',signal:'Error rate on transaction filter and search endpoints',threshold:'Engineering to set based on baseline'},
+  ]},
+  {section:'Offers',icon:'🎁',items:[
+    {n:'22',ux:'User opens Offers tab and sees an error or blank state',impact:'broken',signal:'Error rate on the offers data endpoint',threshold:'Engineering to set based on baseline'},
+    {n:'23',ux:'Offers are loading but showing outdated or irrelevant content',impact:'degraded',signal:'Data freshness signal on offers content — staleness threshold',threshold:'Engineering to set based on content update schedule'},
+  ]},
+  {section:'Profile and account',icon:'👤',items:[
+    {n:'24',ux:'User cannot update their profile details — save fails',impact:'degraded',signal:'Error rate on profile update endpoint',threshold:'Engineering to set based on baseline'},
+    {n:'25',ux:'User initiates account deletion and the flow breaks mid-way',impact:'degraded',signal:'Error rate on account deletion endpoint',threshold:'Alert immediately if deletion error rate spikes',bug:'447 users currently stuck mid-deletion — known gap'},
+  ]},
+  {section:'General performance',icon:'⚡',items:[
+    {n:'26',ux:'Any screen in the app is taking more than 3 seconds to load on average',impact:'degraded',signal:'P95 API response time across all endpoints globally',threshold:'3 seconds is the ceiling for acceptable UX on Egyptian mobile networks'},
+    {n:'27',ux:"The app's backend is under unusually high load — slowdowns spreading across all features",impact:'unusable',signal:'Overall server CPU, memory, and throughput metrics',threshold:'Engineering to set based on infrastructure capacity'},
+    {n:'28',ux:'A spike in errors is happening across multiple endpoints at once — possible service outage',impact:'unusable',signal:'Global error rate across all endpoints simultaneously',threshold:'Any coordinated multi-endpoint spike is a P0 — alert immediately'},
+  ]},
+];
+
+const CF=[
+  {section:'App stability — crash rate',icon:'💥',items:[
+    {n:'C1',ux:'Users are experiencing the app crashing — closing unexpectedly without warning (Android)',impact:'unusable',signal:'Crash-free session rate — Android',threshold:'Industry standard is above 99.5%. Below 99% is a critical problem.'},
+    {n:'C2',ux:'Users are experiencing the app crashing on iOS',impact:'unusable',signal:'Crash-free session rate — iOS',threshold:'Same standard as Android. Activate when iOS ships.'},
+    {n:'C3',ux:'A specific crash is happening for the first time — new issue introduced by a recent release',impact:'broken',signal:'New crash issue appearing with significant affected session count',threshold:'Engineering to set a minimum session threshold before alerting'},
+    {n:'C4',ux:'A crash that was previously fixed has come back — regression from a recent change',impact:'broken',signal:'Previously resolved crash issue reappearing',threshold:'Any recurrence above a minimal session count should alert'},
+  ]},
+  {section:'App freezing — ANR (Android only)',icon:'🥶',items:[
+    {n:'C5',ux:'The Android app freezes — user sees a spinning screen or the OS asks if they want to close the app',impact:'unusable',signal:'ANR-free session rate — Android',threshold:'ANR-free rate should stay above 99.9% at minimum'},
+    {n:'C6',ux:'A new type of freeze is appearing that has not been seen before',impact:'broken',signal:'New ANR issue type appearing with affected sessions',threshold:'Engineering to set a minimum session threshold'},
+  ]},
+  {section:'Crash concentration — specific screens',icon:'📱',items:[
+    {n:'C7',ux:'The sign-up or login screen is crashing — users cannot even enter the app',impact:'unusable',signal:'Crash volume concentrated on the authentication or OTP screens',threshold:'Any significant volume on these screens is critical — engineering to set threshold'},
+    {n:'C8',ux:'The home screen is crashing after login — users enter the app and it immediately closes',impact:'unusable',signal:'Crash volume concentrated on the home or dashboard screen',threshold:'Engineering to set threshold based on session volume'},
+    {n:'C9',ux:'The Transactions screen is crashing when users try to view their history',impact:'broken',signal:'Crash volume concentrated on the transactions list screen',threshold:'Engineering to set threshold'},
+    {n:'C10',ux:'The Budgets screen is crashing when users try to view or create budgets',impact:'broken',signal:'Crash volume concentrated on the budgets screen',threshold:'Engineering to set threshold'},
+    {n:'C11',ux:'The Offers screen is crashing',impact:'degraded',signal:'Crash volume concentrated on the offers screen',threshold:'Engineering to set threshold'},
+  ]},
+  {section:'Silent terminations — out of memory',icon:'💾',items:[
+    {n:'C12',ux:'The Android app is being silently killed by the OS — user thinks it crashed but no crash report was generated',impact:'broken',signal:'Out-of-memory kill rate — Android. These do not appear as crashes and must be monitored separately.',threshold:'Any meaningful OOM rate warrants investigation — usually indicates a memory leak'},
+    {n:'C13',ux:'The iOS app is being silently terminated by the OS',impact:'broken',signal:'Out-of-memory kill rate — iOS (activate when iOS ships)',threshold:'iOS is stricter on memory — threshold may differ from Android'},
+  ]},
+  {section:'Device and OS coverage',icon:'🔬',items:[
+    {n:'C14',ux:'A specific Android OS version or device model has significantly higher crash rates than others',impact:'broken',signal:'Crash rate segmented by OS version and device model — looking for outliers',threshold:'Flag if any single OS version or device shows a crash rate more than 2x the average'},
+    {n:'C15',ux:'A new Android OS version has been released and the app is not tested on it — crash risk increases',impact:'watching',signal:'Session distribution by OS version — watch for new OS versions entering the user base',threshold:'No automated alert needed — engineering reviews this in the weekly signal update'},
+  ]},
+  {section:'Staging — catching issues before they reach users',icon:'🧪',items:[
+    {n:'C16',ux:'A crash is appearing on staging that has not been seen in production — new bug in the current build',impact:'broken',signal:'Crash-free rate on staging build — any meaningful crash rate before production release',threshold:'Staging threshold should be stricter than production — catch issues before they ship'},
+    {n:'C17',ux:'A new ANR is appearing on the staging build before it ships',impact:'broken',signal:'ANR rate on staging build',threshold:'Engineering to set'},
+  ]},
+];
+
+const WEEKLY=[
+  {what:'Crash-free session rate this week vs last week — Android and iOS separately',looks:'Any week-on-week decline. Anything below 99.5% opens a conversation.',source:'Crashlytics overview'},
+  {what:'Top 3 crash issues by number of affected users this week',looks:'Are any of these the same issues from last sprint? Recurring issues are systemic.',source:'Crashlytics issue list'},
+  {what:'ANR rate this week — Android',looks:'Any increase from last week. Should stay below 0.1% of sessions.',source:'Crashlytics ANR tab'},
+  {what:'OTP error rate this week — FIX-003 tracking',looks:'Until FIX-003 is resolved, track weekly. Share the current failure rate.',source:'New Relic — OTP endpoint'},
+  {what:'Budget monthly endpoint error rate — FIX-001 tracking',looks:'Until FIX-001 is resolved, track weekly. Share the current 404 rate.',source:'New Relic — budgets endpoint'},
+  {what:'Total alerts that fired this week by impact level',looks:'Is it going up or down? Any level firing more than twice in a week needs a conversation.',source:'New Relic alert history'},
+  {what:'Any new crash or ANR type that appeared for the first time this week',looks:'New issues from recent releases. These need a fix ticket immediately.',source:'Crashlytics — new issues filter'},
+];
+
+const IL={unusable:'App unusable',broken:'Broken flow',degraded:'Degraded UX',watching:'Worth watching'};
+
+function buildGroup(sec,tab){
+  const div=document.createElement('div');
+  div.className='monitor-group';
+  div.dataset.tab=tab;
+  const hdr=document.createElement('div');
+  hdr.className='group-header';
+  hdr.innerHTML=`<span class="group-icon">${sec.icon}</span><span class="group-title">${sec.section}</span><span class="group-count">${sec.items.length} signal${sec.items.length>1?'s':''}</span><span class="group-chev">›</span>`;
+  const body=document.createElement('div');
+  body.className='group-body';
+  hdr.onclick=()=>{hdr.classList.toggle('collapsed');body.classList.toggle('hidden')};
+  sec.items.forEach(item=>{
+    const ic=item.impact;
+    const row=document.createElement('div');
+    row.className='mrow';
+    row.dataset.impact=ic;
+    row.dataset.text=(item.ux+' '+item.signal).toLowerCase();
+    row.innerHTML=`
+      <div class="mrow-main">
+        <span class="mrow-num">${item.n}</span>
+        <span class="mrow-ux">${item.ux}</span>
+        <span><span class="badge ${ic}">${IL[ic]}</span></span>
+        <span class="mrow-chev">›</span>
+      </div>
+      <div class="mrow-detail">
+        <div>
+          <div class="detail-block-title">Signal in New Relic / Crashlytics</div>
+          <div class="detail-signal">${item.signal}</div>
+          ${item.bug?`<div class="known-bug">⚠ ${item.bug}</div>`:''}
+        </div>
+        <div>
+          <div class="detail-block-title">Threshold — engineering to define</div>
+          <div class="detail-threshold">${item.threshold}</div>
+        </div>
+      </div>`;
+    row.querySelector('.mrow-main').onclick=()=>row.classList.toggle('open');
+    body.appendChild(row);
+  });
+  div.appendChild(hdr);div.appendChild(body);
+  return div;
+}
+
+function renderAll(){
+  const nr=document.getElementById('panel-nr');
+  const cf=document.getElementById('panel-cf');
+  NR.forEach(s=>nr.appendChild(buildGroup(s,'nr')));
+  CF.forEach(s=>cf.appendChild(buildGroup(s,'cf')));
+  const wg=document.getElementById('weekly-grid');
+  WEEKLY.forEach((item,i)=>{
+    const c=document.createElement('div');
+    c.className='weekly-card';
+    c.innerHTML=`<div class="weekly-num">0${i+1}</div><div class="weekly-what">${item.what}</div><div class="weekly-looks">${item.looks}</div><span class="weekly-source">${item.source}</span>`;
+    wg.appendChild(c);
+  });
+}
+
+let currentFilter='all',currentSearch='';
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-'+id).classList.add('active');
+  currentFilter='all';
+  document.querySelectorAll('.fbtn').forEach(b=>b.classList.toggle('active',b.textContent.trim()==='All'));
+  applyFilter();
+}
+function setFilter(f,btn){
+  currentFilter=f;
+  document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilter();
+}
+function doSearch(v){currentSearch=v.toLowerCase();applyFilter();}
+function applyFilter(){
+  document.querySelectorAll('.mrow').forEach(r=>{
+    const mi=currentFilter==='all'||r.dataset.impact===currentFilter;
+    const ms=!currentSearch||r.dataset.text.includes(currentSearch);
+    r.classList.toggle('hidden',!(mi&&ms));
+  });
+  document.querySelectorAll('.monitor-group').forEach(g=>{
+    const vis=[...g.querySelectorAll('.mrow')].some(r=>!r.classList.contains('hidden'));
+    g.style.display=vis?'':'none';
+  });
+}
+function go(id){document.getElementById(id).scrollIntoView({behavior:'smooth'})}
+renderAll();
+</script>
+</body>
+</html>

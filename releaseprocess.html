@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoneyMore — Release Process</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+:root{
+  --navy:#1A3C5E;--navy-l:#EEF3F8;--navy-m:#2A5080;
+  --green:#2A8050;--green-l:#EAF4EE;
+  --red:#B83020;--red-l:#FDECEA;
+  --gold:#B87818;--gold-l:#FDF4E0;
+  --blue:#1A5898;--blue-l:#EAF0FB;
+  --pu:#5850B8;--pu-l:#EEEDFB;
+  --page:#F8F7F4;--white:#FFFFFF;
+  --s2:#F3F2EE;--s3:#E8E5E0;
+  --t1:#1A1814;--t2:#3A3530;--t3:#6A6560;--t4:#A8A4A0;
+  --b1:#E8E5E0;--b2:#D0CDC8;
+  --sans:'Plus Jakarta Sans',sans-serif;
+  --mono:'DM Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--page);color:var(--t1);font-family:var(--sans);-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.6}
+
+/* NAV */
+.topnav{background:var(--navy);position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.15)}
+.topnav-inner{max-width:1280px;margin:0 auto;padding:0 32px;display:flex;align-items:center;height:50px;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;flex-shrink:0;margin-right:8px}
+.brand-icon{width:26px;height:26px;background:rgba(255,255,255,0.12);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px}
+.brand-name{font-family:var(--mono);font-size:11px;font-weight:500;color:white;letter-spacing:.06em}
+.nav-pills{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;flex:1}
+.nav-pills::-webkit-scrollbar{display:none}
+.npill{padding:5px 13px;border-radius:3px;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,0.5);cursor:pointer;white-space:nowrap;transition:all .15s;border:none;background:transparent}
+.npill:hover{color:white}
+.npill.active{color:var(--navy);background:rgba(255,255,255,0.92);font-weight:500}
+.nav-meta{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,0.35);letter-spacing:.1em;flex-shrink:0}
+
+.wrap{max-width:1280px;margin:0 auto;padding:0 32px}
+
+/* HERO */
+.hero{background:var(--navy);padding:44px 0 40px;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;top:-60px;right:-80px;width:400px;height:400px;background:radial-gradient(circle,rgba(42,128,80,0.12) 0%,transparent 70%);pointer-events:none}
+.eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:rgba(255,255,255,0.4);text-transform:uppercase;margin-bottom:12px}
+.hero-title{font-size:clamp(24px,3.5vw,38px);font-weight:700;color:white;letter-spacing:-.025em;line-height:1.1;margin-bottom:12px}
+.hero-title em{font-style:normal;color:#6BD4A8}
+.hero-sub{font-size:13px;color:rgba(255,255,255,0.6);line-height:1.75;max-width:640px;margin-bottom:28px}
+.meta-strip{display:flex;gap:6px;flex-wrap:wrap}
+.meta-chip{display:flex;align-items:center;gap:6px;padding:5px 11px;border:1px solid rgba(255,255,255,0.12);border-radius:3px;font-family:var(--mono);font-size:9px;color:rgba(255,255,255,0.5);letter-spacing:.06em}
+.meta-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+
+/* SECTION */
+.section{padding:36px 0;border-bottom:1px solid var(--b1)}
+.section-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--t4);margin-bottom:14px}
+.section-title{font-size:20px;font-weight:700;color:var(--t1);letter-spacing:-.02em;margin-bottom:8px}
+.section-desc{font-size:13px;color:var(--t3);line-height:1.7;max-width:700px;margin-bottom:24px}
+
+/* RELEASE TYPE CARDS */
+.rtype-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:32px}
+.rtype-card{background:var(--white);border:1px solid var(--b1);border-radius:8px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,0.05);position:relative;overflow:hidden;cursor:pointer;transition:box-shadow .15s}
+.rtype-card:hover{box-shadow:0 3px 12px rgba(0,0,0,0.09)}
+.rtype-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.rtype-card.sprint::before{background:var(--navy)}
+.rtype-card.hotfix::before{background:var(--red)}
+.rtype-card.feature::before{background:var(--green)}
+.rtype-icon{font-size:22px;margin-bottom:10px}
+.rtype-name{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:500;margin-bottom:6px}
+.rtype-card.sprint .rtype-name{color:var(--navy)}
+.rtype-card.hotfix .rtype-name{color:var(--red)}
+.rtype-card.feature .rtype-name{color:var(--green)}
+.rtype-desc{font-size:12.5px;color:var(--t2);line-height:1.55;margin-bottom:12px}
+.rtype-when{font-family:var(--mono);font-size:10px;color:var(--t4);background:var(--s2);padding:6px 10px;border-radius:4px;line-height:1.45}
+
+/* TRAIN VISUAL */
+.train-wrap{background:var(--white);border:1px solid var(--b1);border-radius:8px;padding:24px;box-shadow:0 1px 4px rgba(0,0,0,0.05);margin-bottom:24px}
+.train-label{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--t4);margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid var(--b1)}
+.train-track{display:flex;align-items:center;gap:0;overflow-x:auto;padding-bottom:4px}
+.train-track::-webkit-scrollbar{height:4px}
+.train-track::-webkit-scrollbar-track{background:var(--b1);border-radius:2px}
+.train-track::-webkit-scrollbar-thumb{background:var(--b2);border-radius:2px}
+.train-stop{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:8px}
+.train-dot{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;border:2px solid var(--b1);background:var(--white);flex-shrink:0}
+.train-dot.filled{background:var(--navy);border-color:var(--navy);color:white}
+.train-dot.hotfix{background:var(--red);border-color:var(--red);color:white}
+.train-dot.feature{background:var(--green);border-color:var(--green);color:white}
+.train-stop-label{font-family:var(--mono);font-size:9px;color:var(--t4);text-align:center;letter-spacing:.04em;max-width:70px;line-height:1.3}
+.train-stop-label.active{color:var(--navy);font-weight:500}
+.train-connector{flex:1;height:2px;background:var(--b1);min-width:24px;flex-shrink:0;position:relative;top:-14px}
+.train-connector.filled{background:var(--navy)}
+.train-connector.red{background:var(--red)}
+.train-note{font-size:12px;color:var(--t3);margin-top:16px;line-height:1.6;padding-top:14px;border-top:1px solid var(--b1)}
+.train-note strong{color:var(--t1);font-weight:600}
+
+/* CHECKLIST */
+.checklist-tabs{display:flex;gap:2px;border-bottom:2px solid var(--b1);margin-bottom:24px}
+.ctl-btn{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:9px 18px;background:none;border:none;cursor:pointer;color:var(--t4);border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s;display:flex;align-items:center;gap:8px}
+.ctl-btn:hover{color:var(--t1)}
+.ctl-btn.active{color:var(--navy);border-bottom-color:var(--navy);font-weight:500}
+.ctl-panel{display:none}
+.ctl-panel.active{display:block}
+
+.checklist-group{margin-bottom:16px}
+.cg-header{display:flex;align-items:center;gap:10px;padding:9px 14px;background:var(--s2);border:1px solid var(--b1);border-radius:6px 6px 0 0;cursor:pointer;user-select:none}
+.cg-header.collapsed{border-radius:6px}
+.cg-icon{font-size:14px}
+.cg-title{font-size:13px;font-weight:600;color:var(--t1);flex:1}
+.cg-owner{font-family:var(--mono);font-size:9px;padding:2px 8px;border-radius:3px;letter-spacing:.04em}
+.cg-owner.eng{background:var(--green-l);color:var(--green);border:1px solid rgba(42,128,80,.2)}
+.cg-owner.product{background:var(--navy-l);color:var(--navy);border:1px solid rgba(26,60,94,.15)}
+.cg-owner.both{background:var(--pu-l);color:var(--pu);border:1px solid rgba(88,80,184,.2)}
+.cg-chev{color:var(--t4);font-size:11px;transition:transform .2s}
+.cg-header.collapsed .cg-chev{transform:rotate(-90deg)}
+.cg-body{border:1px solid var(--b1);border-top:none;border-radius:0 0 6px 6px;background:var(--white);overflow:hidden}
+.cg-body.hidden{display:none}
+
+.check-item{display:flex;align-items:flex-start;gap:12px;padding:11px 14px;border-bottom:1px solid var(--b1);cursor:pointer;transition:background .12s;user-select:none}
+.check-item:last-child{border-bottom:none}
+.check-item:hover{background:var(--s2)}
+.check-item.checked{background:var(--green-l)}
+.check-box{width:18px;height:18px;border:1.5px solid var(--b2);border-radius:4px;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:11px;transition:all .15s}
+.check-item.checked .check-box{background:var(--green);border-color:var(--green);color:white}
+.check-content{flex:1}
+.check-text{font-size:13px;color:var(--t1);line-height:1.4;font-weight:500}
+.check-item.checked .check-text{color:var(--t3);text-decoration:line-through}
+.check-sub{font-size:11.5px;color:var(--t3);margin-top:3px;line-height:1.5}
+.check-item.checked .check-sub{color:var(--t4)}
+.check-tag{font-family:var(--mono);font-size:9px;padding:1px 6px;border-radius:2px;margin-left:6px;vertical-align:middle}
+.check-tag.critical{background:var(--red-l);color:var(--red);border:1px solid rgba(184,48,32,.2)}
+.check-tag.eng{background:var(--green-l);color:var(--green);border:1px solid rgba(42,128,80,.2)}
+.check-tag.product{background:var(--navy-l);color:var(--navy);border:1px solid rgba(26,60,94,.15)}
+
+/* PROGRESS BAR */
+.progress-wrap{background:var(--white);border:1px solid var(--b1);border-radius:8px;padding:16px 20px;margin-bottom:20px;box-shadow:0 1px 4px rgba(0,0,0,0.05)}
+.progress-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.progress-title{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--t3)}
+.progress-count{font-family:var(--mono);font-size:11px;color:var(--navy);font-weight:500}
+.progress-bar-bg{height:6px;background:var(--s3);border-radius:99px;overflow:hidden}
+.progress-bar-fill{height:100%;background:var(--green);border-radius:99px;transition:width .3s ease}
+.progress-status{font-size:12px;color:var(--t3);margin-top:8px}
+.progress-status.ready{color:var(--green);font-weight:600}
+.progress-status.blocked{color:var(--red);font-weight:600}
+
+/* RESET BTN */
+.reset-btn{font-family:var(--mono);font-size:10px;padding:5px 12px;border:1px solid var(--b2);border-radius:4px;background:var(--white);color:var(--t3);cursor:pointer;transition:all .15s;letter-spacing:.04em}
+.reset-btn:hover{border-color:var(--red);color:var(--red)}
+
+/* STAGED ROLLOUT */
+.rollout-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px}
+.rollout-card{background:var(--white);border:1px solid var(--b1);border-radius:8px;padding:18px;box-shadow:0 1px 4px rgba(0,0,0,0.05)}
+.rollout-platform{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--t4);margin-bottom:8px}
+.rollout-title{font-size:13px;font-weight:700;color:var(--t1);margin-bottom:10px}
+.rollout-steps{display:flex;flex-direction:column;gap:6px}
+.rollout-step{display:flex;align-items:flex-start;gap:10px;padding:8px 10px;background:var(--s2);border-radius:5px;border:1px solid var(--b1)}
+.rollout-step-num{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--navy);flex-shrink:0;min-width:18px}
+.rollout-step-text{font-size:12px;color:var(--t2);line-height:1.45}
+.rollout-note{font-size:12px;color:var(--t3);margin-top:10px;padding:8px 10px;background:var(--gold-l);border:1px solid rgba(184,120,24,.2);border-radius:5px;line-height:1.5}
+
+.pct-flow{display:flex;align-items:center;gap:0;margin:16px 0;overflow-x:auto}
+.pct-stop{flex-shrink:0;text-align:center}
+.pct-circle{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;font-weight:500;margin:0 auto 6px;border:2px solid var(--b1)}
+.pct-stop:nth-child(1) .pct-circle{background:var(--navy-l);border-color:var(--navy);color:var(--navy)}
+.pct-stop:nth-child(3) .pct-circle{background:#E8F3EE;border-color:#4AAA80;color:#2A8050}
+.pct-stop:nth-child(5) .pct-circle{background:#D8EDD8;border-color:#2A8050;color:#1C6040}
+.pct-stop:nth-child(7) .pct-circle{background:#B8DDB8;border-color:#1C6040;color:#104830}
+.pct-label{font-family:var(--mono);font-size:9px;color:var(--t4);letter-spacing:.04em}
+.pct-arrow{font-size:18px;color:var(--b2);padding:0 4px;flex-shrink:0;margin-bottom:16px}
+
+/* TEMPLATES */
+.template-box{background:var(--white);border:1px solid var(--b1);border-radius:8px;padding:20px 24px;box-shadow:0 1px 4px rgba(0,0,0,0.05);margin-bottom:16px}
+.template-label{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--b1)}
+.template-label.product{color:var(--navy)}
+.template-label.eng{color:var(--green)}
+.template-content{background:var(--s2);border:1px solid var(--b1);border-radius:6px;padding:16px;font-family:var(--mono);font-size:12px;color:var(--t2);line-height:1.8}
+.template-content em{color:var(--t4);font-style:italic}
+.template-content strong{color:var(--navy);font-weight:600}
+.tl{display:block;margin-bottom:2px}
+.tl.section{color:var(--navy);font-weight:600;margin-top:10px;margin-bottom:4px}
+.tl.section:first-child{margin-top:0}
+
+/* FOOTER */
+.site-footer{background:var(--navy);padding:24px 0}
+.footer-inner{display:flex;align-items:center;justify-content:space-between}
+.footer-text{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,0.35);letter-spacing:.08em}
+
+@media(max-width:900px){
+  .rtype-grid,.rollout-grid{grid-template-columns:1fr}
+  .wrap{padding:0 16px}
+  .topnav-inner{padding:0 16px}
+}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <div class="brand">
+      <div class="brand-icon">🚀</div>
+      <span class="brand-name">MoneyMore</span>
+    </div>
+    <div class="nav-pills">
+      <button class="npill active" onclick="scrollTo(0,0)">Overview</button>
+      <button class="npill" onclick="go('types')">Release types</button>
+      <button class="npill" onclick="go('checklists')">Checklists</button>
+      <button class="npill" onclick="go('staged')">Staged rollouts</button>
+      <button class="npill" onclick="go('templates')">Release notes</button>
+    </div>
+    <div class="nav-meta">v1.0 · Apr 2026</div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow">MoneyMore · Release Process</div>
+    <h1 class="hero-title">A release is not done<br>when the <em>code works.</em></h1>
+    <p class="hero-sub">This document defines when MoneyMore ships, who signs off on what, what must be true before anything goes to users, and how to communicate a release. Start here if you have never shipped a release before — this is the full picture from start to finish.</p>
+    <div class="meta-strip">
+      <div class="meta-chip"><div class="meta-dot" style="background:#6BD4A8"></div>Three release types: Sprint · Hotfix · Major feature</div>
+      <div class="meta-chip"><div class="meta-dot" style="background:#F0C84A"></div>Interactive checklists — check off as you go</div>
+      <div class="meta-chip"><div class="meta-dot" style="background:rgba(255,255,255,0.4)"></div>Release note templates included</div>
+      <div class="meta-chip"><div class="meta-dot" style="background:#F87878"></div>Staged rollout guide — no custom engineering needed</div>
+    </div>
+  </div>
+</section>
+
+<!-- RELEASE TYPES -->
+<section class="section" id="types">
+  <div class="wrap">
+    <div class="section-eyebrow">The three release types</div>
+    <h2 class="section-title">Not every release is the same</h2>
+    <p class="section-desc">MoneyMore has three distinct types of release. Each has a different trigger, a different checklist, and a different level of urgency. Understanding which type you are doing determines everything else.</p>
+
+    <div class="rtype-grid">
+      <div class="rtype-card sprint" onclick="go('checklists');setTimeout(()=>switchCL('sprint',document.getElementById('ctl-sprint')),120)">
+        <div class="rtype-icon">🚂</div>
+        <div class="rtype-name">Sprint release</div>
+        <div class="rtype-desc">The standard release at the end of every sprint. The train leaves on schedule regardless of what is and isn't ready. Unfinished tickets get pulled — they don't delay the train. This is the most common release type.</div>
+        <div class="rtype-when">When: Every sprint end · Every ~2 weeks · Scheduled · No exceptions</div>
+      </div>
+      <div class="rtype-card hotfix" onclick="go('checklists');setTimeout(()=>switchCL('hotfix',document.getElementById('ctl-hotfix')),120)">
+        <div class="rtype-icon">🔥</div>
+        <div class="rtype-name">Hotfix release</div>
+        <div class="rtype-desc">An unplanned release that happens outside the sprint cycle. Only valid for critical bugs that are breaking the app for users right now and cannot wait until the next sprint. Not for nice-to-haves. Not for pressure. Only for critical.</div>
+        <div class="rtype-when">When: Critical bug live in production · Must be approved by Head of Product before starting</div>
+      </div>
+      <div class="rtype-card feature" onclick="go('checklists');setTimeout(()=>switchCL('feature',document.getElementById('ctl-feature')),120)">
+        <div class="rtype-icon">✨</div>
+        <div class="rtype-name">Major feature release</div>
+        <div class="rtype-desc">A sprint release that contains a significant new user-facing feature. Uses the full sprint checklist plus additional gates for user experience, campaign readiness, and staged rollout. Happens as part of the normal sprint cycle — not a separate event.</div>
+        <div class="rtype-when">When: Sprint contains a new feature that changes the user experience meaningfully</div>
+      </div>
+    </div>
+
+    <!-- Release train visual -->
+    <div class="train-wrap">
+      <div class="train-label">The release train — how the two-week cycle works</div>
+      <div class="train-track">
+        <div class="train-stop">
+          <div class="train-dot filled">1</div>
+          <div class="train-stop-label active">Sprint planning · Day 1</div>
+        </div>
+        <div class="train-connector filled"></div>
+        <div class="train-stop">
+          <div class="train-dot filled">⚙</div>
+          <div class="train-stop-label active">Sprint work · Days 2–8</div>
+        </div>
+        <div class="train-connector filled"></div>
+        <div class="train-stop">
+          <div class="train-dot filled">✓</div>
+          <div class="train-stop-label active">QA + sign-off · Day 9</div>
+        </div>
+        <div class="train-connector filled"></div>
+        <div class="train-stop">
+          <div class="train-dot filled">🚂</div>
+          <div class="train-stop-label active">Train departs · Day 10</div>
+        </div>
+        <div class="train-connector"></div>
+        <div class="train-stop">
+          <div class="train-dot hotfix">🔥</div>
+          <div class="train-stop-label" style="color:var(--red)">Hotfix only if critical</div>
+        </div>
+        <div class="train-connector"></div>
+        <div class="train-stop">
+          <div class="train-dot filled">1</div>
+          <div class="train-stop-label active">Next sprint planning</div>
+        </div>
+      </div>
+      <div class="train-note">
+        <strong>The train rule:</strong> On Day 10, the release goes out with whatever is Done. Tickets that are not Done get pulled from the release and moved to the next sprint backlog. The train does not wait. This is intentional — it creates a forcing function for the team to finish things properly rather than rushing incomplete work into a release.
+        <br><br>
+        <strong>Hotfixes</strong> happen between trains only when something is critically broken for users right now — app unusable level. Head of Product must approve before engineering starts the hotfix. Everything else waits for the next train.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CHECKLISTS -->
+<section class="section" id="checklists">
+  <div class="wrap">
+    <div class="section-eyebrow">Interactive checklists — check off as you go</div>
+    <h2 class="section-title">What must be true before anything ships</h2>
+    <p class="section-desc">These checklists are interactive — tap each item to mark it done. Use the progress bar to see release readiness at a glance. A release is only ready when every box is checked. No partial releases.</p>
+
+    <div class="checklist-tabs">
+      <button class="ctl-btn active" id="ctl-sprint" onclick="switchCL('sprint',this)">Sprint release</button>
+      <button class="ctl-btn" id="ctl-hotfix" onclick="switchCL('hotfix',this)">Hotfix release</button>
+      <button class="ctl-btn" id="ctl-feature" onclick="switchCL('feature',this)">Major feature release</button>
+    </div>
+
+    <!-- SPRINT CHECKLIST -->
+    <div class="ctl-panel active" id="panel-sprint">
+      <div class="progress-wrap">
+        <div class="progress-header">
+          <span class="progress-title">Sprint release readiness</span>
+          <div style="display:flex;align-items:center;gap:12px">
+            <span class="progress-count" id="prog-sprint">0 / 0 complete</span>
+            <button class="reset-btn" onclick="resetChecklist('sprint')">Reset</button>
+          </div>
+        </div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="bar-sprint" style="width:0%"></div></div>
+        <div class="progress-status" id="status-sprint">Complete all items to confirm release readiness</div>
+      </div>
+      <div id="checklist-sprint"></div>
+    </div>
+
+    <!-- HOTFIX CHECKLIST -->
+    <div class="ctl-panel" id="panel-hotfix">
+      <div class="progress-wrap">
+        <div class="progress-header">
+          <span class="progress-title">Hotfix release readiness</span>
+          <div style="display:flex;align-items:center;gap:12px">
+            <span class="progress-count" id="prog-hotfix">0 / 0 complete</span>
+            <button class="reset-btn" onclick="resetChecklist('hotfix')">Reset</button>
+          </div>
+        </div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="bar-hotfix" style="width:0%"></div></div>
+        <div class="progress-status" id="status-hotfix">Complete all items to confirm release readiness</div>
+      </div>
+      <div id="checklist-hotfix"></div>
+    </div>
+
+    <!-- FEATURE CHECKLIST -->
+    <div class="ctl-panel" id="panel-feature">
+      <div class="progress-wrap">
+        <div class="progress-header">
+          <span class="progress-title">Major feature release readiness</span>
+          <div style="display:flex;align-items:center;gap:12px">
+            <span class="progress-count" id="prog-feature">0 / 0 complete</span>
+            <button class="reset-btn" onclick="resetChecklist('feature')">Reset</button>
+          </div>
+        </div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="bar-feature" style="width:0%"></div></div>
+        <div class="progress-status" id="status-feature">Complete all items to confirm release readiness</div>
+      </div>
+      <div id="checklist-feature"></div>
+    </div>
+  </div>
+</section>
+
+<!-- STAGED ROLLOUT -->
+<section class="section" id="staged">
+  <div class="wrap">
+    <div class="section-eyebrow">Staged rollouts — no custom engineering required</div>
+    <h2 class="section-title">How to release to a percentage of users first</h2>
+    <p class="section-desc">Both Google Play and the App Store have built-in percentage rollout tools. You do not need to build anything custom. If a release breaks something, it breaks for 10% of users instead of 100%. This is especially important for MoneyMore since a bad release could corrupt SMS transaction data or break OTP for everyone simultaneously.</p>
+
+    <div class="pct-flow">
+      <div class="pct-stop"><div class="pct-circle">10%</div><div class="pct-label">Day 1–2<br>watch</div></div>
+      <div class="pct-arrow">→</div>
+      <div class="pct-stop"><div class="pct-circle">25%</div><div class="pct-label">Day 3–4<br>watch</div></div>
+      <div class="pct-arrow">→</div>
+      <div class="pct-stop"><div class="pct-circle">50%</div><div class="pct-label">Day 5–6<br>watch</div></div>
+      <div class="pct-arrow">→</div>
+      <div class="pct-stop"><div class="pct-circle">100%</div><div class="pct-label">Day 7<br>full rollout</div></div>
+    </div>
+
+    <div class="rollout-grid">
+      <div class="rollout-card">
+        <div class="rollout-platform">Google Play · Android</div>
+        <div class="rollout-title">How to set a staged rollout on Google Play</div>
+        <div class="rollout-steps">
+          <div class="rollout-step"><div class="rollout-step-num">1</div><div class="rollout-step-text">Go to Google Play Console → select MoneyMore app</div></div>
+          <div class="rollout-step"><div class="rollout-step-num">2</div><div class="rollout-step-text">Production → Releases → Create new release</div></div>
+          <div class="rollout-step"><div class="rollout-step-num">3</div><div class="rollout-step-text">Upload the AAB file and fill in the release notes</div></div>
+          <div class="rollout-step"><div class="rollout-step-num">4</div><div class="rollout-step-text">Under "Release to production" — choose "Set rollout percentage"</div></div>
+          <div class="rollout-step"><div class="rollout-step-num">5</div><div class="rollout-step-text">Set to 10%. Submit for review. Once approved, monitor Crashlytics for 48 hours.</div></div>
+          <div class="rollout-step"><div class="rollout-step-num">6</div><div class="rollout-step-text">Increase percentage manually: 25% → 50% → 100% every 2 days if no issues</div></div>
+        </div>
+        <div class="rollout-note">⚠ You can halt a staged rollout at any percentage if a crash spike appears. Go to the release in Play Console and tap "Halt rollout." Users who already updated keep the new version.</div>
+      </div>
+      <div class="rollout-card">
+        <div class="rollout-platform">App Store · iOS — when iOS launches</div>
+        <div class="rollout-title">How to set a phased release on App Store Connect</div>
+        <div class="rollout-steps">
+          <div class="rollout-step"><div class="rollout-step-num">1</div><div class="rollout-step-text">Go to App Store Connect → MoneyMore → prepare new version</div></div>
+          <div class="rollout-step"><div class="rollout-step-num">2</div><div class="rollout-step-text">Fill in version information and release notes</div></div>
+          <div class="rollout-step"><div class="rollout-step-num">3</div><div class="rollout-step-text">Under "Version Release" — select "Automatically release this version" but enable "Phased Release"</div></div>
+          <div class="rollout-step"><div class="rollout-step-num">4</div><div class="rollout-step-text">Apple handles the percentage rollout automatically: 1% → 2% → 5% → 10% → 20% → 50% → 100% over 7 days</div></div>
+          <div class="rollout-step"><div class="rollout-step-num">5</div><div class="rollout-step-text">Monitor Crashlytics daily during the rollout period</div></div>
+          <div class="rollout-step"><div class="rollout-step-num">6</div><div class="rollout-step-text">If a critical issue appears, pause the rollout in App Store Connect → Version → Pause Phased Release</div></div>
+        </div>
+        <div class="rollout-note">ℹ Apple's phased release applies only to users with automatic updates enabled. Users who manually update always get the latest version regardless of rollout percentage.</div>
+      </div>
+    </div>
+
+    <div style="background:var(--white);border:1px solid var(--b1);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:16px 20px;box-shadow:0 1px 4px rgba(0,0,0,0.05)">
+      <div style="font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:8px">When to skip staged rollout and go straight to 100%</div>
+      <div style="font-size:13px;color:var(--t2);line-height:1.6">For hotfix releases fixing a critical bug — go straight to 100% because you need to fix it for everyone immediately. For sprint releases with only bug fixes and no new user-facing features — 100% is also acceptable. Staged rollout is most important when you are shipping a new feature or making changes to core flows like sign-up, SMS reading, or transaction categorisation.</div>
+    </div>
+  </div>
+</section>
+
+<!-- RELEASE NOTE TEMPLATES -->
+<section class="section" id="templates">
+  <div class="wrap">
+    <div class="section-eyebrow">Release note templates</div>
+    <h2 class="section-title">What to write and who writes it</h2>
+    <p class="section-desc">Every release needs two documents. Product writes the user-facing release note — what users see in the App Store and Google Play. Engineering writes the internal technical changelog — what the team uses to understand what changed and why. Neither is optional.</p>
+
+    <div class="template-box">
+      <div class="template-label product">User-facing release note — written by Head of Product · Published on App Store and Google Play</div>
+      <div class="template-content">
+        <span class="tl section">Version [X.X] — [Month Year]</span>
+        <span class="tl"><em>— If this is a bug fix sprint, lead with what was broken and is now fixed —</em></span>
+        <span class="tl">We fixed [plain language description of the main bug — e.g. "an issue where your budget summary wasn't loading on the home screen"].</span>
+        <span class="tl">We also fixed [second bug if applicable — keep it to one sentence].</span>
+        <br>
+        <span class="tl"><em>— If this is a feature sprint, lead with what is new —</em></span>
+        <span class="tl">You can now [plain language description of the new feature — e.g. "set monthly spending limits for each category and we'll track your progress automatically"].</span>
+        <span class="tl">We also improved [supporting change if applicable].</span>
+        <br>
+        <span class="tl"><em>— Always end with this line —</em></span>
+        <span class="tl">Thank you for using MoneyMore. If you run into anything, reach out to us at [support email].</span>
+        <br>
+        <span class="tl" style="color:var(--t4);font-size:10px">Rules: No technical language. No mention of APIs, endpoints, or engineering terms. Write for a user who has never read a release note before. Maximum 5 sentences total. Arabic translation required before publishing.</span>
+      </div>
+    </div>
+
+    <div class="template-box">
+      <div class="template-label eng">Internal technical changelog — written by Engineering Lead · Shared in Slack with the team</div>
+      <div class="template-content">
+        <span class="tl section">Release [X.X] — [Date] — [Sprint name]</span>
+        <span class="tl section">What shipped</span>
+        <span class="tl"><strong>Fix Track</strong></span>
+        <span class="tl">· [Ticket ID] [Fix name] — [one line on what was wrong and what the fix was]</span>
+        <span class="tl">· [Ticket ID] [Fix name] — [one line]</span>
+        <br>
+        <span class="tl"><strong>Build Track</strong></span>
+        <span class="tl">· [Ticket ID] [Feature name] — [one line on what was built]</span>
+        <span class="tl">· [Ticket ID] [Feature name] — [one line]</span>
+        <br>
+        <span class="tl section">What did not ship</span>
+        <span class="tl">· [Ticket ID] [Name] — [one line on why it was pulled — not ready / blocked / deprioritised]</span>
+        <br>
+        <span class="tl section">Known issues going into next sprint</span>
+        <span class="tl">· [Any known issue that is live in production that the team should be aware of]</span>
+        <br>
+        <span class="tl section">Rollout</span>
+        <span class="tl">· Platform: Android [/ iOS when live]</span>
+        <span class="tl">· Rollout type: [Staged — starting at 10% / Full — 100%]</span>
+        <span class="tl">· Monitoring: Crashlytics and New Relic active · First check at [time] tomorrow</span>
+        <span class="tl">· Rollback plan: [What we do if a critical issue appears in the first 24 hours]</span>
+      </div>
+    </div>
+
+    <div style="background:var(--white);border:1px solid var(--b1);border-left:3px solid var(--red);border-radius:0 8px 8px 0;padding:16px 20px;box-shadow:0 1px 4px rgba(0,0,0,0.05)">
+      <div style="font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin-bottom:8px">Rollback plan — what to do if something breaks after release</div>
+      <div style="font-size:13px;color:var(--t2);line-height:1.6;display:flex;flex-direction:column;gap:8px">
+        <div><strong style="color:var(--t1)">If the issue is caught in staged rollout (under 100%):</strong> Halt the rollout immediately in Play Console or App Store Connect. Do not increase the percentage. Fix the issue and create a new build.</div>
+        <div><strong style="color:var(--t1)">If the issue is caught at 100% rollout:</strong> Assess severity first. App unusable level → issue a hotfix immediately. Broken flow level → assess whether it can wait for the next sprint or needs a hotfix. Degraded UX level → add to Fix Track for next sprint.</div>
+        <div><strong style="color:var(--t1)">Google Play rollback:</strong> You can roll back to the previous version in Play Console → Production → previous release → "Re-release." This is faster than submitting a new hotfix build.</div>
+        <div><strong style="color:var(--t1)">App Store rollback:</strong> Apple does not allow rolling back to a previous version. The only option is submitting a new hotfix build through expedited review.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-inner">
+      <div class="footer-text">MoneyMore · Release Process v1.0 · April 2026 · Internal</div>
+      <div class="footer-text">Owner: Head of Growth & Product + Engineering Lead</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── CHECKLIST DATA ───────────────────────────────────────
+const CHECKLISTS = {
+  sprint: [
+    { title:'Engineering sign-off', owner:'eng', items:[
+      { text:'All committed Fix Track tickets are in Done', sub:'If a Fix Track ticket is not Done, it must be pulled from this release and moved to next sprint — it does not go out broken' },
+      { text:'All committed Build Track tickets are in Done or formally pulled', sub:'A pulled ticket must have a Jira comment explaining why it was pulled and when it is expected' },
+      { text:'No critical or high-severity alerts firing in New Relic right now', sub:'Check the Slack channel. If there is an active alert, resolve it before releasing', tag:'critical' },
+      { text:'Crash-free rate on staging build is above 99%', sub:'Check Crashlytics for the staging build. Any crash below 99% must be investigated before releasing', tag:'critical' },
+      { text:'All new Mixpanel events defined in the sprint are firing correctly in staging', sub:'Test each event manually. Check the Mixpanel live view to confirm events appear with the correct properties' },
+      { text:'No regressions introduced — previously working flows still work', sub:'Test sign-up, SMS reading, transaction list, budgets, and offers on staging. These are the five core flows.' },
+      { text:'Arabic text in any new or changed screens has been reviewed by a native speaker', sub:'Do not release untested Arabic copy to production. This includes error messages, button labels, and empty states' },
+    ]},
+    { title:'Product sign-off', owner:'product', items:[
+      { text:'Acceptance criteria met for every Build Track ticket in this release', sub:'Review each ticket\'s acceptance criteria in Jira. If the criteria are not fully met, the ticket must be pulled.' },
+      { text:'User-facing release note written and reviewed', sub:'Use the template in the Release Notes section. Must be in English and Arabic. Must not contain technical language.' },
+      { text:'Ready for Production tickets reviewed and approved in Jira', sub:'Every ticket must pass through the Ready for Production status with product sign-off before it can ship' },
+    ]},
+    { title:'Shared gates', owner:'both', items:[
+      { text:'Internal technical changelog written by engineering lead', sub:'Use the template in the Release Notes section. Must be shared in Slack before the release goes out.', tag:'critical' },
+      { text:'Rollout type decided — staged or full 100%', sub:'Default to staged (10% first) for any release containing new user-facing features. Full 100% is acceptable for bug-fix-only releases.' },
+      { text:'Rollback plan documented', sub:'What happens if a critical issue appears in the first 24 hours? Who is on call? What is the decision threshold for rolling back?' },
+    ]},
+  ],
+  hotfix: [
+    { title:'Before starting — approval gate', owner:'product', items:[
+      { text:'Head of Product has approved this hotfix', sub:'A hotfix is only valid for App unusable or Broken flow level issues that cannot wait for the next sprint. Get explicit approval before engineering starts work.', tag:'critical' },
+      { text:'The bug has been confirmed in production, not just staging', sub:'Reproduce the issue in production. Screenshot or record it. Confirm the impact level — how many users are affected and what exactly cannot they do?' },
+    ]},
+    { title:'Engineering', owner:'eng', items:[
+      { text:'Root cause identified and understood before writing the fix', sub:'Do not push a fix without understanding why the bug happened. A fix without root cause understanding risks introducing a new bug.' },
+      { text:'Fix verified in staging — the original bug no longer reproduces', sub:'Test the exact scenario that caused the bug. Confirm it is resolved. Test adjacent flows to confirm no new regressions.', tag:'critical' },
+      { text:'Crash-free rate on the hotfix staging build is above 99%', sub:'Check Crashlytics. A hotfix that introduces a new crash is worse than the original bug.', tag:'critical' },
+      { text:'Relevant Mixpanel events still firing correctly after the fix', sub:'Especially important if the fix touches OTP, transaction import, or budget flows' },
+    ]},
+    { title:'Release', owner:'both', items:[
+      { text:'Hotfix release note written — one sentence explaining what was fixed', sub:'Example: "We fixed a critical issue where some users were unable to verify their phone number." No technical language.' },
+      { text:'Internal technical changelog updated with the hotfix details', sub:'What was broken, what caused it, what the fix was, when it was released, and how to verify it is working' },
+      { text:'Rollout type: full 100% (hotfixes always go to everyone immediately)', sub:'Do not stage a hotfix. The whole point is to fix the issue for all affected users as fast as possible.', tag:'critical' },
+      { text:'New Relic and Crashlytics monitoring active — first check within 2 hours of release', sub:'Do not release a hotfix and walk away. Someone must be monitoring for at least 2 hours after it goes live.' },
+    ]},
+  ],
+  feature: [
+    { title:'Everything in the Sprint release checklist', owner:'both', items:[
+      { text:'Sprint release checklist completed first', sub:'The major feature checklist is in addition to the sprint checklist, not instead of it. Complete that one first.', tag:'critical' },
+    ]},
+    { title:'Product — feature readiness', owner:'product', items:[
+      { text:'Design Brief for the feature has been reviewed against what actually shipped', sub:'Open the Design Brief and compare it to the staging build. Every decision documented in the brief must be reflected in the build, or explicitly deferred with a reason.' },
+      { text:'All three user segments tested — salary workers, freelancers, students', sub:'The feature must work for all three segments. Test with accounts that represent each segment. Edge cases for each segment must be documented.' },
+      { text:'Empty states, error states, and loading states designed and implemented', sub:'Do not release a feature that only handles the happy path. Every state the user can see must be designed.' },
+      { text:'The feature has been tested end-to-end by someone who was not involved in building it', sub:'Product tests it. Or a team member who did not work on the feature. Fresh eyes catch what builders miss.' },
+      { text:'Any open questions from the Design Brief have been resolved or consciously deferred', sub:'Open questions that are deferred must be documented as known limitations, not silently ignored' },
+    ]},
+    { title:'Engineering — feature stability', owner:'eng', items:[
+      { text:'Feature tested on both low-end and high-end Android devices', sub:'MoneyMore users are on a wide range of Android devices. Test on at least one low-spec device (2GB RAM, older Android version) as well as a flagship.' },
+      { text:'Feature tested with a slow network connection (3G simulation)', sub:'Egyptian users frequently experience slow connections. Test the feature with network throttling enabled in developer tools.' },
+      { text:'All new Mixpanel events for the feature are firing with correct properties', sub:'Reference the event list in the Design Brief. Every event must be verified in Mixpanel live view before releasing.', tag:'critical' },
+      { text:'Memory and performance impact assessed — no significant increase in crash or ANR rate on staging', sub:'New features sometimes introduce memory leaks. Check Crashlytics for any increase in OOM kills on the staging build.' },
+    ]},
+    { title:'Growth — campaign readiness', owner:'product', items:[
+      { text:'Relevant CleverTap campaigns are ready to activate on release day', sub:'Any campaigns tied to this feature (surveys, push notifications, in-app messages) must be set up and tested in staging before the release goes out.' },
+      { text:'Staged rollout plan agreed — what percentage and for how long', sub:'Major features should default to a staged rollout. Agree the percentage schedule with engineering before releasing.' },
+      { text:'Success metric defined — how will we know in 2 weeks if this feature worked', sub:'Define the Mixpanel metric that indicates success. If the feature is budget creation, the metric might be Budget Created events per week. Write this down.' },
+    ]},
+  ],
+};
+
+function renderChecklists(){
+  Object.entries(CHECKLISTS).forEach(([id, groups])=>{
+    const container=document.getElementById('checklist-'+id);
+    groups.forEach((group,gi)=>{
+      const div=document.createElement('div');
+      div.className='checklist-group';
+      const hdr=document.createElement('div');
+      hdr.className='cg-header';
+      const ownerLabel={eng:'Engineering',product:'Product',both:'Engineering + Product'}[group.owner]||group.owner;
+      hdr.innerHTML=`<span class="cg-title">${group.title}</span><span class="cg-owner ${group.owner}">${ownerLabel}</span><span class="cg-chev">›</span>`;
+      const body=document.createElement('div');
+      body.className='cg-body';
+      hdr.onclick=()=>{hdr.classList.toggle('collapsed');body.classList.toggle('hidden')};
+      group.items.forEach((item,ii)=>{
+        const row=document.createElement('div');
+        row.className='check-item';
+        row.dataset.checklist=id;
+        const tagHtml=item.tag?`<span class="check-tag ${item.tag}">${item.tag}</span>`:'';
+        row.innerHTML=`<div class="check-box"></div><div class="check-content"><div class="check-text">${item.text}${tagHtml}</div><div class="check-sub">${item.sub}</div></div>`;
+        row.onclick=()=>{row.classList.toggle('checked');updateProgress(id)};
+        body.appendChild(row);
+      });
+      div.appendChild(hdr);div.appendChild(body);
+      container.appendChild(div);
+    });
+    updateProgress(id);
+  });
+}
+
+function updateProgress(id){
+  const all=[...document.querySelectorAll(`[data-checklist="${id}"]`)];
+  const done=all.filter(r=>r.classList.contains('checked')).length;
+  const total=all.length;
+  const pct=total?Math.round(done/total*100):0;
+  document.getElementById('prog-'+id).textContent=`${done} / ${total} complete`;
+  document.getElementById('bar-'+id).style.width=pct+'%';
+  const status=document.getElementById('status-'+id);
+  if(done===total&&total>0){status.textContent='✓ Ready to release';status.className='progress-status ready';}
+  else if(pct>=50){status.textContent=`${pct}% complete — ${total-done} item${total-done>1?'s':''} remaining`;status.className='progress-status';}
+  else{status.textContent=`${pct}% complete — work through each section before releasing`;status.className='progress-status';}
+}
+
+function resetChecklist(id){
+  document.querySelectorAll(`[data-checklist="${id}"]`).forEach(r=>r.classList.remove('checked'));
+  updateProgress(id);
+}
+
+function switchCL(id,btn){
+  document.querySelectorAll('.ctl-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.ctl-panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-'+id).classList.add('active');
+}
+
+function go(id){document.getElementById(id).scrollIntoView({behavior:'smooth'})}
+
+renderChecklists();
+</script>
+</body>
+</html>
