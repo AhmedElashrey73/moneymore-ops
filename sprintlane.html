@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoneyMore — Sprint Board Guide</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+:root{
+  --navy:#1A3C5E; --navy-l:#EEF3F8; --navy-m:#2A5080;
+  --green:#2A8050; --green-l:#EAF4EE; --green-m:#1C5A38;
+  --red:#B83020; --red-l:#FDECEA;
+  --gold:#B87818; --gold-l:#FDF4E0;
+  --blue:#1A5898; --blue-l:#EAF0FB;
+  --pu:#5850B8; --pu-l:#EEEDFB;
+  --page:#F8F7F4; --white:#FFFFFF;
+  --s2:#F3F2EE; --s3:#E8E5E0;
+  --t1:#1A1814; --t2:#3A3530; --t3:#6A6560; --t4:#A8A4A0;
+  --b1:#E8E5E0; --b2:#D0CDC8; --b3:#B0ADA8;
+  --sans:'Plus Jakarta Sans',sans-serif;
+  --mono:'DM Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--page);color:var(--t1);font-family:var(--sans);-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.6}
+
+/* NAV */
+.topnav{background:var(--navy);position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.15)}
+.topnav-inner{max-width:1280px;margin:0 auto;padding:0 32px;display:flex;align-items:center;height:50px;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;flex-shrink:0;margin-right:8px}
+.brand-icon{width:26px;height:26px;background:rgba(255,255,255,0.12);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px}
+.brand-name{font-family:var(--mono);font-size:11px;font-weight:500;color:white;letter-spacing:.06em}
+.nav-pills{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;flex:1}
+.nav-pills::-webkit-scrollbar{display:none}
+.npill{padding:5px 13px;border-radius:3px;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,0.5);cursor:pointer;white-space:nowrap;transition:all .15s;border:none;background:transparent}
+.npill:hover{color:white}
+.npill.active{color:var(--navy);background:rgba(255,255,255,0.92);font-weight:500}
+.nav-meta{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,0.35);letter-spacing:.1em;flex-shrink:0}
+
+.wrap{max-width:1280px;margin:0 auto;padding:0 32px}
+
+/* HERO */
+.hero{background:var(--navy);padding:44px 0 40px;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;top:-60px;right:-80px;width:400px;height:400px;background:radial-gradient(circle,rgba(42,128,80,0.12) 0%,transparent 70%);pointer-events:none}
+.eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:rgba(255,255,255,0.4);text-transform:uppercase;margin-bottom:12px}
+.hero-title{font-size:clamp(24px,3.5vw,38px);font-weight:700;color:white;letter-spacing:-.025em;line-height:1.1;margin-bottom:12px}
+.hero-title em{font-style:normal;color:#6BD4A8}
+.hero-sub{font-size:13px;color:rgba(255,255,255,0.6);line-height:1.75;max-width:600px;margin-bottom:28px}
+.meta-strip{display:flex;gap:6px;flex-wrap:wrap}
+.meta-chip{display:flex;align-items:center;gap:6px;padding:5px 11px;border:1px solid rgba(255,255,255,0.12);border-radius:3px;font-family:var(--mono);font-size:9px;color:rgba(255,255,255,0.5);letter-spacing:.06em}
+.meta-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+
+/* SECTION */
+.section{padding:36px 0;border-bottom:1px solid var(--b1)}
+.section-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--t4);margin-bottom:14px}
+.section-title{font-size:20px;font-weight:700;color:var(--t1);letter-spacing:-.02em;margin-bottom:8px}
+.section-desc{font-size:13px;color:var(--t3);line-height:1.7;max-width:680px;margin-bottom:24px}
+
+/* ── LABEL CARDS ────────────────────────────────── */
+.label-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.label-card{background:var(--white);border:1px solid var(--b1);border-radius:8px;padding:18px;box-shadow:0 1px 4px rgba(0,0,0,0.05);position:relative;overflow:hidden}
+.label-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.label-card.fix::before{background:var(--red)}
+.label-card.build::before{background:var(--green)}
+.label-card.blocked::before{background:var(--gold)}
+.label-pill{display:inline-block;font-family:var(--mono);font-size:10px;font-weight:500;padding:3px 10px;border-radius:3px;margin-bottom:10px;letter-spacing:.04em}
+.label-card.fix .label-pill{background:var(--red-l);color:var(--red);border:1px solid rgba(184,48,32,.2)}
+.label-card.build .label-pill{background:var(--green-l);color:var(--green);border:1px solid rgba(42,128,80,.2)}
+.label-card.blocked .label-pill{background:var(--gold-l);color:var(--gold);border:1px solid rgba(184,120,24,.2)}
+.label-title{font-size:13px;font-weight:700;color:var(--t1);margin-bottom:6px}
+.label-desc{font-size:12px;color:var(--t3);line-height:1.6;margin-bottom:10px}
+.label-rule{font-family:var(--mono);font-size:10px;color:var(--t3);line-height:1.5;background:var(--s2);padding:7px 10px;border-radius:4px}
+
+/* ── BOARD VISUAL ───────────────────────────────── */
+.board-scroll{overflow-x:auto;padding-bottom:8px;margin:0 -4px;padding:0 4px 12px}
+.board-scroll::-webkit-scrollbar{height:4px}
+.board-scroll::-webkit-scrollbar-track{background:var(--b1);border-radius:2px}
+.board-scroll::-webkit-scrollbar-thumb{background:var(--b2);border-radius:2px}
+.board{min-width:980px}
+
+.board-cols{display:grid;grid-template-columns:148px repeat(6,1fr);gap:6px;margin-bottom:6px;padding-bottom:10px;border-bottom:2px solid var(--b1)}
+.col-hdr{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--t4);text-align:center;padding:5px 4px}
+
+.lane{display:grid;grid-template-columns:148px repeat(6,1fr);gap:6px;margin-bottom:6px}
+
+.lane-label{display:flex;flex-direction:column;justify-content:center;padding:10px 12px;border-radius:6px;border:1px solid var(--b1);background:var(--white);position:relative;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.05)}
+.lane-label::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.lane-label.fix::before{background:var(--red)}
+.lane-label.build::before{background:var(--green)}
+.lane-label.blocked::before{background:var(--gold)}
+.lane-tag{font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;font-weight:500;margin-bottom:3px}
+.lane-label.fix .lane-tag{color:var(--red)}
+.lane-label.build .lane-tag{color:var(--green)}
+.lane-label.blocked .lane-tag{color:var(--gold)}
+.lane-sub{font-size:10px;color:var(--t4);line-height:1.35}
+
+.lane-cell{background:var(--s2);border:1px solid var(--b1);border-radius:6px;padding:6px;min-height:76px;display:flex;flex-direction:column;gap:5px}
+.lane-cell.empty{background:var(--page);border-style:dashed;border-color:var(--b2)}
+
+/* Ticket */
+.ticket{background:var(--white);border:1px solid var(--b1);border-radius:5px;padding:7px 9px;position:relative;overflow:hidden;cursor:default;transition:box-shadow .15s;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
+.ticket:hover{box-shadow:0 2px 8px rgba(0,0,0,0.1)}
+.ticket::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.ticket.fix::before{background:var(--red)}
+.ticket.build::before{background:var(--green)}
+.ticket.blocked-t::before{background:var(--gold)}
+.ticket-id{font-family:var(--mono);font-size:9px;color:var(--t4);margin-bottom:3px}
+.ticket-title{font-size:11px;color:var(--t1);line-height:1.35;font-weight:500}
+.ticket-meta{display:flex;gap:4px;margin-top:5px;flex-wrap:wrap}
+.t-label{font-family:var(--mono);font-size:8px;padding:1px 5px;border-radius:2px;letter-spacing:.04em}
+.t-label.fix{background:var(--red-l);color:var(--red);border:1px solid rgba(184,48,32,.2)}
+.t-label.build{background:var(--green-l);color:var(--green);border:1px solid rgba(42,128,80,.2)}
+.t-label.blocked{background:var(--gold-l);color:var(--gold);border:1px solid rgba(184,120,24,.2)}
+.t-label.sm{background:var(--blue-l);color:var(--blue);border:1px solid rgba(26,88,152,.2)}
+.t-label.lg{background:var(--pu-l);color:var(--pu);border:1px solid rgba(88,80,184,.2)}
+
+/* ── STATUS CARDS ────────────────────────────────── */
+.status-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.status-card{background:var(--white);border:1px solid var(--b1);border-radius:8px;padding:18px;box-shadow:0 1px 4px rgba(0,0,0,0.05);position:relative;overflow:hidden}
+.status-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.sc-todo::before{background:var(--t4)}
+.sc-progress::before{background:var(--blue)}
+.sc-review::before{background:var(--pu)}
+.sc-qa::before{background:var(--gold)}
+.sc-ready::before{background:var(--green)}
+.sc-done::before{background:var(--navy)}
+.status-name{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--t1);margin-bottom:5px;font-weight:500}
+.status-who{font-family:var(--mono);font-size:9px;color:var(--t4);margin-bottom:8px;letter-spacing:.02em}
+.status-def{font-size:12px;color:var(--t2);line-height:1.6;margin-bottom:10px}
+.status-rule{font-size:11px;color:var(--navy);background:var(--navy-l);border:1px solid rgba(26,60,94,.12);border-radius:4px;padding:6px 9px;line-height:1.5;font-family:var(--mono)}
+
+/* ── RESPONSIBILITY TABLE ───────────────────────── */
+.resp-table{width:100%;border-collapse:collapse;background:var(--white);border-radius:8px;overflow:hidden;border:1px solid var(--b1);box-shadow:0 1px 4px rgba(0,0,0,0.05)}
+.resp-table th{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--t4);text-align:left;padding:10px 14px;border-bottom:1px solid var(--b1);background:var(--s2);font-weight:500}
+.resp-table td{font-size:12px;color:var(--t2);padding:10px 14px;border-bottom:1px solid var(--b1);vertical-align:top;line-height:1.5}
+.resp-table tr:last-child td{border-bottom:none}
+.resp-table tr:hover td{background:var(--s2)}
+.who{font-family:var(--mono);font-size:10px;font-weight:500;white-space:nowrap;padding:2px 7px;border-radius:3px;display:inline-block}
+.who.eng{background:var(--green-l);color:var(--green)}
+.who.eng-lead{background:var(--gold-l);color:var(--gold)}
+.who.product{background:var(--navy-l);color:var(--navy)}
+.who.both{background:var(--pu-l);color:var(--pu)}
+
+/* ── BLOCKER PROTOCOL ───────────────────────────── */
+.blocker-box{background:var(--white);border:1px solid var(--b1);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:20px 24px;box-shadow:0 1px 4px rgba(0,0,0,0.05)}
+.blocker-title{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--b1)}
+.blocker-steps{display:flex;flex-direction:column;gap:8px}
+.bstep{display:flex;align-items:flex-start;gap:12px;padding:10px 14px;background:var(--s2);border-radius:6px;border:1px solid var(--b1)}
+.bstep-num{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--gold);flex-shrink:0;min-width:20px}
+.bstep-title{font-size:12px;font-weight:600;color:var(--t1);margin-bottom:3px}
+.bstep-desc{font-size:11.5px;color:var(--t3);line-height:1.5}
+
+/* ── COMPARE ─────────────────────────────────────── */
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.compare-card{background:var(--white);border:1px solid var(--b1);border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.05)}
+.compare-head{padding:12px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--b1)}
+.compare-head.good{background:var(--green-l)}
+.compare-head.bad{background:var(--red-l)}
+.compare-icon{font-size:15px}
+.compare-label{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:500}
+.compare-head.good .compare-label{color:var(--green)}
+.compare-head.bad .compare-label{color:var(--red)}
+.compare-items{padding:14px 16px;display:flex;flex-direction:column;gap:7px}
+.compare-item{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--t2);line-height:1.5}
+.compare-item::before{flex-shrink:0;margin-top:1px;font-size:11px;font-weight:700}
+.compare-item.good::before{content:'✓';color:var(--green)}
+.compare-item.bad::before{content:'✗';color:var(--red)}
+
+/* ── TIMELINE ────────────────────────────────────── */
+.timeline{display:flex;overflow-x:auto;border:1px solid var(--b1);border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.05)}
+.timeline::-webkit-scrollbar{height:4px}
+.timeline::-webkit-scrollbar-track{background:var(--b1)}
+.timeline::-webkit-scrollbar-thumb{background:var(--b2)}
+.tday{flex-shrink:0;width:140px;border-right:1px solid var(--b1);background:var(--white)}
+.tday:last-child{border-right:none}
+.tday-head{padding:10px;border-bottom:1px solid var(--b1);background:var(--s2)}
+.tday-head.key{background:var(--navy);border-bottom-color:var(--navy-m)}
+.tday-num{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--t4)}
+.tday-head.key .tday-num{color:rgba(255,255,255,0.5)}
+.tday-name{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--t1);margin-top:2px}
+.tday-head.key .tday-name{color:white}
+.tday-body{padding:10px;min-height:130px;display:flex;flex-direction:column;gap:6px}
+.tday-event{background:var(--s2);border:1px solid var(--b1);border-radius:4px;padding:7px 8px;font-size:10px;color:var(--t3);line-height:1.45}
+.tday-event.board{border-color:rgba(26,60,94,.2);background:var(--navy-l)}
+.tday-event.board span{color:var(--navy);font-weight:600;display:block;margin-bottom:2px;font-family:var(--mono);font-size:9px;letter-spacing:.04em}
+.tday-event.sig{border-color:rgba(42,128,80,.2);background:var(--green-l)}
+.tday-event.sig span{color:var(--green);font-weight:600;display:block;margin-bottom:2px;font-family:var(--mono);font-size:9px}
+
+/* FOOTER */
+.site-footer{background:var(--navy);padding:24px 0;margin-top:0}
+.footer-inner{display:flex;align-items:center;justify-content:space-between}
+.footer-text{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,0.35);letter-spacing:.08em}
+
+@media(max-width:900px){
+  .label-grid,.status-grid,.compare-grid{grid-template-columns:1fr}
+  .wrap{padding:0 16px}
+  .topnav-inner{padding:0 16px}
+}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <div class="brand">
+      <div class="brand-icon">🏃</div>
+      <span class="brand-name">MoneyMore</span>
+    </div>
+    <div class="nav-pills">
+      <button class="npill active" onclick="scrollTo(0,0)">Overview</button>
+      <button class="npill" onclick="go('labels')">Labels</button>
+      <button class="npill" onclick="go('board')">Board visual</button>
+      <button class="npill" onclick="go('statuses')">Statuses</button>
+      <button class="npill" onclick="go('rules')">Rules</button>
+      <button class="npill" onclick="go('rhythm')">Sprint rhythm</button>
+      <button class="npill" onclick="go('health')">Healthy vs broken</button>
+    </div>
+    <div class="nav-meta">v1.0 · Apr 2026</div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow">MoneyMore · Sprint Board Guide</div>
+    <h1 class="hero-title">One board. Two tracks.<br><em>Clear flow left to right.</em></h1>
+    <p class="hero-sub">The board is not chaotic because of the statuses — those are fine. It is chaotic because Fix and Build tickets are mixed together with no visual separation. This guide defines the swim lane structure, who moves tickets and when, and what a healthy sprint board looks like.</p>
+    <div class="meta-strip">
+      <div class="meta-chip"><div class="meta-dot" style="background:#F87878"></div>Fix Track — bugs and broken experiences</div>
+      <div class="meta-chip"><div class="meta-dot" style="background:#6BD4A8"></div>Build Track — new features and improvements</div>
+      <div class="meta-chip"><div class="meta-dot" style="background:#F0C84A"></div>Blocked — stuck, needs a decision</div>
+      <div class="meta-chip"><div class="meta-dot" style="background:rgba(255,255,255,0.4)"></div>Tool: Jira · Swim lanes by label</div>
+    </div>
+  </div>
+</section>
+
+<!-- LABELS -->
+<section class="section" id="labels">
+  <div class="wrap">
+    <div class="section-eyebrow">Step 1 — the label system</div>
+    <h2 class="section-title">Every ticket gets one label at sprint planning</h2>
+    <p class="section-desc">Labels are how Jira knows which swim lane a ticket belongs to. At sprint planning, before the sprint starts, every ticket gets one of three labels. This takes 30 seconds per ticket and is the engineering lead's responsibility to enforce before the sprint begins.</p>
+    <div class="label-grid">
+      <div class="label-card fix">
+        <div class="label-pill">fix-track</div>
+        <div class="label-title">Fix Track</div>
+        <div class="label-desc">A bug, error, or broken user experience that is live in production right now. Something that exists and is wrong. Examples: FIX-001 budgets 404, FIX-003 OTP failure, any crash surfaced from Crashlytics.</div>
+        <div class="label-rule">~35% of sprint capacity · Always has priority over Build Track</div>
+      </div>
+      <div class="label-card build">
+        <div class="label-pill">build-track</div>
+        <div class="label-title">Build Track</div>
+        <div class="label-desc">A new feature, improvement, or capability being built for the first time. Something that does not exist yet. Examples: budget creation redesign, sign-up flow, notification bell, new Offers screen.</div>
+        <div class="label-rule">~65% of sprint capacity · Can be deprioritised if Fix Track overflows</div>
+      </div>
+      <div class="label-card blocked">
+        <div class="label-pill">blocked</div>
+        <div class="label-title">Blocked</div>
+        <div class="label-desc">A ticket that cannot move forward right now — waiting on a decision, a dependency, a design file, or an API spec. Any ticket can become blocked at any point during the sprint. Adding this label surfaces it immediately to everyone.</div>
+        <div class="label-rule">Must be accompanied by a comment: what is it waiting on, and who owns unblocking it</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOARD VISUAL -->
+<section class="section" id="board">
+  <div class="wrap">
+    <div class="section-eyebrow">Step 2 — what the board looks like</div>
+    <h2 class="section-title">Three swim lanes · Six statuses · One clear flow</h2>
+    <p class="section-desc">This is what the Jira active sprint board should look like with swim lanes enabled. Each horizontal lane is one track. Tickets move left to right only. Click any ticket to see its details — the examples below are all real MoneyMore issues.</p>
+    <div class="board-scroll">
+      <div class="board">
+        <div class="board-cols">
+          <div class="col-hdr"></div>
+          <div class="col-hdr">To Do</div>
+          <div class="col-hdr">In Progress</div>
+          <div class="col-hdr">In Review</div>
+          <div class="col-hdr">QA / Validate</div>
+          <div class="col-hdr">Ready for Prod</div>
+          <div class="col-hdr">Done</div>
+        </div>
+
+        <!-- Fix Track -->
+        <div class="lane">
+          <div class="lane-label fix">
+            <div class="lane-tag">Fix Track</div>
+            <div class="lane-sub">Bugs & broken UX · 35%</div>
+          </div>
+          <div class="lane-cell">
+            <div class="ticket fix">
+              <div class="ticket-id">MM-084</div>
+              <div class="ticket-title">OTP delivery failure — FIX-003</div>
+              <div class="ticket-meta"><span class="t-label fix">fix-track</span><span class="t-label sm">Small</span></div>
+            </div>
+          </div>
+          <div class="lane-cell">
+            <div class="ticket fix">
+              <div class="ticket-id">MM-071</div>
+              <div class="ticket-title">/budgets/monthly 404 on every session — FIX-001</div>
+              <div class="ticket-meta"><span class="t-label fix">fix-track</span><span class="t-label lg">Large</span></div>
+            </div>
+          </div>
+          <div class="lane-cell empty"></div>
+          <div class="lane-cell">
+            <div class="ticket fix">
+              <div class="ticket-id">MM-079</div>
+              <div class="ticket-title">Manual transaction 400 error — FIX-002</div>
+              <div class="ticket-meta"><span class="t-label fix">fix-track</span><span class="t-label sm">Small</span></div>
+            </div>
+          </div>
+          <div class="lane-cell empty"></div>
+          <div class="lane-cell">
+            <div class="ticket fix">
+              <div class="ticket-id">MM-068</div>
+              <div class="ticket-title">Category spending error home screen — FIX-004</div>
+              <div class="ticket-meta"><span class="t-label fix">fix-track</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Build Track -->
+        <div class="lane">
+          <div class="lane-label build">
+            <div class="lane-tag">Build Track</div>
+            <div class="lane-sub">New features · 65%</div>
+          </div>
+          <div class="lane-cell">
+            <div class="ticket build">
+              <div class="ticket-id">MM-091</div>
+              <div class="ticket-title">Budget creation — amount input screen</div>
+              <div class="ticket-meta"><span class="t-label build">build-track</span><span class="t-label lg">Large</span></div>
+            </div>
+            <div class="ticket build">
+              <div class="ticket-id">MM-092</div>
+              <div class="ticket-title">Budget confirmation + Survey 3 inline</div>
+              <div class="ticket-meta"><span class="t-label build">build-track</span><span class="t-label sm">Small</span></div>
+            </div>
+          </div>
+          <div class="lane-cell">
+            <div class="ticket build">
+              <div class="ticket-id">MM-088</div>
+              <div class="ticket-title">Notification bell — unread badge count</div>
+              <div class="ticket-meta"><span class="t-label build">build-track</span><span class="t-label sm">Small</span></div>
+            </div>
+          </div>
+          <div class="lane-cell">
+            <div class="ticket build">
+              <div class="ticket-id">MM-085</div>
+              <div class="ticket-title">Home empty state — connect bank SMS CTA</div>
+              <div class="ticket-meta"><span class="t-label build">build-track</span></div>
+            </div>
+          </div>
+          <div class="lane-cell empty"></div>
+          <div class="lane-cell">
+            <div class="ticket build">
+              <div class="ticket-id">MM-080</div>
+              <div class="ticket-title">Transaction list skeleton loading state</div>
+              <div class="ticket-meta"><span class="t-label build">build-track</span></div>
+            </div>
+          </div>
+          <div class="lane-cell">
+            <div class="ticket build">
+              <div class="ticket-id">MM-077</div>
+              <div class="ticket-title">Budgets tab — progress bar component</div>
+              <div class="ticket-meta"><span class="t-label build">build-track</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Blocked -->
+        <div class="lane">
+          <div class="lane-label blocked">
+            <div class="lane-tag">Blocked</div>
+            <div class="lane-sub">Needs decision or dependency</div>
+          </div>
+          <div class="lane-cell empty"></div>
+          <div class="lane-cell">
+            <div class="ticket blocked-t">
+              <div class="ticket-id">MM-089</div>
+              <div class="ticket-title">Sign-up — phone validation logic</div>
+              <div class="ticket-meta"><span class="t-label blocked">blocked</span><span class="t-label build">build-track</span></div>
+            </div>
+          </div>
+          <div class="lane-cell empty"></div>
+          <div class="lane-cell empty"></div>
+          <div class="lane-cell empty"></div>
+          <div class="lane-cell empty"></div>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:11px;color:var(--t4);margin-top:10px;font-family:var(--mono);letter-spacing:.04em">↑ MM-089 is blocked mid-sprint. It carries both a blocked label and its original build-track label, so Jira places it in the blocked lane automatically while keeping its track identity.</p>
+  </div>
+</section>
+
+<!-- STATUSES -->
+<section class="section" id="statuses">
+  <div class="wrap">
+    <div class="section-eyebrow">Step 3 — what each status actually means</div>
+    <h2 class="section-title">Six statuses. Plain language definitions.</h2>
+    <p class="section-desc">These are your existing Jira statuses. The definitions below are what each one actually means for MoneyMore — not the Jira default description. Engineering reads these once and knows exactly when to move a ticket.</p>
+    <div class="status-grid">
+      <div class="status-card sc-todo">
+        <div class="status-name">To Do</div>
+        <div class="status-who">Set by: Engineering lead at sprint planning</div>
+        <div class="status-def">Ticket is committed to this sprint and scoped. The assigned engineer has not started yet. All tickets enter the sprint in this status.</div>
+        <div class="status-rule">No ticket sits in To Do for more than 3 working days. If it does, it is wrongly committed or needs the blocked label.</div>
+      </div>
+      <div class="status-card sc-progress">
+        <div class="status-name">In Progress</div>
+        <div class="status-who">Moved by: Assigned engineer, the moment they start</div>
+        <div class="status-def">An engineer is actively working on this ticket. Code is being written or investigation is actively happening. One engineer per ticket — no joint ownership.</div>
+        <div class="status-rule">Engineers move their own ticket to In Progress the moment they start. Not the next day. Not after standup. The moment they pick it up.</div>
+      </div>
+      <div class="status-card sc-review">
+        <div class="status-name">In Review</div>
+        <div class="status-who">Moved by: Assigned engineer, when PR is opened</div>
+        <div class="status-def">Code is written and a pull request is open waiting for peer review. The engineer is not idle — they can pick up a smaller task while waiting.</div>
+        <div class="status-rule">PRs must be reviewed within one working day. Sitting in review for 2+ days without comment is a blocker — flag it at next standup.</div>
+      </div>
+      <div class="status-card sc-qa">
+        <div class="status-name">QA / Validate</div>
+        <div class="status-who">Moved by: Engineer after PR is merged to QA environment</div>
+        <div class="status-def">Fix or feature is deployed to QA and being tested. Fix Track: verify the bug no longer reproduces. Build Track: functional testing against acceptance criteria.</div>
+        <div class="status-rule">Ticket must have a comment describing what was tested and the result before it moves to Ready for Production.</div>
+      </div>
+      <div class="status-card sc-ready">
+        <div class="status-name">Ready for Production</div>
+        <div class="status-who">Moved by: Engineering lead after QA sign-off</div>
+        <div class="status-def">QA passed. Change is on the internal test build. Waiting for product sign-off before going live. This is the gate product owns — nothing moves to Done without product seeing it here.</div>
+        <div class="status-rule">Product must respond within one working day. If product does not respond, engineering lead escalates. Silence is not approval.</div>
+      </div>
+      <div class="status-card sc-done">
+        <div class="status-name">Done</div>
+        <div class="status-who">Moved by: Engineering lead after product sign-off</div>
+        <div class="status-def">Change is live in production and confirmed working. For Fix Track, the original bug must be verified fixed in production — not just in QA. Done means users are no longer experiencing the problem.</div>
+        <div class="status-rule">Fix Track tickets moved to Done must have the Mixpanel event or New Relic signal confirming the fix works in production as a comment.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RULES -->
+<section class="section" id="rules">
+  <div class="wrap">
+    <div class="section-eyebrow">Step 4 — who does what</div>
+    <h2 class="section-title">Ownership — no ambiguity</h2>
+    <p class="section-desc">The engineering lead should not be the single point of failure for ticket updates. Every engineer owns moving their own tickets. Engineering lead owns enforcement and escalation — not the updates themselves.</p>
+    <table class="resp-table" style="margin-bottom:28px">
+      <thead>
+        <tr>
+          <th>Action</th><th>Who</th><th>When</th><th>If it doesn't happen</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Label every ticket fix-track or build-track</td><td><span class="who eng-lead">Eng lead</span></td><td>Sprint planning, before sprint starts</td><td>Swim lanes don't work — board stays chaotic</td></tr>
+        <tr><td>Move ticket To Do → In Progress</td><td><span class="who eng">Engineer</span></td><td>The moment they start working</td><td>Eng lead calls it out at next standup</td></tr>
+        <tr><td>Move ticket In Progress → In Review</td><td><span class="who eng">Engineer</span></td><td>When PR is opened</td><td>Eng lead calls it out at next standup</td></tr>
+        <tr><td>Move ticket In Review → QA</td><td><span class="who eng">Engineer</span></td><td>When PR is merged to QA environment</td><td>Eng lead calls it out at next standup</td></tr>
+        <tr><td>Add blocked label when stuck</td><td><span class="who eng">Engineer</span></td><td>The moment forward progress stops</td><td>Blocker invisible — nobody can help</td></tr>
+        <tr><td>Add comment explaining what the blocker is</td><td><span class="who eng">Engineer</span></td><td>Same time as adding blocked label</td><td>Nobody knows how to unblock it</td></tr>
+        <tr><td>Move ticket QA → Ready for Production</td><td><span class="who eng-lead">Eng lead</span></td><td>After QA sign-off with test comment</td><td>Product doesn't know it is ready for review</td></tr>
+        <tr><td>Sign off on Ready for Production tickets</td><td><span class="who product">Head of Product</span></td><td>Within one working day</td><td>Eng lead escalates — nothing ships without sign-off</td></tr>
+        <tr><td>Move ticket Ready for Production → Done</td><td><span class="who eng-lead">Eng lead</span></td><td>After product sign-off, confirmed live</td><td>Board shows Ready when items are actually live</td></tr>
+        <tr><td>Review board for stuck tickets</td><td><span class="who both">Both</span></td><td>Sprint Day 3 and Day 8</td><td>Blockers surface too late to resolve in sprint</td></tr>
+      </tbody>
+    </table>
+
+    <div class="section-eyebrow" style="margin-bottom:14px">Blocked ticket protocol</div>
+    <div class="blocker-box">
+      <div class="blocker-title">What to do the moment you are blocked</div>
+      <div class="blocker-steps">
+        <div class="bstep"><div class="bstep-num">1</div><div><div class="bstep-title">Add the blocked label immediately</div><div class="bstep-desc">Do not wait until standup. The moment forward progress stops, add the label. It surfaces to product and the engineering lead instantly.</div></div></div>
+        <div class="bstep"><div class="bstep-num">2</div><div><div class="bstep-title">Add a comment explaining the blocker</div><div class="bstep-desc">One sentence: "Waiting on API endpoint spec from backend" or "Design file for this screen is not ready." Name what is needed and who owns providing it.</div></div></div>
+        <div class="bstep"><div class="bstep-num">3</div><div><div class="bstep-title">Ping the right person in Slack</div><div class="bstep-desc">Do not assume the Jira comment will be seen. Send a direct message. Keep Jira as the record, use Slack for speed.</div></div></div>
+        <div class="bstep"><div class="bstep-num">4</div><div><div class="bstep-title">Move to another ticket while waiting</div><div class="bstep-desc">A blocked ticket does not mean a blocked engineer. Pick up the next To Do ticket in your track.</div></div></div>
+        <div class="bstep"><div class="bstep-num">5</div><div><div class="bstep-title">Remove blocked label the moment it resolves</div><div class="bstep-desc">When the dependency arrives, remove the label and comment: "Unblocked — [what arrived]. Resuming." Ticket returns to its lane automatically.</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RHYTHM -->
+<section class="section" id="rhythm">
+  <div class="wrap">
+    <div class="section-eyebrow">Step 5 — board updates tied to sprint events</div>
+    <h2 class="section-title">When the board gets updated</h2>
+    <p class="section-desc">Ticket updates are not a separate task — they are tied to existing sprint events. Every sprint event below has a board action attached. If the event happens and the board is not updated, it did not count.</p>
+    <div class="timeline">
+      <div class="tday">
+        <div class="tday-head key"><div class="tday-num">Day 1</div><div class="tday-name">Sprint planning</div></div>
+        <div class="tday-body">
+          <div class="tday-event board"><span>Board action</span>Eng lead labels all tickets. All set to To Do. Swim lanes activated. Capacity split confirmed: 35% Fix / 65% Build.</div>
+        </div>
+      </div>
+      <div class="tday">
+        <div class="tday-head"><div class="tday-num">Day 2</div><div class="tday-name">Work begins</div></div>
+        <div class="tday-body">
+          <div class="tday-event board"><span>Board action</span>Engineers move their tickets to In Progress as they start. Fix Track moves first.</div>
+        </div>
+      </div>
+      <div class="tday">
+        <div class="tday-head key"><div class="tday-num">Day 3</div><div class="tday-name">Touchpoint</div></div>
+        <div class="tday-body">
+          <div class="tday-event board"><span>Board check</span>Eng lead + product review together. Any ticket still in To Do gets flagged. Any blocker addressed.</div>
+          <div class="tday-event">Fix Track should be In Progress by now. If not — why?</div>
+        </div>
+      </div>
+      <div class="tday">
+        <div class="tday-head"><div class="tday-num">Day 4–5</div><div class="tday-name">Sprint work</div></div>
+        <div class="tday-body">
+          <div class="tday-event board"><span>Board action</span>Engineers update own tickets as they move. Blocked label added immediately when stuck.</div>
+          <div class="tday-event sig"><span>Day 5 signal</span>Product reviews New Relic + Crashlytics digest in Slack</div>
+        </div>
+      </div>
+      <div class="tday">
+        <div class="tday-head"><div class="tday-num">Day 6–7</div><div class="tday-name">Sprint work</div></div>
+        <div class="tday-body">
+          <div class="tday-event board"><span>Board action</span>PRs being merged. Fix Track tickets reaching QA. Build Track in review.</div>
+        </div>
+      </div>
+      <div class="tday">
+        <div class="tday-head key"><div class="tday-num">Day 8</div><div class="tday-name">Touchpoint</div></div>
+        <div class="tday-body">
+          <div class="tday-event board"><span>Board check</span>Second review. Anything not In Review by now is at risk. Scope decisions made here — not on Day 10.</div>
+          <div class="tday-event">Items that cannot finish move to next sprint backlog now.</div>
+        </div>
+      </div>
+      <div class="tday">
+        <div class="tday-head"><div class="tday-num">Day 9</div><div class="tday-name">QA & sign-off</div></div>
+        <div class="tday-body">
+          <div class="tday-event board"><span>Board action</span>Tickets move QA → Ready for Production. Product reviews same day.</div>
+        </div>
+      </div>
+      <div class="tday">
+        <div class="tday-head key"><div class="tday-num">Day 10</div><div class="tday-name">Sprint close</div></div>
+        <div class="tday-body">
+          <div class="tday-event board"><span>Board close</span>All items in Done or moved to backlog. Nothing left In Progress or QA when sprint closes.</div>
+          <div class="tday-event">Sprint review · Retro · Next sprint planning</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HEALTH -->
+<section class="section" id="health">
+  <div class="wrap">
+    <div class="section-eyebrow">Quick reference — Day 3 and Day 8 board checks</div>
+    <h2 class="section-title">Healthy board vs problematic board</h2>
+    <p class="section-desc">If you see three or more warning signs at once, the sprint is in trouble. Cut scope now — not on Day 10.</p>
+    <div class="compare-grid">
+      <div class="compare-card">
+        <div class="compare-head good"><div class="compare-icon">✅</div><div class="compare-label">Healthy board</div></div>
+        <div class="compare-items">
+          <div class="compare-item good">Every ticket has fix-track or build-track label — no unlabelled items</div>
+          <div class="compare-item good">Fix Track and Build Track flow independently in their own lanes</div>
+          <div class="compare-item good">No ticket has been In Progress for more than 3 days without moving</div>
+          <div class="compare-item good">Blocked tickets have a comment explaining what it is waiting on and who owns it</div>
+          <div class="compare-item good">By Day 8, most Fix Track tickets are in QA or Done</div>
+          <div class="compare-item good">Ready for Production items get product sign-off within one working day</div>
+          <div class="compare-item good">Done tickets have a comment confirming the fix works in production</div>
+          <div class="compare-item good">The blocked lane has zero or one item</div>
+        </div>
+      </div>
+      <div class="compare-card">
+        <div class="compare-head bad"><div class="compare-icon">⚠</div><div class="compare-label">Problematic board</div></div>
+        <div class="compare-items">
+          <div class="compare-item bad">Tickets with no label — impossible to know which track they belong to</div>
+          <div class="compare-item bad">Fix and Build tickets mixed in the same visual row — no swim lane separation</div>
+          <div class="compare-item bad">A ticket In Progress for 4+ days with no comment or update</div>
+          <div class="compare-item bad">Blocked ticket with no comment — nobody knows what it is waiting on</div>
+          <div class="compare-item bad">On Day 8, Fix Track tickets are still in To Do or In Progress</div>
+          <div class="compare-item bad">Ready for Production items sitting 2+ days without product response</div>
+          <div class="compare-item bad">Items moved to Done without confirmation they work in production</div>
+          <div class="compare-item bad">The blocked lane has 4+ items — the sprint is collapsing</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-inner">
+      <div class="footer-text">MoneyMore · Sprint Board Guide v1.0 · April 2026 · Internal</div>
+      <div class="footer-text">Owner: Head of Growth & Product + Engineering Lead</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+function go(id){document.getElementById(id).scrollIntoView({behavior:'smooth'})}
+</script>
+</body>
+</html>
