@@ -5,179 +5,198 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MoneyMore — How We Work</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 :root {
-  --navy:#1A3C5E; --navy-l:#EEF3F8; --navy-m:#2A5080;
-  --green:#2A8050; --green-l:#EAF4EE; --green-d:#1C5A38;
-  --red:#B83020; --red-l:#FDECEA;
-  --gold:#B87818; --gold-l:#FDF4E0;
-  --blue:#1A5898; --blue-l:#EAF0FB;
-  --pu:#5850B8; --pu-l:#EEEDFB;
-  --co:#B05028; --co-l:#FDEEE8;
-  --page:#F8F7F4; --white:#FFFFFF;
-  --s2:#F3F2EE; --s3:#E8E5E0;
-  --t1:#1A1814; --t2:#3A3530; --t3:#6A6560; --t4:#A8A4A0;
-  --b1:#E8E5E0; --b2:#D0CDC8;
+  /* Brand */
+  --navy:    #0F2A45;
+  --navy-l:  #E0EAF4;
+  --navy-m:  #1A3C5E;
+  --green:   #186040;
+  --green-l: #D4EDE1;
+  --red:     #9E1F10;
+  --red-l:   #FAD9D4;
+  --gold:    #8A5A00;
+  --gold-l:  #F5E6C0;
+  --pu:      #3D35A0;
+  --pu-l:    #E0DEFD;
+  --co:      #8A3015;
+  --co-l:    #FAE0D4;
+
+  /* Page */
+  --page:  #F4F2ED;
+  --white: #FFFFFF;
+  --s2:    #ECEAE4;
+  --s3:    #DEDBD3;
+
+  /* Text — bold and high contrast */
+  --t1: #0A0906;
+  --t2: #1E1C18;
+  --t3: #4A4640;
+  --t4: #7A7670;
+
+  /* Borders */
+  --b1: #D8D4CC;
+  --b2: #C0BDB4;
+
   --sans:'Plus Jakarta Sans',sans-serif;
   --mono:'DM Mono',monospace;
 }
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:var(--page);color:var(--t1);font-family:var(--sans);-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.6;overflow-x:hidden}
+body{background:var(--page);color:var(--t1);font-family:var(--sans);-webkit-font-smoothing:antialiased;font-size:15px;line-height:1.6;overflow-x:hidden}
 
-/* ── NAV ──────────────────────────────────────────────── */
-.topnav{background:var(--navy);position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.15)}
-.topnav-inner{max-width:1280px;margin:0 auto;padding:0 32px;display:flex;align-items:center;height:50px;gap:16px}
+/* ── NAV ──────────────────────────────────────────── */
+.topnav{background:var(--navy);position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,0.25)}
+.topnav-inner{max-width:1280px;margin:0 auto;padding:0 32px;display:flex;align-items:center;height:52px;gap:16px}
 .brand{display:flex;align-items:center;gap:10px;flex-shrink:0;margin-right:8px}
-.brand-icon{width:26px;height:26px;background:rgba(255,255,255,0.12);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px}
-.brand-name{font-family:var(--mono);font-size:11px;font-weight:500;color:white;letter-spacing:.06em}
-.nav-meta{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,0.35);letter-spacing:.1em;margin-left:auto}
+.brand-icon{width:28px;height:28px;background:rgba(255,255,255,0.15);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px}
+.brand-name{font-family:var(--mono);font-size:12px;font-weight:600;color:white;letter-spacing:.08em}
+.nav-meta{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,0.4);letter-spacing:.1em;margin-left:auto}
 
-/* ── HERO ─────────────────────────────────────────────── */
-.hero{background:var(--navy);padding:44px 0 40px;position:relative;overflow:hidden}
-.hero::after{content:'';position:absolute;top:-60px;right:-80px;width:400px;height:400px;background:radial-gradient(circle,rgba(42,128,80,0.12) 0%,transparent 70%);pointer-events:none}
+/* ── HERO ─────────────────────────────────────────── */
+.hero{background:var(--navy);padding:48px 0 44px;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;top:-80px;right:-100px;width:500px;height:500px;background:radial-gradient(circle,rgba(42,140,90,0.14) 0%,transparent 70%);pointer-events:none}
 .wrap{max-width:1280px;margin:0 auto;padding:0 32px}
-.eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:rgba(255,255,255,0.4);text-transform:uppercase;margin-bottom:12px}
-.hero-title{font-size:clamp(28px,4vw,44px);font-weight:700;color:white;letter-spacing:-.03em;line-height:1.08;margin-bottom:12px}
-.hero-title em{font-style:normal;color:#6BD4A8}
-.hero-sub{font-size:13px;color:rgba(255,255,255,0.6);max-width:580px;line-height:1.75;margin-bottom:28px}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.22em;color:rgba(255,255,255,0.5);text-transform:uppercase;margin-bottom:14px}
+.hero-title{font-size:clamp(32px,4.5vw,52px);font-weight:800;color:white;letter-spacing:-.03em;line-height:1.05;margin-bottom:14px}
+.hero-title em{font-style:normal;color:#5FD4A8}
+.hero-sub{font-size:15px;color:rgba(255,255,255,0.7);max-width:600px;line-height:1.75;margin-bottom:32px;font-weight:400}
 
-/* ── FILTER BAR ───────────────────────────────────────── */
-.filter-bar{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
-.filter-label{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-right:4px}
-.fbtn{display:flex;align-items:center;gap:7px;padding:6px 14px;border-radius:3px;border:1px solid rgba(255,255,255,0.15);background:transparent;color:rgba(255,255,255,0.55);font-family:var(--sans);font-size:12px;font-weight:500;cursor:pointer;transition:all .15s}
-.fbtn:hover{border-color:rgba(255,255,255,0.4);color:white}
-.fbtn .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.fbtn.active{background:rgba(255,255,255,0.12);border-color:rgba(255,255,255,0.5);color:white}
+/* ── FILTER BAR ───────────────────────────────────── */
+.filter-bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.filter-label{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-right:4px;font-weight:500}
+.fbtn{display:flex;align-items:center;gap:8px;padding:7px 16px;border-radius:4px;border:1.5px solid rgba(255,255,255,0.2);background:transparent;color:rgba(255,255,255,0.65);font-family:var(--sans);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;letter-spacing:.01em}
+.fbtn:hover{border-color:rgba(255,255,255,0.5);color:white}
+.fbtn .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.fbtn.active{background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.6);color:white}
 
-/* ── PAGE BODY ────────────────────────────────────────── */
+/* ── PAGE BODY ────────────────────────────────────── */
 .page-body{max-width:1280px;margin:0 auto;padding:36px 32px 80px}
 
-/* ── GATE STRIP ───────────────────────────────────────── */
-.gate-strip{display:flex;gap:6px;margin-bottom:36px;overflow-x:auto;padding-bottom:4px;align-items:center}
+/* ── GATE STRIP ───────────────────────────────────── */
+.gate-strip{display:flex;gap:8px;margin-bottom:40px;overflow-x:auto;padding-bottom:6px;align-items:center}
 .gate-strip::-webkit-scrollbar{height:4px}
 .gate-strip::-webkit-scrollbar-track{background:var(--b1);border-radius:2px}
 .gate-strip::-webkit-scrollbar-thumb{background:var(--b2);border-radius:2px}
-.gate-item{flex-shrink:0;background:var(--white);border:1px solid var(--b1);border-radius:6px;padding:10px 14px;display:flex;align-items:center;gap:10px;box-shadow:0 1px 3px rgba(0,0,0,0.05)}
-.gate-num{font-family:var(--mono);font-size:10px;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:500}
-.gate-num.g1,.gate-num.g2{background:var(--pu-l);color:var(--pu);border:1px solid rgba(88,80,184,.2)}
-.gate-num.g3{background:var(--green-l);color:var(--green);border:1px solid rgba(42,128,80,.2)}
-.gate-num.g4{background:var(--gold-l);color:var(--gold);border:1px solid rgba(184,120,24,.2)}
-.gate-num.g5{background:var(--navy-l);color:var(--navy);border:1px solid rgba(26,60,94,.15)}
-.gate-name{font-size:11px;font-weight:600;color:var(--t1);line-height:1.2}
-.gate-owner{font-size:10px;color:var(--t4);margin-top:2px}
-.gate-arrow{font-size:16px;color:var(--b2);flex-shrink:0}
+.gate-item{flex-shrink:0;background:var(--white);border:1.5px solid var(--b1);border-radius:8px;padding:12px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 6px rgba(0,0,0,0.07)}
+.gate-num{font-family:var(--mono);font-size:11px;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:600}
+.gate-num.g1,.gate-num.g2{background:var(--pu-l);color:var(--pu);border:1.5px solid rgba(61,53,160,.3)}
+.gate-num.g3{background:var(--green-l);color:var(--green);border:1.5px solid rgba(24,96,64,.3)}
+.gate-num.g4{background:var(--gold-l);color:var(--gold);border:1.5px solid rgba(138,90,0,.3)}
+.gate-num.g5{background:var(--navy-l);color:var(--navy);border:1.5px solid rgba(15,42,69,.3)}
+.gate-name{font-size:12px;font-weight:700;color:var(--t1);line-height:1.2}
+.gate-owner{font-size:11px;color:var(--t3);margin-top:2px;font-weight:500}
+.gate-arrow{font-size:18px;color:var(--b2);flex-shrink:0;font-weight:700}
 
-/* ── SECTION HEAD ─────────────────────────────────────── */
-.section-head{display:flex;align-items:center;gap:14px;margin-bottom:20px;margin-top:48px}
+/* ── SECTION HEAD ─────────────────────────────────── */
+.section-head{display:flex;align-items:center;gap:16px;margin-bottom:20px;margin-top:52px}
 .section-head-line{flex:1;height:1px;background:var(--b1)}
-.section-head-label{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--t4);white-space:nowrap}
+.section-head-label{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--t4);white-space:nowrap;font-weight:500}
 
-/* ── HORIZONS ─────────────────────────────────────────── */
+/* ── HORIZONS ─────────────────────────────────────── */
 .horizons-header{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:10px}
-.horizon-label{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);padding-left:2px}
-.horizon-label span{display:block;font-size:9px;margin-top:3px;color:var(--t4)}
+.horizon-label{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);padding-left:2px;font-weight:600}
+.horizon-label span{display:block;font-size:10px;margin-top:3px;color:var(--t4);font-weight:400}
 
 .pipeline{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;position:relative}
-.pipeline::before,.pipeline::after{content:'→';position:absolute;top:50%;transform:translateY(-50%);font-size:18px;color:var(--b2);z-index:2;pointer-events:none}
-.pipeline::before{left:calc(33.33% - 11px)}
-.pipeline::after{left:calc(66.66% - 11px)}
+.pipeline::before,.pipeline::after{content:'→';position:absolute;top:50%;transform:translateY(-50%);font-size:20px;color:var(--b2);z-index:2;pointer-events:none;font-weight:700}
+.pipeline::before{left:calc(33.33% - 12px)}
+.pipeline::after{left:calc(66.66% - 12px)}
 
-.horizon{background:var(--white);border:1px solid var(--b1);border-radius:8px;padding:20px;position:relative;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.05);transition:border-color .2s;animation:fadeUp .35s ease both}
-.horizon::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.horizon{background:var(--white);border:1.5px solid var(--b1);border-radius:10px;padding:22px;position:relative;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.07);animation:fadeUp .35s ease both}
+.horizon::before{content:'';position:absolute;top:0;left:0;right:0;height:4px}
 .horizon.h1::before{background:var(--green)}
 .horizon.h2::before{background:var(--pu)}
 .horizon.h3::before{background:var(--gold)}
 
-.horizon-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px}
+.horizon-title{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
 .h1 .horizon-title{color:var(--green)}
 .h2 .horizon-title{color:var(--pu)}
 .h3 .horizon-title{color:var(--gold)}
-.horizon-desc{font-size:11px;color:var(--t3);margin-bottom:16px;line-height:1.5}
+.horizon-desc{font-size:12px;color:var(--t3);margin-bottom:18px;line-height:1.5;font-weight:500}
 
-/* ── FUNCTION ROWS ────────────────────────────────────── */
-.fn-row{display:flex;align-items:flex-start;gap:10px;padding:11px 0;border-top:1px solid var(--b1);transition:opacity .2s,filter .2s}
+/* ── FUNCTION ROWS ────────────────────────────────── */
+.fn-row{display:flex;align-items:flex-start;gap:12px;padding:13px 0;border-top:1px solid var(--b1);transition:opacity .2s,filter .2s}
 .fn-row:first-of-type{border-top:none;padding-top:0}
-.fn-row.dimmed{opacity:.12;filter:saturate(.05);pointer-events:none}
-.fn-tag{flex-shrink:0;width:72px;font-family:var(--mono);font-size:8px;letter-spacing:.08em;text-transform:uppercase;padding:3px 6px;border-radius:2px;text-align:center;margin-top:2px;font-weight:500}
-.fn-tag.prod  {background:var(--pu-l);color:var(--pu);border:1px solid rgba(88,80,184,.2)}
-.fn-tag.eng   {background:var(--green-l);color:var(--green);border:1px solid rgba(42,128,80,.2)}
-.fn-tag.design{background:var(--co-l);color:var(--co);border:1px solid rgba(176,80,40,.2)}
-.fn-tag.mktg  {background:var(--gold-l);color:var(--gold);border:1px solid rgba(184,120,24,.2)}
+.fn-row.dimmed{opacity:.1;filter:saturate(.04);pointer-events:none}
+.fn-tag{flex-shrink:0;width:72px;font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;padding:4px 6px;border-radius:3px;text-align:center;margin-top:2px;font-weight:600}
+.fn-tag.prod  {background:var(--pu-l);color:var(--pu);border:1.5px solid rgba(61,53,160,.3)}
+.fn-tag.eng   {background:var(--green-l);color:var(--green);border:1.5px solid rgba(24,96,64,.3)}
+.fn-tag.design{background:var(--co-l);color:var(--co);border:1.5px solid rgba(138,48,21,.3)}
+.fn-tag.mktg  {background:var(--gold-l);color:var(--gold);border:1.5px solid rgba(138,90,0,.3)}
 .fn-content{flex:1}
-.fn-action{font-size:12px;font-weight:600;color:var(--t1);line-height:1.3;margin-bottom:3px}
-.fn-detail{font-size:11.5px;color:var(--t3);line-height:1.6}
+.fn-action{font-size:13px;font-weight:700;color:var(--t1);line-height:1.3;margin-bottom:4px}
+.fn-detail{font-size:12px;color:var(--t3);line-height:1.65;font-weight:500}
 
-/* ── SPRINT TIMELINE ──────────────────────────────────── */
-.sprint-track{background:var(--white);border:1px solid var(--b1);border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.05)}
-.sprint-header{display:grid;grid-template-columns:110px repeat(10,1fr);background:var(--s2);border-bottom:1px solid var(--b1)}
-.day-label{font-family:var(--mono);font-size:9px;color:var(--t3);text-align:center;padding:9px 4px;border-left:1px solid var(--b1)}
+/* ── SPRINT TIMELINE ──────────────────────────────── */
+.sprint-track{background:var(--white);border:1.5px solid var(--b1);border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.07)}
+.sprint-header{display:grid;grid-template-columns:120px repeat(10,1fr);background:var(--s2);border-bottom:1.5px solid var(--b1)}
+.day-label{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--t3);text-align:center;padding:10px 4px;border-left:1px solid var(--b1)}
 .day-label:first-child{border-left:none}
-.day-label.key{background:var(--navy-l);color:var(--navy);font-weight:500}
-.sprint-role-label{font-family:var(--mono);font-size:9px;color:var(--t4);padding:9px 12px;display:flex;align-items:center;letter-spacing:.08em;text-transform:uppercase}
-.sprint-row{display:grid;grid-template-columns:110px repeat(10,1fr);border-top:1px solid var(--b1);min-height:52px;align-items:stretch;transition:opacity .2s,filter .2s}
+.day-label.key{background:var(--navy-l);color:var(--navy);font-weight:700}
+.sprint-role-label{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--t4);padding:10px 14px;display:flex;align-items:center;letter-spacing:.08em;text-transform:uppercase}
+.sprint-row{display:grid;grid-template-columns:120px repeat(10,1fr);border-top:1px solid var(--b1);min-height:58px;align-items:stretch;transition:opacity .2s,filter .2s}
 .sprint-row.dimmed{opacity:.08;filter:saturate(0);pointer-events:none}
-.role-cell{padding:10px;display:flex;align-items:center;border-right:1px solid var(--b1)}
-.role-pill{font-family:var(--mono);font-size:8px;letter-spacing:.06em;text-transform:uppercase;padding:3px 7px;border-radius:2px;font-weight:500;white-space:nowrap}
-.role-pill.prod  {background:var(--pu-l);color:var(--pu);border:1px solid rgba(88,80,184,.2)}
-.role-pill.eng   {background:var(--green-l);color:var(--green);border:1px solid rgba(42,128,80,.2)}
-.role-pill.design{background:var(--co-l);color:var(--co);border:1px solid rgba(176,80,40,.2)}
-.role-pill.mktg  {background:var(--gold-l);color:var(--gold);border:1px solid rgba(184,120,24,.2)}
-.day-cell{border-left:1px solid var(--b1);position:relative;padding:4px;display:flex;align-items:center;justify-content:center}
-.event-block{border-radius:3px;padding:5px 5px;font-size:9.5px;font-weight:600;line-height:1.25;text-align:center;width:100%;cursor:default;position:relative}
-.event-block.prod  {background:var(--pu-l);border:1px solid rgba(88,80,184,.2);color:var(--pu)}
-.event-block.eng   {background:var(--green-l);border:1px solid rgba(42,128,80,.2);color:var(--green)}
-.event-block.design{background:var(--co-l);border:1px solid rgba(176,80,40,.2);color:var(--co)}
-.event-block.mktg  {background:var(--gold-l);border:1px solid rgba(184,120,24,.2);color:var(--gold)}
-.event-block.all   {background:var(--s2);border:1px solid var(--b1);color:var(--t2)}
-.event-block.build {background:var(--s2);border:1px solid var(--b1);color:var(--t3);font-weight:400}
+.role-cell{padding:10px 12px;display:flex;align-items:center;border-right:1.5px solid var(--b1)}
+.role-pill{font-family:var(--mono);font-size:9px;letter-spacing:.06em;text-transform:uppercase;padding:4px 8px;border-radius:3px;font-weight:700;white-space:nowrap}
+.role-pill.prod  {background:var(--pu-l);color:var(--pu);border:1.5px solid rgba(61,53,160,.3)}
+.role-pill.eng   {background:var(--green-l);color:var(--green);border:1.5px solid rgba(24,96,64,.3)}
+.role-pill.design{background:var(--co-l);color:var(--co);border:1.5px solid rgba(138,48,21,.3)}
+.role-pill.mktg  {background:var(--gold-l);color:var(--gold);border:1.5px solid rgba(138,90,0,.3)}
+.day-cell{border-left:1px solid var(--b1);position:relative;padding:5px;display:flex;align-items:center;justify-content:center}
+.event-block{border-radius:4px;padding:5px 5px;font-size:10px;font-weight:700;line-height:1.25;text-align:center;width:100%;cursor:default;position:relative;overflow:visible}
+.event-block.prod  {background:var(--pu-l);border:1.5px solid rgba(61,53,160,.35);color:var(--pu)}
+.event-block.eng   {background:var(--green-l);border:1.5px solid rgba(24,96,64,.35);color:var(--green)}
+.event-block.design{background:var(--co-l);border:1.5px solid rgba(138,48,21,.35);color:var(--co)}
+.event-block.mktg  {background:var(--gold-l);border:1.5px solid rgba(138,90,0,.35);color:var(--gold)}
+.event-block.all   {background:var(--s2);border:1.5px solid var(--b2);color:var(--t2)}
+.event-block.build {background:var(--s2);border:1px solid var(--b1);color:var(--t4);font-weight:500}
 
 /* Tooltip */
-.event-block{overflow:visible}
 .event-block:hover .tooltip{display:block}
-.tooltip{display:none;position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:var(--t1);border-radius:6px;padding:12px 14px;width:220px;z-index:200;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,0.2)}
-.tooltip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:var(--t1)}
-.tooltip-title{font-size:11px;font-weight:700;color:white;margin-bottom:5px}
-.tooltip-body{font-size:11px;color:rgba(255,255,255,0.7);line-height:1.6}
+.tooltip{display:none;position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%);background:var(--t1);border-radius:7px;padding:14px 16px;width:230px;z-index:200;pointer-events:none;box-shadow:0 8px 32px rgba(0,0,0,0.25)}
+.tooltip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:6px solid transparent;border-top-color:var(--t1)}
+.tooltip-title{font-size:12px;font-weight:700;color:white;margin-bottom:6px}
+.tooltip-body{font-size:12px;color:rgba(255,255,255,0.75);line-height:1.65}
 
-/* ── MEETINGS GRID ────────────────────────────────────── */
-.meetings-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
-.meeting-card{background:var(--white);border:1px solid var(--b1);border-radius:8px;padding:18px;position:relative;overflow:hidden;transition:opacity .2s,filter .2s,box-shadow .15s;box-shadow:0 1px 4px rgba(0,0,0,0.05);animation:fadeUp .35s ease both}
-.meeting-card:hover{box-shadow:0 3px 12px rgba(0,0,0,0.09)}
-.meeting-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%}
+/* ── MEETINGS GRID ────────────────────────────────── */
+.meetings-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.meeting-card{background:var(--white);border:1.5px solid var(--b1);border-radius:10px;padding:20px;position:relative;overflow:hidden;transition:opacity .2s,filter .2s,box-shadow .15s;box-shadow:0 2px 8px rgba(0,0,0,0.07);animation:fadeUp .35s ease both}
+.meeting-card:hover{box-shadow:0 6px 20px rgba(0,0,0,0.12)}
+.meeting-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%}
 .meeting-card.prod::before  {background:var(--pu)}
 .meeting-card.eng::before   {background:var(--green)}
 .meeting-card.design::before{background:var(--co)}
 .meeting-card.mktg::before  {background:var(--gold)}
-.meeting-card.all::before   {background:var(--t4)}
+.meeting-card.all::before   {background:var(--t3)}
 .meeting-card.dimmed{opacity:.08;filter:saturate(0);pointer-events:none}
-.meeting-freq{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--t4);margin-bottom:7px}
-.meeting-title{font-size:13px;font-weight:700;color:var(--t1);margin-bottom:8px;line-height:1.3}
-.meeting-who{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px}
-.who-tag{font-family:var(--mono);font-size:8px;padding:2px 6px;border-radius:2px;text-transform:uppercase;letter-spacing:.06em;font-weight:500}
-.who-tag.prod  {background:var(--pu-l);color:var(--pu);border:1px solid rgba(88,80,184,.2)}
-.who-tag.eng   {background:var(--green-l);color:var(--green);border:1px solid rgba(42,128,80,.2)}
-.who-tag.design{background:var(--co-l);color:var(--co);border:1px solid rgba(176,80,40,.2)}
-.who-tag.mktg  {background:var(--gold-l);color:var(--gold);border:1px solid rgba(184,120,24,.2)}
-.meeting-desc{font-size:12px;color:var(--t2);line-height:1.65}
-.meeting-output{margin-top:12px;padding-top:12px;border-top:1px solid var(--b1);font-size:11px;color:var(--t3);line-height:1.5}
-.meeting-output strong{color:var(--t1);font-weight:600}
+.meeting-freq{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--t4);margin-bottom:8px}
+.meeting-title{font-size:15px;font-weight:800;color:var(--t1);margin-bottom:10px;line-height:1.25}
+.meeting-who{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+.who-tag{font-family:var(--mono);font-size:9px;padding:3px 8px;border-radius:3px;text-transform:uppercase;letter-spacing:.06em;font-weight:700}
+.who-tag.prod  {background:var(--pu-l);color:var(--pu);border:1.5px solid rgba(61,53,160,.3)}
+.who-tag.eng   {background:var(--green-l);color:var(--green);border:1.5px solid rgba(24,96,64,.3)}
+.who-tag.design{background:var(--co-l);color:var(--co);border:1.5px solid rgba(138,48,21,.3)}
+.who-tag.mktg  {background:var(--gold-l);color:var(--gold);border:1.5px solid rgba(138,90,0,.3)}
+.meeting-desc{font-size:13px;color:var(--t2);line-height:1.7;font-weight:500}
+.meeting-output{margin-top:14px;padding-top:14px;border-top:1px solid var(--b1);font-size:12px;color:var(--t3);line-height:1.5;font-weight:500}
+.meeting-output strong{color:var(--t1);font-weight:700}
 
-/* ── LEGEND ───────────────────────────────────────────── */
-.legend{display:flex;gap:20px;flex-wrap:wrap;margin-top:36px;padding-top:20px;border-top:1px solid var(--b1);align-items:center}
-.legend-item{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--t3)}
-.legend-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+/* ── LEGEND ───────────────────────────────────────── */
+.legend{display:flex;gap:22px;flex-wrap:wrap;margin-top:40px;padding-top:24px;border-top:1.5px solid var(--b1);align-items:center}
+.legend-item{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--t2);font-weight:600}
+.legend-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
 .legend-url{margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--t4);letter-spacing:.08em}
 
-/* ── FOOTER ───────────────────────────────────────────── */
-.site-footer{background:var(--navy);padding:24px 0;margin-top:0}
+/* ── FOOTER ───────────────────────────────────────── */
+.site-footer{background:var(--navy);padding:28px 0}
 .footer-inner{display:flex;align-items:center;justify-content:space-between}
-.footer-text{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,0.35);letter-spacing:.08em}
+.footer-text{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,0.35);letter-spacing:.08em}
 
-/* ── ANIMATIONS ───────────────────────────────────────── */
-@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+/* ── ANIMATION ────────────────────────────────────── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 
 @media(max-width:900px){
   .pipeline,.horizons-header{grid-template-columns:1fr}
@@ -204,24 +223,13 @@ body{background:var(--page);color:var(--t1);font-family:var(--sans);-webkit-font
     <div class="eyebrow">MoneyMore · Growth & Product OS</div>
     <h1 class="hero-title">How we <em>work.</em></h1>
     <p class="hero-sub">Three horizons run in parallel at all times — what is being built now, what is being prepared for next sprint, and what is being discovered for the sprint after. Nothing arrives at engineering as a surprise.</p>
-
     <div class="filter-bar">
       <span class="filter-label">Show</span>
-      <button class="fbtn active" data-filter="all" onclick="setFilter('all',this)">
-        <span class="dot" style="background:rgba(255,255,255,0.7)"></span> All functions
-      </button>
-      <button class="fbtn" data-filter="prod" onclick="setFilter('prod',this)">
-        <span class="dot" style="background:#9090E0"></span> Product
-      </button>
-      <button class="fbtn" data-filter="eng" onclick="setFilter('eng',this)">
-        <span class="dot" style="background:#6BD4A8"></span> Engineering
-      </button>
-      <button class="fbtn" data-filter="design" onclick="setFilter('design',this)">
-        <span class="dot" style="background:#E8A080"></span> Design
-      </button>
-      <button class="fbtn" data-filter="mktg" onclick="setFilter('mktg',this)">
-        <span class="dot" style="background:#F0C84A"></span> Growth Marketing
-      </button>
+      <button class="fbtn active" data-filter="all" onclick="setFilter('all',this)"><span class="dot" style="background:rgba(255,255,255,0.8)"></span>All functions</button>
+      <button class="fbtn" data-filter="prod" onclick="setFilter('prod',this)"><span class="dot" style="background:#9088F0"></span>Product</button>
+      <button class="fbtn" data-filter="eng" onclick="setFilter('eng',this)"><span class="dot" style="background:#50C898"></span>Engineering</button>
+      <button class="fbtn" data-filter="design" onclick="setFilter('design',this)"><span class="dot" style="background:#E09070"></span>Design</button>
+      <button class="fbtn" data-filter="mktg" onclick="setFilter('mktg',this)"><span class="dot" style="background:#E8BE50"></span>Growth Marketing</button>
     </div>
   </div>
 </section>
@@ -230,30 +238,15 @@ body{background:var(--page);color:var(--t1);font-family:var(--sans);-webkit-font
 
   <!-- GATE STRIP -->
   <div class="gate-strip">
-    <div class="gate-item">
-      <div class="gate-num g1">1</div>
-      <div><div class="gate-name">Problem definition</div><div class="gate-owner">Product</div></div>
-    </div>
+    <div class="gate-item"><div class="gate-num g1">1</div><div><div class="gate-name">Problem definition</div><div class="gate-owner">Product</div></div></div>
     <div class="gate-arrow">→</div>
-    <div class="gate-item">
-      <div class="gate-num g2">2</div>
-      <div><div class="gate-name">Evidence check</div><div class="gate-owner">Product · RICE scoring</div></div>
-    </div>
+    <div class="gate-item"><div class="gate-num g2">2</div><div><div class="gate-name">Evidence check</div><div class="gate-owner">Product · RICE scoring</div></div></div>
     <div class="gate-arrow">→</div>
-    <div class="gate-item">
-      <div class="gate-num g3">3</div>
-      <div><div class="gate-name">Solution design</div><div class="gate-owner">Product + Eng Lead + Design</div></div>
-    </div>
+    <div class="gate-item"><div class="gate-num g3">3</div><div><div class="gate-name">Solution design</div><div class="gate-owner">Product + Eng Lead + Design</div></div></div>
     <div class="gate-arrow">→</div>
-    <div class="gate-item">
-      <div class="gate-num g4">4</div>
-      <div><div class="gate-name">Validation</div><div class="gate-owner">Product + Design</div></div>
-    </div>
+    <div class="gate-item"><div class="gate-num g4">4</div><div><div class="gate-name">Validation</div><div class="gate-owner">Product + Design</div></div></div>
     <div class="gate-arrow">→</div>
-    <div class="gate-item">
-      <div class="gate-num g5">5</div>
-      <div><div class="gate-name">Build brief + sprint</div><div class="gate-owner">Product → Engineering</div></div>
-    </div>
+    <div class="gate-item"><div class="gate-num g5">5</div><div><div class="gate-name">Build brief + sprint</div><div class="gate-owner">Product → Engineering</div></div></div>
   </div>
 
   <!-- THREE HORIZONS -->
@@ -270,45 +263,29 @@ body{background:var(--page);color:var(--t1);font-family:var(--sans);-webkit-font
   </div>
 
   <div class="pipeline">
-
     <!-- H1 -->
     <div class="horizon h1">
       <div class="horizon-title">Current sprint</div>
       <div class="horizon-desc">Engineering owns delivery. Product supports. No new scope introduced.</div>
       <div class="fn-row" data-fn="eng">
         <div class="fn-tag eng">Eng</div>
-        <div class="fn-content">
-          <div class="fn-action">Building committed stories</div>
-          <div class="fn-detail">Engineering works from Stories product wrote. Engineers create and own their own Tasks — product does not assign technical work.</div>
-        </div>
+        <div class="fn-content"><div class="fn-action">Building committed stories</div><div class="fn-detail">Engineering works from Stories product wrote. Engineers create and own their own Tasks — product does not assign technical work.</div></div>
       </div>
       <div class="fn-row" data-fn="eng">
         <div class="fn-tag eng">Eng</div>
-        <div class="fn-content">
-          <div class="fn-action">#tech-signals post (daily)</div>
-          <div class="fn-detail">Eng Lead posts technical observations with user-facing consequences — silent failures, crash rates, permission errors, performance drops. Product reviews and logs actionable items into Fix Track.</div>
-        </div>
+        <div class="fn-content"><div class="fn-action">#tech-signals post (daily)</div><div class="fn-detail">Eng Lead posts technical observations with user-facing consequences — silent failures, crash rates, permission errors, performance drops. Product reviews and logs actionable items into Fix Track.</div></div>
       </div>
       <div class="fn-row" data-fn="design">
         <div class="fn-tag design">Design</div>
-        <div class="fn-content">
-          <div class="fn-action">Available for questions</div>
-          <div class="fn-detail">No new design work during the sprint. Available for Figma clarifications from engineering only.</div>
-        </div>
+        <div class="fn-content"><div class="fn-action">Available for questions</div><div class="fn-detail">No new design work during the sprint. Available for Figma clarifications from engineering only.</div></div>
       </div>
       <div class="fn-row" data-fn="prod">
         <div class="fn-tag prod">Product</div>
-        <div class="fn-content">
-          <div class="fn-action">Wednesday touchpoint (Day 3 + Day 8)</div>
-          <div class="fn-detail">20 minutes. Blockers raised and resolved on the spot. Product makes decisions immediately or commits to 24 hours. No status updates, no slides.</div>
-        </div>
+        <div class="fn-content"><div class="fn-action">Wednesday touchpoint (Day 3 + Day 8)</div><div class="fn-detail">20 minutes. Blockers raised and resolved on the spot. Product makes decisions immediately or commits to 24 hours. No status updates, no slides.</div></div>
       </div>
       <div class="fn-row" data-fn="mktg">
         <div class="fn-tag mktg">Mktg</div>
-        <div class="fn-content">
-          <div class="fn-action">User signals 3× per week</div>
-          <div class="fn-detail">NPS responses, support tickets, interview clips posted to #user-signals. Tagged by type and segment. Everyone reads.</div>
-        </div>
+        <div class="fn-content"><div class="fn-action">User signals 3× per week</div><div class="fn-detail">NPS responses, support tickets, interview clips posted to #user-signals. Tagged by type and segment. Everyone reads.</div></div>
       </div>
     </div>
 
@@ -318,38 +295,23 @@ body{background:var(--page);color:var(--t1);font-family:var(--sans);-webkit-font
       <div class="horizon-desc">Gates 3, 4, and 5. Runs during the current sprint so everything is ready on Day 1 of the next.</div>
       <div class="fn-row" data-fn="prod">
         <div class="fn-tag prod">Product</div>
-        <div class="fn-content">
-          <div class="fn-action">Gate 3 feasibility session (Days 1–5)</div>
-          <div class="fn-detail">Product + Eng Lead + Design Lead. 30–45 min per feature. Product presents the user flow in words. Eng Lead gives feasibility read and rough size. Design Lead confirms scope.</div>
-        </div>
+        <div class="fn-content"><div class="fn-action">Gate 3 feasibility session (Days 1–5)</div><div class="fn-detail">Product + Eng Lead + Design Lead. 30–45 min per feature. Product presents the user flow in words. Eng Lead gives feasibility read and rough size. Design Lead confirms scope.</div></div>
       </div>
       <div class="fn-row" data-fn="eng">
         <div class="fn-tag eng">Eng</div>
-        <div class="fn-content">
-          <div class="fn-action">Gate 3 input (Days 1–5)</div>
-          <div class="fn-detail">Eng Lead attends Gate 3 session. Reviews proposed solution, flags technical risks, gives rough size estimate. One session per feature — 30 to 45 minutes.</div>
-        </div>
+        <div class="fn-content"><div class="fn-action">Gate 3 input (Days 1–5)</div><div class="fn-detail">Eng Lead attends Gate 3 session. Reviews proposed solution, flags technical risks, gives rough size estimate. One session per feature — 30 to 45 minutes.</div></div>
       </div>
       <div class="fn-row" data-fn="design">
         <div class="fn-tag design">Design</div>
-        <div class="fn-content">
-          <div class="fn-action">Figma production (Days 3–8)</div>
-          <div class="fn-detail">Designer works from the Design Brief. All screens and states produced. Android and iOS. English and Arabic. Complete before pre-sprint planning on Day 9.</div>
-        </div>
+        <div class="fn-content"><div class="fn-action">Figma production (Days 3–8)</div><div class="fn-detail">Designer works from the Design Brief. All screens and states produced. Android and iOS. English and Arabic. Complete before pre-sprint planning on Day 9.</div></div>
       </div>
       <div class="fn-row" data-fn="prod">
         <div class="fn-tag prod">Product</div>
-        <div class="fn-content">
-          <div class="fn-action">Stories and tickets (Days 6–8)</div>
-          <div class="fn-detail">User Stories written with full acceptance criteria, Figma link, and definition of done. MoSCoW classification applied. Must Have capped at 60% of capacity.</div>
-        </div>
+        <div class="fn-content"><div class="fn-action">Stories and tickets (Days 6–8)</div><div class="fn-detail">User Stories written with full acceptance criteria, Figma link, and definition of done. MoSCoW classification applied. Must Have capped at 60% of capacity.</div></div>
       </div>
       <div class="fn-row" data-fn="prod">
         <div class="fn-tag prod">Product</div>
-        <div class="fn-content">
-          <div class="fn-action">Pre-sprint planning (Day 9)</div>
-          <div class="fn-detail">Product + Eng Lead. 60 min. Stories reviewed and sized. Capacity confirmed. 35% Fix Track / 65% Build Track. Accepted backlog locked before sprint starts.</div>
-        </div>
+        <div class="fn-content"><div class="fn-action">Pre-sprint planning (Day 9)</div><div class="fn-detail">Product + Eng Lead. 60 min. Stories reviewed and sized. Capacity confirmed. 35% Fix Track / 65% Build Track. Accepted backlog locked before sprint starts.</div></div>
       </div>
     </div>
 
@@ -359,35 +321,22 @@ body{background:var(--page);color:var(--t1);font-family:var(--sans);-webkit-font
       <div class="horizon-desc">Gates 1 and 2. Continuous work — not a scheduled event.</div>
       <div class="fn-row" data-fn="prod">
         <div class="fn-tag prod">Product</div>
-        <div class="fn-content">
-          <div class="fn-action">Gate 1 — Problem definition</div>
-          <div class="fn-detail">Is there a real user problem with at least two independent sources of evidence? If yes, it enters the pipeline. If not, it does not proceed.</div>
-        </div>
+        <div class="fn-content"><div class="fn-action">Gate 1 — Problem definition</div><div class="fn-detail">Is there a real user problem with at least two independent sources of evidence? If yes, it enters the pipeline. If not, it does not proceed.</div></div>
       </div>
       <div class="fn-row" data-fn="prod">
         <div class="fn-tag prod">Product</div>
-        <div class="fn-content">
-          <div class="fn-action">Gate 2 — Evidence check + RICE</div>
-          <div class="fn-detail">Evidence strength rated Strong, Moderate, or Weak. Weak means stop. RICE score calculated — Effort estimate comes from Eng Lead. Feature enters Evidence Backlog only if Moderate or Strong.</div>
-        </div>
+        <div class="fn-content"><div class="fn-action">Gate 2 — Evidence check + RICE</div><div class="fn-detail">Evidence strength rated Strong, Moderate, or Weak. Weak means stop. RICE score calculated — Effort estimate comes from Eng Lead. Feature enters Evidence Backlog only if Moderate or Strong.</div></div>
       </div>
       <div class="fn-row" data-fn="mktg">
         <div class="fn-tag mktg">Mktg</div>
-        <div class="fn-content">
-          <div class="fn-action">Signal review (daily)</div>
-          <div class="fn-detail">Growth Marketing and Product review all user signals from the sprint together — NPS, support tickets, interviews, app store reviews. Patterns identified. Research Archive updated. Evidence Backlog scores upgraded where new data changes the picture.</div>
-        </div>
+        <div class="fn-content"><div class="fn-action">Signal review (daily)</div><div class="fn-detail">Growth Marketing and Product review all user signals from the sprint together — NPS, support tickets, interviews, app store reviews. Patterns identified. Research Archive updated. Evidence Backlog scores upgraded where new data changes the picture.</div></div>
       </div>
       <div class="fn-row" data-fn="prod">
         <div class="fn-tag prod">Product</div>
-        <div class="fn-content">
-          <div class="fn-action">Monthly experience audit</div>
-          <div class="fn-detail">Five-layer audit of all primary flows — Clarity, Confidence, Friction, Delight, Polish. Score 1 findings go directly into Fix Track Backlog as Fix Briefs.</div>
-        </div>
+        <div class="fn-content"><div class="fn-action">Monthly experience audit</div><div class="fn-detail">Five-layer audit of all primary flows — Clarity, Confidence, Friction, Delight, Polish. Score 1 findings go directly into Fix Track Backlog as Fix Briefs.</div></div>
       </div>
     </div>
-
-  </div><!-- /pipeline -->
+  </div>
 
   <!-- SPRINT TIMELINE -->
   <div class="section-head">
@@ -399,79 +348,65 @@ body{background:var(--page);color:var(--t1);font-family:var(--sans);-webkit-font
   <div class="sprint-track">
     <div class="sprint-header">
       <div class="sprint-role-label">Function</div>
-      <div class="day-label key">D1</div>
-      <div class="day-label">D2</div>
-      <div class="day-label key">D3</div>
-      <div class="day-label">D4</div>
-      <div class="day-label">D5</div>
-      <div class="day-label">D6</div>
-      <div class="day-label">D7</div>
-      <div class="day-label key">D8</div>
-      <div class="day-label key">D9</div>
-      <div class="day-label key">D10</div>
+      <div class="day-label key">D1</div><div class="day-label">D2</div><div class="day-label key">D3</div><div class="day-label">D4</div><div class="day-label">D5</div><div class="day-label">D6</div><div class="day-label">D7</div><div class="day-label key">D8</div><div class="day-label key">D9</div><div class="day-label key">D10</div>
     </div>
 
-    <!-- Product row -->
     <div class="sprint-row" data-fn="prod">
       <div class="role-cell"><div class="role-pill prod">Product</div></div>
-      <div class="day-cell"><div class="event-block prod" style="font-size:9px">Sprint planning<div class="tooltip"><div class="tooltip-title">Sprint planning</div><div class="tooltip-body">Full team. 90 min. Engineering self-assigns Stories. Engineers create their own Tasks — product does not assign technical work.</div></div></div></div>
-      <div class="day-cell"><div class="event-block prod" style="font-size:9px;opacity:.6">Gate 3 window<div class="tooltip"><div class="tooltip-title">Gate 3 window opens</div><div class="tooltip-body">Product schedules Gate 3 feasibility sessions for next sprint features. Must happen by Day 5 so design has time to produce Figma before Day 9.</div></div></div></div>
-      <div class="day-cell"><div class="event-block prod" style="font-size:9px">Wed touchpoint<div class="tooltip"><div class="tooltip-title">Wednesday touchpoint</div><div class="tooltip-body">20 min. Blockers only. Product makes decisions on the spot or commits to 24 hours. No status updates.</div></div></div></div>
+      <div class="day-cell"><div class="event-block prod">Sprint planning<div class="tooltip"><div class="tooltip-title">Sprint planning</div><div class="tooltip-body">Full team. 90 min. Engineering self-assigns Stories. Engineers create their own Tasks — product does not assign technical work.</div></div></div></div>
+      <div class="day-cell"><div class="event-block prod" style="opacity:.6">Gate 3 window<div class="tooltip"><div class="tooltip-title">Gate 3 window opens</div><div class="tooltip-body">Product schedules Gate 3 feasibility sessions for next sprint features. Must happen by Day 5 so design has time to produce Figma before Day 9.</div></div></div></div>
+      <div class="day-cell"><div class="event-block prod">Wed touchpoint<div class="tooltip"><div class="tooltip-title">Wednesday touchpoint</div><div class="tooltip-body">20 min. Blockers only. Product makes decisions on the spot or commits to 24 hours. No status updates.</div></div></div></div>
       <div class="day-cell"></div>
-      <div class="day-cell"><div class="event-block prod" style="font-size:9px">Signal review<div class="tooltip"><div class="tooltip-title">Signal review</div><div class="tooltip-body">Growth Marketing + Product review all user signals from the sprint — NPS, support tickets, interviews. Patterns identified. Research Archive updated. Backlog evidence upgraded.</div></div></div></div>
-      <div class="day-cell"><div class="event-block prod" style="font-size:9px;opacity:.6">Stories<div class="tooltip"><div class="tooltip-title">Writing Stories</div><div class="tooltip-body">User Stories written with acceptance criteria, Figma link, definition of done. MoSCoW applied. Must be complete before Day 9.</div></div></div></div>
-      <div class="day-cell"><div class="event-block prod" style="font-size:9px;opacity:.6">Stories<div class="tooltip"><div class="tooltip-title">Writing Stories</div><div class="tooltip-body">Continued. All next sprint Stories must be complete before pre-sprint planning on Day 9.</div></div></div></div>
-      <div class="day-cell"><div class="event-block prod" style="font-size:9px">Wed touchpoint<div class="tooltip"><div class="tooltip-title">Wednesday touchpoint (week 2)</div><div class="tooltip-body">Same format. 20 min. Blockers for the final push before sprint close.</div></div></div></div>
-      <div class="day-cell"><div class="event-block prod" style="font-size:9px">Pre-sprint<div class="tooltip"><div class="tooltip-title">Pre-sprint planning</div><div class="tooltip-body">Product + Eng Lead. 60 min. Next sprint Stories reviewed and sized. Capacity confirmed. Accepted backlog locked.</div></div></div></div>
-      <div class="day-cell"><div class="event-block all" style="font-size:9px">Review + Retro<div class="tooltip"><div class="tooltip-title">Sprint review + retrospective</div><div class="tooltip-body">What shipped vs committed. Delivery rate logged. One process change agreed. Monthly metrics review also happens here at end of month.</div></div></div></div>
+      <div class="day-cell"><div class="event-block prod">Signal review<div class="tooltip"><div class="tooltip-title">Signal review</div><div class="tooltip-body">Growth Marketing + Product review all user signals from the sprint — NPS, support tickets, interviews. Patterns identified. Research Archive updated.</div></div></div></div>
+      <div class="day-cell"><div class="event-block prod" style="opacity:.6">Stories<div class="tooltip"><div class="tooltip-title">Writing Stories</div><div class="tooltip-body">User Stories written with acceptance criteria, Figma link, definition of done. MoSCoW applied. Must be complete before Day 9.</div></div></div></div>
+      <div class="day-cell"><div class="event-block prod" style="opacity:.6">Stories<div class="tooltip"><div class="tooltip-title">Writing Stories</div><div class="tooltip-body">Continued. All next sprint Stories must be complete before pre-sprint planning on Day 9.</div></div></div></div>
+      <div class="day-cell"><div class="event-block prod">Wed touchpoint<div class="tooltip"><div class="tooltip-title">Wednesday touchpoint (week 2)</div><div class="tooltip-body">Same format. 20 min. Blockers for the final push before sprint close.</div></div></div></div>
+      <div class="day-cell"><div class="event-block prod">Pre-sprint<div class="tooltip"><div class="tooltip-title">Pre-sprint planning</div><div class="tooltip-body">Product + Eng Lead. 60 min. Next sprint Stories reviewed and sized. Capacity confirmed. Accepted backlog locked.</div></div></div></div>
+      <div class="day-cell"><div class="event-block all">Review + Retro<div class="tooltip"><div class="tooltip-title">Sprint review + retrospective</div><div class="tooltip-body">What shipped vs committed. Delivery rate logged. One process change agreed. Monthly metrics review also happens here at end of month.</div></div></div></div>
     </div>
 
-    <!-- Engineering row -->
     <div class="sprint-row" data-fn="eng">
       <div class="role-cell"><div class="role-pill eng">Engineering</div></div>
-      <div class="day-cell"><div class="event-block eng" style="font-size:9px">Planning + Tasks<div class="tooltip"><div class="tooltip-title">Sprint planning + Task creation</div><div class="tooltip-body">Engineering self-assigns Stories. Each engineer creates their own Tasks under each Story. Engineering owns the how — product owns the what.</div></div></div></div>
-      <div class="day-cell"><div class="event-block build" style="font-size:9px">Building<div class="tooltip"><div class="tooltip-title">Building</div><div class="tooltip-body">Engineering builds committed Stories. Product does not introduce new scope during the sprint.</div></div></div></div>
-      <div class="day-cell"><div class="event-block eng" style="font-size:9px">Gate 3<div class="tooltip"><div class="tooltip-title">Gate 3 feasibility session</div><div class="tooltip-body">Eng Lead attends Gate 3 for next sprint features. Reviews proposed solution. Flags technical risks. Gives rough size estimate. 30–45 min per feature.</div></div></div></div>
-      <div class="day-cell"><div class="event-block build" style="font-size:9px">Building<div class="tooltip"><div class="tooltip-title">Building</div><div class="tooltip-body">Continued sprint build work.</div></div></div></div>
-      <div class="day-cell"><div class="event-block eng" style="font-size:9px">#tech-signals<div class="tooltip"><div class="tooltip-title">#tech-signals post (daily)</div><div class="tooltip-body">Eng Lead posts technical observations with user-facing impact. Crash rates, silent failures, permission errors, performance drops. Product reviews and logs actionable items into Fix Track Backlog.</div></div></div></div>
-      <div class="day-cell"><div class="event-block build" style="font-size:9px">Building<div class="tooltip"><div class="tooltip-title">Building</div><div class="tooltip-body">Continued sprint build work.</div></div></div></div>
-      <div class="day-cell"><div class="event-block build" style="font-size:9px">Building<div class="tooltip"><div class="tooltip-title">Building</div><div class="tooltip-body">Continued sprint build work.</div></div></div></div>
-      <div class="day-cell"><div class="event-block build" style="font-size:9px">Building<div class="tooltip"><div class="tooltip-title">Building</div><div class="tooltip-body">Continued sprint build work. Staging validation begins for completed Stories.</div></div></div></div>
-      <div class="day-cell"><div class="event-block eng" style="font-size:9px">Pre-sprint<div class="tooltip"><div class="tooltip-title">Pre-sprint planning</div><div class="tooltip-body">Eng Lead reviews next sprint Stories with Product. Sizes confirmed. Technical blockers flagged before Day 1 of next sprint.</div></div></div></div>
-      <div class="day-cell"><div class="event-block all" style="font-size:9px">Review + Retro<div class="tooltip"><div class="tooltip-title">Sprint review + retrospective</div><div class="tooltip-body">Delivery rate reviewed. What shipped vs committed. One process change agreed and committed.</div></div></div></div>
+      <div class="day-cell"><div class="event-block eng">Planning + Tasks<div class="tooltip"><div class="tooltip-title">Sprint planning + Task creation</div><div class="tooltip-body">Engineering self-assigns Stories. Each engineer creates their own Tasks under each Story. Engineering owns the how — product owns the what.</div></div></div></div>
+      <div class="day-cell"><div class="event-block build">Building<div class="tooltip"><div class="tooltip-title">Building</div><div class="tooltip-body">Engineering builds committed Stories. Product does not introduce new scope during the sprint.</div></div></div></div>
+      <div class="day-cell"><div class="event-block eng">Gate 3<div class="tooltip"><div class="tooltip-title">Gate 3 feasibility session</div><div class="tooltip-body">Eng Lead attends Gate 3 for next sprint features. Reviews proposed solution. Flags technical risks. Gives rough size estimate.</div></div></div></div>
+      <div class="day-cell"><div class="event-block build">Building<div class="tooltip"><div class="tooltip-title">Building</div><div class="tooltip-body">Continued sprint build work.</div></div></div></div>
+      <div class="day-cell"><div class="event-block eng">#tech-signals<div class="tooltip"><div class="tooltip-title">#tech-signals post (daily)</div><div class="tooltip-body">Eng Lead posts technical observations with user-facing impact. Crash rates, silent failures, permission errors, performance drops. Product reviews and logs actionable items into Fix Track.</div></div></div></div>
+      <div class="day-cell"><div class="event-block build">Building<div class="tooltip"><div class="tooltip-title">Building</div><div class="tooltip-body">Continued sprint build work.</div></div></div></div>
+      <div class="day-cell"><div class="event-block build">Building<div class="tooltip"><div class="tooltip-title">Building</div><div class="tooltip-body">Continued sprint build work.</div></div></div></div>
+      <div class="day-cell"><div class="event-block build">Building<div class="tooltip"><div class="tooltip-title">Building</div><div class="tooltip-body">Continued sprint build work. Staging validation begins for completed Stories.</div></div></div></div>
+      <div class="day-cell"><div class="event-block eng">Pre-sprint<div class="tooltip"><div class="tooltip-title">Pre-sprint planning</div><div class="tooltip-body">Eng Lead reviews next sprint Stories with Product. Sizes confirmed. Technical blockers flagged before Day 1 of next sprint.</div></div></div></div>
+      <div class="day-cell"><div class="event-block all">Review + Retro<div class="tooltip"><div class="tooltip-title">Sprint review + retrospective</div><div class="tooltip-body">Delivery rate reviewed. What shipped vs committed. One process change agreed and committed.</div></div></div></div>
     </div>
 
-    <!-- Design row -->
     <div class="sprint-row" data-fn="design">
       <div class="role-cell"><div class="role-pill design">Design</div></div>
-      <div class="day-cell"><div class="event-block all" style="font-size:9px">Planning<div class="tooltip"><div class="tooltip-title">Sprint planning</div><div class="tooltip-body">Attends sprint planning. No design work assigned during the sprint — design work runs ahead of engineering, not alongside it.</div></div></div></div>
-      <div class="day-cell"><div class="event-block design" style="font-size:9px;opacity:.5">Available<div class="tooltip"><div class="tooltip-title">Available for engineering</div><div class="tooltip-body">No new design work during the sprint. Available to answer Figma questions from engineering only.</div></div></div></div>
-      <div class="day-cell"><div class="event-block design" style="font-size:9px">Gate 3<div class="tooltip"><div class="tooltip-title">Gate 3 feasibility session</div><div class="tooltip-body">Design Lead attends Gate 3. Confirms scope of what needs to be designed for the next sprint feature.</div></div></div></div>
-      <div class="day-cell"><div class="event-block design" style="font-size:9px">Figma<div class="tooltip"><div class="tooltip-title">Figma production begins</div><div class="tooltip-body">Designer works from the Design Brief product wrote. All screens, all states, both platforms, English and Arabic.</div></div></div></div>
-      <div class="day-cell"><div class="event-block design" style="font-size:9px">Figma<div class="tooltip"><div class="tooltip-title">Figma production continues</div><div class="tooltip-body">Continued. All states must be covered before design review.</div></div></div></div>
-      <div class="day-cell"><div class="event-block design" style="font-size:9px">Design review<div class="tooltip"><div class="tooltip-title">Design review</div><div class="tooltip-body">Product reviews Figma against the Design Brief. 30 min. Reviewed against brief criteria — not personal taste. Changes requested if needed.</div></div></div></div>
-      <div class="day-cell"><div class="event-block design" style="font-size:9px;opacity:.5">Revisions<div class="tooltip"><div class="tooltip-title">Revisions if needed</div><div class="tooltip-body">Any changes from the design review addressed. Figma signed off before Day 9 pre-sprint planning.</div></div></div></div>
+      <div class="day-cell"><div class="event-block all">Planning<div class="tooltip"><div class="tooltip-title">Sprint planning</div><div class="tooltip-body">Attends sprint planning. No design work assigned during the sprint — design work runs ahead of engineering, not alongside it.</div></div></div></div>
+      <div class="day-cell"><div class="event-block design" style="opacity:.5">Available<div class="tooltip"><div class="tooltip-title">Available for engineering</div><div class="tooltip-body">No new design work during the sprint. Available to answer Figma questions from engineering only.</div></div></div></div>
+      <div class="day-cell"><div class="event-block design">Gate 3<div class="tooltip"><div class="tooltip-title">Gate 3 feasibility session</div><div class="tooltip-body">Design Lead attends Gate 3. Confirms scope of what needs to be designed for the next sprint feature.</div></div></div></div>
+      <div class="day-cell"><div class="event-block design">Figma<div class="tooltip"><div class="tooltip-title">Figma production begins</div><div class="tooltip-body">Designer works from the Design Brief product wrote. All screens, all states, both platforms, English and Arabic.</div></div></div></div>
+      <div class="day-cell"><div class="event-block design">Figma<div class="tooltip"><div class="tooltip-title">Figma production continues</div><div class="tooltip-body">Continued. All states must be covered before design review.</div></div></div></div>
+      <div class="day-cell"><div class="event-block design">Design review<div class="tooltip"><div class="tooltip-title">Design review</div><div class="tooltip-body">Product reviews Figma against the Design Brief. 30 min. Reviewed against brief criteria — not personal taste.</div></div></div></div>
+      <div class="day-cell"><div class="event-block design" style="opacity:.5">Revisions<div class="tooltip"><div class="tooltip-title">Revisions if needed</div><div class="tooltip-body">Any changes from the design review addressed. Figma signed off before Day 9 pre-sprint planning.</div></div></div></div>
       <div class="day-cell"></div>
       <div class="day-cell"></div>
-      <div class="day-cell"><div class="event-block all" style="font-size:9px">Review + Retro<div class="tooltip"><div class="tooltip-title">Sprint review + retrospective</div><div class="tooltip-body">Attends sprint review. Sees what shipped.</div></div></div></div>
+      <div class="day-cell"><div class="event-block all">Review + Retro<div class="tooltip"><div class="tooltip-title">Sprint review + retrospective</div><div class="tooltip-body">Attends sprint review. Sees what shipped.</div></div></div></div>
     </div>
 
-    <!-- Growth Marketing row -->
     <div class="sprint-row" data-fn="mktg">
       <div class="role-cell"><div class="role-pill mktg">Mktg</div></div>
-      <div class="day-cell"><div class="event-block mktg" style="font-size:9px">Weekly digest<div class="tooltip"><div class="tooltip-title">Weekly digest published</div><div class="tooltip-body">Monday. What shipped last sprint, what is being prepared, what signals came in. Written and published — no meeting required. Everyone reads it.</div></div></div></div>
+      <div class="day-cell"><div class="event-block mktg">Weekly digest<div class="tooltip"><div class="tooltip-title">Weekly digest published</div><div class="tooltip-body">Monday. What shipped last sprint, what is being prepared, what signals came in. Written and published — no meeting required.</div></div></div></div>
       <div class="day-cell"></div>
-      <div class="day-cell"><div class="event-block mktg" style="font-size:9px">#user-signals<div class="tooltip"><div class="tooltip-title">User signals posted</div><div class="tooltip-body">NPS, support tickets, interview clips posted to #user-signals. Tagged by insight type and user segment. Everyone reads.</div></div></div></div>
+      <div class="day-cell"><div class="event-block mktg">#user-signals<div class="tooltip"><div class="tooltip-title">User signals posted</div><div class="tooltip-body">NPS, support tickets, interview clips posted to #user-signals. Tagged by insight type and user segment. Everyone reads.</div></div></div></div>
       <div class="day-cell"></div>
-      <div class="day-cell"><div class="event-block mktg" style="font-size:9px">Signal review<div class="tooltip"><div class="tooltip-title">Signal review</div><div class="tooltip-body">Growth Marketing + Product review all signals from the sprint together. Patterns identified. Research Archive updated. Evidence Backlog upgraded with new findings.</div></div></div></div>
+      <div class="day-cell"><div class="event-block mktg">Signal review<div class="tooltip"><div class="tooltip-title">Signal review</div><div class="tooltip-body">Growth Marketing + Product review all signals from the sprint together. Patterns identified. Research Archive updated.</div></div></div></div>
       <div class="day-cell"></div>
-      <div class="day-cell"><div class="event-block mktg" style="font-size:9px">#user-signals<div class="tooltip"><div class="tooltip-title">User signals posted (week 2)</div><div class="tooltip-body">Second post of the sprint. Keeps signal flow continuous between synthesis sessions.</div></div></div></div>
+      <div class="day-cell"><div class="event-block mktg">#user-signals<div class="tooltip"><div class="tooltip-title">User signals posted (week 2)</div><div class="tooltip-body">Second post of the sprint. Keeps signal flow continuous between synthesis sessions.</div></div></div></div>
       <div class="day-cell"></div>
       <div class="day-cell"></div>
-      <div class="day-cell"><div class="event-block mktg" style="font-size:9px">Experiment review<div class="tooltip"><div class="tooltip-title">Experiment review</div><div class="tooltip-body">All running experiments checked. Learnings logged. Hypotheses updated. Next experiments briefed for the following sprint.</div></div></div></div>
+      <div class="day-cell"><div class="event-block mktg">Experiment review<div class="tooltip"><div class="tooltip-title">Experiment review</div><div class="tooltip-body">All running experiments checked. Learnings logged. Hypotheses updated. Next experiments briefed for the following sprint.</div></div></div></div>
     </div>
-
-  </div><!-- /sprint-track -->
+  </div>
 
   <!-- MEETINGS -->
   <div class="section-head">
@@ -545,11 +480,11 @@ body{background:var(--page);color:var(--t1);font-family:var(--sans);-webkit-font
     <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>Engineering</div>
     <div class="legend-item"><div class="legend-dot" style="background:var(--co)"></div>Design</div>
     <div class="legend-item"><div class="legend-dot" style="background:var(--gold)"></div>Growth Marketing</div>
-    <div class="legend-item"><div class="legend-dot" style="background:var(--t4)"></div>All functions</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--t3)"></div>All functions</div>
     <div class="legend-url">ahmedelashrey73.github.io/moneymore-ops</div>
   </div>
 
-</div><!-- /page-body -->
+</div>
 
 <footer class="site-footer">
   <div class="wrap">
@@ -571,12 +506,11 @@ function setFilter(f,btn){
 function apply(){
   document.querySelectorAll('[data-fn]').forEach(el=>{
     const fn=el.getAttribute('data-fn');
-    if(current==='all'||fn===current||fn==='all'){el.classList.remove('dimmed');}
-    else{el.classList.add('dimmed');}
+    el.classList.toggle('dimmed', current!=='all' && fn!==current && fn!=='all');
   });
 }
-document.querySelectorAll('.horizon').forEach((el,i)=>{el.style.animationDelay=(i*.06)+'s'});
-document.querySelectorAll('.meeting-card').forEach((el,i)=>{el.style.animationDelay=(i*.04)+'s'});
+document.querySelectorAll('.horizon').forEach((el,i)=>el.style.animationDelay=(i*.06)+'s');
+document.querySelectorAll('.meeting-card').forEach((el,i)=>el.style.animationDelay=(i*.04)+'s');
 </script>
 </body>
 </html>
