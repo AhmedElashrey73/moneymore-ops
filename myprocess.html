@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoneyMore — Project Operating Flow</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+:root {
+  --navy:#0F2A45; --navy-l:#E0EAF4;
+  --green:#186040; --green-l:#D4EDE1;
+  --red:#9E1F10; --red-l:#FAD9D4;
+  --gold:#8A5A00; --gold-l:#F5E6C0;
+  --pu:#3D35A0; --pu-l:#E0DEFD;
+  --co:#8A3015; --co-l:#FAE0D4;
+  --page:#F4F2ED; --white:#FFFFFF;
+  --s2:#ECEAE4; --s3:#DEDBD3;
+  --t1:#0A0906; --t2:#1E1C18; --t3:#4A4640; --t4:#7A7670;
+  --b1:#D8D4CC; --b2:#C0BDB4;
+  --sans:'Plus Jakarta Sans',sans-serif;
+  --mono:'DM Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--page);color:var(--t1);font-family:var(--sans);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased}
+
+/* NAV */
+.topnav{background:var(--navy);position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,0.25)}
+.topnav-inner{max-width:1400px;margin:0 auto;padding:0 32px;display:flex;align-items:center;height:52px;gap:16px}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-icon{width:28px;height:28px;background:rgba(255,255,255,0.15);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px}
+.brand-name{font-family:var(--mono);font-size:12px;font-weight:600;color:white;letter-spacing:.08em}
+.nav-meta{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,0.4);letter-spacing:.1em;margin-left:auto}
+
+/* HERO */
+.hero{background:var(--navy);padding:44px 0 40px;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;top:-60px;right:-80px;width:440px;height:440px;background:radial-gradient(circle,rgba(24,96,64,0.14) 0%,transparent 70%);pointer-events:none}
+.wrap{max-width:1400px;margin:0 auto;padding:0 32px}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:rgba(255,255,255,0.45);text-transform:uppercase;margin-bottom:12px}
+.hero-title{font-size:clamp(28px,4vw,44px);font-weight:800;color:white;letter-spacing:-.03em;line-height:1.06;margin-bottom:12px}
+.hero-title em{font-style:normal;color:#5FD4A8}
+.hero-sub{font-size:14px;color:rgba(255,255,255,0.7);max-width:700px;line-height:1.75}
+
+/* PAGE */
+.page-body{max-width:1400px;margin:0 auto;padding:40px 32px 80px}
+
+/* SECTION HEAD */
+.section-head{display:flex;align-items:center;gap:14px;margin-bottom:24px;margin-top:52px}
+.section-line{flex:1;height:1px;background:var(--b1)}
+.section-label{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--t3);white-space:nowrap}
+
+/* PROJECT CARDS */
+.projects-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:40px}
+.proj-card{background:var(--white);border:1.5px solid var(--b1);border-radius:10px;padding:18px;box-shadow:0 2px 8px rgba(0,0,0,0.07);position:relative;overflow:hidden}
+.proj-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px}
+.proj-card.p1::before{background:var(--navy)}
+.proj-card.p2::before{background:var(--pu)}
+.proj-card.p3::before{background:var(--co)}
+.proj-card.p4::before{background:var(--green)}
+.proj-card.p5::before{background:var(--gold)}
+.proj-num{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
+.proj-card.p1 .proj-num{color:var(--navy)}
+.proj-card.p2 .proj-num{color:var(--pu)}
+.proj-card.p3 .proj-num{color:var(--co)}
+.proj-card.p4 .proj-num{color:var(--green)}
+.proj-card.p5 .proj-num{color:var(--gold)}
+.proj-name{font-size:13px;font-weight:800;color:var(--t1);margin-bottom:6px;line-height:1.3}
+.proj-desc{font-size:12px;color:var(--t3);line-height:1.55;font-weight:500}
+.proj-tag{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:700;padding:2px 8px;border-radius:3px;margin-top:10px}
+.proj-card.p1 .proj-tag{background:var(--navy-l);color:var(--navy);border:1px solid rgba(15,42,69,.2)}
+.proj-card.p2 .proj-tag{background:var(--pu-l);color:var(--pu);border:1px solid rgba(61,53,160,.2)}
+.proj-card.p3 .proj-tag{background:var(--co-l);color:var(--co);border:1px solid rgba(138,48,21,.2)}
+.proj-card.p4 .proj-tag{background:var(--green-l);color:var(--green);border:1px solid rgba(24,96,64,.2)}
+.proj-card.p5 .proj-tag{background:var(--gold-l);color:var(--gold);border:1px solid rgba(138,90,0,.2)}
+
+/* FLOW CHAIN */
+.flow-chain{display:flex;flex-direction:column;gap:0;margin-bottom:40px}
+.flow-step{display:grid;grid-template-columns:200px 1fr;gap:0;border:1.5px solid var(--b1);border-radius:10px;overflow:hidden;background:var(--white);box-shadow:0 2px 8px rgba(0,0,0,0.06);margin-bottom:4px}
+.flow-step-label{padding:20px;display:flex;flex-direction:column;justify-content:center;border-right:1.5px solid var(--b1)}
+.flow-step-num{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.flow-step-name{font-size:14px;font-weight:800;color:var(--t1);line-height:1.3}
+.flow-step-proj{font-family:var(--mono);font-size:10px;font-weight:600;margin-top:6px;padding:2px 8px;border-radius:3px;display:inline-block}
+.flow-step-body{padding:20px;display:flex;flex-direction:column;gap:8px}
+.flow-step-desc{font-size:13px;color:var(--t2);line-height:1.65;font-weight:500}
+.flow-arrow-row{display:flex;justify-content:flex-start;padding:4px 0 4px 100px}
+.flow-arrow-icon{font-size:20px;color:var(--b2)}
+
+/* SESSION RULES */
+.rules-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:40px}
+.rule-card{background:var(--white);border:1.5px solid var(--b1);border-radius:10px;padding:20px;box-shadow:0 2px 6px rgba(0,0,0,0.06)}
+.rule-title{font-size:14px;font-weight:800;color:var(--t1);margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.rule-icon{font-size:18px}
+.rule-list{display:flex;flex-direction:column;gap:8px}
+.rule-item{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--t2);line-height:1.55;font-weight:500}
+.rule-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:6px}
+.rule-dot.navy{background:var(--navy)}
+.rule-dot.green{background:var(--green)}
+.rule-dot.red{background:var(--red)}
+.rule-dot.gold{background:var(--gold)}
+
+/* SESSIONS BREAKDOWN */
+.sessions-wrap{display:flex;flex-direction:column;gap:16px}
+.proj-sessions{background:var(--white);border:1.5px solid var(--b1);border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+.proj-sessions-header{padding:14px 20px;display:flex;align-items:center;gap:12px;border-bottom:1.5px solid var(--b1)}
+.proj-sessions-header.p1{background:var(--navy-l)}
+.proj-sessions-header.p2{background:var(--pu-l)}
+.proj-sessions-header.p3{background:var(--co-l)}
+.proj-sessions-header.p4{background:var(--green-l)}
+.proj-sessions-header.p5{background:var(--gold-l)}
+.proj-sessions-num{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.proj-sessions-header.p1 .proj-sessions-num{color:var(--navy)}
+.proj-sessions-header.p2 .proj-sessions-num{color:var(--pu)}
+.proj-sessions-header.p3 .proj-sessions-num{color:var(--co)}
+.proj-sessions-header.p4 .proj-sessions-num{color:var(--green)}
+.proj-sessions-header.p5 .proj-sessions-num{color:var(--gold)}
+.proj-sessions-name{font-size:14px;font-weight:800;color:var(--t1)}
+.sessions-table{width:100%;border-collapse:collapse}
+.sessions-table th{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t4);padding:10px 20px;text-align:left;border-bottom:1px solid var(--b1);background:var(--s2)}
+.sessions-table td{font-size:13px;padding:12px 20px;border-bottom:1px solid var(--b1);vertical-align:top;color:var(--t2);font-weight:500;line-height:1.5}
+.sessions-table tr:last-child td{border-bottom:none}
+.sessions-table td:first-child{font-weight:700;color:var(--t1);white-space:nowrap}
+.sessions-table td:nth-child(2){font-family:var(--mono);font-size:11px;color:var(--t4)}
+.input-tag{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:600;padding:1px 6px;border-radius:3px;margin-right:4px;margin-bottom:2px}
+.input-tag.paste{background:var(--s2);color:var(--t3);border:1px solid var(--b1)}
+.input-tag.upload{background:var(--navy-l);color:var(--navy);border:1px solid rgba(15,42,69,.2)}
+.input-tag.none{background:var(--green-l);color:var(--green);border:1px solid rgba(24,96,64,.2)}
+
+/* COPY FLOW */
+.copy-flow{background:var(--white);border:1.5px solid var(--b1);border-radius:10px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,0.06);margin-bottom:40px}
+.copy-flow-title{font-size:15px;font-weight:800;color:var(--t1);margin-bottom:20px}
+.copy-steps{display:flex;align-items:flex-start;gap:0;overflow-x:auto;padding-bottom:8px}
+.copy-step{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:8px;max-width:160px}
+.copy-step-circle{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;border:2px solid var(--b1);flex-shrink:0}
+.copy-step-label{font-size:12px;font-weight:700;color:var(--t1);text-align:center;line-height:1.3}
+.copy-step-sub{font-size:11px;color:var(--t4);text-align:center;font-family:var(--mono);line-height:1.3}
+.copy-arrow{font-size:20px;color:var(--b2);padding:0 8px;flex-shrink:0;margin-top:12px}
+
+/* FIX BRIEF FLOW */
+.fix-flow{background:var(--red-l);border:1.5px solid rgba(158,31,16,.25);border-radius:10px;padding:20px 24px;margin-bottom:40px}
+.fix-flow-title{font-size:13px;font-weight:800;color:var(--red);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.fix-steps{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.fix-step{background:var(--white);border:1.5px solid rgba(158,31,16,.2);border-radius:7px;padding:8px 14px;font-size:12px;font-weight:700;color:var(--t1)}
+.fix-arrow{font-size:16px;color:rgba(158,31,16,.4)}
+.fix-note{font-size:12px;color:var(--red);margin-top:12px;font-weight:500;line-height:1.55}
+
+/* SPIKE FLOW */
+.spike-flow{background:var(--gold-l);border:1.5px solid rgba(138,90,0,.25);border-radius:10px;padding:20px 24px;margin-bottom:40px}
+.spike-flow-title{font-size:13px;font-weight:800;color:var(--gold);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.spike-steps{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.spike-step{background:var(--white);border:1.5px solid rgba(138,90,0,.2);border-radius:7px;padding:8px 14px;font-size:12px;font-weight:700;color:var(--t1)}
+
+/* FOOTER */
+.site-footer{background:var(--navy);padding:28px 0}
+.footer-inner{display:flex;align-items:center;justify-content:space-between}
+.footer-text{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,0.35);letter-spacing:.08em}
+
+@media(max-width:1100px){
+  .projects-grid{grid-template-columns:repeat(3,1fr)}
+  .rules-grid{grid-template-columns:1fr}
+  .flow-step{grid-template-columns:1fr}
+  .flow-step-label{border-right:none;border-bottom:1.5px solid var(--b1)}
+  .wrap,.page-body{padding-left:16px;padding-right:16px}
+  .topnav-inner{padding:0 16px}
+}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <div class="brand">
+      <div class="brand-icon">⚙️</div>
+      <span class="brand-name">MoneyMore</span>
+    </div>
+    <div class="nav-meta">Project Operating Flow · v1.0 · Apr 2026</div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow">MoneyMore · Internal Reference</div>
+    <h1 class="hero-title">How to use the <em>five projects</em><br>without breaking the system</h1>
+    <p class="hero-sub">Which project to open, what to bring into it, what it produces, how sessions should be structured, and how everything connects. Read this before starting any project session.</p>
+  </div>
+</section>
+
+<div class="page-body">
+
+  <!-- FIVE PROJECTS -->
+  <div class="section-head">
+    <div class="section-line"></div>
+    <div class="section-label">The five projects — one job each</div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="projects-grid">
+    <div class="proj-card p1">
+      <div class="proj-num">Project 1</div>
+      <div class="proj-name">Product OS</div>
+      <div class="proj-desc">Produces all product documentation — Feature Briefs, Fix Briefs, Design Briefs, PRDs, Engineering Tickets, User Stories.</div>
+      <div class="proj-tag">Documentation factory</div>
+    </div>
+    <div class="proj-card p2">
+      <div class="proj-num">Project 2</div>
+      <div class="proj-name">Product Intelligence</div>
+      <div class="proj-desc">Challenges thinking, identifies gaps, analyses evidence, informs backlog decisions. Strategic thinking partner.</div>
+      <div class="proj-tag">Challenge + refine</div>
+    </div>
+    <div class="proj-card p3">
+      <div class="proj-num">Project 3</div>
+      <div class="proj-name">Prototype Lab</div>
+      <div class="proj-desc">Builds interactive HTML prototypes from Design Briefs. Visual thinking layer between documentation and Figma.</div>
+      <div class="proj-tag">Visual thinking tool</div>
+    </div>
+    <div class="proj-card p4">
+      <div class="proj-num">Project 4</div>
+      <div class="proj-name">Analytics & Growth</div>
+      <div class="proj-desc">Owns Mixpanel, CleverTap, and the analytics stack. Interprets data, configures campaigns, maintains event taxonomy.</div>
+      <div class="proj-tag">Analytics brain</div>
+    </div>
+    <div class="proj-card p5">
+      <div class="proj-num">Project 5</div>
+      <div class="proj-name">Copy & Voice</div>
+      <div class="proj-desc">Defines the MoneyMore brand voice and produces all copy across every channel in English and Arabic.</div>
+      <div class="proj-tag">Words layer</div>
+    </div>
+  </div>
+
+  <!-- FULL FEATURE FLOW -->
+  <div class="section-head">
+    <div class="section-line"></div>
+    <div class="section-label">Full feature flow — start to sprint</div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="flow-chain">
+
+    <div class="flow-step">
+      <div class="flow-step-label" style="background:var(--pu-l)">
+        <div class="flow-step-num" style="color:var(--pu)">Step 1</div>
+        <div class="flow-step-name">Challenge the brief</div>
+        <div class="flow-step-proj" style="background:var(--pu-l);color:var(--pu);border:1px solid rgba(61,53,160,.2)">Project 2</div>
+      </div>
+      <div class="flow-step-body">
+        <div class="flow-step-desc">Bring your rough brief or initial thinking into Project 2. Ask it to challenge the problem statement, identify gaps, flag missing edge cases, and question whether the solution traces back to a real user problem. One feature per session. End the session by asking for a structured summary of what was decided and what open questions remain.</div>
+        <div class="flow-step-desc" style="color:var(--t4);font-size:12px;">Session anchor: "This session is for challenging the [Feature Name] brief only." Paste rough brief. Ask for challenge and structured summary at the end.</div>
+      </div>
+    </div>
+
+    <div class="flow-arrow-row"><div class="flow-arrow-icon">↓</div></div>
+
+    <div class="flow-step">
+      <div class="flow-step-label" style="background:var(--navy-l)">
+        <div class="flow-step-num" style="color:var(--navy)">Step 2</div>
+        <div class="flow-step-name">Write the Feature Brief</div>
+        <div class="flow-step-proj" style="background:var(--navy-l);color:var(--navy);border:1px solid rgba(15,42,69,.15)">Project 1</div>
+      </div>
+      <div class="flow-step-body">
+        <div class="flow-step-desc">Take the Project 2 structured summary into Project 1 and produce the formal Feature Brief document. The Feature Brief covers: problem statement, why now, proposed solution, user segments affected, key flows, edge cases and empty states, out of scope, copy moments as [COPY: description] placeholders, Mixpanel events needed, and success metric.</div>
+        <div class="flow-step-desc" style="color:var(--t4);font-size:12px;">Session anchor: "This session is for the [Feature Name] Feature Brief only." Paste Project 2 summary. One document per session.</div>
+      </div>
+    </div>
+
+    <div class="flow-arrow-row"><div class="flow-arrow-icon">↓</div></div>
+
+    <div class="flow-step">
+      <div class="flow-step-label" style="background:var(--navy-l)">
+        <div class="flow-step-num" style="color:var(--navy)">Step 3</div>
+        <div class="flow-step-name">Write the Design Brief</div>
+        <div class="flow-step-proj" style="background:var(--navy-l);color:var(--navy);border:1px solid rgba(15,42,69,.15)">Project 1</div>
+      </div>
+      <div class="flow-step-body">
+        <div class="flow-step-desc">Open a new Project 1 session. Paste the Feature Brief. Produce the Design Brief — every screen, every state, every platform difference, all copy moments as [COPY: description] placeholders. The Design Brief is what the designer and prototype receive. At the end, ask Project 1 to extract all [COPY: description] placeholders and format them as a copy brief list ready for Project 5.</div>
+        <div class="flow-step-desc" style="color:var(--t4);font-size:12px;">Session anchor: "This session is for the [Feature Name] Design Brief only." New session — do not continue from Feature Brief session.</div>
+      </div>
+    </div>
+
+    <div class="flow-arrow-row"><div class="flow-arrow-icon">↓</div></div>
+
+    <div class="flow-step">
+      <div class="flow-step-label" style="background:var(--gold-l)">
+        <div class="flow-step-num" style="color:var(--gold)">Step 4</div>
+        <div class="flow-step-name">Write the copy</div>
+        <div class="flow-step-proj" style="background:var(--gold-l);color:var(--gold);border:1px solid rgba(138,90,0,.2)">Project 5</div>
+      </div>
+      <div class="flow-step-body">
+        <div class="flow-step-desc">Take the copy brief list extracted from the Design Brief into Project 5. Do not upload the full Design Brief document — paste only the copy moments list as plain text. Project 5 produces three variants per copy moment, includes character counts for push notifications, flags which moments need Arabic native speaker review, and notes the segment for each. You approve the final variant for each moment.</div>
+        <div class="flow-step-desc" style="color:var(--t4);font-size:12px;">Session anchor: "Here are the copy moments for [Feature Name]. Write the copy for each." Paste copy brief list as text. No file upload needed.</div>
+      </div>
+    </div>
+
+    <div class="flow-arrow-row"><div class="flow-arrow-icon">↓</div></div>
+
+    <div class="flow-step">
+      <div class="flow-step-label" style="background:var(--navy-l)">
+        <div class="flow-step-num" style="color:var(--navy)">Step 5</div>
+        <div class="flow-step-name">Update Design Brief with final copy</div>
+        <div class="flow-step-proj" style="background:var(--navy-l);color:var(--navy);border:1px solid rgba(15,42,69,.15)">Project 1</div>
+      </div>
+      <div class="flow-step-body">
+        <div class="flow-step-desc">Open a new Project 1 session. Paste the Design Brief and the approved copy from Project 5. Ask Project 1 to replace all [COPY: description] placeholders with the finalised copy. The output is the complete Design Brief with real copy — this is what goes to the designer and to Project 3.</div>
+        <div class="flow-step-desc" style="color:var(--t4);font-size:12px;">This session is short — paste brief, paste approved copy, replace placeholders. Done.</div>
+      </div>
+    </div>
+
+    <div class="flow-arrow-row"><div class="flow-arrow-icon">↓</div></div>
+
+    <div class="flow-step">
+      <div class="flow-step-label" style="background:var(--co-l)">
+        <div class="flow-step-num" style="color:var(--co)">Step 6</div>
+        <div class="flow-step-name">Build the prototype</div>
+        <div class="flow-step-proj" style="background:var(--co-l);color:var(--co);border:1px solid rgba(138,48,21,.2)">Project 3</div>
+      </div>
+      <div class="flow-step-body">
+        <div class="flow-step-desc">Take the complete Design Brief (with finalised copy) into Project 3. One feature per session. Project 3 builds the HTML prototype using the design system template — Android and iOS frames, all screens and states, real copy, Mixpanel event annotations. You review and approve the prototype. The designer receives both the Design Brief and the prototype as reference.</div>
+        <div class="flow-step-desc" style="color:var(--t4);font-size:12px;">Session anchor: "Build me a prototype for [Feature Name]. Here is the complete Design Brief." One prototype per session.</div>
+      </div>
+    </div>
+
+    <div class="flow-arrow-row"><div class="flow-arrow-icon">↓</div></div>
+
+    <div class="flow-step">
+      <div class="flow-step-label" style="background:var(--s2)">
+        <div class="flow-step-num" style="color:var(--t4)">Step 7</div>
+        <div class="flow-step-name">Designer produces Figma</div>
+        <div class="flow-step-proj" style="background:var(--s2);color:var(--t3);border:1px solid var(--b1)">Designer</div>
+      </div>
+      <div class="flow-step-body">
+        <div class="flow-step-desc">Designer receives the complete Design Brief with real copy and the HTML prototype as reference. Figma is produced with real copy from day one — no placeholder text, no second round of copy updates. You review Figma against the Design Brief criteria — not personal taste.</div>
+      </div>
+    </div>
+
+    <div class="flow-arrow-row"><div class="flow-arrow-icon">↓</div></div>
+
+    <div class="flow-step">
+      <div class="flow-step-label" style="background:var(--navy-l)">
+        <div class="flow-step-num" style="color:var(--navy)">Step 8</div>
+        <div class="flow-step-name">Write Engineering Ticket + User Story</div>
+        <div class="flow-step-proj" style="background:var(--navy-l);color:var(--navy);border:1px solid rgba(15,42,69,.15)">Project 1</div>
+      </div>
+      <div class="flow-step-body">
+        <div class="flow-step-desc">Open a new Project 1 session. Paste the approved Design Brief and the Figma link. Project 1 writes the Engineering Ticket with full acceptance criteria, finalised copy already in place, Figma link, and definition of done. Then writes the User Story. These go into Jira — Epic linked, label applied, story points estimated at pre-sprint planning.</div>
+        <div class="flow-step-desc" style="color:var(--t4);font-size:12px;">Session anchor: "Write the Engineering Ticket and User Story for [Feature Name]. Here is the Design Brief and Figma link." New session.</div>
+      </div>
+    </div>
+
+    <div class="flow-arrow-row"><div class="flow-arrow-icon">↓</div></div>
+
+    <div class="flow-step">
+      <div class="flow-step-label" style="background:var(--green-l)">
+        <div class="flow-step-num" style="color:var(--green)">Step 9</div>
+        <div class="flow-step-name">Sprint + Release</div>
+        <div class="flow-step-proj" style="background:var(--green-l);color:var(--green);border:1px solid rgba(24,96,64,.2)">Engineering</div>
+      </div>
+      <div class="flow-step-body">
+        <div class="flow-step-desc">Engineering implements from the ticket. Ticket has everything — accepted criteria, Figma link, finalised copy, definition of done, Mixpanel events to fire. Release readiness checklist is the final gate before anything ships. Sprint release, hotfix, or major feature release — the type determines which checklist applies.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FIX BRIEF FLOW -->
+  <div class="section-head">
+    <div class="section-line"></div>
+    <div class="section-label">Fix Brief flow — simpler, no design needed</div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="fix-flow">
+    <div class="fix-flow-title">🔴 Fix Brief flow — skips Project 2, Project 3, and Project 5</div>
+    <div class="fix-steps">
+      <div class="fix-step">Bug identified<br><span style="font-size:11px;font-weight:400;color:var(--t3)">Mixpanel / monitoring / user report</span></div>
+      <div class="fix-arrow">→</div>
+      <div class="fix-step">Fix Brief written<br><span style="font-size:11px;font-weight:400;color:var(--t3)">Project 1 — what's broken, correct behaviour, reproduction steps, impact</span></div>
+      <div class="fix-arrow">→</div>
+      <div class="fix-step">Engineering Ticket<br><span style="font-size:11px;font-weight:400;color:var(--t3)">Project 1 — from Fix Brief directly</span></div>
+      <div class="fix-arrow">→</div>
+      <div class="fix-step">Jira<br><span style="font-size:11px;font-weight:400;color:var(--t3)">FIX — Active Bugs Epic · fix-track label</span></div>
+      <div class="fix-arrow">→</div>
+      <div class="fix-step">Engineering fixes<br><span style="font-size:11px;font-weight:400;color:var(--t3)">QA validates correct behaviour</span></div>
+    </div>
+    <div class="fix-note">Exception: If a bug fix requires a UI change — for example FIX-003 where the error state screen needs redesigning — then a Design Brief is needed for the UI change only, and Project 5 writes the error message copy. But this is the exception. Most bug fixes are backend fixes with no UI involvement.</div>
+  </div>
+
+  <!-- SPIKE FLOW -->
+  <div class="spike-flow">
+    <div class="spike-flow-title">⚡ Spike ticket flow — when engineering needs to investigate before building</div>
+    <div class="spike-steps">
+      <div class="spike-step">Gate 3 session<br><span style="font-size:11px;font-weight:400;color:var(--t3)">Unknown identified</span></div>
+      <div class="fix-arrow">→</div>
+      <div class="spike-step">[SPIKE] ticket created<br><span style="font-size:11px;font-weight:400;color:var(--t3)">Sits in backlog — NOT current sprint</span></div>
+      <div class="fix-arrow">→</div>
+      <div class="spike-step">Pre-sprint planning Day 9<br><span style="font-size:11px;font-weight:400;color:var(--t3)">Spike enters NEXT sprint · max 3 points</span></div>
+      <div class="fix-arrow">→</div>
+      <div class="spike-step">Spike resolved<br><span style="font-size:11px;font-weight:400;color:var(--t3)">Answer written up before Day 9</span></div>
+      <div class="fix-arrow">→</div>
+      <div class="spike-step">Engineering Story created<br><span style="font-size:11px;font-weight:400;color:var(--t3)">Confident estimate · enters sprint after next</span></div>
+    </div>
+    <div class="fix-note" style="color:var(--gold);">Rule: No Engineering Story before the spike closes. Gate 3 must happen Days 1–2 of the sprint to give maximum flexibility. Spike is time-boxed — never more than 3 story points. Output is always a written answer, not code.</div>
+  </div>
+
+  <!-- SESSION RULES -->
+  <div class="section-head">
+    <div class="section-line"></div>
+    <div class="section-label">Session rules — how to use projects without overloading them</div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="rules-grid">
+    <div class="rule-card">
+      <div class="rule-title"><span class="rule-icon">📌</span>One feature, one session — always</div>
+      <div class="rule-list">
+        <div class="rule-item"><div class="rule-dot navy"></div>Never bring two features into the same project session. Finish Sign Up completely, then open a new session for Home.</div>
+        <div class="rule-item"><div class="rule-dot navy"></div>One document type per session. Do not produce a Feature Brief and a Design Brief in the same session.</div>
+        <div class="rule-item"><div class="rule-dot navy"></div>Start every session with a one-line anchor: "This session is for the [Feature Name] [Document Type] only."</div>
+        <div class="rule-item"><div class="rule-dot navy"></div>If a session runs more than 30 exchanges, it is too broad. Stop and split.</div>
+      </div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-title"><span class="rule-icon">💡</span>Project 1 — production only, not exploration</div>
+      <div class="rule-list">
+        <div class="rule-item"><div class="rule-dot green"></div>By the time something enters Project 1, the thinking is done. Project 1 executes documentation — it does not challenge strategy.</div>
+        <div class="rule-item"><div class="rule-dot green"></div>Always paste only what is needed for that session. If writing Engineering Tickets, paste only the Design Brief for that feature.</div>
+        <div class="rule-item"><div class="rule-dot green"></div>If the input does not follow the Feature Brief structure, Project 1 will ask for missing sections. Fill them before proceeding.</div>
+        <div class="rule-item"><div class="rule-dot green"></div>Mark every user-facing copy moment as [COPY: description]. Never write final copy in Project 1.</div>
+      </div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-title"><span class="rule-icon">🧠</span>Project 2 — thinking only, not writing</div>
+      <div class="rule-list">
+        <div class="rule-item"><div class="rule-dot pu" style="background:var(--pu)"></div>Project 2 ends every session with a structured summary — not a document. That summary is the input to Project 1.</div>
+        <div class="rule-item"><div class="rule-dot pu" style="background:var(--pu)"></div>Bring rough briefs, screenshots, bullet points — anything. Project 2 works from whatever you bring.</div>
+        <div class="rule-item"><div class="rule-dot pu" style="background:var(--pu)"></div>Do not ask Project 2 to write Feature Briefs or Design Briefs. That is Project 1's job.</div>
+        <div class="rule-item"><div class="rule-dot pu" style="background:var(--pu)"></div>For Sign Up and Home where screenshots exist — share both the brief and the screenshots. Visual context produces sharper challenges.</div>
+      </div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-title"><span class="rule-icon">✍️</span>Project 5 — paste text, not files</div>
+      <div class="rule-list">
+        <div class="rule-item"><div class="rule-dot gold"></div>Never upload the full Design Brief to Project 5. Paste only the copy moments list as plain text.</div>
+        <div class="rule-item"><div class="rule-dot gold"></div>Copy moments are extracted by Project 1 at the end of the Design Brief session — formatted and ready to paste.</div>
+        <div class="rule-item"><div class="rule-dot gold"></div>Project 5 always produces three variants per copy moment. You approve one. Never one variant, never skip approval.</div>
+        <div class="rule-item"><div class="rule-dot gold"></div>Arabic is always flagged for native speaker review. Never ship Arabic copy without that review step.</div>
+      </div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-title"><span class="rule-icon">🔬</span>Project 3 — one prototype per session</div>
+      <div class="rule-list">
+        <div class="rule-item"><div class="rule-dot co" style="background:var(--co)"></div>Only receives the complete Design Brief with finalised copy already in it. Never a brief with [COPY: placeholders] still in it.</div>
+        <div class="rule-item"><div class="rule-dot co" style="background:var(--co)"></div>One prototype per session. Never two features in the same session.</div>
+        <div class="rule-item"><div class="rule-dot co" style="background:var(--co)"></div>Always uses the design system template — does not invent new visual conventions.</div>
+        <div class="rule-item"><div class="rule-dot co" style="background:var(--co)"></div>The prototype is a thinking and communication tool, not a production handoff. Designer still produces the final Figma.</div>
+      </div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-title"><span class="rule-icon">📊</span>Project 4 — specific tasks, not open analysis</div>
+      <div class="rule-list">
+        <div class="rule-item"><div class="rule-dot green"></div>Always open with a specific task: "Build the budget creation funnel in Mixpanel" not "analyse Mixpanel."</div>
+        <div class="rule-item"><div class="rule-dot green"></div>For Claude in Chrome Mixpanel sessions — use the structured five-task prompt. Do not deviate mid-session.</div>
+        <div class="rule-item"><div class="rule-dot green"></div>Short, specific, task-oriented sessions. Project 4 is not a strategy conversation — that is Project 2.</div>
+        <div class="rule-item"><div class="rule-dot green"></div>Always check whether the events a campaign depends on are live in Mixpanel before configuring CleverTap.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SESSION BREAKDOWN PER PROJECT -->
+  <div class="section-head">
+    <div class="section-line"></div>
+    <div class="section-label">Session breakdown per project — what goes in, what comes out</div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="sessions-wrap">
+
+    <div class="proj-sessions">
+      <div class="proj-sessions-header p1">
+        <div class="proj-sessions-num">Project 1</div>
+        <div class="proj-sessions-name">Product OS — documentation factory</div>
+      </div>
+      <table class="sessions-table">
+        <tr><th>Session</th><th>Frequency</th><th>What you bring in</th><th>What comes out</th></tr>
+        <tr><td>Feature Brief</td><td>Once per feature</td><td><span class="input-tag paste">paste</span> Project 2 structured summary</td><td>Feature Brief document with [COPY: placeholders]</td></tr>
+        <tr><td>Design Brief</td><td>Once per feature</td><td><span class="input-tag paste">paste</span> Feature Brief</td><td>Design Brief + copy moments list extracted for Project 5</td></tr>
+        <tr><td>Design Brief update</td><td>Once per feature</td><td><span class="input-tag paste">paste</span> Design Brief + approved copy from Project 5</td><td>Complete Design Brief with real copy — ready for designer and Project 3</td></tr>
+        <tr><td>Engineering Ticket + User Story</td><td>Once per feature</td><td><span class="input-tag paste">paste</span> Design Brief + Figma link</td><td>Engineering Ticket with finalised copy + User Story → Jira</td></tr>
+        <tr><td>Fix Brief</td><td>Per bug identified</td><td><span class="input-tag paste">paste</span> Bug description + evidence</td><td>Fix Brief + Engineering Ticket → Jira FIX — Active Bugs</td></tr>
+      </table>
+    </div>
+
+    <div class="proj-sessions">
+      <div class="proj-sessions-header p2">
+        <div class="proj-sessions-num">Project 2</div>
+        <div class="proj-sessions-name">Product Intelligence — challenge and refine</div>
+      </div>
+      <table class="sessions-table">
+        <tr><th>Session</th><th>Frequency</th><th>What you bring in</th><th>What comes out</th></tr>
+        <tr><td>Brief challenge</td><td>Once per feature, before Project 1</td><td><span class="input-tag paste">paste</span> Rough brief, bullet points, screenshots, anything</td><td>Structured summary of decisions, refinements, and resolved open questions</td></tr>
+        <tr><td>Backlog decision</td><td>Ad hoc</td><td><span class="input-tag paste">paste</span> Evidence, Mixpanel data, sprint signals</td><td>Prioritisation recommendation with reasoning</td></tr>
+        <tr><td>Signal analysis</td><td>Post sprint review</td><td><span class="input-tag paste">paste</span> Sprint findings, monitoring alerts, NPS</td><td>Patterns identified, escalation recommendations, backlog updates</td></tr>
+      </table>
+    </div>
+
+    <div class="proj-sessions">
+      <div class="proj-sessions-header p3">
+        <div class="proj-sessions-num">Project 3</div>
+        <div class="proj-sessions-name">Prototype Lab — visual thinking layer</div>
+      </div>
+      <table class="sessions-table">
+        <tr><th>Session</th><th>Frequency</th><th>What you bring in</th><th>What comes out</th></tr>
+        <tr><td>Feature prototype</td><td>Once per feature, after Design Brief is finalised with copy</td><td><span class="input-tag paste">paste</span> Complete Design Brief with real copy (no placeholders)</td><td>HTML prototype — Android + iOS frames, all states, real copy, event annotations</td></tr>
+      </table>
+    </div>
+
+    <div class="proj-sessions">
+      <div class="proj-sessions-header p4">
+        <div class="proj-sessions-num">Project 4</div>
+        <div class="proj-sessions-name">Analytics & Growth Intelligence — analytics brain</div>
+      </div>
+      <table class="sessions-table">
+        <tr><th>Session</th><th>Frequency</th><th>What you bring in</th><th>What comes out</th></tr>
+        <tr><td>Mixpanel report</td><td>Ad hoc, specific task</td><td><span class="input-tag none">none</span> Just the task description</td><td>Step-by-step Mixpanel build instructions or analysis</td></tr>
+        <tr><td>CleverTap campaign</td><td>Per campaign</td><td><span class="input-tag paste">paste</span> Campaign goal and trigger event</td><td>Campaign configuration with event confirmation and segment targeting</td></tr>
+        <tr><td>Tool evaluation</td><td>Ad hoc</td><td><span class="input-tag paste">paste</span> Tool name and what question it needs to answer</td><td>Strategic evaluation — worth adding or not, at what stage</td></tr>
+      </table>
+    </div>
+
+    <div class="proj-sessions">
+      <div class="proj-sessions-header p5">
+        <div class="proj-sessions-num">Project 5</div>
+        <div class="proj-sessions-name">Copy & Voice — words layer</div>
+      </div>
+      <table class="sessions-table">
+        <tr><th>Session</th><th>Frequency</th><th>What you bring in</th><th>What comes out</th></tr>
+        <tr><td>Feature copy</td><td>Once per feature, after Design Brief is written</td><td><span class="input-tag paste">paste</span> Copy moments list extracted from Design Brief (plain text, not file)</td><td>3 variants per copy moment · character counts · Arabic flags · segment notes</td></tr>
+        <tr><td>Push notification copy</td><td>Per campaign</td><td><span class="input-tag paste">paste</span> Campaign goal, trigger event, segment, character limits</td><td>3 variants · title + body · CleverTap trigger noted · deep link destination</td></tr>
+        <tr><td>App Store listing</td><td>Per release or update</td><td><span class="input-tag paste">paste</span> What changed in this version + current listing if updating</td><td>Name, subtitle, description, keywords, what's new — English and Arabic flagged</td></tr>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- COPY FLOW VISUAL -->
+  <div class="section-head">
+    <div class="section-line"></div>
+    <div class="section-label">Copy flow — how words move through the system</div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="copy-flow">
+    <div class="copy-flow-title">Every piece of user-facing copy follows this exact path — no exceptions</div>
+    <div class="copy-steps">
+      <div class="copy-step">
+        <div class="copy-step-circle" style="background:var(--navy-l);border-color:var(--navy)">📋</div>
+        <div class="copy-step-label">Design Brief written</div>
+        <div class="copy-step-sub">Project 1<br>[COPY: placeholders] identified</div>
+      </div>
+      <div class="copy-arrow">→</div>
+      <div class="copy-step">
+        <div class="copy-step-circle" style="background:var(--navy-l);border-color:var(--navy)">📤</div>
+        <div class="copy-step-label">Copy moments extracted</div>
+        <div class="copy-step-sub">Project 1<br>formats list for Project 5</div>
+      </div>
+      <div class="copy-arrow">→</div>
+      <div class="copy-step">
+        <div class="copy-step-circle" style="background:var(--gold-l);border-color:var(--gold)">✍️</div>
+        <div class="copy-step-label">Copy written</div>
+        <div class="copy-step-sub">Project 5<br>3 variants per moment</div>
+      </div>
+      <div class="copy-arrow">→</div>
+      <div class="copy-step">
+        <div class="copy-step-circle" style="background:var(--green-l);border-color:var(--green)">✅</div>
+        <div class="copy-step-label">You approve</div>
+        <div class="copy-step-sub">One variant per moment<br>Arabic reviewed if flagged</div>
+      </div>
+      <div class="copy-arrow">→</div>
+      <div class="copy-step">
+        <div class="copy-step-circle" style="background:var(--navy-l);border-color:var(--navy)">🔄</div>
+        <div class="copy-step-label">Brief updated</div>
+        <div class="copy-step-sub">Project 1<br>placeholders replaced with real copy</div>
+      </div>
+      <div class="copy-arrow">→</div>
+      <div class="copy-step">
+        <div class="copy-step-circle" style="background:var(--co-l);border-color:var(--co)">📱</div>
+        <div class="copy-step-label">Designer gets complete brief</div>
+        <div class="copy-step-sub">Project 3<br>prototype built with real copy</div>
+      </div>
+      <div class="copy-arrow">→</div>
+      <div class="copy-step">
+        <div class="copy-step-circle" style="background:var(--s2);border-color:var(--b1)">🎨</div>
+        <div class="copy-step-label">Figma with real copy</div>
+        <div class="copy-step-sub">Designer<br>no second round needed</div>
+      </div>
+      <div class="copy-arrow">→</div>
+      <div class="copy-step">
+        <div class="copy-step-circle" style="background:var(--green-l);border-color:var(--green)">⚙️</div>
+        <div class="copy-step-label">Engineering ticket</div>
+        <div class="copy-step-sub">Project 1<br>finalised copy already confirmed</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-inner">
+      <div class="footer-text">MoneyMore · Project Operating Flow · v1.0 · April 2026 · Internal</div>
+      <div class="footer-text">Owner: Head of Growth & Product</div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
