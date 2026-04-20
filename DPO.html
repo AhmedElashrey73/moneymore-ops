@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoneyMore — DPO Proposals</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+:root{
+  --navy:#0F2A45;--navy-l:#E0EAF4;--navy-m:#2A4D6E;
+  --green:#186040;--green-l:#D4EDE1;
+  --amber:#8A5A00;--amber-l:#F5E6C0;
+  --purple:#3D35A0;--purple-l:#E0DEFD;
+  --red:#9E1F10;--red-l:#FAD9D4;
+  --page:#F5F3EE;--white:#FFFFFF;
+  --s2:#ECEAE4;--s3:#DEDBD3;
+  --t1:#0A0906;--t2:#1E1C18;--t3:#4A4640;--t4:#7A7670;
+  --b1:#D8D4CC;--b2:#C0BDB4;
+  --sans:'Plus Jakarta Sans',sans-serif;
+  --mono:'DM Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--page);color:var(--t1);font-family:var(--sans);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased}
+
+/* HERO */
+.hero{background:var(--navy);padding:48px 0 40px}
+.wrap{max-width:1200px;margin:0 auto;padding:0 40px}
+.hero-label{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:rgba(255,255,255,0.4);text-transform:uppercase;margin-bottom:12px}
+.hero-title{font-size:clamp(24px,3.5vw,38px);font-weight:800;color:white;line-height:1.1;letter-spacing:-.02em;margin-bottom:14px}
+.hero-title em{font-style:normal;color:#7ECFAA}
+.hero-sub{font-size:14px;color:rgba(255,255,255,0.6);max-width:600px;line-height:1.8;font-weight:400}
+.hero-meta{display:flex;gap:8px;margin-top:24px;flex-wrap:wrap}
+.hero-tag{font-family:var(--mono);font-size:10px;letter-spacing:.08em;padding:4px 10px;border-radius:3px;background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.45);border:1px solid rgba(255,255,255,0.1)}
+
+/* PAGE */
+.page{max-width:1200px;margin:0 auto;padding:44px 40px 80px}
+.sec-label{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--t4);margin-bottom:18px;display:flex;align-items:center;gap:12px}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--b1)}
+.sec-title{font-size:22px;font-weight:800;color:var(--t1);margin-bottom:8px;line-height:1.2;letter-spacing:-.01em}
+.sec-desc{font-size:14px;color:var(--t3);line-height:1.75;max-width:720px;margin-bottom:32px}
+
+/* LAYER CARDS */
+.layers{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+.layer-card{border-radius:10px;padding:26px}
+.layer-card.l1{background:var(--green-l);border:1.5px solid rgba(24,96,64,0.2)}
+.layer-card.l2{background:var(--amber-l);border:1.5px solid rgba(138,90,0,0.2)}
+.layer-num{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
+.l1 .layer-num{color:var(--green)}.l2 .layer-num{color:var(--amber)}
+.layer-name{font-size:18px;font-weight:800;margin-bottom:8px;line-height:1.2;letter-spacing:-.01em}
+.l1 .layer-name{color:var(--green)}.l2 .layer-name{color:var(--amber)}
+.layer-source{font-size:13px;font-weight:700;color:var(--t2);margin-bottom:10px}
+.layer-desc{font-size:13px;color:var(--t3);line-height:1.65;margin-bottom:14px}
+.layer-badge{display:inline-block;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.06em;padding:4px 10px;border-radius:3px}
+.l1 .layer-badge{background:var(--green);color:white}.l2 .layer-badge{background:var(--amber);color:white}
+.layer-note{font-size:12px;color:var(--t4);margin-top:8px;line-height:1.55}
+
+/* SEPARATOR */
+.separator-note{background:var(--white);border:1px solid var(--b1);border-radius:8px;padding:14px 20px;font-size:13px;color:var(--t3);text-align:center;margin-bottom:36px;line-height:1.6}
+.separator-note strong{color:var(--t1);font-weight:700}
+
+/* JOURNEY */
+.journey{display:flex;align-items:center;margin-bottom:28px;overflow-x:auto;padding-bottom:4px;gap:0}
+.journey-step{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:8px}
+.journey-bubble{width:140px;padding:11px 12px;border-radius:8px;text-align:center}
+.journey-bubble.neutral{background:var(--s2);border:1px solid var(--b1)}
+.journey-bubble.highlight{background:var(--amber-l);border:1.5px solid rgba(138,90,0,0.25)}
+.journey-bubble-title{font-size:12px;font-weight:700;color:var(--t1);line-height:1.3}
+.journey-bubble-sub{font-size:11px;color:var(--t4);margin-top:2px}
+.journey-arrow{font-size:18px;color:var(--b2);padding:0 8px;flex-shrink:0;margin-bottom:8px}
+.journey-label{font-family:var(--mono);font-size:10px;color:var(--t4);letter-spacing:.04em}
+
+/* LAYER 2 WIREFRAME */
+.wireframe-wrap{display:flex;gap:36px;align-items:flex-start;margin-bottom:32px}
+.wireframe-phone{flex-shrink:0;width:270px}
+.wireframe-screen{background:var(--white);border:1.5px solid var(--b1);border-radius:16px;padding:24px 20px}
+.wf-heading{font-size:15px;font-weight:800;color:var(--t1);text-align:center;margin-bottom:8px;line-height:1.3}
+.wf-body{font-size:12px;color:var(--t3);text-align:center;line-height:1.65;margin-bottom:16px}
+.wf-benefits{display:flex;flex-direction:column;gap:8px;margin-bottom:20px}
+.wf-benefit{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--t2);line-height:1.4}
+.wf-check{width:18px;height:18px;border-radius:50%;background:var(--green);color:white;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.wf-btn-primary{background:var(--navy);color:white;border-radius:7px;padding:12px;text-align:center;font-size:13px;font-weight:700;margin-bottom:8px}
+.wf-btn-ghost{border:1.5px solid var(--b1);border-radius:7px;padding:12px;text-align:center;font-size:13px;font-weight:600;color:var(--t3)}
+.wireframe-notes{flex:1;display:flex;flex-direction:column;gap:12px;padding-top:4px}
+.wf-note-card{background:var(--white);border:1px solid var(--b1);border-radius:8px;padding:16px}
+.wf-note-label{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.wf-note-text{font-size:13px;color:var(--t3);line-height:1.65}
+.wf-note-text strong{color:var(--t1);font-weight:700}
+
+/* SETTINGS PILL */
+.settings-pill{display:inline-flex;align-items:center;gap:10px;background:var(--navy-l);border:1px solid rgba(15,42,69,0.15);border-radius:6px;padding:10px 16px;font-size:13px;color:var(--navy);font-weight:600;margin-bottom:40px;flex-wrap:wrap}
+.settings-pill span{font-family:var(--mono);font-size:11px;font-weight:400;color:var(--navy-m)}
+
+/* DIVIDER */
+.page-divider{height:1px;background:var(--b1);margin:8px 0 44px}
+
+/* ELGAMEYA TEXT FLOW */
+.flow-wrap{display:flex;gap:28px;align-items:flex-start}
+.flow-steps{flex:1;display:flex;flex-direction:column}
+.flow-step{display:flex;gap:16px;align-items:flex-start}
+.flow-step-left{display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:32px}
+.flow-dot{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;font-weight:700;flex-shrink:0;border:1.5px solid}
+.flow-dot.neutral{background:var(--s2);border-color:var(--b1);color:var(--t3)}
+.flow-dot.consent{background:var(--amber-l);border-color:rgba(138,90,0,0.3);color:var(--amber)}
+.flow-dot.intent{background:var(--purple-l);border-color:rgba(61,53,160,0.25);color:var(--purple)}
+.flow-dot.redirect{background:var(--green-l);border-color:rgba(24,96,64,0.25);color:var(--green)}
+.flow-connector{width:1px;background:var(--b1);flex:1;min-height:20px;margin:4px 0}
+.flow-step-body{padding:0 0 24px}
+.flow-step-title{font-size:14px;font-weight:700;color:var(--t1);margin-bottom:4px;line-height:1.3}
+.flow-step-desc{font-size:13px;color:var(--t3);line-height:1.65}
+.flow-step-callout{margin-top:10px;padding:10px 14px;border-radius:6px;font-size:12px;line-height:1.65}
+.flow-step-callout.consent-c{background:var(--amber-l);border:1px solid rgba(138,90,0,0.2);color:var(--t2)}
+.flow-step-callout.purple-c{background:var(--purple-l);border:1px solid rgba(61,53,160,0.15);color:var(--t2)}
+.flow-sidebar{width:260px;flex-shrink:0;display:flex;flex-direction:column;gap:12px}
+.sidebar-card{border-radius:8px;padding:16px}
+.sidebar-card.safe{background:var(--green-l);border:1px solid rgba(24,96,64,0.2)}
+.sidebar-card.warn{background:var(--red-l);border:1px solid rgba(158,31,16,0.2)}
+.sidebar-card.info{background:var(--navy-l);border:1px solid rgba(15,42,69,0.15)}
+.sidebar-card-title{font-size:12px;font-weight:700;color:var(--t1);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.sidebar-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.dot-green{background:var(--green)}.dot-red{background:var(--red)}.dot-navy{background:var(--navy)}
+.sidebar-list{display:flex;flex-direction:column;gap:5px}
+.sidebar-item{font-size:12px;color:var(--t3);line-height:1.5;padding-left:14px;position:relative}
+.sidebar-item::before{content:'';position:absolute;left:4px;top:8px;width:4px;height:4px;border-radius:50%;background:var(--b2)}
+.sidebar-item strong{color:var(--t2)}
+
+/* ELGAMEYA WIREFRAME PHONES */
+.wf-flow-outer{overflow-x:auto;padding:8px 0 20px}
+.wf-flow{display:flex;align-items:flex-start;gap:0;width:max-content;padding:4px 0 8px}
+.wf-phone{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:8px;width:150px}
+.wf-phone-label{font-family:var(--mono);font-size:10px;color:var(--t4);text-align:center;max-width:150px;line-height:1.4;letter-spacing:.03em}
+.wf-phone-badge{font-family:var(--mono);font-size:9px;font-weight:700;padding:2px 8px;border-radius:3px;letter-spacing:.06em;text-transform:uppercase}
+.wf-phone-badge.q{background:var(--navy-l);color:var(--navy)}
+.wf-phone-badge.consent-b{background:var(--amber-l);color:var(--amber)}
+.wf-phone-badge.done-b{background:var(--green-l);color:var(--green)}
+.wf-phone-badge.entry-b{background:var(--s2);color:var(--t3)}
+.wf-frame{width:150px;background:var(--white);border:1.5px solid var(--b1);border-radius:18px;overflow:hidden}
+.wf-statusbar{height:20px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;border-bottom:0.5px solid var(--s2)}
+.wf-time{font-family:var(--mono);font-size:8px;color:var(--t4)}
+.wf-icons{font-size:7px;color:var(--t4)}
+.wf-screen{padding:12px 11px;display:flex;flex-direction:column;gap:7px;min-height:220px}
+.wf-progress{display:flex;gap:3px;margin-bottom:2px}
+.wf-pd{height:3px;border-radius:2px;flex:1}
+.wf-pd.done{background:var(--green)}.wf-pd.active{background:var(--navy)}.wf-pd.off{background:var(--s3)}
+.wf-step-lbl{font-family:var(--mono);font-size:8px;color:var(--t4);letter-spacing:.06em}
+.wf-q{font-size:11px;font-weight:700;color:var(--t1);line-height:1.35}
+.wf-sub{font-size:9px;color:var(--t3);line-height:1.4}
+.wf-opts{display:flex;flex-direction:column;gap:4px;margin-top:2px}
+.wf-opt{border:0.5px solid var(--b1);border-radius:5px;padding:6px 8px;font-size:9px;color:var(--t2);line-height:1.3}
+.wf-opt.sel{border-color:var(--navy);background:var(--navy-l);color:var(--navy);font-weight:600}
+.wf-amount-wrap{border:1.5px solid var(--navy);border-radius:5px;padding:8px 10px;display:flex;align-items:baseline;gap:4px;margin-top:2px}
+.wf-currency{font-size:9px;color:var(--t3)}
+.wf-amount-val{font-size:20px;font-weight:800;color:var(--t1);line-height:1}
+.wf-seat-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:2px}
+.wf-seat{border:0.5px solid var(--b1);border-radius:5px;padding:6px 5px;text-align:center}
+.wf-seat.sel{border-color:var(--navy);background:var(--navy-l)}
+.wf-seat-name{font-size:9px;font-weight:700;color:var(--t1)}
+.wf-seat.sel .wf-seat-name{color:var(--navy)}
+.wf-seat-hint{font-size:8px;color:var(--t4)}
+.wf-cta{background:var(--navy);color:var(--white);border-radius:6px;padding:8px;text-align:center;font-size:10px;font-weight:700;margin-top:auto}
+.wf-cta.ghost{background:transparent;color:var(--t2);border:0.5px solid var(--b1);margin-top:4px}
+.wf-check-list{display:flex;flex-direction:column;gap:5px;margin-top:2px}
+.wf-check-item{display:flex;gap:5px;align-items:flex-start;font-size:9px;color:var(--t2);line-height:1.4}
+.wf-check-tick{color:var(--green);font-weight:700;flex-shrink:0}
+.wf-consent-note{background:var(--amber-l);border:0.5px solid rgba(138,90,0,0.25);border-radius:4px;padding:7px;font-size:8px;color:var(--amber);line-height:1.5;margin-top:4px}
+.wf-redirect-inner{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;flex:1;padding:16px 0}
+.wf-redirect-logo{width:36px;height:36px;border-radius:8px;background:var(--green-l);display:flex;align-items:center;justify-content:center}
+.wf-redirect-icon{width:20px;height:20px;border-radius:4px;background:var(--green)}
+.wf-redirect-text{font-size:11px;font-weight:700;color:var(--t1);text-align:center;line-height:1.3}
+.wf-promo{background:var(--green-l);border:0.5px solid rgba(24,96,64,0.25);border-radius:3px;padding:4px 8px;font-family:var(--mono);font-size:8px;color:var(--green);letter-spacing:.08em}
+.wf-redirect-sub{font-size:8px;color:var(--t4);text-align:center;line-height:1.4}
+.wf-offers-card{border:0.5px solid var(--b1);border-radius:7px;overflow:hidden;margin-top:4px}
+.wf-offers-card-top{background:var(--green-l);padding:9px 9px 6px}
+.wf-offers-partner{font-family:var(--mono);font-size:7px;color:var(--green);letter-spacing:.08em;margin-bottom:3px}
+.wf-offers-title{font-size:11px;font-weight:700;color:var(--t1)}
+.wf-offers-sub{font-size:8px;color:var(--t3);line-height:1.4;margin-top:2px}
+.wf-offers-bot{padding:7px 9px;border-top:0.5px solid var(--b1);font-size:9px;font-weight:700;color:var(--navy)}
+.wf-other{border:0.5px solid var(--b1);border-radius:6px;padding:8px 9px;opacity:.3;margin-top:4px}
+.wf-other-text{font-size:9px;color:var(--t4)}
+
+/* ARROW BETWEEN PHONES */
+.wf-arr{display:flex;align-items:center;flex-shrink:0;padding:0 4px;margin-top:100px}
+.wf-arr-line{width:16px;height:1px;background:var(--b2)}
+.wf-arr-head{width:0;height:0;border-top:3px solid transparent;border-bottom:3px solid transparent;border-left:5px solid var(--b2)}
+
+/* DATA LEGEND */
+.data-legend{background:var(--white);border:1px solid var(--b1);border-radius:8px;padding:16px 20px;margin-top:16px}
+.data-legend-label{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t4);margin-bottom:10px}
+.data-tags{display:flex;gap:8px;flex-wrap:wrap}
+.data-tag{font-family:var(--mono);font-size:11px;padding:3px 10px;border-radius:3px}
+.data-tag.travels{background:var(--amber-l);color:var(--amber);border:1px solid rgba(138,90,0,0.2)}
+.data-tag.stays{background:var(--red-l);color:var(--red);border:1px solid rgba(158,31,16,0.2)}
+
+/* FOOTER */
+.page-footer{background:var(--navy);padding:24px 0}
+.footer-inner{max-width:1200px;margin:0 auto;padding:0 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.footer-text{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,0.3);letter-spacing:.06em}
+
+@media(max-width:800px){
+  .layers{grid-template-columns:1fr}
+  .wireframe-wrap,.flow-wrap{flex-direction:column}
+  .wireframe-phone{width:100%}
+  .flow-sidebar{width:100%}
+  .wrap,.page{padding-left:20px;padding-right:20px}
+}
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-label">MoneyMore · DPO Proposals · April 2026</div>
+    <h1 class="hero-title">Privacy-compliant paths for <em>offers personalisation</em> and partner integration</h1>
+    <p class="hero-sub">Two product proposals developed in response to the Internal Mitigation Risk Tracker. Designed to move forward commercially while respecting Egypt PDPL requirements.</p>
+    <div class="hero-meta">
+      <div class="hero-tag">Addresses R-1 · R-2 · R-3 · R-4</div>
+      <div class="hero-tag">Addresses R-16 · R-17 · R-18</div>
+      <div class="hero-tag">PDPL · Executive Regulations 2025</div>
+    </div>
+  </div>
+</section>
+
+<div class="page">
+
+  <!-- PROPOSAL 1 -->
+  <div class="sec-label">Proposal 1 — personalised offers</div>
+  <h2 class="sec-title">A two-layer personalisation model</h2>
+  <p class="sec-desc">Rather than treating personalisation as a single activity with a binary risk profile, we split it into two distinct layers. Layer 1 operates on in-app behaviour only — no SMS data, no secondary purpose concern. Layer 2 uses SMS transaction data with explicit opt-in. Both layers can coexist. Neither forces the other.</p>
+
+  <div class="layers">
+    <div class="layer-card l1">
+      <div class="layer-num">Layer 1 · Active from day one</div>
+      <div class="layer-name">In-app behaviour</div>
+      <div class="layer-source">Data source: Offers section activity only</div>
+      <div class="layer-desc">Personalisation based entirely on what the user does within the Offers section — what they tap, browse, and redeem. No SMS transaction data involved at any point. The user's reasonable expectation is already aligned with this use.</div>
+      <div class="layer-badge">Privacy Policy disclosure only</div>
+      <div class="layer-note">No separate consent screen required. Directly avoids the secondary purpose concern raised in R-3.</div>
+    </div>
+    <div class="layer-card l2">
+      <div class="layer-num">Layer 2 · Explicit opt-in required</div>
+      <div class="layer-name">SMS transaction data</div>
+      <div class="layer-source">Data source: Bank SMS transactions (sensitive data under PDPL)</div>
+      <div class="layer-desc">For users who want a deeper experience — offers matching their real spending patterns — we offer a voluntary upgrade. This consent is separate, granular, and independent from general app consent and the SMS access grant. Users who decline still get Layer 1.</div>
+      <div class="layer-badge">Explicit granular opt-in required</div>
+      <div class="layer-note">Directly addresses R-1 (legal basis), R-2 (valid consent), R-3 (purpose limitation) with an auditable consent record.</div>
+    </div>
+  </div>
+
+  <div class="separator-note">
+    <strong>Core principle:</strong> No data crosses between layers without explicit consent. SMS transaction data used in Layer 2 is never combined with Offers behaviour data from Layer 1 unless the user has independently consented to both.
+  </div>
+
+  <div class="sec-label">Layer 2 opt-in — placement in the user journey</div>
+  <div class="journey">
+    <div class="journey-step">
+      <div class="journey-bubble neutral"><div class="journey-bubble-title">SMS permission screen</div></div>
+      <div class="journey-label">system dialog</div>
+    </div>
+    <div class="journey-arrow">→</div>
+    <div class="journey-step">
+      <div class="journey-bubble neutral"><div class="journey-bubble-title">SMS access granted</div></div>
+      <div class="journey-label">existing step</div>
+    </div>
+    <div class="journey-arrow">→</div>
+    <div class="journey-step">
+      <div class="journey-bubble highlight">
+        <div class="journey-bubble-title">Layer 2 opt-in screen</div>
+        <div class="journey-bubble-sub">New screen</div>
+      </div>
+      <div class="journey-label">new · proposed</div>
+    </div>
+    <div class="journey-arrow">→</div>
+    <div class="journey-step">
+      <div class="journey-bubble neutral"><div class="journey-bubble-title">Home screen</div></div>
+      <div class="journey-label">existing step</div>
+    </div>
+  </div>
+
+  <div class="settings-pill">
+    Persistent control: Settings → Privacy → Personalised offers
+    <span>User can withdraw consent at any time · satisfies PDPL withdrawal requirement</span>
+  </div>
+
+  <div class="sec-label">Layer 2 opt-in screen — proposed wireframe</div>
+  <div class="wireframe-wrap">
+    <div class="wireframe-phone">
+      <div class="wireframe-screen">
+        <div class="wf-heading">Get more relevant offers</div>
+        <div class="wf-body">Allow MoneyMore to use your spending patterns to personalise the offers you see. You can turn this off at any time in Settings.</div>
+        <div class="wf-benefits">
+          <div class="wf-benefit"><div class="wf-check">✓</div>Offers matched to your real spending categories</div>
+          <div class="wf-benefit"><div class="wf-check">✓</div>MoneyMore never shares this data with third parties</div>
+          <div class="wf-benefit"><div class="wf-check">✓</div>Withdraw consent at any time in Settings</div>
+        </div>
+        <div class="wf-btn-primary">Yes, personalise my offers</div>
+        <div class="wf-btn-ghost">No thanks, I'll browse myself</div>
+      </div>
+    </div>
+    <div class="wireframe-notes">
+      <div class="wf-note-card">
+        <div class="wf-note-label" style="color:var(--green)">Why this screen works legally</div>
+        <div class="wf-note-text">The user sees a <strong>dedicated screen</strong> that cannot be skipped or bundled. The consent is <strong>informed</strong> (clear explanation), <strong>specific</strong> (named purpose: offer personalisation), and <strong>freely given</strong> (genuine binary choice with no penalty for declining). The affirmative CTA creates an auditable consent record.</div>
+      </div>
+      <div class="wf-note-card">
+        <div class="wf-note-label" style="color:var(--amber)">Why we surface it here</div>
+        <div class="wf-note-text">The opt-in appears immediately after SMS access is granted — when the user most understands what their transaction data is. Surfacing it later (e.g. first Offers tab visit) breaks the moment and feels out of context.</div>
+      </div>
+      <div class="wf-note-card">
+        <div class="wf-note-label" style="color:var(--navy)">Question for DPO — Q1</div>
+        <div class="wf-note-text">Is in-app offers behaviour — what a user taps and redeems within the Offers section — classified as <strong>sensitive data</strong> under PDPL in the same way SMS transaction data is? This determines whether Layer 1 requires a consent gate or whether Privacy Policy disclosure is sufficient.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-divider"></div>
+
+  <!-- PROPOSAL 2 -->
+  <div class="sec-label">Proposal 2 — rotating savings group integration</div>
+  <h2 class="sec-title">Elgameya — lead introduction model</h2>
+  <p class="sec-desc">Rather than positioning MoneyMore as a data-sharing partner to Elgameya, we act purely as a lead introduction engine. MoneyMore surfaces the offer, collects four intent signals from the user through a one-question-per-screen flow, and redirects with a promo code. No SMS data, no spending history, no financial profile is ever shared.</p>
+
+  <div class="flow-wrap">
+    <div class="flow-steps">
+      <div class="flow-step">
+        <div class="flow-step-left"><div class="flow-dot neutral">1</div><div class="flow-connector"></div></div>
+        <div class="flow-step-body">
+          <div class="flow-step-title">User sees Elgameya in the Offers tab</div>
+          <div class="flow-step-desc">Elgameya is featured as a card in the Offers section. The card communicates what Elgameya offers and that a special promo code is available for MoneyMore users.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-left"><div class="flow-dot neutral">2</div><div class="flow-connector"></div></div>
+        <div class="flow-step-body">
+          <div class="flow-step-title">User taps to explore</div>
+          <div class="flow-step-desc">A dedicated Elgameya screen appears. Description of the service, eligibility, and the available promo code. No data collected at this point.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-left"><div class="flow-dot intent">3</div><div class="flow-connector"></div></div>
+        <div class="flow-step-body">
+          <div class="flow-step-title">Four intent questions — one per screen</div>
+          <div class="flow-step-desc">The user answers four questions across four dedicated screens with a progress bar throughout. These serve two purposes: routing the user to the right Elgameya gameya, and giving MoneyMore signal about user financial goals.</div>
+          <div class="flow-step-callout purple-c">
+            <strong>Screen 1:</strong> What is your goal for joining a gameya?<br>
+            <strong>Screen 2:</strong> How much money are you looking to collect?<br>
+            <strong>Screen 3:</strong> When are you planning to enter?<br>
+            <strong>Screen 4:</strong> Which seat would you like to reserve?
+          </div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-left"><div class="flow-dot consent">4</div><div class="flow-connector"></div></div>
+        <div class="flow-step-body">
+          <div class="flow-step-title">Natural consent moment — before redirect</div>
+          <div class="flow-step-desc">A dedicated consent screen lists exactly what will be shared with Elgameya before the user taps to proceed. The CTA is "Get my promo code" — reward-framed, not legal-framed.</div>
+          <div class="flow-step-callout consent-c">
+            The screen clearly states what travels to Elgameya (the four answers and a promo code) and what does not (transaction history, spending data). MoneyMore's retention of the answers for product understanding is also disclosed here.
+          </div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-left"><div class="flow-dot redirect">5</div></div>
+        <div class="flow-step-body" style="padding-bottom:0">
+          <div class="flow-step-title">Redirect to Elgameya with promo code</div>
+          <div class="flow-step-desc">User is redirected to Elgameya. The four answers and the promo code travel with the redirect. Elgameya conducts their own onboarding under their own legal basis and privacy policy. MoneyMore's involvement ends at the redirect.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-sidebar">
+      <div class="sidebar-card safe">
+        <div class="sidebar-card-title"><div class="sidebar-dot dot-green"></div>What MoneyMore shares</div>
+        <div class="sidebar-list">
+          <div class="sidebar-item">Goal for joining a gameya</div>
+          <div class="sidebar-item">Target amount to collect</div>
+          <div class="sidebar-item">Preferred entry timeline</div>
+          <div class="sidebar-item">Seat preference</div>
+          <div class="sidebar-item">Promo code</div>
+        </div>
+      </div>
+      <div class="sidebar-card warn">
+        <div class="sidebar-card-title"><div class="sidebar-dot dot-red"></div>What MoneyMore does NOT share</div>
+        <div class="sidebar-list">
+          <div class="sidebar-item">SMS transaction data</div>
+          <div class="sidebar-item">Spending patterns or history</div>
+          <div class="sidebar-item">Financial behaviour profile</div>
+          <div class="sidebar-item">User identity or contact data</div>
+          <div class="sidebar-item">Any personalisation layer data</div>
+        </div>
+      </div>
+      <div class="sidebar-card info">
+        <div class="sidebar-card-title"><div class="sidebar-dot dot-navy"></div>Question for DPO — Q2</div>
+        <div class="sidebar-list">
+          <div class="sidebar-item">Does the natural consent approach built into the consent screen satisfy PDPL requirements for sharing the four answers with Elgameya? Or does a more formal separate consent screen need to appear before the questions begin?</div>
+        </div>
+      </div>
+      <div class="sidebar-card info">
+        <div class="sidebar-card-title"><div class="sidebar-dot dot-navy"></div>Competitive landscape — please review</div>
+        <div class="sidebar-list">
+          <div class="sidebar-item"><strong>Primary:</strong> Telda, Klivver — closest to MoneyMore's model</div>
+          <div class="sidebar-item"><strong>Secondary:</strong> Waffarha, Lucky — relevant for offers handling</div>
+          <div class="sidebar-item">Are there PDPC-accepted consent patterns any of these have used that we can reference?</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-divider"></div>
+
+  <!-- ELGAMEYA WIREFRAME -->
+  <div class="sec-label">Elgameya — screen-by-screen wireframe</div>
+  <h2 class="sec-title">One question per screen · full flow</h2>
+  <p class="sec-desc">Seven screens from the Offers tab through to the Elgameya redirect. The progress bar keeps the user oriented across the four question screens. The consent screen is explicit about what travels and what does not — before the user taps.</p>
+
+  <div class="wf-flow-outer">
+    <div class="wf-flow">
+
+      <!-- 1. OFFERS TAB -->
+      <div class="wf-phone">
+        <div class="wf-phone-badge entry-b">entry</div>
+        <div class="wf-frame">
+          <div class="wf-statusbar"><span class="wf-time">9:41</span><span class="wf-icons">▲▲ ▮</span></div>
+          <div class="wf-screen">
+            <div class="wf-q">Offers</div>
+            <div class="wf-offers-card">
+              <div class="wf-offers-card-top">
+                <div class="wf-offers-partner">FEATURED PARTNER</div>
+                <div class="wf-offers-title">Join an Elgameya</div>
+                <div class="wf-offers-sub">Save together, grow together. Exclusive promo for MoneyMore users.</div>
+              </div>
+              <div class="wf-offers-bot">Explore Elgameya</div>
+            </div>
+            <div class="wf-other"><div class="wf-other-text">Other offers...</div></div>
+          </div>
+        </div>
+        <div class="wf-phone-label">Offers tab</div>
+      </div>
+
+      <div class="wf-arr"><div class="wf-arr-line"></div><div class="wf-arr-head"></div></div>
+
+      <!-- 2. GOAL -->
+      <div class="wf-phone">
+        <div class="wf-phone-badge q">1 of 4</div>
+        <div class="wf-frame">
+          <div class="wf-statusbar"><span class="wf-time">9:41</span><span class="wf-icons">▲▲ ▮</span></div>
+          <div class="wf-screen">
+            <div class="wf-progress">
+              <div class="wf-pd active"></div><div class="wf-pd off"></div><div class="wf-pd off"></div><div class="wf-pd off"></div>
+            </div>
+            <div class="wf-step-lbl">Question 1 of 4</div>
+            <div class="wf-q">What is your goal for joining a gameya?</div>
+            <div class="wf-opts">
+              <div class="wf-opt sel">Save for something specific</div>
+              <div class="wf-opt">Build an emergency fund</div>
+              <div class="wf-opt">Pay off a commitment</div>
+              <div class="wf-opt">Just exploring</div>
+            </div>
+            <div class="wf-cta">Continue</div>
+          </div>
+        </div>
+        <div class="wf-phone-label">Goal selection</div>
+      </div>
+
+      <div class="wf-arr"><div class="wf-arr-line"></div><div class="wf-arr-head"></div></div>
+
+      <!-- 3. AMOUNT -->
+      <div class="wf-phone">
+        <div class="wf-phone-badge q">2 of 4</div>
+        <div class="wf-frame">
+          <div class="wf-statusbar"><span class="wf-time">9:42</span><span class="wf-icons">▲▲ ▮</span></div>
+          <div class="wf-screen">
+            <div class="wf-progress">
+              <div class="wf-pd done"></div><div class="wf-pd active"></div><div class="wf-pd off"></div><div class="wf-pd off"></div>
+            </div>
+            <div class="wf-step-lbl">Question 2 of 4</div>
+            <div class="wf-q">How much money are you looking to collect?</div>
+            <div class="wf-amount-wrap">
+              <span class="wf-currency">EGP</span>
+              <span class="wf-amount-val">10,000</span>
+            </div>
+            <div class="wf-sub" style="margin-top:3px">Enter a positive amount in EGP</div>
+            <div class="wf-cta">Continue</div>
+          </div>
+        </div>
+        <div class="wf-phone-label">Amount input</div>
+      </div>
+
+      <div class="wf-arr"><div class="wf-arr-line"></div><div class="wf-arr-head"></div></div>
+
+      <!-- 4. WHEN -->
+      <div class="wf-phone">
+        <div class="wf-phone-badge q">3 of 4</div>
+        <div class="wf-frame">
+          <div class="wf-statusbar"><span class="wf-time">9:42</span><span class="wf-icons">▲▲ ▮</span></div>
+          <div class="wf-screen">
+            <div class="wf-progress">
+              <div class="wf-pd done"></div><div class="wf-pd done"></div><div class="wf-pd active"></div><div class="wf-pd off"></div>
+            </div>
+            <div class="wf-step-lbl">Question 3 of 4</div>
+            <div class="wf-q">When are you planning to enter?</div>
+            <div class="wf-opts">
+              <div class="wf-opt sel">As soon as possible</div>
+              <div class="wf-opt">Within the next month</div>
+              <div class="wf-opt">Within 3 months</div>
+              <div class="wf-opt">Just exploring</div>
+            </div>
+            <div class="wf-cta">Continue</div>
+          </div>
+        </div>
+        <div class="wf-phone-label">Timeline selection</div>
+      </div>
+
+      <div class="wf-arr"><div class="wf-arr-line"></div><div class="wf-arr-head"></div></div>
+
+      <!-- 5. SEAT -->
+      <div class="wf-phone">
+        <div class="wf-phone-badge q">4 of 4</div>
+        <div class="wf-frame">
+          <div class="wf-statusbar"><span class="wf-time">9:43</span><span class="wf-icons">▲▲ ▮</span></div>
+          <div class="wf-screen">
+            <div class="wf-progress">
+              <div class="wf-pd done"></div><div class="wf-pd done"></div><div class="wf-pd done"></div><div class="wf-pd active"></div>
+            </div>
+            <div class="wf-step-lbl">Question 4 of 4</div>
+            <div class="wf-q">Which seat would you like to reserve?</div>
+            <div class="wf-sub">Earlier seats collect sooner.</div>
+            <div class="wf-seat-grid">
+              <div class="wf-seat sel"><div class="wf-seat-name">Early</div><div class="wf-seat-hint">Collect first</div></div>
+              <div class="wf-seat"><div class="wf-seat-name">Mid</div><div class="wf-seat-hint">Balanced</div></div>
+              <div class="wf-seat"><div class="wf-seat-name">Late</div><div class="wf-seat-hint">Lower monthly</div></div>
+              <div class="wf-seat"><div class="wf-seat-name">No preference</div><div class="wf-seat-hint">We'll match</div></div>
+            </div>
+            <div class="wf-cta">Continue</div>
+          </div>
+        </div>
+        <div class="wf-phone-label">Seat preference</div>
+      </div>
+
+      <div class="wf-arr"><div class="wf-arr-line"></div><div class="wf-arr-head"></div></div>
+
+      <!-- 6. CONSENT -->
+      <div class="wf-phone">
+        <div class="wf-phone-badge consent-b">consent</div>
+        <div class="wf-frame">
+          <div class="wf-statusbar"><span class="wf-time">9:43</span><span class="wf-icons">▲▲ ▮</span></div>
+          <div class="wf-screen">
+            <div class="wf-q">Find your Elgameya match</div>
+            <div class="wf-sub" style="margin-top:2px">We'll share these answers with Elgameya to find the right plan:</div>
+            <div class="wf-check-list">
+              <div class="wf-check-item"><span class="wf-check-tick">✓</span>Your goal and seat preference</div>
+              <div class="wf-check-item"><span class="wf-check-tick">✓</span>Target amount and timeline</div>
+              <div class="wf-check-item"><span class="wf-check-tick">✓</span>MoneyMore may keep your answers to improve future offers</div>
+            </div>
+            <div class="wf-consent-note">MoneyMore will not share your transaction history or spending data with Elgameya.</div>
+            <div class="wf-cta" style="margin-top:8px">Get my promo code</div>
+            <div class="wf-cta ghost">Cancel</div>
+          </div>
+        </div>
+        <div class="wf-phone-label">Consent screen</div>
+      </div>
+
+      <div class="wf-arr"><div class="wf-arr-line"></div><div class="wf-arr-head"></div></div>
+
+      <!-- 7. REDIRECT -->
+      <div class="wf-phone">
+        <div class="wf-phone-badge done-b">redirect</div>
+        <div class="wf-frame">
+          <div class="wf-statusbar"><span class="wf-time">9:44</span><span class="wf-icons">▲▲ ▮</span></div>
+          <div class="wf-screen">
+            <div class="wf-redirect-inner">
+              <div class="wf-redirect-logo"><div class="wf-redirect-icon"></div></div>
+              <div class="wf-redirect-text">Taking you to Elgameya</div>
+              <div class="wf-promo">MM-PROMO-2026</div>
+              <div class="wf-redirect-sub">Your answers are ready. Elgameya will complete your sign-up.</div>
+            </div>
+          </div>
+        </div>
+        <div class="wf-phone-label">Redirect · promo applied</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="data-legend">
+    <div class="data-legend-label">What travels to Elgameya on redirect</div>
+    <div class="data-tags">
+      <span class="data-tag travels">Goal</span>
+      <span class="data-tag travels">Amount</span>
+      <span class="data-tag travels">Timeline</span>
+      <span class="data-tag travels">Seat preference</span>
+      <span class="data-tag travels">Promo code</span>
+      <span class="data-tag stays">SMS transaction data — never shared</span>
+      <span class="data-tag stays">Spending history — never shared</span>
+    </div>
+  </div>
+
+</div>
+
+<footer class="page-footer">
+  <div class="footer-inner">
+    <div class="footer-text">MoneyMore · DPO Proposals · April 2026 · Internal — not for external distribution</div>
+    <div class="footer-text">Prepared by Head of Growth & Product</div>
+  </div>
+</footer>
+
+</body>
+</html>
