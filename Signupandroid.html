@@ -1,0 +1,2733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoneyMore — Sign-up & Sign-in Flow (Android) · Prototype v2</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --navy:#1A3C5E; --green:#2E8B57; --green-l:#E8F5EE;
+  --gold:#B8860B; --gold-l:#FBF4DC; --red:#C0392B; --red-l:#FDECEA;
+  --whatsapp:#25D366; --whatsapp-l:#DFF7E6;
+  --page-bg:#F9F8F5; --page-border:#E2DFD8;
+  --screen-bg:#FAFAF8; --screen-bg2:#F2F0EB; --screen-bg3:#E8E5DE;
+  --t1:#1A1714; --t2:#3D3A35; --t3:#7A7670; --t4:#ABA7A0;
+  --t-pos:#1A6E3C; --t-neg:#A82419; --t-inv:#FFFFFF;
+  --b1:#E8E5DF; --b2:#D4D0C8; --b3:#BCBAB2;
+  --frame-bg:#2A2724; --frame-border:#1A1614;
+  --anno-mp:#4A42A8; --anno-note:#8A6A10; --anno-bug:#A82020; --anno-new:#1A6E3C;
+  --f-body:'Plus Jakarta Sans',sans-serif; --f-mono:'DM Mono',monospace;
+  --s-xs:10px; --s-sm:12px; --s-base:14px; --s-md:16px;
+  --s-lg:18px; --s-xl:22px; --s-2xl:28px;
+  --r-sm:6px; --r-md:12px; --r-lg:16px; --r-xl:24px; --r-pill:999px;
+  --shadow-phone:0 8px 32px rgba(0,0,0,0.14),0 2px 8px rgba(0,0,0,0.08);
+  --shadow-card:0 1px 4px rgba(0,0,0,0.06);
+  --ph-w:280px; --ph-h:560px; --ph-r:32px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-size:var(--s-base);line-height:1.6;-webkit-font-smoothing:antialiased;}
+.page{max-width:1500px;margin:0 auto;padding:48px 40px 96px;}
+
+/* ── DOC HEADER ─────────────────────────────────────────── */
+.doc-header{padding-bottom:32px;margin-bottom:40px;border-bottom:2px solid var(--b1);}
+.doc-meta{display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap;}
+.doc-tag{font-family:var(--f-mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;padding:4px 11px;border-radius:3px;font-weight:600;}
+.doc-tag.prototype{background:var(--green-l);color:#0F5830;}
+.doc-tag.android{background:#E8F4EA;color:#1F5E2A;}
+.doc-tag.parked{background:var(--screen-bg2);color:var(--t3);text-decoration:line-through;}
+.doc-tag.wip{background:var(--gold-l);color:#6B5210;}
+.doc-tag.version{background:var(--navy);color:#fff;}
+.doc-date{font-family:var(--f-mono);font-size:11px;color:var(--t2);margin-left:auto;font-weight:500;}
+.doc-title{font-size:34px;font-weight:700;color:var(--t1);letter-spacing:-0.02em;line-height:1.15;margin-bottom:10px;}
+.doc-subtitle{font-size:15px;color:var(--t1);font-weight:400;margin-bottom:30px;line-height:1.5;max-width:920px;}
+
+.doc-info{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border:1px solid var(--b1);border-radius:var(--r-md);overflow:hidden;background:white;}
+.doc-info-cell{padding:16px 20px;border-right:1px solid var(--b1);}
+.doc-info-cell:last-child{border-right:none;}
+.info-label{font-family:var(--f-mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--t2);margin-bottom:8px;font-weight:600;}
+.info-body{font-size:13px;color:var(--t1);line-height:1.55;}
+.info-body strong{color:var(--t1);font-weight:700;}
+
+.flow-list{display:flex;flex-direction:column;gap:4px;}
+.flow-list-item{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--t1);line-height:1.45;}
+.flow-list-item::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--b3);flex-shrink:0;}
+.flow-list-item.active::before{background:var(--green);}
+.flow-list-item.parked::before{background:var(--b3);}
+.flow-list-item.parked{color:var(--t3);text-decoration:line-through;}
+
+.events-summary{display:flex;flex-direction:column;gap:5px;}
+.event-pill-sm{display:inline-flex;align-items:center;gap:5px;font-family:var(--f-mono);font-size:11px;color:var(--anno-mp);background:#F0EFFE;padding:3px 9px;border-radius:3px;width:fit-content;font-weight:500;}
+.event-pill-sm.new{color:var(--anno-new);background:#EBF7F1;}
+.event-pill-sm.fix{color:#8A6510;background:var(--gold-l);}
+
+/* ── FLOW SECTION ──────────────────────────────────────── */
+.flow-section{margin-bottom:64px;}
+.flow-section-header{display:flex;align-items:center;gap:16px;margin-bottom:28px;}
+.flow-section-line{flex:1;height:1px;background:var(--b2);}
+.flow-section-title{font-family:var(--f-body);font-size:16px;font-weight:700;letter-spacing:-0.01em;color:#fff;background:var(--navy);padding:6px 14px;border-radius:4px;white-space:nowrap;}
+
+.phone-row{display:flex;align-items:flex-start;gap:0;overflow-x:auto;padding-bottom:12px;}
+.phone-row::-webkit-scrollbar{height:4px;}
+.phone-row::-webkit-scrollbar-track{background:var(--b1);border-radius:2px;}
+.phone-row::-webkit-scrollbar-thumb{background:var(--b3);border-radius:2px;}
+
+.screen-col{display:flex;flex-direction:column;align-items:center;gap:10px;flex-shrink:0;}
+.screen-label{font-family:var(--f-body);font-size:11px;font-weight:600;color:var(--t2);text-align:center;max-width:var(--ph-w);line-height:1.4;}
+
+.state-badge{font-family:var(--f-mono);font-size:10px;font-weight:500;padding:3px 9px;border-radius:3px;letter-spacing:0.04em;}
+.state-badge.happy{background:#EBF7F1;color:#1A6E3C;}
+.state-badge.empty{background:var(--gold-l);color:#8A6510;}
+.state-badge.error{background:var(--red-l);color:var(--red);}
+.state-badge.loading{background:#E8F0FA;color:#103868;}
+.state-badge.success{background:var(--green-l);color:#0F5830;}
+.state-badge.os{background:#ECECEC;color:#555;}
+.state-badge.interaction{background:#EAE8FF;color:#3A3288;}
+
+.flow-arrow{display:flex;flex-direction:column;align-items:center;flex-shrink:0;padding-top:calc(var(--ph-h)/2 - 16px);padding-left:6px;padding-right:6px;}
+.arrow-line{width:32px;height:1px;background:var(--b2);position:relative;}
+.arrow-line::after{content:'';position:absolute;right:-1px;top:-3px;border-left:5px solid var(--b2);border-top:3px solid transparent;border-bottom:3px solid transparent;}
+.arrow-label{font-family:var(--f-body);font-size:10px;font-weight:600;color:var(--t2);text-align:center;max-width:70px;line-height:1.35;margin-top:6px;}
+.arrow-label.deny{color:var(--anno-bug);}
+.arrow-label.interaction{color:var(--anno-mp);}
+
+/* ── PHONE FRAME ───────────────────────────────────────── */
+.phone{width:var(--ph-w);height:var(--ph-h);border-radius:var(--ph-r);background:var(--frame-bg);box-shadow:var(--shadow-phone);position:relative;overflow:hidden;border:2px solid var(--frame-border);flex-shrink:0;}
+.a-status{position:absolute;top:0;left:0;right:0;height:20px;background:var(--screen-bg);display:flex;align-items:center;justify-content:space-between;padding:0 14px;z-index:10;font-family:var(--f-mono);font-size:8px;color:var(--t1);}
+.a-nav{position:absolute;bottom:0;left:0;right:0;height:48px;background:var(--screen-bg);border-top:1px solid var(--b1);display:flex;align-items:center;z-index:10;}
+.a-nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 0;}
+.a-nav-icon{width:20px;height:20px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;}
+.a-nav-item.on .a-nav-icon{background:var(--green-l);}
+.a-nav-lbl{font-size:8px;color:var(--t4);font-weight:500;}
+.a-nav-item.on .a-nav-lbl{color:var(--green);}
+
+.screen{position:absolute;top:20px;bottom:48px;left:0;right:0;background:var(--screen-bg);overflow:hidden;display:flex;flex-direction:column;}
+.screen.no-nav{bottom:0;}
+
+/* ── LANGUAGE MENU (new in v3) ─────────────────────────── */
+.lang-trigger{position:absolute;top:24px;right:10px;display:flex;align-items:center;gap:3px;font-family:var(--f-mono);font-size:11px;font-weight:700;color:var(--t1);background:white;border:1px solid var(--b1);border-radius:var(--r-sm);padding:4px 8px;z-index:5;}
+.lang-trigger.rtl-pos{left:10px;right:auto;}
+.lang-dropdown{position:absolute;top:52px;right:10px;background:white;border:1px solid var(--b1);border-radius:var(--r-sm);box-shadow:0 4px 16px rgba(0,0,0,0.1);min-width:120px;z-index:15;overflow:hidden;}
+.lang-dropdown.rtl-pos{left:10px;right:auto;}
+.lang-opt{padding:10px 12px;font-size:12px;color:var(--t1);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--b1);font-weight:500;}
+.lang-opt:last-child{border-bottom:none;}
+.lang-opt.selected{background:var(--green-l);color:#0F5830;}
+.lang-opt-check{color:var(--green);font-weight:700;}
+
+/* ── SCREEN INNER ──────────────────────────────────────── */
+.app-bar{height:46px;display:flex;align-items:center;padding:0 14px;background:var(--screen-bg);border-bottom:1px solid var(--b1);flex-shrink:0;gap:10px;}
+.app-bar-title{font-size:var(--s-md);font-weight:700;color:var(--t1);flex:1;}
+.back-btn{font-size:18px;color:var(--navy);line-height:1;}
+
+.sc-area{flex:1;overflow:hidden;display:flex;flex-direction:column;}
+.sc-pad{padding:14px;display:flex;flex-direction:column;gap:10px;}
+.sc-pad-lg{padding:20px 16px;display:flex;flex-direction:column;gap:12px;}
+
+.t-title{font-size:var(--s-xl);font-weight:700;color:var(--t1);letter-spacing:-0.01em;line-height:1.2;}
+.t-heading{font-size:var(--s-lg);font-weight:600;color:var(--t1);line-height:1.25;}
+.t-body{font-size:var(--s-base);color:var(--t2);line-height:1.5;}
+.t-caption{font-size:var(--s-sm);color:var(--t3);line-height:1.5;}
+.t-xs{font-size:var(--s-xs);color:var(--t4);}
+.rtl{direction:rtl;text-align:right;}
+
+/* Welcome */
+.prog-dots{display:flex;justify-content:center;gap:6px;padding:8px 0;}
+.prog-dot{width:6px;height:6px;border-radius:50%;background:var(--b2);}
+.prog-dot.on{background:var(--navy);width:18px;border-radius:var(--r-pill);}
+.welcome-art{flex:1;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,var(--screen-bg) 0%,var(--screen-bg2) 100%);position:relative;overflow:hidden;min-height:150px;padding-top:36px;}
+.welcome-art-inner{display:flex;flex-direction:column;align-items:center;gap:10px;padding:10px;}
+.bank-row{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;}
+.bank-chip{background:white;border:1px solid var(--b1);border-radius:var(--r-sm);padding:5px 10px;font-size:10px;font-weight:700;color:var(--navy);box-shadow:var(--shadow-card);}
+.sms-bubble{background:white;border-radius:var(--r-md);padding:10px 12px;max-width:180px;box-shadow:var(--shadow-card);border:1px solid var(--b1);}
+.sms-sender{font-size:9px;font-weight:700;color:var(--navy);margin-bottom:3px;letter-spacing:0.04em;}
+.sms-text{font-size:10px;color:var(--t2);line-height:1.4;}
+.bucket-row{display:flex;flex-direction:column;gap:6px;width:170px;}
+.bucket{background:white;border:1px solid var(--b1);border-radius:var(--r-sm);padding:7px 10px;display:flex;justify-content:space-between;align-items:center;font-size:10px;box-shadow:var(--shadow-card);}
+.bucket-name{color:var(--t1);font-weight:600;}
+.bucket-bar{width:60px;height:3px;background:var(--screen-bg2);border-radius:var(--r-pill);overflow:hidden;margin-left:8px;flex-shrink:0;}
+.bucket-bar div{height:100%;background:var(--green);}
+.pattern-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;width:170px;}
+.pattern-cell{aspect-ratio:1;border-radius:2px;background:var(--screen-bg2);}
+.pattern-cell.lv1{background:#CFE8D8;}
+.pattern-cell.lv2{background:#8FC5A6;}
+.pattern-cell.lv3{background:var(--green);}
+.pattern-cell.lv4{background:#1F6842;}
+
+/* Forms */
+.form-grp{display:flex;flex-direction:column;gap:5px;}
+.form-label{font-size:var(--s-xs);font-weight:700;color:var(--t2);letter-spacing:0.03em;}
+.input{height:42px;border:1.5px solid var(--b2);border-radius:var(--r-sm);background:white;padding:0 10px;font-size:var(--s-sm);color:var(--t1);display:flex;align-items:center;}
+.input.focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(26,60,94,0.07);}
+.input.err{border-color:var(--red);}
+.input-err{font-size:var(--s-xs);color:var(--red);display:flex;align-items:center;gap:4px;}
+.input-hint{font-size:var(--s-xs);color:var(--t3);}
+.input-phone{display:flex;align-items:stretch;height:42px;border:1.5px solid var(--b2);border-radius:var(--r-sm);background:white;overflow:hidden;}
+.input-phone.focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(26,60,94,0.07);}
+.phone-prefix{background:var(--screen-bg2);padding:0 10px;display:flex;align-items:center;font-size:var(--s-sm);font-weight:700;color:var(--t1);border-right:1.5px solid var(--b2);font-family:var(--f-mono);}
+.phone-num{flex:1;display:flex;align-items:center;padding:0 10px;font-size:var(--s-sm);color:var(--t1);font-family:var(--f-mono);}
+.phone-num.ph{color:var(--t4);}
+
+.otp-row{display:flex;gap:5px;justify-content:center;}
+.otp-box{width:32px;height:42px;border:1.5px solid var(--b2);border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700;color:var(--t1);background:white;font-family:var(--f-mono);}
+.otp-box.filled{border-color:var(--navy);}
+.otp-box.active{border-color:var(--navy);box-shadow:0 0 0 3px rgba(26,60,94,0.07);}
+
+/* Buttons */
+.btn{height:42px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;font-family:var(--f-body);font-size:var(--s-sm);font-weight:700;border:none;width:100%;cursor:default;}
+.btn-primary{background:var(--navy);color:white;}
+.btn-accent{background:var(--green);color:white;}
+.btn-outline{background:transparent;border:1.5px solid var(--navy);color:var(--navy);}
+.btn-ghost{background:transparent;color:var(--navy);}
+.btn-disabled{background:var(--screen-bg3);color:var(--t4);}
+.btn-lg{height:48px;font-size:var(--s-base);}
+.btn-link{background:transparent;color:var(--navy);text-decoration:underline;font-weight:600;font-size:var(--s-xs);height:auto;padding:4px 0;}
+.btn-link.muted{color:var(--t3);}
+
+/* Entry screen method cards */
+.method-btn{height:52px;border:1.5px solid var(--b2);border-radius:var(--r-sm);background:white;display:flex;align-items:center;padding:0 14px;gap:12px;}
+.method-icon{width:24px;height:24px;border-radius:50%;background:var(--screen-bg2);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0;}
+.method-icon.google{background:white;border:1px solid var(--b1);}
+.method-lbl{font-size:var(--s-sm);font-weight:700;color:var(--t1);}
+
+/* Entry screen "or" divider */
+.or-divider{display:flex;align-items:center;gap:10px;margin:4px 0;}
+.or-line{flex:1;height:1px;background:var(--b2);}
+.or-text{font-family:var(--f-mono);font-size:11px;color:var(--t3);font-weight:500;}
+
+/* OTP channel sheet options */
+.channel-opt{border:1.5px solid var(--b2);border-radius:var(--r-sm);padding:12px 14px;display:flex;align-items:center;gap:12px;background:white;}
+.channel-opt.selected{border-color:var(--navy);background:var(--screen-bg);box-shadow:0 0 0 3px rgba(26,60,94,0.07);}
+.channel-ico{width:34px;height:34px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.channel-ico.wa{background:var(--whatsapp-l);color:var(--whatsapp);}
+.channel-ico.sms{background:#E8F0FA;color:#103868;}
+.channel-body{flex:1;min-width:0;}
+.channel-lbl{font-size:var(--s-sm);font-weight:700;color:var(--t1);}
+.channel-sub{font-size:10px;color:var(--t3);line-height:1.4;margin-top:2px;}
+.channel-check{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--b2);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.channel-check.on{background:var(--navy);border-color:var(--navy);color:white;font-size:11px;font-weight:700;}
+
+/* Keyboard */
+.keyboard{background:var(--screen-bg3);padding:6px 4px 10px;display:flex;flex-direction:column;gap:4px;margin-top:auto;flex-shrink:0;border-top:1px solid var(--b2);}
+.kb-row{display:flex;gap:3px;justify-content:center;}
+.kb-key{flex:1;height:22px;background:white;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:var(--t2);box-shadow:0 1px 0 rgba(0,0,0,0.08);}
+.kb-key.wide{flex:2;}
+.kb-key.dark{background:var(--t4);color:white;}
+.kb-key.action{background:var(--navy);color:white;}
+
+/* Feedback states */
+.empty-state{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 20px;text-align:center;gap:10px;}
+.empty-icon{width:52px;height:52px;border-radius:50%;background:var(--screen-bg2);display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:2px;}
+.empty-ttl{font-size:var(--s-base);font-weight:700;color:var(--t1);}
+.empty-desc{font-size:var(--s-sm);color:var(--t3);line-height:1.5;max-width:220px;}
+
+.err-banner{padding:10px 12px;background:var(--red-l);border:1px solid rgba(192,57,43,0.18);border-radius:var(--r-sm);display:flex;align-items:flex-start;gap:7px;}
+.err-ico{color:var(--red);font-size:13px;flex-shrink:0;margin-top:1px;}
+.err-txt{font-size:var(--s-xs);color:var(--red);line-height:1.5;}
+.err-retry{font-size:var(--s-xs);font-weight:700;color:var(--red);text-decoration:underline;margin-top:2px;display:inline-block;}
+
+.ok-banner{padding:8px 12px;background:var(--green-l);border:1px solid rgba(46,139,87,0.18);border-radius:var(--r-sm);display:flex;align-items:center;gap:7px;}
+.ok-ico{color:var(--green);font-size:12px;}
+.ok-txt{font-size:var(--s-xs);color:var(--t-pos);font-weight:600;}
+
+.toast{position:absolute;bottom:12px;left:12px;right:12px;background:var(--t1);color:white;border-radius:var(--r-sm);padding:9px 14px;font-size:var(--s-xs);font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,0.18);z-index:50;}
+
+/* Overlays */
+.overlay{position:absolute;inset:0;background:rgba(0,0,0,0.45);display:flex;align-items:flex-end;z-index:40;}
+.bottom-sheet{background:var(--screen-bg);border-radius:var(--r-xl) var(--r-xl) 0 0;width:100%;padding:16px 14px 24px;box-shadow:0 -4px 24px rgba(0,0,0,0.1);}
+.bs-handle{width:32px;height:3px;background:var(--b2);border-radius:2px;margin:0 auto 14px;}
+.bs-title{font-size:var(--s-md);font-weight:700;color:var(--t1);margin-bottom:6px;line-height:1.25;}
+.bs-body{font-size:var(--s-sm);color:var(--t2);line-height:1.5;margin-bottom:14px;}
+
+/* Permission dialog */
+.perm-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.58);display:flex;align-items:center;justify-content:center;padding:24px;z-index:50;}
+.perm-box-a{background:#F5F5F5;border-radius:22px;overflow:hidden;width:100%;box-shadow:0 8px 32px rgba(0,0,0,0.25);padding:20px 18px 10px;}
+.perm-ico-a{width:36px;height:36px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;font-size:16px;color:white;margin:0 auto 10px;}
+.perm-title-a{font-size:14px;font-weight:700;color:#202020;text-align:center;margin-bottom:6px;line-height:1.3;}
+.perm-desc-a{font-size:11px;color:#4A4A4A;line-height:1.5;text-align:center;margin-bottom:6px;}
+.perm-acts-a{display:flex;flex-direction:column;gap:2px;margin:10px -18px -10px;padding:0;}
+.perm-btn-a{padding:11px 18px;font-size:12px;font-weight:700;color:var(--navy);text-align:center;border-top:1px solid #E0E0E0;}
+
+/* Phone Number Hint API sheet (Google) */
+.hint-sheet{position:absolute;bottom:0;left:0;right:0;background:white;border-radius:20px 20px 0 0;padding:20px 16px 28px;z-index:50;box-shadow:0 -4px 24px rgba(0,0,0,0.15);}
+.hint-handle{width:36px;height:4px;background:#D0D0D0;border-radius:2px;margin:0 auto 14px;}
+.hint-title{font-size:15px;font-weight:600;color:#202020;margin-bottom:4px;}
+.hint-sub{font-size:11px;color:#606060;margin-bottom:14px;}
+.hint-row{display:flex;align-items:center;gap:12px;padding:10px 6px;border-radius:8px;}
+.hint-row.on{background:#E8F0FE;}
+.hint-avatar{width:32px;height:32px;border-radius:50%;background:#4285F4;color:white;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;}
+.hint-info{flex:1;}
+.hint-num{font-size:13px;color:#202020;font-weight:500;font-family:var(--f-mono);}
+.hint-name{font-size:11px;color:#606060;margin-top:1px;}
+.hint-cancel{text-align:center;color:#1A73E8;font-size:12px;font-weight:500;padding:10px;margin-top:8px;border-top:1px solid #EEE;}
+
+/* Loading screen */
+.loading-screen{flex:1;background:var(--navy);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;text-align:center;color:white;}
+.load-spinner{width:44px;height:44px;border-radius:50%;border:3px solid rgba(255,255,255,0.15);border-top-color:white;animation:spin 1s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.load-msg{font-size:var(--s-sm);color:rgba(255,255,255,0.9);font-weight:500;min-height:18px;}
+.load-prog{width:180px;height:2px;background:rgba(255,255,255,0.15);border-radius:2px;overflow:hidden;margin-top:4px;}
+.load-prog-bar{height:100%;background:white;border-radius:2px;}
+
+/* Home */
+.home-hdr{padding:16px 14px 10px;background:var(--screen-bg);}
+.home-greet{font-size:var(--s-xs);color:var(--t3);margin-bottom:2px;}
+.home-name{font-size:var(--s-lg);font-weight:700;color:var(--t1);}
+.balance-card{background:var(--navy);border-radius:var(--r-md);padding:14px;color:white;margin:0 14px;}
+.bal-label{font-size:9px;opacity:0.65;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:3px;}
+.bal-amount{font-size:24px;font-weight:700;letter-spacing:-0.02em;line-height:1;}
+.bal-cur{font-size:10px;opacity:0.7;margin-top:2px;}
+.home-sec{padding:14px;display:flex;flex-direction:column;gap:8px;}
+.home-tx{background:white;border:1px solid var(--b1);border-radius:var(--r-sm);padding:9px 10px;display:flex;align-items:center;gap:8px;}
+.home-tx-ico{width:28px;height:28px;border-radius:6px;background:var(--screen-bg2);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
+.home-tx-body{flex:1;min-width:0;}
+.home-tx-name{font-size:11px;font-weight:600;color:var(--t1);}
+.home-tx-cat{font-size:9px;color:var(--t3);}
+.home-tx-amt{font-size:11px;font-weight:700;color:var(--t1);}
+.home-tx.highlight{border-color:var(--navy);box-shadow:0 0 0 3px rgba(26,60,94,0.1);background:var(--screen-bg);}
+.manual-badge{background:var(--gold-l);border:1px solid rgba(184,134,11,0.25);border-radius:var(--r-sm);padding:8px 10px;margin:10px 14px 0;display:flex;align-items:flex-start;gap:7px;}
+.manual-ico{font-size:13px;color:var(--gold);}
+.manual-txt{font-size:10px;color:var(--anno-note);line-height:1.4;}
+
+/* Welcome back */
+.welcome-back-hero{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:32px 20px;text-align:center;}
+.wb-icon{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--green-l) 0%,#D0ECDB 100%);display:flex;align-items:center;justify-content:center;font-size:34px;}
+
+/* List items (Settings deep-link steps) */
+.step-list{display:flex;flex-direction:column;gap:8px;}
+.step-row{display:flex;gap:10px;align-items:flex-start;}
+.step-num{width:22px;height:22px;border-radius:50%;background:var(--navy);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.step-txt{font-size:var(--s-sm);color:var(--t2);line-height:1.5;padding-top:1px;}
+.step-txt strong{color:var(--t1);font-weight:700;background:var(--screen-bg2);padding:1px 5px;border-radius:3px;}
+
+/* Annotations */
+.annotations{display:flex;flex-direction:column;gap:6px;max-width:var(--ph-w);width:100%;}
+.anno-event{display:flex;align-items:flex-start;gap:7px;}
+.anno-chip{font-family:var(--f-mono);font-size:10px;font-weight:500;color:var(--anno-mp);background:#F0EFFE;padding:3px 8px;border-radius:3px;flex-shrink:0;white-space:nowrap;}
+.anno-chip.new{color:var(--anno-new);background:#EBF7F1;}
+.anno-chip.bug{color:var(--anno-bug);background:var(--red-l);}
+.anno-chip.os{color:var(--t2);background:var(--screen-bg2);}
+.anno-desc{font-family:var(--f-mono);font-size:10px;color:var(--t2);line-height:1.5;padding-top:3px;}
+
+.flow-note{max-width:var(--ph-w);padding:9px 12px;border-radius:4px;font-family:var(--f-body);font-size:11px;font-weight:500;line-height:1.5;}
+.flow-note.decision{background:#FBF4DC;color:#6B5210;border-left:3px solid var(--gold);}
+.flow-note.bug{background:var(--red-l);color:#7A1810;border-left:3px solid var(--red);}
+.flow-note.question{background:#EAF0FE;color:#103868;border-left:3px solid #4A80C0;}
+.flow-note.new{background:var(--green-l);color:#0F5830;border-left:3px solid var(--green);}
+
+/* Copy block */
+.copy-block{max-width:var(--ph-w);width:100%;background:white;border:1px solid var(--b1);border-radius:var(--r-sm);padding:10px 12px;display:flex;flex-direction:column;gap:6px;}
+.copy-label{font-family:var(--f-mono);font-size:9px;font-weight:600;color:var(--t2);letter-spacing:0.06em;text-transform:uppercase;}
+.copy-en{font-size:11px;color:var(--t1);line-height:1.5;}
+.copy-ar{font-size:11px;color:var(--t1);line-height:1.65;direction:rtl;text-align:right;}
+
+/* Handoff */
+.handoff{margin-top:64px;padding:36px;background:white;border:1px solid var(--b1);border-radius:var(--r-md);}
+.handoff-title{font-size:26px;font-weight:700;color:var(--t1);margin-bottom:8px;letter-spacing:-0.01em;}
+.handoff-sub{font-size:14px;color:var(--t2);margin-bottom:28px;line-height:1.5;}
+.handoff-sec{margin-top:28px;padding-top:24px;border-top:1px solid var(--b1);}
+.handoff-sec:first-of-type{border-top:none;padding-top:0;margin-top:0;}
+.handoff-h{font-size:18px;font-weight:700;color:var(--t1);margin-bottom:12px;}
+.handoff-p{font-size:14px;color:var(--t1);line-height:1.6;margin-bottom:8px;}
+.handoff-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.handoff-list li{font-size:14px;color:var(--t1);line-height:1.6;padding-left:16px;position:relative;}
+.handoff-list li::before{content:'—';position:absolute;left:0;color:var(--t3);font-weight:700;}
+.handoff-table{width:100%;border-collapse:collapse;font-size:13px;}
+.handoff-table th{text-align:left;padding:10px 12px;border-bottom:2px solid var(--b2);font-size:11px;color:var(--t2);text-transform:uppercase;letter-spacing:0.06em;font-weight:700;}
+.handoff-table td{padding:10px 12px;border-bottom:1px solid var(--b1);vertical-align:top;color:var(--t1);line-height:1.55;}
+.handoff-table td code{font-family:var(--f-mono);font-size:12px;background:var(--screen-bg2);padding:2px 6px;border-radius:3px;color:var(--t1);font-weight:500;}
+.if-then{background:var(--screen-bg);border:1px solid var(--b1);border-left:3px solid var(--navy);padding:10px 14px;border-radius:0 var(--r-sm) var(--r-sm) 0;margin-bottom:8px;font-size:13px;color:var(--t1);line-height:1.6;}
+.if-then strong{color:var(--navy);font-weight:700;}
+
+.callout{padding:12px 14px;border-radius:0 var(--r-sm) var(--r-sm) 0;font-size:13px;line-height:1.55;margin-top:12px;}
+.callout.warn{background:var(--gold-l);border-left:3px solid var(--gold);color:#6B5210;}
+.callout.info{background:#EAF0FE;border-left:3px solid #4A80C0;color:#103868;}
+
+.w-full{width:100%;}
+.mt-4{margin-top:4px;}
+.mt-8{margin-top:8px;}
+.mt-12{margin-top:12px;}
+.spacer{flex:1;}
+.ar{font-family:var(--f-body);direction:rtl;text-align:right;line-height:1.55;}
+
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ═══════════════════════════════════════════════════════
+     DOC HEADER
+═══════════════════════════════════════════════════════════ -->
+
+<div class="doc-header">
+  <div class="doc-meta">
+    <span class="doc-tag prototype">Prototype</span>
+    <span class="doc-tag android">Android</span>
+    <span class="doc-tag parked">iOS parked</span>
+    <span class="doc-tag wip">Draft v1</span>
+    <span class="doc-tag version">DB-030 v3</span>
+    <span class="doc-date">Unified sign-up + sign-in · Serves FP-030 v3</span>
+  </div>
+
+  <div class="doc-title">Sign-up & sign-in flow — Android</div>
+  <div class="doc-subtitle">Unified onboarding for new users (Path A) and returning users on a new device (Path C). Same Entry screen for both; routing determined post-auth. Path B (same-device session persisted) routes direct to home with no designed screens. iOS parked per FP-030 §12.</div>
+
+  <div class="doc-info">
+
+    <div class="doc-info-cell">
+      <div class="info-label">Problem</div>
+      <div class="info-body">
+        One shared flow serves two users with different needs. A new user needs trust built before the SMS ask. A returning user needs continuity — a fast path in and a moment of recognition. <strong>The SMS permission remains load-bearing for both</strong>: it decides whether the product works automatically or the user falls back to manual. Language, OTP channel, and Hint API must feel like small helpful touches, not extra steps.
+      </div>
+    </div>
+
+    <div class="doc-info-cell">
+      <div class="info-label">Flows in this document</div>
+      <div class="flow-list">
+        <div class="flow-list-item active">Flow 1 — Path A (new user, includes language switch demo)</div>
+        <div class="flow-list-item active">Flow 2 — Path C (returning user, Google SSO path)</div>
+        <div class="flow-list-item active">Flow 3 — Permission denied fallback (A + C)</div>
+        <div class="flow-list-item active">Flow 4 — Re-prompt surfaces (SMS re-prompt 1, push contextual)</div>
+        <div class="flow-list-item active">Edges — 15 standalone states from §4</div>
+        <div class="flow-list-item parked">Path B — no designed screens (session persisted → home)</div>
+      </div>
+    </div>
+
+    <div class="doc-info-cell">
+      <div class="info-label">Design OQs resolved in this draft</div>
+      <div class="events-summary">
+        <div class="event-pill-sm new">OQ-01 · 3 progress dots</div>
+        <div class="event-pill-sm new">OQ-02 · "Don't ask again" as text link</div>
+        <div class="event-pill-sm new">OQ-03 · +20 prefix visible (§5)</div>
+        <div class="event-pill-sm new">OQ-04 · 3 strings, progressive reveal</div>
+        <div class="event-pill-sm new">OQ-05 · Language menu as dropdown</div>
+        <div class="event-pill-sm new">OQ-06 · OTP channel as bottom sheet</div>
+        <div class="event-pill-sm new">OQ-07 · Long names truncate @ 20ch</div>
+        <div class="event-pill-sm new">OQ-08 · Push overlays tx list</div>
+        <div class="event-pill-sm fix">All need product sign-off</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 1 — PATH A · NEW USER HAPPY PATH
+═══════════════════════════════════════════════════════════ -->
+
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 1 — Path A · New user happy path (with language switch demo)</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="phone-row">
+
+    <!-- ── Welcome 1 (English) ── -->
+    <div class="screen-col">
+      <div class="screen-label">Welcome 1 of 3 · English · EGY bank support</div>
+      <div class="state-badge happy">default</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="lang-trigger">EN ⌄</div>
+          <div class="welcome-art">
+            <div class="welcome-art-inner">
+              <div class="sms-bubble">
+                <div class="sms-sender">CIB</div>
+                <div class="sms-text">Card purchase 340.00 EGP at Seoudi Supermarket on 21/04/26.</div>
+              </div>
+              <div class="bank-row">
+                <div class="bank-chip">CIB</div>
+                <div class="bank-chip">NBE</div>
+                <div class="bank-chip">QNB</div>
+                <div class="bank-chip">+12</div>
+              </div>
+            </div>
+          </div>
+          <div class="sc-pad-lg">
+            <div class="t-title">Your bank already texts you. We do the rest.</div>
+            <div class="t-caption">MoneyMore reads the SMS from CIB, NBE, QNB and most Egyptian banks — and turns every transaction into something you can actually see.</div>
+            <div class="spacer"></div>
+            <div class="prog-dots">
+              <div class="prog-dot on"></div>
+              <div class="prog-dot"></div>
+              <div class="prog-dot"></div>
+            </div>
+            <div class="btn btn-accent btn-lg">Show me how</div>
+          </div>
+        </div>
+      </div>
+      <div class="annotations">
+        <div class="anno-event">
+          <div class="anno-chip new">signup_welcome_viewed</div>
+          <div class="anno-desc">step: 1 · locale: en</div>
+        </div>
+      </div>
+      <div class="flow-note decision">OQ-05 resolved as DROPDOWN (top-right EN ⌄ trigger). Matches CIB Online / InstaPay convention. Bottom sheet is overkill for 2 options. Menu is persistent across welcome 1–3 and Entry only — never on post-auth screens.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">Show me how</div>
+    </div>
+
+    <!-- ── Welcome 2 (English — before language switch) ── -->
+    <div class="screen-col">
+      <div class="screen-label">Welcome 2 of 3 · English · user about to switch language</div>
+      <div class="state-badge happy">default</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="lang-trigger">EN ⌄</div>
+          <div class="welcome-art">
+            <div class="welcome-art-inner">
+              <div class="bucket-row">
+                <div class="bucket"><span class="bucket-name">🍕 Food</span><span class="bucket-bar"><div style="width:62%"></div></span></div>
+                <div class="bucket"><span class="bucket-name">🚗 Transport</span><span class="bucket-bar"><div style="width:40%"></div></span></div>
+                <div class="bucket"><span class="bucket-name">🛍 Shopping</span><span class="bucket-bar"><div style="width:85%;background:var(--gold)"></div></span></div>
+              </div>
+            </div>
+          </div>
+          <div class="sc-pad-lg">
+            <div class="t-title">Set a limit. See it hold.</div>
+            <div class="t-caption">Build budgets for food, transport, whatever drains the account. We'll tell you where you stand — before the month runs out.</div>
+            <div class="spacer"></div>
+            <div class="prog-dots">
+              <div class="prog-dot"></div>
+              <div class="prog-dot on"></div>
+              <div class="prog-dot"></div>
+            </div>
+            <div class="btn btn-accent btn-lg">Keep going</div>
+          </div>
+        </div>
+      </div>
+      <div class="copy-block">
+        <div class="copy-label">EN + AR copy pair</div>
+        <div class="copy-en"><strong>Headline:</strong> Set a limit. See it hold.</div>
+        <div class="copy-ar"><strong>العنوان:</strong> حدّد سقف. شوفه بيتحقّق.</div>
+        <div class="copy-en"><strong>CTA:</strong> Keep going</div>
+        <div class="copy-ar"><strong>الزر:</strong> كمّل</div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label interaction">tap EN ⌄</div>
+    </div>
+
+    <!-- ── Language menu OPEN (still on welcome 2 English) ── -->
+    <div class="screen-col">
+      <div class="screen-label">Language menu · open state</div>
+      <div class="state-badge interaction">interaction</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="lang-trigger">EN ⌄</div>
+          <div class="lang-dropdown">
+            <div class="lang-opt selected">
+              <span>English</span>
+              <span class="lang-opt-check">✓</span>
+            </div>
+            <div class="lang-opt">
+              <span>العربية</span>
+            </div>
+          </div>
+          <div class="welcome-art" style="opacity:0.45">
+            <div class="welcome-art-inner">
+              <div class="bucket-row">
+                <div class="bucket"><span class="bucket-name">🍕 Food</span><span class="bucket-bar"><div style="width:62%"></div></span></div>
+                <div class="bucket"><span class="bucket-name">🚗 Transport</span><span class="bucket-bar"><div style="width:40%"></div></span></div>
+                <div class="bucket"><span class="bucket-name">🛍 Shopping</span><span class="bucket-bar"><div style="width:85%;background:var(--gold)"></div></span></div>
+              </div>
+            </div>
+          </div>
+          <div class="sc-pad-lg" style="opacity:0.45">
+            <div class="t-title">Set a limit. See it hold.</div>
+            <div class="t-caption">Build budgets for food, transport, whatever drains the account.</div>
+            <div class="spacer"></div>
+            <div class="btn btn-accent btn-lg">Keep going</div>
+          </div>
+        </div>
+      </div>
+      <div class="annotations">
+        <div class="anno-event">
+          <div class="anno-chip new">language_menu_opened</div>
+          <div class="anno-desc">screen: welcome_2 · current_locale: en</div>
+        </div>
+      </div>
+      <div class="copy-block">
+        <div class="copy-label">Language menu · both locales</div>
+        <div class="copy-en"><strong>Trigger (EN active):</strong> EN ⌄ · <strong>Trigger (AR active):</strong> ع ⌄</div>
+        <div class="copy-en"><strong>Options:</strong> English · العربية (each always displayed in its own language)</div>
+      </div>
+      <div class="flow-note decision">Each option always displayed in its own language regardless of current UI locale — Android standard. Never show "Arabic" in English when user is choosing Arabic. Selected state uses a green checkmark + bold label.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label interaction">tap العربية · instant flip</div>
+    </div>
+
+    <!-- ── Welcome 2 (Arabic — after language switch, fully RTL) ── -->
+    <div class="screen-col">
+      <div class="screen-label">Welcome 2 of 3 · Arabic · full RTL flip</div>
+      <div class="state-badge happy">RTL applied</div>
+      <div class="phone">
+        <div class="a-status"><span>🔋 ▲▲</span><span>9:41</span></div>
+        <div class="screen no-nav">
+          <div class="lang-trigger rtl-pos">ع ⌄</div>
+          <div class="welcome-art">
+            <div class="welcome-art-inner">
+              <div class="bucket-row">
+                <div class="bucket" style="direction:rtl"><span class="bucket-name">🍕 الطعام</span><span class="bucket-bar"><div style="width:62%"></div></span></div>
+                <div class="bucket" style="direction:rtl"><span class="bucket-name">🚗 المواصلات</span><span class="bucket-bar"><div style="width:40%"></div></span></div>
+                <div class="bucket" style="direction:rtl"><span class="bucket-name">🛍 التسوق</span><span class="bucket-bar"><div style="width:85%;background:var(--gold)"></div></span></div>
+              </div>
+            </div>
+          </div>
+          <div class="sc-pad-lg">
+            <div class="t-title ar">حدّد سقف. شوفه بيتحقّق.</div>
+            <div class="t-caption ar">اعمل ميزانية للأكل، للمواصلات، لأي حاجة بتاكل من الحساب. هنقولك أنت فين دلوقتي — قبل ما الشهر يخلص.</div>
+            <div class="spacer"></div>
+            <div class="prog-dots">
+              <div class="prog-dot"></div>
+              <div class="prog-dot on"></div>
+              <div class="prog-dot"></div>
+            </div>
+            <div class="btn btn-accent btn-lg">كمّل</div>
+          </div>
+        </div>
+      </div>
+      <div class="annotations">
+        <div class="anno-event">
+          <div class="anno-chip new">language_changed</div>
+          <div class="anno-desc">from: en · to: ar · screen: welcome_2</div>
+        </div>
+      </div>
+      <div class="flow-note bug">RTL flip must be INSTANT. No loading state, no reload, no confirmation modal (§6). Everything mirrors: CTA stays full-width, progress dots stay centered (don't flip), language trigger moves top-LEFT, status bar icons flip, text direction becomes RTL. Progress dot order reads right-to-left now — dot 2 (current) still visually in the middle. Phone/OTP inputs when they appear stay LTR (numbers are always LTR on Android).</div>
+      <div class="flow-note new">Designer must produce EVERY screen in both locales at the layout level — not just text flip. §9 handoff checklist explicitly requires this.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">كمّل</div>
+    </div>
+
+    <!-- ── Welcome 3 (Arabic continues) ── -->
+    <div class="screen-col">
+      <div class="screen-label">Welcome 3 of 3 · Arabic continues</div>
+      <div class="state-badge happy">RTL</div>
+      <div class="phone">
+        <div class="a-status"><span>🔋 ▲▲</span><span>9:41</span></div>
+        <div class="screen no-nav">
+          <div class="lang-trigger rtl-pos">ع ⌄</div>
+          <div class="welcome-art">
+            <div class="welcome-art-inner">
+              <div class="pattern-grid">
+                <div class="pattern-cell lv1"></div><div class="pattern-cell"></div><div class="pattern-cell lv2"></div><div class="pattern-cell lv3"></div><div class="pattern-cell lv1"></div><div class="pattern-cell lv4"></div><div class="pattern-cell lv2"></div>
+                <div class="pattern-cell"></div><div class="pattern-cell lv2"></div><div class="pattern-cell lv3"></div><div class="pattern-cell lv1"></div><div class="pattern-cell"></div><div class="pattern-cell lv3"></div><div class="pattern-cell lv4"></div>
+                <div class="pattern-cell lv1"></div><div class="pattern-cell lv2"></div><div class="pattern-cell"></div><div class="pattern-cell lv2"></div><div class="pattern-cell lv4"></div><div class="pattern-cell lv3"></div><div class="pattern-cell lv2"></div>
+                <div class="pattern-cell lv3"></div><div class="pattern-cell lv1"></div><div class="pattern-cell lv2"></div><div class="pattern-cell"></div><div class="pattern-cell lv2"></div><div class="pattern-cell lv4"></div><div class="pattern-cell lv1"></div>
+              </div>
+              <div class="ar" style="font-size:10px;color:var(--t4);margin-top:6px">4 أسابيع · نمط صرف حقيقي</div>
+            </div>
+          </div>
+          <div class="sc-pad-lg">
+            <div class="t-title ar">شوف فلوسك رايحة فين بجد.</div>
+            <div class="t-caption ar">مش مجرد رسم بياني بتعدّي عليه. أنماط حقيقية في صرفك — الحاجات اللي مكنتش هتلاحظها من تطبيق البنك.</div>
+            <div class="spacer"></div>
+            <div class="prog-dots">
+              <div class="prog-dot"></div>
+              <div class="prog-dot"></div>
+              <div class="prog-dot on"></div>
+            </div>
+            <div class="btn btn-accent btn-lg">يلا نبدأ</div>
+          </div>
+        </div>
+      </div>
+      <div class="copy-block">
+        <div class="copy-label">Welcome 3 · EN + AR</div>
+        <div class="copy-en"><strong>Headline:</strong> See where it actually goes.</div>
+        <div class="copy-ar"><strong>العنوان:</strong> شوف فلوسك رايحة فين بجد.</div>
+        <div class="copy-en"><strong>CTA:</strong> Let's go (adjusted for v3 — neutral across A and C)</div>
+        <div class="copy-ar"><strong>الزر:</strong> يلا نبدأ</div>
+      </div>
+      <div class="flow-note decision">v3 change: CTA copy adjusted from "Set up my account" to "Let's go" / "يلا نبدأ" because welcome 3 now advances to the UNIFIED Entry screen (serves both sign-up and sign-in). Old copy implied sign-up only.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label interaction">tap ع ⌄ → English · for readability of downstream</div>
+    </div>
+
+    <!-- ── Entry screen (back to English for the rest of flow readability) ── -->
+    <div class="screen-col">
+      <div class="screen-label">Entry screen · Pattern 1 stacked equals</div>
+      <div class="state-badge happy">default · no pre-selection</div>
+      <div class="phone">
+        <div class="a-status"><span>9:42</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="lang-trigger">EN ⌄</div>
+          <div class="sc-pad-lg" style="padding-top:48px">
+            <div class="t-title">Continue to MoneyMore</div>
+            <div style="height:8px"></div>
+            <div class="method-btn">
+              <div class="method-icon google">G</div>
+              <div class="method-lbl">Continue with Google</div>
+            </div>
+            <div class="or-divider">
+              <div class="or-line"></div>
+              <div class="or-text">or</div>
+              <div class="or-line"></div>
+            </div>
+            <div class="form-grp">
+              <div class="form-label">Phone number</div>
+              <div class="input-phone">
+                <div class="phone-prefix">🇪🇬 +20</div>
+                <div class="phone-num ph">10X XXX XXXX</div>
+              </div>
+            </div>
+            <div class="btn btn-disabled btn-lg">Send code</div>
+            <div class="spacer"></div>
+            <div style="font-size:10px;color:var(--t3);line-height:1.5;text-align:center">
+              By continuing, you agree to our <span style="color:var(--navy);text-decoration:underline">Terms of Service</span> and <span style="color:var(--navy);text-decoration:underline">Privacy Policy</span>.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="annotations">
+        <div class="anno-event">
+          <div class="anno-chip new">signup_entry_viewed</div>
+          <div class="anno-desc">path: unresolved · locale: en</div>
+        </div>
+      </div>
+      <div class="copy-block">
+        <div class="copy-label">Entry · EN + AR</div>
+        <div class="copy-en"><strong>Title:</strong> Continue to MoneyMore (neutral — serves both sign-up and sign-in)</div>
+        <div class="copy-ar"><strong>العنوان:</strong> كمّل لـ MoneyMore</div>
+        <div class="copy-en"><strong>Phone placeholder:</strong> +20 10X XXX XXXX (OQ-03 resolved — country code visible)</div>
+        <div class="copy-ar"><strong>حقل التليفون:</strong> +20 10X XXX XXXX</div>
+      </div>
+      <div class="flow-note decision">Pattern 1 — stacked equals. Google SSO ABOVE, visual "or" divider, phone field BELOW. Neither visually demoted. No "recommended" tag. Phone field has NO helper text underneath — adding one would visually demote the phone path relative to the Google button (which has no helper), breaking equal-weight rule (§5 copy note).</div>
+      <div class="flow-note new">Same Entry screen serves Path A and Path C. Backend determines routing post-auth. User does not declare "sign up" or "sign in" anywhere.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">tap phone field (1st time)</div>
+    </div>
+
+    <!-- ── Phone Number Hint API sheet ── -->
+    <div class="screen-col">
+      <div class="screen-label">Phone Number Hint API · first tap only</div>
+      <div class="state-badge os">Google-rendered</div>
+      <div class="phone">
+        <div class="a-status"><span>9:42</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="lang-trigger" style="opacity:0.3">EN ⌄</div>
+          <div class="sc-pad-lg" style="opacity:0.35;padding-top:48px">
+            <div class="t-title">Continue to MoneyMore</div>
+            <div style="height:8px"></div>
+            <div class="method-btn">
+              <div class="method-icon google">G</div>
+              <div class="method-lbl">Continue with Google</div>
+            </div>
+            <div class="or-divider">
+              <div class="or-line"></div>
+              <div class="or-text">or</div>
+              <div class="or-line"></div>
+            </div>
+            <div class="form-grp">
+              <div class="form-label">Phone number</div>
+              <div class="input-phone focus">
+                <div class="phone-prefix">🇪🇬 +20</div>
+                <div class="phone-num ph">10X XXX XXXX</div>
+              </div>
+            </div>
+          </div>
+          <div class="hint-sheet">
+            <div class="hint-handle"></div>
+            <div class="hint-title">Choose a phone number</div>
+            <div class="hint-sub">to continue to MoneyMore</div>
+            <div class="hint-row on">
+              <div class="hint-avatar">Y</div>
+              <div class="hint-info">
+                <div class="hint-num">+20 10 1234 5678</div>
+                <div class="hint-name">Primary · SIM 1</div>
+              </div>
+            </div>
+            <div class="hint-row">
+              <div class="hint-avatar" style="background:#34A853">Y</div>
+              <div class="hint-info">
+                <div class="hint-num">+20 11 9876 5432</div>
+                <div class="hint-name">Secondary · SIM 2</div>
+              </div>
+            </div>
+            <div class="hint-cancel">None of the above</div>
+          </div>
+        </div>
+      </div>
+      <div class="annotations">
+        <div class="anno-event">
+          <div class="anno-chip os">Google Hint API sheet</div>
+          <div class="anno-desc">not designed by MoneyMore · reference only</div>
+        </div>
+        <div class="anno-event">
+          <div class="anno-chip new">phone_hint_sheet_shown</div>
+          <div class="anno-desc">first_tap: true</div>
+        </div>
+      </div>
+      <div class="flow-note bug">Triggers on FIRST tap of phone field only (§6). Subsequent taps within the same screen session must NOT re-trigger. Engineering must implement a session-scoped "hint_already_shown" flag. If Hint API is unavailable, fails, or returns no numbers — the manual field remains fully functional, NO banner, NO error, NO "hint unavailable" messaging (§8). See Edges section for the manual fallback reference.</div>
+      <div class="flow-note decision">Background of app must stay neutral while sheet is open — no branding flash, no content reveal (§8). The dimmed layer behind this sheet in the prototype illustrates the correct state.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">tap number · sheet closes · field fills</div>
+    </div>
+
+    <!-- ── Entry · number populated from Hint ── -->
+    <div class="screen-col">
+      <div class="screen-label">Entry · phone populated, NOT auto-sent</div>
+      <div class="state-badge happy">post-hint</div>
+      <div class="phone">
+        <div class="a-status"><span>9:42</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="lang-trigger">EN ⌄</div>
+          <div class="sc-pad-lg" style="padding-top:48px">
+            <div class="t-title">Continue to MoneyMore</div>
+            <div style="height:8px"></div>
+            <div class="method-btn">
+              <div class="method-icon google">G</div>
+              <div class="method-lbl">Continue with Google</div>
+            </div>
+            <div class="or-divider">
+              <div class="or-line"></div>
+              <div class="or-text">or</div>
+              <div class="or-line"></div>
+            </div>
+            <div class="form-grp">
+              <div class="form-label">Phone number</div>
+              <div class="input-phone focus">
+                <div class="phone-prefix">🇪🇬 +20</div>
+                <div class="phone-num">10 1234 5678</div>
+              </div>
+            </div>
+            <div class="btn btn-accent btn-lg">Send code</div>
+            <div class="spacer"></div>
+            <div style="font-size:10px;color:var(--t3);line-height:1.5;text-align:center">
+              By continuing, you agree to our <span style="color:var(--navy);text-decoration:underline">Terms of Service</span> and <span style="color:var(--navy);text-decoration:underline">Privacy Policy</span>.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="annotations">
+        <div class="anno-event">
+          <div class="anno-chip new">phone_hint_selected</div>
+          <div class="anno-desc">filled_via: hint_api</div>
+        </div>
+      </div>
+      <div class="flow-note bug">Constraint §6 + §8: selecting a number from Hint fills the field but MUST NOT auto-send OTP. User explicitly taps Send code. Any auto-send = defect.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">Send code</div>
+    </div>
+
+    <!-- ── OTP channel selection (bottom sheet per OQ-06) ── -->
+    <div class="screen-col">
+      <div class="screen-label">OTP channel choice · bottom sheet (OQ-06)</div>
+      <div class="state-badge happy">no default · CTA disabled</div>
+      <div class="phone">
+        <div class="a-status"><span>9:42</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="sc-pad-lg" style="opacity:0.3;padding-top:48px">
+            <div class="t-title">Continue to MoneyMore</div>
+            <div style="height:8px"></div>
+            <div class="method-btn">
+              <div class="method-icon google">G</div>
+              <div class="method-lbl">Continue with Google</div>
+            </div>
+          </div>
+          <div class="overlay">
+            <div class="bottom-sheet">
+              <div class="bs-handle"></div>
+              <div class="bs-title">How should we send your code?</div>
+              <div class="bs-body">Sending to <strong style="color:var(--t1);font-family:var(--f-mono)">+20 10 1234 5678</strong>.</div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <div class="channel-opt">
+                  <div class="channel-ico wa">💬</div>
+                  <div class="channel-body">
+                    <div class="channel-lbl">WhatsApp</div>
+                    <div class="channel-sub">Code arrives in your chats. Usually the fastest.</div>
+                  </div>
+                  <div class="channel-check"></div>
+                </div>
+                <div class="channel-opt">
+                  <div class="channel-ico sms">✉</div>
+                  <div class="channel-body">
+                    <div class="channel-lbl">SMS</div>
+                    <div class="channel-sub">Code arrives as a text message.</div>
+                  </div>
+                  <div class="channel-check"></div>
+                </div>
+              </div>
+              <div style="height:12px"></div>
+              <div class="btn btn-disabled btn-lg">🔒 Send code</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="annotations">
+        <div class="anno-event">
+          <div class="anno-chip new">otp_channel_choice_viewed</div>
+          <div class="anno-desc">default_selected: none · cta_state: disabled</div>
+        </div>
+      </div>
+      <div class="copy-block">
+        <div class="copy-label">Channel subtexts · EN + AR</div>
+        <div class="copy-en"><strong>WhatsApp:</strong> Code arrives in your chats. Usually the fastest.</div>
+        <div class="copy-ar"><strong>WhatsApp:</strong> الكود هييجيلك في الرسايل. عادةً ده الأسرع.</div>
+        <div class="copy-en"><strong>SMS:</strong> Code arrives as a text message.</div>
+        <div class="copy-ar"><strong>SMS:</strong> الكود هييجيلك رسالة نصية.</div>
+      </div>
+      <div class="flow-note decision">OQ-06 resolved as BOTTOM SHEET. Keeps user anchored to the phone number they just entered; full screen would feel like a new form step. Display order: WhatsApp first, SMS second (§5 — default habit for Egyptian users).</div>
+      <div class="flow-note bug">Constraint §6 + §8: no default pre-selection. CTA stays DISABLED with a lock icon + reduced opacity (non-colour signal per §7) until user actively chooses. No "recommended" tag. Describing reality (WhatsApp "usually the fastest") is not demoting SMS — it's informing the choice. Both options equal visual weight.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">tap WhatsApp → Send code</div>
+    </div>
+
+    <!-- ── OTP entry (WhatsApp channel) ── -->
+    <div class="screen-col">
+      <div class="screen-label">OTP entry · WhatsApp channel</div>
+      <div class="state-badge happy">digit 3 of 6</div>
+      <div class="phone">
+        <div class="a-status"><span>9:42</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="app-bar">
+            <div class="back-btn">‹</div>
+            <div class="app-bar-title">Verify phone</div>
+          </div>
+          <div class="sc-pad">
+            <div class="t-heading">Check WhatsApp for your code</div>
+            <div class="t-caption">Sent to <strong style="color:var(--t1);font-family:var(--f-mono)">+20 10 1234 5678</strong>. Didn't get it? Resend below or switch channel.</div>
+            <div style="height:12px"></div>
+            <div class="otp-row">
+              <div class="otp-box filled">4</div>
+              <div class="otp-box filled">1</div>
+              <div class="otp-box active">|</div>
+              <div class="otp-box"></div>
+              <div class="otp-box"></div>
+              <div class="otp-box"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
+              <span style="font-size:var(--s-xs);color:var(--t4)">Resend code in <strong style="color:var(--t3);font-family:var(--f-mono)">32s</strong></span>
+              <span style="font-size:var(--s-xs);font-weight:700;color:var(--navy);text-decoration:underline">Use SMS instead</span>
+            </div>
+            <div style="height:4px"></div>
+            <div class="btn btn-disabled btn-lg">Verify</div>
+          </div>
+          <div class="keyboard">
+            <div class="kb-row"><div class="kb-key">1</div><div class="kb-key">2</div><div class="kb-key">3</div></div>
+            <div class="kb-row"><div class="kb-key">4</div><div class="kb-key">5</div><div class="kb-key">6</div></div>
+            <div class="kb-row"><div class="kb-key">7</div><div class="kb-key">8</div><div class="kb-key">9</div></div>
+            <div class="kb-row"><div class="kb-key"></div><div class="kb-key">0</div><div class="kb-key dark">⌫</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="annotations">
+        <div class="anno-event">
+          <div class="anno-chip new">otp_viewed</div>
+          <div class="anno-desc">channel: whatsapp · attempt: 1</div>
+        </div>
+        <div class="anno-event">
+          <div class="anno-chip new">otp_sent</div>
+          <div class="anno-desc">channel: whatsapp</div>
+        </div>
+      </div>
+      <div class="copy-block">
+        <div class="copy-label">OTP · EN + AR</div>
+        <div class="copy-en"><strong>Title (WA path):</strong> Check WhatsApp for your code</div>
+        <div class="copy-ar"><strong>العنوان (واتساب):</strong> شوف الـ WhatsApp عشان الكود</div>
+        <div class="copy-en"><strong>Switch-channel link (on WA):</strong> Use SMS instead</div>
+        <div class="copy-ar"><strong>رابط التبديل:</strong> استخدم SMS بدل كده</div>
+      </div>
+      <div class="flow-note decision">Switch-channel link is ALWAYS available — not just after failure (§6). Persistent alongside the resend countdown. Link text swaps based on active channel — engineering handles the conditional. Back chevron returns to Entry with phone preserved.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">6 digits → verified</div>
+    </div>
+
+    <!-- ── Name capture (Path A phone only) ── -->
+    <div class="screen-col">
+      <div class="screen-label">Name capture · Path A phone only</div>
+      <div class="state-badge happy">default</div>
+      <div class="phone">
+        <div class="a-status"><span>9:43</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="app-bar">
+            <div class="app-bar-title">Just one thing</div>
+          </div>
+          <div class="sc-pad">
+            <div class="t-heading">What should we call you?</div>
+            <div style="height:12px"></div>
+            <div class="form-grp">
+              <div class="form-label">First name</div>
+              <div class="input focus"><span>Youssef</span></div>
+            </div>
+            <div style="height:4px"></div>
+            <div class="btn btn-accent btn-lg">Continue</div>
+          </div>
+          <div class="keyboard">
+            <div class="kb-row">
+              <div class="kb-key">q</div><div class="kb-key">w</div><div class="kb-key">e</div><div class="kb-key">r</div><div class="kb-key">t</div><div class="kb-key">y</div><div class="kb-key">u</div><div class="kb-key">i</div><div class="kb-key">o</div><div class="kb-key">p</div>
+            </div>
+            <div class="kb-row">
+              <div class="kb-key">a</div><div class="kb-key">s</div><div class="kb-key">d</div><div class="kb-key">f</div><div class="kb-key">g</div><div class="kb-key">h</div><div class="kb-key">j</div><div class="kb-key">k</div><div class="kb-key">l</div>
+            </div>
+            <div class="kb-row">
+              <div class="kb-key dark">⇧</div><div class="kb-key">z</div><div class="kb-key">x</div><div class="kb-key">c</div><div class="kb-key">v</div><div class="kb-key">b</div><div class="kb-key">n</div><div class="kb-key">m</div><div class="kb-key dark">⌫</div>
+            </div>
+            <div class="kb-row">
+              <div class="kb-key wide">space</div><div class="kb-key action">↵</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="annotations">
+        <div class="anno-event">
+          <div class="anno-chip new">name_capture_viewed</div>
+          <div class="anno-desc">path: A · method: phone</div>
+        </div>
+      </div>
+      <div class="flow-note decision">Path A phone ONLY. NOT shown on Google SSO (OAuth provides name) or Path C (returning user already has name). §8 constraint.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">Continue</div>
+    </div>
+
+    <!-- ── SMS pre-prompt ── -->
+    <div class="screen-col">
+      <div class="screen-label">SMS pre-prompt · load-bearing trust moment</div>
+      <div class="state-badge happy">default</div>
+      <div class="phone">
+        <div class="a-status"><span>9:43</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="sc-pad-lg">
+            <div style="height:8px"></div>
+            <div style="width:48px;height:48px;border-radius:var(--r-md);background:var(--green-l);display:flex;align-items:center;justify-content:center;font-size:22px">📩</div>
+            <div class="t-title">Let MoneyMore read your bank SMS.</div>
+            <div class="t-body" style="font-size:var(--s-sm)">Every time your bank texts you about a transaction, we'll capture it — so you don't have to type anything in.</div>
+            <div style="background:var(--screen-bg2);border-left:3px solid var(--green);border-radius:0 var(--r-sm) var(--r-sm) 0;padding:10px 12px;margin-top:4px">
+              <div style="font-size:var(--s-sm);font-weight:700;color:var(--t1);line-height:1.5">We only read bank messages. Nothing else.</div>
+            </div>
+            <div class="spacer"></div>
+            <div class="btn btn-accent btn-lg">Allow SMS access</div>
+            <div class="btn btn-outline btn-lg">Add transactions manually instead</div>
+          </div>
+        </div>
+      </div>
+      <div class="annotations">
+        <div class="anno-event">
+          <div class="anno-chip new">sms_preprompt_viewed</div>
+          <div class="anno-desc">path: A · critical conversion event</div>
+        </div>
+      </div>
+      <div class="flow-note decision">Shared between Path A and Path C. Load-bearing trust screen. Skip = full-width outline button, NOT demoted text link (§8). Trust line ("We only read bank messages. Nothing else.") gets standalone green-border treatment (§5).</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">Allow → OS dialog</div>
+    </div>
+
+    <!-- ── OS permission dialog ── -->
+    <div class="screen-col">
+      <div class="screen-label">OS permission dialog · Android native</div>
+      <div class="state-badge os">OS-controlled</div>
+      <div class="phone">
+        <div class="a-status"><span>9:43</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="sc-pad-lg" style="opacity:0.35">
+            <div style="width:48px;height:48px;border-radius:var(--r-md);background:var(--green-l);display:flex;align-items:center;justify-content:center;font-size:22px">📩</div>
+            <div class="t-title">Let MoneyMore read your bank SMS.</div>
+          </div>
+          <div class="perm-overlay">
+            <div class="perm-box-a">
+              <div class="perm-ico-a">💬</div>
+              <div class="perm-title-a">Allow MoneyMore to send and view SMS messages?</div>
+              <div class="perm-desc-a">To read transaction SMS from your bank and track spending.</div>
+              <div class="perm-acts-a">
+                <div class="perm-btn-a">Allow</div>
+                <div class="perm-btn-a" style="color:#666">Don't allow</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="annotations">
+        <div class="anno-event">
+          <div class="anno-chip new">sms_permission_result</div>
+          <div class="anno-desc">result: granted · source: pre_prompt</div>
+        </div>
+      </div>
+      <div class="copy-block">
+        <div class="copy-label">Purpose string · EN + AR (inside OS dialog)</div>
+        <div class="copy-en">To read transaction SMS from your bank and track spending.</div>
+        <div class="copy-ar">عشان نقرا رسايل المعاملات من البنك ونتابع صرفك.</div>
+      </div>
+      <div class="flow-note bug">Constraint §8: OS dialog may ONLY be triggered from the SMS pre-prompt's primary CTA (and, per the v2 fix in FP-030, from re-prompt "Enable SMS"). Never on screen load, never silently, never on any other screen.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">Allow → scan</div>
+    </div>
+
+    <!-- ── Loading · message 1 ── -->
+    <div class="screen-col">
+      <div class="screen-label">Loading · message 1</div>
+      <div class="state-badge loading">~0.5s</div>
+      <div class="phone">
+        <div class="a-status"><span>9:43</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="loading-screen">
+            <div class="load-spinner"></div>
+            <div class="load-msg">Reading your bank messages…</div>
+            <div class="load-prog"><div class="load-prog-bar" style="width:25%"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="annotations">
+        <div class="anno-event">
+          <div class="anno-chip new">sms_scan_started</div>
+          <div class="anno-desc">min: 2s · max: 6s · backend_timeout: 15s</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">~2s</div>
+    </div>
+
+    <!-- ── Loading · message 2 ── -->
+    <div class="screen-col">
+      <div class="screen-label">Loading · message 2</div>
+      <div class="state-badge loading">~2s</div>
+      <div class="phone">
+        <div class="a-status"><span>9:43</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="loading-screen">
+            <div class="load-spinner"></div>
+            <div class="load-msg">Sorting transactions by category…</div>
+            <div class="load-prog"><div class="load-prog-bar" style="width:65%"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note question">OQ-04 resolved: 3 strings (dropped #4 "Setting up your account…" as generic padding). Progressive reveal on backend signals if available; fallback to ~1.5s timer rotation. Never hold on message 3 if scan finishes — advance immediately. Fixed 6s = defect.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">~4s</div>
+    </div>
+
+    <!-- ── Loading · message 3 ── -->
+    <div class="screen-col">
+      <div class="screen-label">Loading · message 3</div>
+      <div class="state-badge loading">~4s</div>
+      <div class="phone">
+        <div class="a-status"><span>9:43</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="loading-screen">
+            <div class="load-spinner"></div>
+            <div class="load-msg">Almost there…</div>
+            <div class="load-prog"><div class="load-prog-bar" style="width:92%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">scan done · count > 0</div>
+    </div>
+
+    <!-- ── Celebration ── -->
+    <div class="screen-col">
+      <div class="screen-label">Celebration · parseable_count > 0</div>
+      <div class="state-badge success">success payoff</div>
+      <div class="phone">
+        <div class="a-status"><span>9:43</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="sc-pad-lg" style="align-items:center;text-align:center;padding-top:48px">
+            <div style="width:68px;height:68px;border-radius:50%;background:var(--green-l);display:flex;align-items:center;justify-content:center;font-size:32px">✓</div>
+            <div style="height:4px"></div>
+            <div class="t-title">All set. We found 47 transactions.</div>
+            <div class="t-caption">Your spending's ready to look at — no typing required.</div>
+            <div style="background:white;border:1px solid var(--b1);border-radius:var(--r-sm);padding:10px;width:100%;margin-top:12px;display:flex;gap:6px;justify-content:center">
+              <div style="font-size:10px;color:var(--t3)">🍕 Food <strong style="color:var(--t1)">12</strong></div>
+              <div style="color:var(--b2)">·</div>
+              <div style="font-size:10px;color:var(--t3)">🚗 Transport <strong style="color:var(--t1)">8</strong></div>
+              <div style="color:var(--b2)">·</div>
+              <div style="font-size:10px;color:var(--t3)">🛍 Shopping <strong style="color:var(--t1)">15</strong></div>
+            </div>
+            <div class="spacer"></div>
+            <div class="btn btn-accent btn-lg w-full">See my money</div>
+          </div>
+        </div>
+      </div>
+      <div class="annotations">
+        <div class="anno-event">
+          <div class="anno-chip new">sms_scan_succeeded</div>
+          <div class="anno-desc">parseable_count: 47 · duration_ms: 4200</div>
+        </div>
+        <div class="anno-event">
+          <div class="anno-chip new">signup_completed</div>
+          <div class="anno-desc">path: A · method: phone · state: automated</div>
+        </div>
+      </div>
+      <div class="flow-note bug">Constraint §8: render this ONLY when parseable_count > 0. Zero count + scan complete → "primed and ready" (Edges). Backend timeout → Scan timeout empty state (Edges). Three distinct outcomes.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">See my money</div>
+    </div>
+
+    <!-- ── Home ── -->
+    <div class="screen-col">
+      <div class="screen-label">Home · first render · automated state</div>
+      <div class="state-badge happy">Flow 1 complete</div>
+      <div class="phone">
+        <div class="a-status"><span>9:44</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="home-hdr">
+            <div class="home-greet">Hi Youssef</div>
+            <div class="home-name">Your money, today</div>
+          </div>
+          <div class="balance-card">
+            <div class="bal-label">Spent this month</div>
+            <div class="bal-amount">3,240</div>
+            <div class="bal-cur">EGP · across 47 transactions</div>
+          </div>
+          <div class="home-sec">
+            <div style="font-size:11px;font-weight:700;color:var(--t3);letter-spacing:0.05em;text-transform:uppercase;margin-bottom:2px">Recent</div>
+            <div class="home-tx">
+              <div class="home-tx-ico">🍕</div>
+              <div class="home-tx-body"><div class="home-tx-name">Seoudi Supermarket</div><div class="home-tx-cat">Food · CIB · today</div></div>
+              <div class="home-tx-amt">−340</div>
+            </div>
+            <div class="home-tx">
+              <div class="home-tx-ico">🚗</div>
+              <div class="home-tx-body"><div class="home-tx-name">Uber</div><div class="home-tx-cat">Transport · CIB · today</div></div>
+              <div class="home-tx-amt">−72</div>
+            </div>
+            <div class="home-tx">
+              <div class="home-tx-ico">☕</div>
+              <div class="home-tx-body"><div class="home-tx-name">Costa Coffee</div><div class="home-tx-cat">Food · CIB · yesterday</div></div>
+              <div class="home-tx-amt">−85</div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item on"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕️</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Language menu is NOT visible on home — post-auth screen (§6, §8). Locale preference persists from Entry screen selection.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 2 — PATH C · RETURNING USER (new device / reinstall)
+═══════════════════════════════════════════════════════════ -->
+
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 2 — Path C · Returning user on new device (Google SSO path)</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="phone-row">
+
+    <!-- ── Entry screen (same as Flow 1) ── -->
+    <div class="screen-col">
+      <div class="screen-label">Entry screen · same as Path A · no declared intent</div>
+      <div class="state-badge happy">shared entry</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="lang-trigger">EN ⌄</div>
+          <div class="sc-pad-lg" style="padding-top:48px">
+            <div class="t-title">Continue to MoneyMore</div>
+            <div style="height:8px"></div>
+            <div class="method-btn">
+              <div class="method-icon google">G</div>
+              <div class="method-lbl">Continue with Google</div>
+            </div>
+            <div class="or-divider">
+              <div class="or-line"></div>
+              <div class="or-text">or</div>
+              <div class="or-line"></div>
+            </div>
+            <div class="form-grp">
+              <div class="form-label">Phone number</div>
+              <div class="input-phone">
+                <div class="phone-prefix">🇪🇬 +20</div>
+                <div class="phone-num ph">10X XXX XXXX</div>
+              </div>
+            </div>
+            <div class="btn btn-disabled btn-lg">Send code</div>
+            <div class="spacer"></div>
+            <div style="font-size:10px;color:var(--t3);line-height:1.5;text-align:center">
+              By continuing, you agree to our <span style="color:var(--navy);text-decoration:underline">Terms</span> and <span style="color:var(--navy);text-decoration:underline">Privacy</span>.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note new">Path C user sees the exact same Entry screen as Path A — there is no "sign in" button anywhere. Backend determines routing POST-auth based on whether the account exists. This is the core v3 pattern: unified entry, deferred routing.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">Continue with Google</div>
+    </div>
+
+    <!-- ── Google SSO in-flight ── -->
+    <div class="screen-col">
+      <div class="screen-label">Google SSO · in-flight · neutral waiting</div>
+      <div class="state-badge os">Google-rendered</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div style="flex:1;background:var(--screen-bg);display:flex;align-items:center;justify-content:center">
+            <div class="load-spinner" style="border-color:rgba(26,60,94,0.15);border-top-color:var(--navy)"></div>
+          </div>
+        </div>
+      </div>
+      <div class="annotations">
+        <div class="anno-event">
+          <div class="anno-chip new">sso_google_initiated</div>
+          <div class="anno-desc">provider: google</div>
+        </div>
+      </div>
+      <div class="flow-note bug">Constraint §8: app background is NEUTRAL while Google consent sheet is open. No branding flash, no content reveal, no partial UI. Only the spinner is MoneyMore-designed.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">Google auth OK · backend finds account</div>
+    </div>
+
+    <!-- ── Welcome back (Path C only) ── -->
+    <div class="screen-col">
+      <div class="screen-label">Welcome back · Path C only · moment of recognition</div>
+      <div class="state-badge success">Path C unique</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="welcome-back-hero">
+            <div class="wb-icon">👋</div>
+            <div class="t-title">Welcome back, Youssef.</div>
+            <div class="t-caption" style="font-size:var(--s-base);max-width:220px">Your data's ready where you left it.</div>
+            <div class="spacer"></div>
+            <div class="btn btn-accent btn-lg w-full">Take me in</div>
+          </div>
+        </div>
+      </div>
+      <div class="annotations">
+        <div class="anno-event">
+          <div class="anno-chip new">welcome_back_viewed</div>
+          <div class="anno-desc">path: C · name_length: 7 · truncated: false</div>
+        </div>
+      </div>
+      <div class="copy-block">
+        <div class="copy-label">Welcome back · EN + AR</div>
+        <div class="copy-en"><strong>Headline:</strong> Welcome back, [name].</div>
+        <div class="copy-ar"><strong>العنوان:</strong> أهلاً بعودتك، [name].</div>
+        <div class="copy-en"><strong>Subtext:</strong> Your data's ready where you left it.</div>
+        <div class="copy-ar"><strong>النص:</strong> بياناتك جاهزة زي ما سبتها.</div>
+        <div class="copy-en"><strong>CTA:</strong> Take me in</div>
+        <div class="copy-ar"><strong>الزر:</strong> وديني جوا</div>
+      </div>
+      <div class="flow-note decision">OQ-07 resolved: long names truncate at 20 characters with ellipsis. Wrapping works in English but breaks the compact feel in Arabic RTL. Engineering must apply truncation server-side or in the view layer BEFORE rendering — don't rely on CSS text-overflow alone (screen readers need the truncation point to be intentional).</div>
+      <div class="flow-note new">Must be shown ONLY on Path C (§8). Moment of recognition, not a form, not a marketing screen. Brief — 2–3 seconds. Must announce the user's name to TalkBack (§7).</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">Take me in</div>
+    </div>
+
+    <!-- ── SMS pre-prompt (same design, Path C context) ── -->
+    <div class="screen-col">
+      <div class="screen-label">SMS pre-prompt · same design · Path C context</div>
+      <div class="state-badge happy">shared surface</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="sc-pad-lg">
+            <div style="height:8px"></div>
+            <div style="width:48px;height:48px;border-radius:var(--r-md);background:var(--green-l);display:flex;align-items:center;justify-content:center;font-size:22px">📩</div>
+            <div class="t-title">Let MoneyMore read your bank SMS.</div>
+            <div class="t-body" style="font-size:var(--s-sm)">Every time your bank texts you about a transaction, we'll capture it — so you don't have to type anything in.</div>
+            <div style="background:var(--screen-bg2);border-left:3px solid var(--green);border-radius:0 var(--r-sm) var(--r-sm) 0;padding:10px 12px;margin-top:4px">
+              <div style="font-size:var(--s-sm);font-weight:700;color:var(--t1);line-height:1.5">We only read bank messages. Nothing else.</div>
+            </div>
+            <div class="spacer"></div>
+            <div class="btn btn-accent btn-lg">Allow SMS access</div>
+            <div class="btn btn-outline btn-lg">Add transactions manually instead</div>
+          </div>
+        </div>
+      </div>
+      <div class="annotations">
+        <div class="anno-event">
+          <div class="anno-chip new">sms_preprompt_viewed</div>
+          <div class="anno-desc">path: C</div>
+        </div>
+      </div>
+      <div class="flow-note decision">Same copy, same design for Path A and Path C. Returning user on new device needs the same consent language — SMS permission doesn't persist across devices (Android system permission). This is the right place to ask.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">Allow → OS → scan → Loading</div>
+    </div>
+
+    <!-- ── Celebration (Path C) ── -->
+    <div class="screen-col">
+      <div class="screen-label">Celebration · Path C · finds account history</div>
+      <div class="state-badge success">Path C complete</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="sc-pad-lg" style="align-items:center;text-align:center;padding-top:48px">
+            <div style="width:68px;height:68px;border-radius:50%;background:var(--green-l);display:flex;align-items:center;justify-content:center;font-size:32px">✓</div>
+            <div style="height:4px"></div>
+            <div class="t-title">All set. We found 32 transactions.</div>
+            <div class="t-caption">Your spending's ready to look at — no typing required.</div>
+            <div style="background:white;border:1px solid var(--b1);border-radius:var(--r-sm);padding:10px;width:100%;margin-top:12px;display:flex;gap:6px;justify-content:center">
+              <div style="font-size:10px;color:var(--t3)">🍕 Food <strong style="color:var(--t1)">11</strong></div>
+              <div style="color:var(--b2)">·</div>
+              <div style="font-size:10px;color:var(--t3)">🚗 Transport <strong style="color:var(--t1)">7</strong></div>
+              <div style="color:var(--b2)">·</div>
+              <div style="font-size:10px;color:var(--t3)">🛍 Shopping <strong style="color:var(--t1)">9</strong></div>
+            </div>
+            <div class="spacer"></div>
+            <div class="btn btn-accent btn-lg w-full">See my money</div>
+          </div>
+        </div>
+      </div>
+      <div class="annotations">
+        <div class="anno-event">
+          <div class="anno-chip new">signup_completed</div>
+          <div class="anno-desc">path: C · method: google · state: automated</div>
+        </div>
+      </div>
+      <div class="flow-note new">Same celebration copy for Path A and Path C. Path C user's historical data from previous device is preserved server-side; this scan only discovers SMS on the NEW device. Home will show both the newly-scanned transactions and any historical data from the cloud.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">See my money</div>
+    </div>
+
+    <!-- ── Home (Path C — identical to Path A) ── -->
+    <div class="screen-col">
+      <div class="screen-label">Home · Path C · data restored</div>
+      <div class="state-badge happy">Flow 2 complete</div>
+      <div class="phone">
+        <div class="a-status"><span>9:42</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="home-hdr">
+            <div class="home-greet">Hi Youssef</div>
+            <div class="home-name">Your money, today</div>
+          </div>
+          <div class="balance-card">
+            <div class="bal-label">Spent this month</div>
+            <div class="bal-amount">2,847</div>
+            <div class="bal-cur">EGP · across 32 transactions</div>
+          </div>
+          <div class="home-sec">
+            <div style="font-size:11px;font-weight:700;color:var(--t3);letter-spacing:0.05em;text-transform:uppercase;margin-bottom:2px">Recent</div>
+            <div class="home-tx">
+              <div class="home-tx-ico">🛍</div>
+              <div class="home-tx-body"><div class="home-tx-name">Carrefour</div><div class="home-tx-cat">Shopping · CIB · today</div></div>
+              <div class="home-tx-amt">−420</div>
+            </div>
+            <div class="home-tx">
+              <div class="home-tx-ico">🚗</div>
+              <div class="home-tx-body"><div class="home-tx-name">Uber</div><div class="home-tx-cat">Transport · CIB · today</div></div>
+              <div class="home-tx-amt">−58</div>
+            </div>
+            <div class="home-tx">
+              <div class="home-tx-ico">🍕</div>
+              <div class="home-tx-body"><div class="home-tx-name">Buffalo Burger</div><div class="home-tx-cat">Food · CIB · yesterday</div></div>
+              <div class="home-tx-amt">−180</div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item on"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕️</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note new">Home render is identical to Path A — returning user sees the same shell. Differences are data-level only (their actual transaction history). No visual "restored from backup" badge, no "welcome back" banner persisting — §4 is clear the Welcome back is a one-time recognition moment.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 3 — PERMISSION DENIED FALLBACK (A + C)
+═══════════════════════════════════════════════════════════ -->
+
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 3 — Permission denied fallback · shared A + C</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="phone-row">
+
+    <!-- ── OS dialog · Don't allow highlighted ── -->
+    <div class="screen-col">
+      <div class="screen-label">OS dialog · user taps Don't allow</div>
+      <div class="state-badge os">OS-controlled</div>
+      <div class="phone">
+        <div class="a-status"><span>9:43</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="sc-pad-lg" style="opacity:0.35">
+            <div style="width:48px;height:48px;border-radius:var(--r-md);background:var(--green-l);display:flex;align-items:center;justify-content:center;font-size:22px">📩</div>
+            <div class="t-title">Let MoneyMore read your bank SMS.</div>
+          </div>
+          <div class="perm-overlay">
+            <div class="perm-box-a">
+              <div class="perm-ico-a">💬</div>
+              <div class="perm-title-a">Allow MoneyMore to send and view SMS messages?</div>
+              <div class="perm-desc-a">To read transaction SMS from your bank and track spending.</div>
+              <div class="perm-acts-a">
+                <div class="perm-btn-a">Allow</div>
+                <div class="perm-btn-a" style="color:var(--red);background:#FFEDEA">Don't allow ←</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="annotations">
+        <div class="anno-event">
+          <div class="anno-chip new">sms_permission_result</div>
+          <div class="anno-desc">result: denied · dont_ask_again: false</div>
+        </div>
+      </div>
+      <div class="flow-note decision">First-time deny only in this flow. If "Don't ask again" checkbox is used (OS-level), route to Settings deep-link screen (Edges) instead of fallback.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label deny">Don't allow</div>
+    </div>
+
+    <!-- ── Manual fallback ── -->
+    <div class="screen-col">
+      <div class="screen-label">Manual-entry fallback · respectful tone</div>
+      <div class="state-badge happy">legitimate path</div>
+      <div class="phone">
+        <div class="a-status"><span>9:43</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="sc-pad-lg" style="padding-top:36px">
+            <div style="width:56px;height:56px;border-radius:var(--r-md);background:var(--screen-bg2);display:flex;align-items:center;justify-content:center;font-size:26px">✋</div>
+            <div style="height:4px"></div>
+            <div class="t-title">Got it. You'll add transactions yourself.</div>
+            <div class="t-body" style="font-size:var(--s-sm)">MoneyMore still works — you'll just type in purchases as they happen.</div>
+            <div style="background:var(--screen-bg2);border-radius:var(--r-sm);padding:10px 12px;margin-top:4px">
+              <div style="font-size:var(--s-sm);color:var(--t2);line-height:1.5">Changed your mind? You can turn on automatic tracking from <strong style="color:var(--t1)">Settings</strong> anytime.</div>
+            </div>
+            <div class="spacer"></div>
+            <div class="btn btn-accent btn-lg">Go to home</div>
+          </div>
+        </div>
+      </div>
+      <div class="annotations">
+        <div class="anno-event">
+          <div class="anno-chip new">signup_completed</div>
+          <div class="anno-desc">path: A|C · sms: denied · state: manual_only</div>
+        </div>
+      </div>
+      <div class="copy-block">
+        <div class="copy-label">Fallback · EN + AR</div>
+        <div class="copy-en"><strong>Headline:</strong> Got it. You'll add transactions yourself.</div>
+        <div class="copy-ar"><strong>العنوان:</strong> تمام. هتضيف المعاملات بنفسك.</div>
+        <div class="copy-en"><strong>Body:</strong> MoneyMore still works — you'll just type in purchases as they happen. Changed your mind? You can turn on automatic tracking from Settings anytime.</div>
+        <div class="copy-ar"><strong>النص:</strong> MoneyMore لسه هيشتغل — بس هتكتب المشتريات لوحدك. غيّرت رأيك؟ تقدر تشغّل التتبع التلقائي من الإعدادات في أي وقت.</div>
+      </div>
+      <div class="flow-note decision">Respectful, not punitive (§8). No "Are you sure?" re-argument. Re-enable path is NAMED but not pushed. Hand emoji (✋) reads as acknowledgement, not alert.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">Go to home</div>
+    </div>
+
+    <!-- ── Home · manual_only ── -->
+    <div class="screen-col">
+      <div class="screen-label">Home · manual_only state</div>
+      <div class="state-badge empty">awaiting first entry</div>
+      <div class="phone">
+        <div class="a-status"><span>9:44</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="home-hdr">
+            <div class="home-greet">Hi Youssef</div>
+            <div class="home-name">Your money, today</div>
+          </div>
+          <div class="balance-card">
+            <div class="bal-label">Spent this month</div>
+            <div class="bal-amount">0</div>
+            <div class="bal-cur">EGP · add your first transaction</div>
+          </div>
+          <div class="manual-badge">
+            <div class="manual-ico">✏️</div>
+            <div class="manual-txt"><strong style="color:var(--anno-note)">Manual mode.</strong> Tap <strong>+</strong> to add each transaction. Turn on SMS tracking anytime in Settings.</div>
+          </div>
+          <div class="home-sec">
+            <div style="font-size:11px;font-weight:700;color:var(--t3);letter-spacing:0.05em;text-transform:uppercase;margin-bottom:2px">Recent</div>
+            <div class="empty-state" style="padding:20px 12px;flex:initial">
+              <div class="empty-icon" style="width:44px;height:44px;font-size:20px">📝</div>
+              <div class="empty-ttl" style="font-size:var(--s-sm)">Nothing here yet</div>
+              <div class="empty-desc" style="font-size:var(--s-xs)">Your transactions will show up here as you add them.</div>
+              <div class="btn btn-accent" style="max-width:140px;margin-top:4px;height:32px;font-size:var(--s-xs)">+ Add transaction</div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item on"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕️</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Manual-mode badge persistent until user enables SMS. Gold tone (info, not warning). Re-prompts will interrupt this state (see Flow 4).</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 4 — RE-PROMPT SURFACES (representative)
+═══════════════════════════════════════════════════════════ -->
+
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 4 — Representative re-prompt surfaces · SMS re-prompt 1 + Push contextual</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="phone-row">
+
+    <!-- ── Home with 3 manual transactions ── -->
+    <div class="screen-col">
+      <div class="screen-label">Home · manual_only · 3rd tx just saved</div>
+      <div class="state-badge happy">trigger condition</div>
+      <div class="phone">
+        <div class="a-status"><span>10:12</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="home-hdr">
+            <div class="home-greet">Hi Youssef</div>
+            <div class="home-name">Your money, today</div>
+          </div>
+          <div class="balance-card">
+            <div class="bal-label">Spent this month</div>
+            <div class="bal-amount">412</div>
+            <div class="bal-cur">EGP · 3 transactions</div>
+          </div>
+          <div class="home-sec">
+            <div style="font-size:11px;font-weight:700;color:var(--t3);letter-spacing:0.05em;text-transform:uppercase;margin-bottom:2px">Recent</div>
+            <div class="home-tx">
+              <div class="home-tx-ico">☕</div>
+              <div class="home-tx-body"><div class="home-tx-name">Costa Coffee</div><div class="home-tx-cat">Food · manual · just now</div></div>
+              <div class="home-tx-amt">−85</div>
+            </div>
+            <div class="home-tx">
+              <div class="home-tx-ico">🍕</div>
+              <div class="home-tx-body"><div class="home-tx-name">Dominos</div><div class="home-tx-cat">Food · manual · yesterday</div></div>
+              <div class="home-tx-amt">−240</div>
+            </div>
+            <div class="home-tx">
+              <div class="home-tx-ico">🚕</div>
+              <div class="home-tx-body"><div class="home-tx-name">Careem</div><div class="home-tx-cat">Transport · manual · yesterday</div></div>
+              <div class="home-tx-amt">−87</div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item on"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕️</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Trigger: tx_count_manual = 3 AND sms_permission = denied AND reprompt_1_fired = false AND no_other_reprompt_this_session.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">3rd tx saved · sheet rises</div>
+    </div>
+
+    <!-- ── SMS re-prompt 1 bottom sheet ── -->
+    <div class="screen-col">
+      <div class="screen-label">SMS re-prompt 1 · bottom sheet</div>
+      <div class="state-badge happy">dismissible</div>
+      <div class="phone">
+        <div class="a-status"><span>10:12</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="home-hdr" style="opacity:0.35">
+            <div class="home-greet">Hi Youssef</div>
+            <div class="home-name">Your money, today</div>
+          </div>
+          <div class="balance-card" style="opacity:0.35">
+            <div class="bal-label">Spent this month</div>
+            <div class="bal-amount">412</div>
+            <div class="bal-cur">EGP · 3 transactions</div>
+          </div>
+          <div class="home-sec" style="opacity:0.35"></div>
+          <div class="overlay">
+            <div class="bottom-sheet">
+              <div class="bs-handle"></div>
+              <div style="width:44px;height:44px;border-radius:var(--r-md);background:var(--green-l);display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:10px">⚡</div>
+              <div class="bs-title">Three transactions typed. MoneyMore can do this.</div>
+              <div class="bs-body">You've just entered your third transaction by hand. If you enable SMS access, the next one enters itself.</div>
+              <div class="btn btn-accent btn-lg">Enable SMS</div>
+              <div style="height:8px"></div>
+              <div class="btn btn-outline btn-lg">Not now</div>
+              <div style="text-align:center;margin-top:10px">
+                <span class="btn-link muted">Don't ask again</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item on"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕️</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="annotations">
+        <div class="anno-event">
+          <div class="anno-chip new">reprompt_sms_viewed</div>
+          <div class="anno-desc">trigger: 3rd_manual · surface: bottom_sheet</div>
+        </div>
+      </div>
+      <div class="copy-block">
+        <div class="copy-label">SMS re-prompt 1 · EN + AR</div>
+        <div class="copy-en"><strong>Headline:</strong> Three transactions typed. MoneyMore can do this.</div>
+        <div class="copy-ar"><strong>العنوان:</strong> 3 معاملات كتبتهم بإيدك. MoneyMore يقدر يعملهم.</div>
+        <div class="copy-en"><strong>Buttons:</strong> Enable SMS · Not now · Don't ask again (text link)</div>
+        <div class="copy-ar"><strong>الأزرار:</strong> شغّل الـ SMS · مش دلوقتي · ما تسألنيش تاني</div>
+      </div>
+      <div class="flow-note question">OQ-02 resolved: "Don't ask again" as centered text link, demoted. Two-button hierarchy preserves the warm choice; text link gives the nuclear option dignity without inviting it. Requires product confirmation.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">Enable SMS</div>
+    </div>
+
+    <!-- ── OS dialog direct (fix from v2 of old prototype) ── -->
+    <div class="screen-col">
+      <div class="screen-label">OS dialog · DIRECT · no pre-prompt detour</div>
+      <div class="state-badge os">OS-controlled</div>
+      <div class="phone">
+        <div class="a-status"><span>10:12</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="home-hdr" style="opacity:0.25">
+            <div class="home-greet">Hi Youssef</div>
+            <div class="home-name">Your money, today</div>
+          </div>
+          <div class="balance-card" style="opacity:0.25">
+            <div class="bal-label">Spent this month</div>
+            <div class="bal-amount">412</div>
+            <div class="bal-cur">EGP · 3 transactions</div>
+          </div>
+          <div class="perm-overlay">
+            <div class="perm-box-a">
+              <div class="perm-ico-a">💬</div>
+              <div class="perm-title-a">Allow MoneyMore to send and view SMS messages?</div>
+              <div class="perm-desc-a">To read transaction SMS from your bank and track spending.</div>
+              <div class="perm-acts-a">
+                <div class="perm-btn-a">Allow</div>
+                <div class="perm-btn-a" style="color:#666">Don't allow</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item on"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕️</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="annotations">
+        <div class="anno-event">
+          <div class="anno-chip new">reprompt_sms_action</div>
+          <div class="anno-desc">action: enable · source: reprompt_1</div>
+        </div>
+        <div class="anno-event">
+          <div class="anno-chip new">sms_permission_result</div>
+          <div class="anno-desc">result: granted · from_reprompt: true</div>
+        </div>
+      </div>
+      <div class="flow-note decision">Tapping "Enable SMS" triggers OS dialog DIRECTLY. Do not route back to the sign-up SMS pre-prompt screen — user has seen it before and the bottom sheet just made the case. Re-showing pre-prompt would be a dead-end step.</div>
+      <div class="flow-note bug">EXCEPTION: if OS "Don't ask again" state is active, route to Settings deep-link screen (Edges) instead. Engineering must check permission state BEFORE firing the API.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">Allow → scan → celebration → home</div>
+    </div>
+
+    <!-- ── Home · automated, later in session, first transaction lands ── -->
+    <div class="screen-col">
+      <div class="screen-label">Home · later · first new tx arrives</div>
+      <div class="state-badge happy">push trigger</div>
+      <div class="phone">
+        <div class="a-status"><span>11:34</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="home-hdr">
+            <div class="home-greet">Hi Youssef</div>
+            <div class="home-name">Your money, today</div>
+          </div>
+          <div class="balance-card">
+            <div class="bal-label">Spent this month</div>
+            <div class="bal-amount">3,585</div>
+            <div class="bal-cur">EGP · 48 transactions</div>
+          </div>
+          <div class="home-sec">
+            <div style="font-size:11px;font-weight:700;color:var(--t3);letter-spacing:0.05em;text-transform:uppercase;margin-bottom:2px">Recent</div>
+            <div class="home-tx highlight">
+              <div class="home-tx-ico">🍕</div>
+              <div class="home-tx-body"><div class="home-tx-name">Seoudi Supermarket</div><div class="home-tx-cat">Food · CIB · just now</div></div>
+              <div class="home-tx-amt">−345</div>
+            </div>
+            <div class="home-tx">
+              <div class="home-tx-ico">🚗</div>
+              <div class="home-tx-body"><div class="home-tx-name">Uber</div><div class="home-tx-cat">Transport · CIB · today</div></div>
+              <div class="home-tx-amt">−72</div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item on"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕️</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note new">Context setup: user enabled SMS earlier, their first new transaction just arrived (highlighted). This is the FIRST transaction display event — trigger for the push contextual prompt. NOT during onboarding.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">tx displayed · push prompt fires</div>
+    </div>
+
+    <!-- ── Push contextual prompt (bottom sheet over tx list) ── -->
+    <div class="screen-col">
+      <div class="screen-label">Push contextual prompt · overlays tx list (OQ-08)</div>
+      <div class="state-badge happy">first tx event</div>
+      <div class="phone">
+        <div class="a-status"><span>11:34</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="home-hdr" style="opacity:0.4">
+            <div class="home-greet">Hi Youssef</div>
+            <div class="home-name">Your money, today</div>
+          </div>
+          <div class="balance-card" style="opacity:0.4">
+            <div class="bal-label">Spent this month</div>
+            <div class="bal-amount">3,585</div>
+            <div class="bal-cur">EGP · 48 transactions</div>
+          </div>
+          <div class="home-sec" style="opacity:0.55">
+            <div style="font-size:11px;font-weight:700;color:var(--t3);letter-spacing:0.05em;text-transform:uppercase;margin-bottom:2px">Recent</div>
+            <div class="home-tx highlight">
+              <div class="home-tx-ico">🍕</div>
+              <div class="home-tx-body"><div class="home-tx-name">Seoudi Supermarket</div><div class="home-tx-cat">Food · CIB · just now</div></div>
+              <div class="home-tx-amt">−345</div>
+            </div>
+          </div>
+          <div class="overlay">
+            <div class="bottom-sheet">
+              <div class="bs-handle"></div>
+              <div style="width:44px;height:44px;border-radius:var(--r-md);background:#FFF0D6;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:10px">🔔</div>
+              <div class="bs-title">Want to know the moment a transaction happens?</div>
+              <div class="bs-body">Turn on notifications and we'll ping you when your bank texts us about a purchase — so you're never surprised by a charge.</div>
+              <div class="btn btn-accent btn-lg">Turn on notifications</div>
+              <div style="height:8px"></div>
+              <div class="btn btn-outline btn-lg">Not now</div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item on"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕️</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="annotations">
+        <div class="anno-event">
+          <div class="anno-chip new">push_contextual_prompt_viewed</div>
+          <div class="anno-desc">trigger: first_transaction_display · tx_id: [redacted]</div>
+        </div>
+      </div>
+      <div class="copy-block">
+        <div class="copy-label">Push prompt · EN + AR</div>
+        <div class="copy-en"><strong>Headline:</strong> Want to know the moment a transaction happens?</div>
+        <div class="copy-ar"><strong>العنوان:</strong> عايز تعرف المعاملة أول ما تحصل؟</div>
+        <div class="copy-en"><strong>Body:</strong> Turn on notifications and we'll ping you when your bank texts us about a purchase — so you're never surprised by a charge.</div>
+        <div class="copy-ar"><strong>النص:</strong> شغّل الإشعارات وهنبعتلك أول ما البنك يعمللنا SMS عن أي عملية — عشان ما تتفاجأش بحاجة.</div>
+      </div>
+      <div class="flow-note question">OQ-08 resolved: push prompt OVERLAYS the transaction list with the just-landed transaction visible behind in a subtle highlight. Headline references the transaction as context ("the moment a transaction happens") WITHOUT reproducing its detail (no amount, no merchant, no time). Requires product confirmation — alternatives considered: (a) prompt appears after a brief reveal animation of the transaction, (b) full-screen takeover. Rejected (b) as violates §8 "bottom-sheet dismissible" rule.</div>
+      <div class="flow-note bug">Constraints §4 + §6 + §8: NEVER during onboarding. Fires on first-transaction-display only. Must reference the transaction as context without showing detail. Never timed-dismissible (§7 — screen reader users need time). Skip is a visible secondary button, NOT a text link (§8).</div>
+      <div class="flow-note new">If user taps "Turn on notifications", OS push dialog fires directly (same pattern as SMS re-prompt → OS dialog). If user taps "Not now", sheet dismisses, no OS dialog called. Push re-prompts 1-3 follow same pattern as SMS re-prompts (copy pending OQ-08 resolution in FP-030).</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     EDGES — Individual states from §4 (reference screens)
+═══════════════════════════════════════════════════════════ -->
+
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Edges — states from §4 not covered in flows above</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="phone-row">
+
+    <!-- ── Arabic Entry screen (full RTL reference) ── -->
+    <div class="screen-col">
+      <div class="screen-label">Entry · Arabic · full RTL reference</div>
+      <div class="state-badge happy">locale: ar</div>
+      <div class="phone">
+        <div class="a-status"><span>🔋 ▲▲</span><span>9:41</span></div>
+        <div class="screen no-nav">
+          <div class="lang-trigger rtl-pos">ع ⌄</div>
+          <div class="sc-pad-lg" style="padding-top:48px">
+            <div class="t-title ar">كمّل لـ MoneyMore</div>
+            <div style="height:8px"></div>
+            <div class="method-btn" style="direction:rtl">
+              <div class="method-icon google">G</div>
+              <div class="method-lbl">كمّل بـ Google</div>
+            </div>
+            <div class="or-divider">
+              <div class="or-line"></div>
+              <div class="or-text">أو</div>
+              <div class="or-line"></div>
+            </div>
+            <div class="form-grp">
+              <div class="form-label ar">رقم التليفون</div>
+              <div class="input-phone">
+                <div class="phone-prefix">🇪🇬 +20</div>
+                <div class="phone-num ph">10X XXX XXXX</div>
+              </div>
+            </div>
+            <div class="btn btn-disabled btn-lg">ابعت الكود</div>
+            <div class="spacer"></div>
+            <div class="ar" style="font-size:10px;color:var(--t3);line-height:1.6;text-align:center">
+              بالاستمرار، أنت بتوافق على <span style="color:var(--navy);text-decoration:underline">شروط الاستخدام</span> و<span style="color:var(--navy);text-decoration:underline">سياسة الخصوصية</span>.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note decision">Reference for the designer: phone number input stays LTR even in RTL layout (§6 — numbers are always LTR on Android). Everything else flips: CTA stays full-width, language trigger moves left, text direction reverses, Google button label in Arabic while "Google" brand stays in English (§5 convention).</div>
+    </div>
+
+    <!-- ── Hint API unavailable (manual fallback) ── -->
+    <div class="screen-col">
+      <div class="screen-label">Phone field · Hint unavailable · no error</div>
+      <div class="state-badge happy">silent fallback</div>
+      <div class="phone">
+        <div class="a-status"><span>9:42</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="lang-trigger">EN ⌄</div>
+          <div class="sc-pad-lg" style="padding-top:48px">
+            <div class="t-title">Continue to MoneyMore</div>
+            <div style="height:8px"></div>
+            <div class="method-btn">
+              <div class="method-icon google">G</div>
+              <div class="method-lbl">Continue with Google</div>
+            </div>
+            <div class="or-divider">
+              <div class="or-line"></div>
+              <div class="or-text">or</div>
+              <div class="or-line"></div>
+            </div>
+            <div class="form-grp">
+              <div class="form-label">Phone number</div>
+              <div class="input-phone focus">
+                <div class="phone-prefix">🇪🇬 +20</div>
+                <div class="phone-num">10 1234 5678</div>
+              </div>
+            </div>
+            <div class="btn btn-accent btn-lg">Send code</div>
+            <div class="spacer"></div>
+            <div style="font-size:10px;color:var(--t3);line-height:1.5;text-align:center">
+              By continuing, you agree to our <span style="color:var(--navy);text-decoration:underline">Terms</span> and <span style="color:var(--navy);text-decoration:underline">Privacy</span>.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note bug">Constraint §6 + §8: Hint API unavailable / returns zero numbers / dismissed → manual field fully functional. NO banner, NO error, NO "hint unavailable" messaging, NO degraded-experience signalling. The manual path must feel first-class, not a consolation. This screen is INDISTINGUISHABLE from the Hint-was-shown flow after the user manually types their number.</div>
+    </div>
+
+    <!-- ── SSO error (inline on Entry) ── -->
+    <div class="screen-col">
+      <div class="screen-label">Google SSO · failed · inline error on Entry</div>
+      <div class="state-badge error">inline</div>
+      <div class="phone">
+        <div class="a-status"><span>9:42</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="lang-trigger">EN ⌄</div>
+          <div class="sc-pad-lg" style="padding-top:48px">
+            <div class="t-title">Continue to MoneyMore</div>
+            <div style="height:8px"></div>
+            <div class="err-banner">
+              <div class="err-ico">⚠</div>
+              <div>
+                <div class="err-txt">Google sign-in didn't work. Try again, or use your phone number instead.</div>
+                <div class="err-txt ar" style="margin-top:2px">تسجيل الدخول بـ Google ما اشتغلش.</div>
+              </div>
+            </div>
+            <div class="method-btn">
+              <div class="method-icon google">G</div>
+              <div class="method-lbl">Continue with Google</div>
+            </div>
+            <div class="or-divider">
+              <div class="or-line"></div>
+              <div class="or-text">or</div>
+              <div class="or-line"></div>
+            </div>
+            <div class="form-grp">
+              <div class="form-label">Phone number</div>
+              <div class="input-phone">
+                <div class="phone-prefix">🇪🇬 +20</div>
+                <div class="phone-num ph">10X XXX XXXX</div>
+              </div>
+            </div>
+            <div class="btn btn-disabled btn-lg">Send code</div>
+          </div>
+        </div>
+      </div>
+      <div class="annotations">
+        <div class="anno-event">
+          <div class="anno-chip new">sso_google_failed</div>
+          <div class="anno-desc">reason: network|cancelled|account</div>
+        </div>
+      </div>
+      <div class="flow-note bug">§8: NEVER silently fall back to phone. User sees the error and makes an active choice. Both paths remain equal-weight. Error surfaces INLINE — not as modal alert.</div>
+    </div>
+
+    <!-- ── OTP resend triggered ── -->
+    <div class="screen-col">
+      <div class="screen-label">OTP · resend triggered · inline confirm</div>
+      <div class="state-badge happy">non-modal</div>
+      <div class="phone">
+        <div class="a-status"><span>9:43</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="app-bar">
+            <div class="back-btn">‹</div>
+            <div class="app-bar-title">Verify phone</div>
+          </div>
+          <div class="sc-pad">
+            <div class="t-heading">Check WhatsApp for your code</div>
+            <div class="t-caption">Sent to <strong style="color:var(--t1);font-family:var(--f-mono)">+20 10 1234 5678</strong>.</div>
+            <div style="height:8px"></div>
+            <div class="ok-banner">
+              <div class="ok-ico">✓</div>
+              <div class="ok-txt">New code sent.</div>
+            </div>
+            <div class="otp-row">
+              <div class="otp-box active">|</div>
+              <div class="otp-box"></div><div class="otp-box"></div>
+              <div class="otp-box"></div><div class="otp-box"></div><div class="otp-box"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
+              <span style="font-size:var(--s-xs);color:var(--t4)">Resend code in <strong style="color:var(--t3);font-family:var(--f-mono)">60s</strong></span>
+              <span style="font-size:var(--s-xs);font-weight:700;color:var(--navy);text-decoration:underline">Use SMS instead</span>
+            </div>
+            <div class="btn btn-disabled btn-lg">Verify</div>
+          </div>
+          <div class="keyboard">
+            <div class="kb-row"><div class="kb-key">1</div><div class="kb-key">2</div><div class="kb-key">3</div></div>
+            <div class="kb-row"><div class="kb-key">4</div><div class="kb-key">5</div><div class="kb-key">6</div></div>
+            <div class="kb-row"><div class="kb-key">7</div><div class="kb-key">8</div><div class="kb-key">9</div></div>
+            <div class="kb-row"><div class="kb-key"></div><div class="kb-key">0</div><div class="kb-key dark">⌫</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note decision">Confirmation inline and non-modal (§6). Does NOT block input or keyboard. Countdown restarts at 60s. Banner auto-dismisses after ~3s.</div>
+    </div>
+
+    <!-- ── OTP channel failure (WhatsApp) ── -->
+    <div class="screen-col">
+      <div class="screen-label">OTP · WhatsApp channel failure</div>
+      <div class="state-badge error">channel-specific</div>
+      <div class="phone">
+        <div class="a-status"><span>9:45</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="app-bar">
+            <div class="back-btn">‹</div>
+            <div class="app-bar-title">Verify phone</div>
+          </div>
+          <div class="sc-pad">
+            <div class="t-heading">Check WhatsApp for your code</div>
+            <div style="height:4px"></div>
+            <div class="err-banner">
+              <div class="err-ico">⚠</div>
+              <div>
+                <div class="err-txt">WhatsApp didn't deliver the code. Try again, or get it by SMS.</div>
+                <div class="err-txt ar" style="margin-top:2px">WhatsApp ما وصّلش الكود. حاول تاني، أو استلمه بـ SMS.</div>
+              </div>
+            </div>
+            <div class="btn btn-primary btn-lg">Retry WhatsApp</div>
+            <div style="height:6px"></div>
+            <div class="btn btn-outline btn-lg">Use SMS instead</div>
+            <div class="spacer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="annotations">
+        <div class="anno-event">
+          <div class="anno-chip new">otp_channel_failed</div>
+          <div class="anno-desc">channel: whatsapp · reason: delivery_fail</div>
+        </div>
+      </div>
+      <div class="flow-note bug">§8: NEVER silently fall back between channels. Two explicit CTAs. SMS failure variant is structurally identical, flipped — equal treatment reinforces equal-weight principle.</div>
+    </div>
+
+    <!-- ── OTP rate-limit ── -->
+    <div class="screen-col">
+      <div class="screen-label">OTP · rate-limited · distinct from channel failure</div>
+      <div class="state-badge error">attempts exhausted</div>
+      <div class="phone">
+        <div class="a-status"><span>9:50</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="app-bar">
+            <div class="back-btn">‹</div>
+            <div class="app-bar-title">Verify phone</div>
+          </div>
+          <div class="sc-pad">
+            <div class="t-heading">Check WhatsApp for your code</div>
+            <div style="height:4px"></div>
+            <div class="err-banner">
+              <div class="err-ico">⚠</div>
+              <div>
+                <div class="err-txt">Too many attempts. Try a different number, or contact support at <strong>support@moneymore.app</strong>.</div>
+                <div class="err-txt ar" style="margin-top:2px">حاولت كتير. جرّب رقم تاني.</div>
+              </div>
+            </div>
+            <div class="otp-row" style="opacity:0.35">
+              <div class="otp-box"></div><div class="otp-box"></div><div class="otp-box"></div>
+              <div class="otp-box"></div><div class="otp-box"></div><div class="otp-box"></div>
+            </div>
+            <div class="spacer"></div>
+            <div class="btn btn-outline btn-lg">Use a different number</div>
+            <div style="height:6px"></div>
+            <div class="btn btn-ghost">Contact support</div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note bug">Input disabled (§4). OQ-05 in FP-030 (rate limit thresholds) must resolve before engineering. Error MUST be visually + textually distinct from channel failure AND network error.</div>
+    </div>
+
+    <!-- ── Network error ── -->
+    <div class="screen-col">
+      <div class="screen-label">Network error · distinct from rate-limit</div>
+      <div class="state-badge error">retry available</div>
+      <div class="phone">
+        <div class="a-status"><span>9:42</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="app-bar">
+            <div class="back-btn">‹</div>
+            <div class="app-bar-title">Continue to MoneyMore</div>
+          </div>
+          <div class="sc-pad">
+            <div class="t-heading">Continue to MoneyMore</div>
+            <div style="height:4px"></div>
+            <div class="err-banner">
+              <div class="err-ico">📶</div>
+              <div>
+                <div class="err-txt">No connection. Check your internet and try again.</div>
+                <div class="err-txt ar" style="margin-top:2px">مفيش اتصال. اتأكد من الإنترنت وحاول تاني.</div>
+                <div class="err-retry">Retry</div>
+              </div>
+            </div>
+            <div class="form-grp">
+              <div class="form-label">Phone number</div>
+              <div class="input-phone">
+                <div class="phone-prefix">🇪🇬 +20</div>
+                <div class="phone-num">10 1234 5678</div>
+              </div>
+            </div>
+            <div class="btn btn-accent btn-lg">Send code</div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note bug">Must NOT consume an OTP attempt if request never reached server (§6). Distinct icon (📶) and copy from rate-limit and channel-failure errors.</div>
+    </div>
+
+    <!-- ── Name capture validation error ── -->
+    <div class="screen-col">
+      <div class="screen-label">Name capture · validation error</div>
+      <div class="state-badge error">empty input</div>
+      <div class="phone">
+        <div class="a-status"><span>9:43</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="app-bar">
+            <div class="app-bar-title">Just one thing</div>
+          </div>
+          <div class="sc-pad">
+            <div class="t-heading">What should we call you?</div>
+            <div style="height:12px"></div>
+            <div class="form-grp">
+              <div class="form-label">First name</div>
+              <div class="input err"><span style="color:var(--t4)">e.g. Youssef</span></div>
+              <div class="input-err">⚠ Your name can't be empty.</div>
+              <div class="input-err ar" style="color:var(--t3);font-size:10px">لازم تكتب اسمك.</div>
+            </div>
+            <div class="btn btn-disabled btn-lg">Continue</div>
+            <div class="spacer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note decision">Validation rejects empty input AND whitespace-only ("Looks like that's just spaces — add a name." — §5). CTA disabled until input valid. Error is non-colour-only — red ⚠ icon + text (§7).</div>
+    </div>
+
+    <!-- ── Duplicate account — phone match ── -->
+    <div class="screen-col">
+      <div class="screen-label">Duplicate account · phone match · route to sign-in</div>
+      <div class="state-badge empty">routing</div>
+      <div class="phone">
+        <div class="a-status"><span>9:43</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="app-bar">
+            <div class="back-btn">‹</div>
+            <div class="app-bar-title">Welcome back</div>
+          </div>
+          <div class="sc-pad-lg" style="padding-top:32px">
+            <div style="width:52px;height:52px;border-radius:50%;background:var(--gold-l);display:flex;align-items:center;justify-content:center;font-size:24px">↪</div>
+            <div class="t-title">This number's already got an account.</div>
+            <div class="t-body" style="font-size:var(--s-sm)">Sign in to pick up where you left off — we've filled in your number.</div>
+            <div class="t-caption ar" style="font-size:11px">الرقم ده ليه حساب بالفعل. ادخل وكمّل من آخر حاجة — الرقم متحط لك.</div>
+            <div class="spacer"></div>
+            <div class="btn btn-accent btn-lg">Sign in</div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note bug">§4 + §8: MUST NOT create a duplicate. Routes into sign-in flow with phone pre-filled (OTP channel screen loads next, phone number already known).</div>
+    </div>
+
+    <!-- ── Duplicate account — Google match ── -->
+    <div class="screen-col">
+      <div class="screen-label">Duplicate account · Google match · auto sign-in</div>
+      <div class="state-badge empty">recognised</div>
+      <div class="phone">
+        <div class="a-status"><span>9:43</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="sc-pad-lg" style="padding-top:48px;align-items:center;text-align:center">
+            <div style="width:56px;height:56px;border-radius:50%;background:var(--green-l);display:flex;align-items:center;justify-content:center;font-size:26px">👋</div>
+            <div class="t-title">You already have an account with this Google — so we signed you back in.</div>
+            <div class="t-caption">Taking you to your data now.</div>
+            <div class="spacer"></div>
+            <div class="load-spinner" style="border-color:rgba(26,60,94,0.15);border-top-color:var(--navy);width:32px;height:32px;border-width:2.5px"></div>
+          </div>
+        </div>
+      </div>
+      <div class="copy-block">
+        <div class="copy-label">Google duplicate · EN + AR</div>
+        <div class="copy-en"><strong>Message:</strong> You already have an account with this Google — so we signed you back in.</div>
+        <div class="copy-ar"><strong>الرسالة:</strong> عندك حساب بالفعل بحساب Google ده — فـ دخّلناك تاني.</div>
+      </div>
+      <div class="flow-note decision">Tone is "oh, good, we recognised you" — not an error (§5). Auto-advances to Path C flow (Welcome back → SMS pre-prompt → …). Surface type TBC with engineering — could be full-screen with 2s auto-advance, a brief modal, or a non-blocking toast. If toast, drop the subtext.</div>
+    </div>
+
+    <!-- ── Empty "primed and ready" ── -->
+    <div class="screen-col">
+      <div class="screen-label">Empty · "primed and ready" · count = 0</div>
+      <div class="state-badge empty">legitimate success</div>
+      <div class="phone">
+        <div class="a-status"><span>9:44</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="sc-pad-lg" style="align-items:center;text-align:center;padding-top:48px">
+            <div style="width:60px;height:60px;border-radius:50%;background:var(--screen-bg2);display:flex;align-items:center;justify-content:center;font-size:28px">📭</div>
+            <div style="height:4px"></div>
+            <div class="t-title">You're set up. Nothing to show yet.</div>
+            <div class="t-caption">We scanned your SMS and didn't find any bank transactions — no problem. The moment your bank texts you about a purchase, it'll appear here automatically.</div>
+            <div class="spacer"></div>
+            <div class="btn btn-accent btn-lg w-full">Go to home</div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note bug">§8: render here instead of celebration when parseable_count = 0 AND scan completed within 15s. Tone reassuring, not apologetic — user granted permission, app worked, there was simply nothing to parse yet.</div>
+    </div>
+
+    <!-- ── Scan timeout empty state ── -->
+    <div class="screen-col">
+      <div class="screen-label">Scan timeout · 15s backend timeout · recoverable</div>
+      <div class="state-badge empty">recoverable failure</div>
+      <div class="phone">
+        <div class="a-status"><span>9:44</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="sc-pad-lg" style="align-items:center;text-align:center;padding-top:48px">
+            <div style="width:60px;height:60px;border-radius:50%;background:var(--gold-l);display:flex;align-items:center;justify-content:center;font-size:28px">⏱</div>
+            <div style="height:4px"></div>
+            <div class="t-title">Scan took too long. We'll try again.</div>
+            <div class="t-caption">Your transactions will show up as soon as the scan finishes — no need to wait here. You can run the scan again from Settings anytime.</div>
+            <div class="spacer"></div>
+            <div class="btn btn-accent btn-lg w-full">Go to home</div>
+          </div>
+        </div>
+      </div>
+      <div class="copy-block">
+        <div class="copy-label">Timeout · EN + AR</div>
+        <div class="copy-en"><strong>Headline:</strong> Scan took too long. We'll try again.</div>
+        <div class="copy-ar"><strong>العنوان:</strong> الفحص أخد وقت طويل. هنحاول تاني.</div>
+      </div>
+      <div class="flow-note decision">DISTINCT from "primed and ready" — this is a recoverable failure, not zero-result success. Only render when 15s backend timeout fired. "We'll try again" is a quiet commitment — app takes responsibility. Tone calm, not alarming (§4).</div>
+    </div>
+
+    <!-- ── "Don't ask again" settings deep-link ── -->
+    <div class="screen-col">
+      <div class="screen-label">"Don't ask again" · settings deep-link</div>
+      <div class="state-badge empty">OS-level denial</div>
+      <div class="phone">
+        <div class="a-status"><span>9:43</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="app-bar">
+            <div class="back-btn">‹</div>
+            <div class="app-bar-title">Enable SMS</div>
+          </div>
+          <div class="sc-pad-lg">
+            <div style="width:48px;height:48px;border-radius:var(--r-md);background:var(--gold-l);display:flex;align-items:center;justify-content:center;font-size:22px">⚙</div>
+            <div class="t-title">SMS access is turned off at the system level.</div>
+            <div class="t-body" style="font-size:var(--s-sm)">To enable automatic tracking, open your phone's settings and allow SMS for MoneyMore. Here's how:</div>
+            <div class="step-list" style="margin-top:6px">
+              <div class="step-row">
+                <div class="step-num">1</div>
+                <div class="step-txt">Tap <strong>Open settings</strong> below</div>
+              </div>
+              <div class="step-row">
+                <div class="step-num">2</div>
+                <div class="step-txt">Tap <strong>Permissions</strong></div>
+              </div>
+              <div class="step-row">
+                <div class="step-num">3</div>
+                <div class="step-txt">Tap <strong>SMS</strong> and switch it on</div>
+              </div>
+            </div>
+            <div class="spacer"></div>
+            <div class="btn btn-accent btn-lg">Open settings</div>
+            <div class="btn btn-ghost">Not now</div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note bug">§6: if "Don't ask again" detected, app MUST NOT call permission API again — would no-op silently. Deep-link targets MoneyMore-specific settings page, not generic Settings root. Engineering to confirm locale behaviour on Arabic devices.</div>
+    </div>
+
+    <!-- ── Mid-onboarding disconnect restart ── -->
+    <div class="screen-col">
+      <div class="screen-label">Mid-onboarding disconnect · restart (v1 limitation)</div>
+      <div class="state-badge error">restart required</div>
+      <div class="phone">
+        <div class="a-status"><span>9:42</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="sc-pad-lg" style="padding-top:44px;align-items:center;text-align:center">
+            <div style="width:56px;height:56px;border-radius:var(--r-md);background:var(--red-l);display:flex;align-items:center;justify-content:center;font-size:26px">↻</div>
+            <div style="height:4px"></div>
+            <div class="t-title">Something got interrupted. Let's start over.</div>
+            <div class="t-body" style="font-size:var(--s-sm)">A connection issue stopped us mid-way. Nothing saved, nothing broken — just tap below and we'll do it again.</div>
+            <div class="spacer"></div>
+            <div class="btn btn-accent btn-lg w-full">Start over</div>
+          </div>
+        </div>
+      </div>
+      <div class="annotations">
+        <div class="anno-event">
+          <div class="anno-chip new">disconnect_during_onboarding</div>
+          <div class="anno-desc">step: [where it occurred] · partial_sync: true</div>
+        </div>
+      </div>
+      <div class="copy-block">
+        <div class="copy-label">Restart · EN + AR</div>
+        <div class="copy-en"><strong>Headline:</strong> Something got interrupted. Let's start over.</div>
+        <div class="copy-ar"><strong>العنوان:</strong> حاجة قاطعتنا. يلا نبدأ من الأول.</div>
+        <div class="copy-en"><strong>Body:</strong> "Nothing saved, nothing broken" — reassurance users need.</div>
+      </div>
+      <div class="flow-note decision">v1 acceptable limitation per EC-16 in FP-030. Tone calm, non-blaming ("Nothing saved, nothing broken"). Must log step where disconnect occurred for analytics. Future v2 may support mid-flow resume; v1 restarts from Welcome 1 (Path A) or Entry (Path C).</div>
+    </div>
+
+    <!-- ── OTP · channel switch (interaction state) ── -->
+    <div class="screen-col">
+      <div class="screen-label">OTP · channel switch · explicit user action</div>
+      <div class="state-badge happy">switched to SMS</div>
+      <div class="phone">
+        <div class="a-status"><span>9:44</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="app-bar">
+            <div class="back-btn">‹</div>
+            <div class="app-bar-title">Verify phone</div>
+          </div>
+          <div class="sc-pad">
+            <div class="t-heading">Check your SMS for the code</div>
+            <div class="t-caption">Sent to <strong style="color:var(--t1);font-family:var(--f-mono)">+20 10 1234 5678</strong>.</div>
+            <div style="height:8px"></div>
+            <div class="ok-banner">
+              <div class="ok-ico">✓</div>
+              <div class="ok-txt">Switched to SMS. New code sent.</div>
+            </div>
+            <div class="otp-row">
+              <div class="otp-box active">|</div>
+              <div class="otp-box"></div><div class="otp-box"></div>
+              <div class="otp-box"></div><div class="otp-box"></div><div class="otp-box"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
+              <span style="font-size:var(--s-xs);color:var(--t4)">Resend code in <strong style="color:var(--t3);font-family:var(--f-mono)">60s</strong></span>
+              <span style="font-size:var(--s-xs);font-weight:700;color:var(--navy);text-decoration:underline">Use WhatsApp instead</span>
+            </div>
+            <div class="btn btn-disabled btn-lg">Verify</div>
+          </div>
+          <div class="keyboard">
+            <div class="kb-row"><div class="kb-key">1</div><div class="kb-key">2</div><div class="kb-key">3</div></div>
+            <div class="kb-row"><div class="kb-key">4</div><div class="kb-key">5</div><div class="kb-key">6</div></div>
+            <div class="kb-row"><div class="kb-key">7</div><div class="kb-key">8</div><div class="kb-key">9</div></div>
+            <div class="kb-row"><div class="kb-key"></div><div class="kb-key">0</div><div class="kb-key dark">⌫</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="annotations">
+        <div class="anno-event">
+          <div class="anno-chip new">otp_channel_switched</div>
+          <div class="anno-desc">from: whatsapp · to: sms</div>
+        </div>
+      </div>
+      <div class="flow-note bug">§6 + §8: channel switch is an EXPLICIT user action — never auto-happens. Title updates to reference new channel. Switch-channel link text swaps (now "Use WhatsApp instead"). Phone number preserved. Event logged.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     HANDOFF SUMMARY
+═══════════════════════════════════════════════════════════ -->
+
+<div class="handoff">
+  <div class="handoff-title">Handoff summary</div>
+  <div class="handoff-sub">Quick reference for the designer picking this prototype up. All rules below trace to specific sections of DB-030 v3 and FP-030 v3. OQs resolved here are defensible defaults — product must sign off before engineering kickoff.</div>
+
+  <!-- ── Screens × states ── -->
+  <div class="handoff-sec">
+    <div class="handoff-h">Screens × states</div>
+    <div class="handoff-p">~45 designed screens in this prototype. Path B is reference-only (no designed screens — session persisted → home). Three Android-native surfaces (Phone Number Hint API sheet, Google SSO consent, OS permission dialogs) are reference-only and not designed by MoneyMore.</div>
+    <table class="handoff-table" style="margin-top:12px">
+      <thead>
+        <tr><th>Screen</th><th>Path</th><th>States designed</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Welcome 1, 2, 3</td><td>A only</td><td>default EN, default AR (RTL), language menu open</td><td>Progress dots (OQ-01). No skip on 1 or 2. CTA v3-adjusted on 3 ("Let's go")</td></tr>
+        <tr><td>Entry screen</td><td>A + C</td><td>default, phone focused, post-Hint populated, SSO error inline, locale: AR full RTL</td><td>Pattern 1 — stacked equals. +20 prefix visible (OQ-03). No helper text under phone field</td></tr>
+        <tr><td>Phone Number Hint API</td><td>A + C</td><td>in-flight (Google), manual fallback (no banner)</td><td>OS-rendered. First-tap only</td></tr>
+        <tr><td>Google SSO</td><td>A + C</td><td>in-flight (neutral waiting), error (inline on Entry)</td><td>OS-rendered consent sheet. No branding flash behind</td></tr>
+        <tr><td>OTP channel selection</td><td>A + C</td><td>no-default + disabled CTA</td><td>Bottom sheet (OQ-06). WhatsApp listed first. No "recommended" tag</td></tr>
+        <tr><td>OTP entry</td><td>A + C</td><td>primary (WA), resend triggered, channel switch, channel failure (WA), rate-limit</td><td>Switch-channel always available. Keyboard visible on load</td></tr>
+        <tr><td>Name capture</td><td>A phone only</td><td>default, validation error (empty)</td><td>Never on SSO or Path C</td></tr>
+        <tr><td>Welcome back</td><td>C only</td><td>default</td><td>Long names truncate @ 20ch (OQ-07). Brief moment of recognition</td></tr>
+        <tr><td>SMS pre-prompt</td><td>A + C</td><td>default</td><td>Load-bearing trust moment. Skip = visible button, not text link</td></tr>
+        <tr><td>OS SMS permission dialog</td><td>A + C</td><td>default, denied variant</td><td>OS-rendered. Only purpose string is MoneyMore-designed</td></tr>
+        <tr><td>Loading</td><td>A + C</td><td>message 1, 2, 3 (progressive reveal)</td><td>Min 2s / max 6s / backend timeout 15s. 3 strings (OQ-04). Never fixed-duration</td></tr>
+        <tr><td>Celebration</td><td>A + C</td><td>default with count breakdown</td><td>ONLY when parseable_count &gt; 0</td></tr>
+        <tr><td>Empty "primed and ready"</td><td>A + C</td><td>default</td><td>ONLY when parseable_count = 0 AND scan completed</td></tr>
+        <tr><td>Scan timeout</td><td>A + C</td><td>default</td><td>ONLY when 15s backend timeout fired. Distinct from "primed and ready"</td></tr>
+        <tr><td>Manual-entry fallback</td><td>A + C</td><td>default</td><td>After OS dialog deny. Legitimate path, not failure</td></tr>
+        <tr><td>Settings deep-link</td><td>A + C</td><td>default with 3-step instructions</td><td>Only when "Don't ask again" detected. Deep-link to MoneyMore page specifically</td></tr>
+        <tr><td>Duplicate account — phone</td><td>triggers from A</td><td>default</td><td>Routes into sign-in with phone pre-filled</td></tr>
+        <tr><td>Duplicate account — Google</td><td>triggers from A</td><td>default</td><td>Auto sign-in to existing account (Path C behaviour). Surface type TBC</td></tr>
+        <tr><td>Network error</td><td>A + C</td><td>default with retry</td><td>Distinct from rate-limit and channel-fail</td></tr>
+        <tr><td>Mid-onboarding disconnect</td><td>A + C</td><td>default</td><td>v1 restart required (EC-16)</td></tr>
+        <tr><td>Home</td><td>A + C</td><td>automated (47 tx), automated restored (32 tx), manual_only</td><td>Identical shell across paths; data-level differences only</td></tr>
+        <tr><td>SMS re-prompt 1</td><td>A + C</td><td>default (3rd manual tx trigger)</td><td>Bottom sheet. Representative — re-prompts 2 and 3 follow same pattern</td></tr>
+        <tr><td>Push contextual prompt</td><td>A + C</td><td>default (first tx display trigger)</td><td>Overlays tx list with just-landed tx behind (OQ-08). Never during onboarding</td></tr>
+      </tbody>
+    </table>
+    <div class="callout info">Not in this prototype (flagged for next sprint): resumed-entry states for abandoned onboarding (EC-14), full AR layouts for every screen (1 AR reference included in Edges), iOS brief (parked per FP-030 §12), push re-prompts 1-3 (pending OQ-08 copy lock), SMS re-prompts 2 and 3 (same pattern as re-prompt 1).</div>
+  </div>
+
+  <!-- ── IF/THEN rules ── -->
+  <div class="handoff-sec">
+    <div class="handoff-h">IF / THEN — all routing logic</div>
+
+    <div class="handoff-p" style="margin-top:8px;margin-bottom:12px"><strong>Entry + authentication</strong></div>
+    <div class="if-then"><strong>IF</strong> first app launch AND device language = Arabic <strong>THEN</strong> locale defaults to AR, layout renders RTL.</div>
+    <div class="if-then"><strong>IF</strong> first app launch AND device language ≠ Arabic <strong>THEN</strong> locale defaults to EN.</div>
+    <div class="if-then"><strong>IF</strong> user taps language trigger <strong>THEN</strong> show dropdown (EN, العربية), currently-selected indicated by checkmark. On select, flip INSTANTLY — no reload, no confirm modal, no loading state.</div>
+    <div class="if-then"><strong>IF</strong> user on post-auth screen <strong>THEN</strong> language menu is NOT visible. Language selection persists from onboarding.</div>
+    <div class="if-then"><strong>IF</strong> user taps phone field on Entry for FIRST time <strong>THEN</strong> fire Hint API sheet.</div>
+    <div class="if-then"><strong>IF</strong> user taps phone field on Entry for second+ time in same screen session <strong>THEN</strong> do NOT fire Hint API. Focus the field and show keyboard only.</div>
+    <div class="if-then"><strong>IF</strong> Hint API unavailable OR returns zero numbers OR user dismisses <strong>THEN</strong> manual input field fully functional. NO banner, NO error, NO degraded-experience messaging.</div>
+    <div class="if-then"><strong>IF</strong> user selects number from Hint sheet <strong>THEN</strong> populate the field. Do NOT auto-send OTP. User must explicitly tap Send code.</div>
+    <div class="if-then"><strong>IF</strong> user taps Continue with Google AND SSO succeeds AND account exists <strong>THEN</strong> route to Path C (Welcome back → SMS pre-prompt).</div>
+    <div class="if-then"><strong>IF</strong> user taps Continue with Google AND SSO succeeds AND account does not exist <strong>THEN</strong> route to Path A post-auth (skip Welcome back and Name capture — OAuth has the name → SMS pre-prompt).</div>
+    <div class="if-then"><strong>IF</strong> Google SSO fails (network, cancelled, account issue) <strong>THEN</strong> return to Entry screen with inline error. NEVER silently fall back to phone.</div>
+    <div class="if-then"><strong>IF</strong> user's Google account already registered on another device <strong>THEN</strong> show Duplicate account — Google match screen, auto sign-in (Path C behaviour).</div>
+
+    <div class="handoff-p" style="margin-top:14px;margin-bottom:12px"><strong>OTP</strong></div>
+    <div class="if-then"><strong>IF</strong> user enters phone + taps Send code <strong>THEN</strong> show OTP channel bottom sheet with no default selection.</div>
+    <div class="if-then"><strong>IF</strong> phone number entered matches existing account <strong>THEN</strong> show Duplicate account — phone match screen, route to sign-in with phone pre-filled.</div>
+    <div class="if-then"><strong>IF</strong> user has not chosen a channel <strong>THEN</strong> OTP sheet CTA disabled with lock icon (non-colour signal).</div>
+    <div class="if-then"><strong>IF</strong> selected channel fails (send error, delivery fail, attempts exhausted, rate limit) <strong>THEN</strong> show inline error with Retry + Switch channel CTAs. NEVER silently fall back between channels.</div>
+    <div class="if-then"><strong>IF</strong> user taps switch-channel link at any point <strong>THEN</strong> re-send OTP on other channel, restart countdown, update title to reference new channel. Preserve phone number.</div>
+    <div class="if-then"><strong>IF</strong> network request never reached server <strong>THEN</strong> show network error. Do NOT consume an OTP attempt.</div>
+    <div class="if-then"><strong>IF</strong> rate limit hit (OQ-05 in FP-030) <strong>THEN</strong> show rate-limit error with "use different number" + "contact support" CTAs. Disable OTP input.</div>
+    <div class="if-then"><strong>IF</strong> user taps back from OTP entry <strong>THEN</strong> return to Entry with phone number preserved.</div>
+
+    <div class="handoff-p" style="margin-top:14px;margin-bottom:12px"><strong>SMS permission + scan</strong></div>
+    <div class="if-then"><strong>IF</strong> user on SMS pre-prompt taps Allow SMS access <strong>THEN</strong> fire OS permission dialog.</div>
+    <div class="if-then"><strong>IF</strong> OS "Don't ask again" state already active <strong>THEN</strong> do NOT call permission API. Route to Settings deep-link screen.</div>
+    <div class="if-then"><strong>IF</strong> OS permission granted <strong>THEN</strong> start scan. Show Loading with progressive-reveal messages.</div>
+    <div class="if-then"><strong>IF</strong> OS permission denied (not "Don't ask again") <strong>THEN</strong> route to Manual-entry fallback → Home in manual_only state.</div>
+    <div class="if-then"><strong>IF</strong> scan completes AND parseable_count &gt; 0 <strong>THEN</strong> show Celebration.</div>
+    <div class="if-then"><strong>IF</strong> scan completes AND parseable_count = 0 <strong>THEN</strong> show "primed and ready" Empty state.</div>
+    <div class="if-then"><strong>IF</strong> 15s backend timeout fires <strong>THEN</strong> show Scan timeout empty state.</div>
+    <div class="if-then"><strong>IF</strong> scan has been running for 6s AND no completion signal <strong>THEN</strong> hold loading screen at message 3 until scan completes OR backend timeout fires.</div>
+
+    <div class="handoff-p" style="margin-top:14px;margin-bottom:12px"><strong>Re-prompts + push</strong></div>
+    <div class="if-then"><strong>IF</strong> user in manual_only AND manual tx count = 3 AND re-prompt 1 not yet fired AND no other SMS re-prompt fired this session <strong>THEN</strong> show SMS re-prompt 1 bottom sheet.</div>
+    <div class="if-then"><strong>IF</strong> user on re-prompt bottom sheet taps Enable SMS <strong>THEN</strong> fire OS permission dialog DIRECTLY. Do NOT route back to SMS pre-prompt.</div>
+    <div class="if-then"><strong>IF</strong> user on re-prompt bottom sheet taps Enable SMS AND "Don't ask again" state active <strong>THEN</strong> route to Settings deep-link, not OS dialog.</div>
+    <div class="if-then"><strong>IF</strong> user has dismissed 3 SMS re-prompts cumulatively <strong>THEN</strong> permanently suppress SMS re-prompts for this user.</div>
+    <div class="if-then"><strong>IF</strong> first transaction display event fires (post-onboarding, SMS-enabled) AND push permission not yet requested <strong>THEN</strong> show Push contextual prompt overlaying tx list.</div>
+    <div class="if-then"><strong>IF</strong> user on push contextual prompt taps Turn on notifications <strong>THEN</strong> fire OS push dialog directly.</div>
+    <div class="if-then"><strong>IF</strong> 90-day session expiry OR hard-update OR security event fires <strong>THEN</strong> on next app open, route to Entry screen as Path C. Clear persisted session.</div>
+    <div class="if-then"><strong>IF</strong> mid-onboarding network disconnect causes partial data sync <strong>THEN</strong> show Mid-onboarding disconnect restart screen. Log step where disconnect occurred.</div>
+  </div>
+
+  <!-- ── Mixpanel events ── -->
+  <div class="handoff-sec">
+    <div class="handoff-h">Mixpanel events</div>
+    <div class="handoff-p">Every event that needs instrumentation, grouped by phase. Properties suggested below; engineering to confirm final shape.</div>
+
+    <div class="handoff-p" style="margin-top:10px"><strong>Welcome + language</strong></div>
+    <table class="handoff-table">
+      <tbody>
+        <tr><td><code>signup_welcome_viewed</code></td><td>step · locale</td></tr>
+        <tr><td><code>language_menu_opened</code></td><td>screen · current_locale</td></tr>
+        <tr><td><code>language_changed</code></td><td>from · to · screen</td></tr>
+      </tbody>
+    </table>
+
+    <div class="handoff-p" style="margin-top:14px"><strong>Entry + authentication</strong></div>
+    <table class="handoff-table">
+      <tbody>
+        <tr><td><code>signup_entry_viewed</code></td><td>path: unresolved · locale</td></tr>
+        <tr><td><code>phone_hint_sheet_shown</code></td><td>first_tap</td></tr>
+        <tr><td><code>phone_hint_selected</code></td><td>filled_via: hint_api | manual</td></tr>
+        <tr><td><code>phone_hint_dismissed</code></td><td>reason: cancel | no_numbers</td></tr>
+        <tr><td><code>sso_google_initiated</code></td><td>provider: google</td></tr>
+        <tr><td><code>sso_google_succeeded</code></td><td>account_exists (true → Path C, false → Path A)</td></tr>
+        <tr><td><code>sso_google_failed</code></td><td>reason: network | cancelled | account</td></tr>
+        <tr><td><code>duplicate_account_detected</code></td><td>match_type: phone | google</td></tr>
+      </tbody>
+    </table>
+
+    <div class="handoff-p" style="margin-top:14px"><strong>OTP</strong></div>
+    <table class="handoff-table">
+      <tbody>
+        <tr><td><code>otp_channel_choice_viewed</code></td><td>default_selected: none</td></tr>
+        <tr><td><code>otp_channel_selected</code></td><td>channel: sms | whatsapp</td></tr>
+        <tr><td><code>otp_sent</code></td><td>channel · attempt</td></tr>
+        <tr><td><code>otp_viewed</code></td><td>channel · attempt</td></tr>
+        <tr><td><code>otp_resend_tapped</code></td><td>channel · attempt_count</td></tr>
+        <tr><td><code>otp_channel_switched</code></td><td>from · to</td></tr>
+        <tr><td><code>otp_channel_failed</code></td><td>channel · reason: send | delivery | network | rate_limit</td></tr>
+        <tr><td><code>otp_verified</code></td><td>channel · attempts_used · duration_ms</td></tr>
+        <tr><td><code>otp_back_to_entry</code></td><td>preserved_number: true</td></tr>
+      </tbody>
+    </table>
+
+    <div class="handoff-p" style="margin-top:14px"><strong>Name + Welcome back</strong></div>
+    <table class="handoff-table">
+      <tbody>
+        <tr><td><code>name_capture_viewed</code></td><td>path: A · method: phone</td></tr>
+        <tr><td><code>name_validation_failed</code></td><td>reason: empty | whitespace_only</td></tr>
+        <tr><td><code>welcome_back_viewed</code></td><td>path: C · name_length · truncated</td></tr>
+      </tbody>
+    </table>
+
+    <div class="handoff-p" style="margin-top:14px"><strong>SMS permission + scan</strong></div>
+    <table class="handoff-table">
+      <tbody>
+        <tr><td><code>sms_preprompt_viewed</code></td><td>path · source: onboarding | reprompt</td></tr>
+        <tr><td><code>sms_preprompt_skip_tapped</code></td><td>path</td></tr>
+        <tr><td><code>sms_permission_result</code></td><td>result: granted | denied | dont_ask_again · from_reprompt</td></tr>
+        <tr><td><code>sms_scan_started</code></td><td>—</td></tr>
+        <tr><td><code>sms_scan_succeeded</code></td><td>parseable_count · duration_ms</td></tr>
+        <tr><td><code>sms_scan_timeout</code></td><td>duration_ms: 15000</td></tr>
+        <tr><td><code>settings_deeplink_viewed</code></td><td>trigger: dont_ask_again</td></tr>
+        <tr><td><code>settings_deeplink_tapped</code></td><td>—</td></tr>
+      </tbody>
+    </table>
+
+    <div class="handoff-p" style="margin-top:14px"><strong>Re-prompts + push</strong></div>
+    <table class="handoff-table">
+      <tbody>
+        <tr><td><code>reprompt_sms_viewed</code></td><td>trigger: 3rd_manual | empty_budgets | 7_day · cumulative_dismissals</td></tr>
+        <tr><td><code>reprompt_sms_action</code></td><td>action: enable | not_now | dont_ask_again</td></tr>
+        <tr><td><code>push_contextual_prompt_viewed</code></td><td>trigger: first_transaction_display · tx_id</td></tr>
+        <tr><td><code>push_contextual_action</code></td><td>action: enable | not_now</td></tr>
+        <tr><td><code>push_permission_result</code></td><td>result: granted | denied</td></tr>
+      </tbody>
+    </table>
+
+    <div class="handoff-p" style="margin-top:14px"><strong>Completion + errors</strong></div>
+    <table class="handoff-table">
+      <tbody>
+        <tr><td><code>signup_completed</code></td><td>path: A | C · method: phone | google · state: automated | manual_only</td></tr>
+        <tr><td><code>disconnect_during_onboarding</code></td><td>step · partial_sync: true</td></tr>
+        <tr><td><code>network_error_viewed</code></td><td>screen · action: retry</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── OQs ── -->
+  <div class="handoff-sec">
+    <div class="handoff-h">Open questions</div>
+
+    <div class="handoff-p" style="margin-top:8px;margin-bottom:10px"><strong>Resolved in this draft — awaiting product sign-off</strong></div>
+    <ul class="handoff-list">
+      <li><strong>OQ-01</strong> — Welcome progress: three dots, persistent across screens 1-3. Reads as a tour, not a gate.</li>
+      <li><strong>OQ-02</strong> — Re-prompt "Don't ask again" hierarchy: demoted to centered text link below the two buttons. Preserves warm choice; gives nuclear option dignity without inviting it.</li>
+      <li><strong>OQ-03</strong> — Country code: visible +20 prefix in phone field (§5 already resolves; reflected in design).</li>
+      <li><strong>OQ-04</strong> — Loading messages: 3 strings (dropped #4 "Setting up your account…" as generic padding). Progressive reveal on backend signals; fallback to ~1.5s timer rotation.</li>
+      <li><strong>OQ-05</strong> — Language menu surface: dropdown from top-right trigger, not bottom sheet. Matches CIB Online / InstaPay convention. Bottom sheet is overkill for 2 options.</li>
+      <li><strong>OQ-06</strong> — OTP channel surface: bottom sheet, not full screen. Keeps user anchored to the phone they just entered.</li>
+      <li><strong>OQ-07</strong> — Long-name handling on Welcome back: truncate at 20 characters with ellipsis. Wrapping breaks compact feel in Arabic RTL. Engineering applies truncation server-side.</li>
+      <li><strong>OQ-08</strong> — Push contextual relationship: prompt overlays transaction list with just-landed tx visible behind in subtle highlight. Headline references "the moment a transaction happens" as context without reproducing detail. Full-screen takeover rejected as violates §8.</li>
+    </ul>
+
+    <div class="handoff-p" style="margin-top:16px;margin-bottom:10px"><strong>Still open — tracked in FP-030</strong></div>
+    <ul class="handoff-list">
+      <li><strong>FP-030 OQ-05</strong> — OTP resend rate limit thresholds. Must resolve before engineering kickoff. Affects rate-limit error copy (§5 moment 24) and countdown logic.</li>
+      <li><strong>FP-030 OQ-08</strong> — Push re-prompt triggers, cap rules, and final copy. Surface pattern matches SMS re-prompts (bottom sheet, 3 max, cumulative dismissal cap). Designer should surface-design the re-prompts per the SMS pattern once triggers lock.</li>
+      <li><strong>Duplicate account — Google match surface type</strong>. TBC with engineering — full-screen with auto-advance, brief modal, or non-blocking toast. If toast, drop the subtext copy (§5 moment 39).</li>
+      <li><strong>OS push purpose string render behaviour</strong>. Android may or may not surface a purpose string for POST_NOTIFICATIONS. Confirm with engineering; §5 moment 47 may be vestigial.</li>
+    </ul>
+
+    <div class="handoff-p" style="margin-top:16px;margin-bottom:10px"><strong>Post-launch validation</strong></div>
+    <ul class="handoff-list">
+      <li>OQ-08 visual relationship (tx list overlay) validated against real usage. If push opt-in rate is below benchmark, consider the alternative treatment (brief tx reveal animation before prompt rises).</li>
+      <li>SMS pre-prompt A/B test: current body vs "the alternative is typing" variant (§5 moment 28 note).</li>
+      <li>Appeal definition revisit against real retention-cohort verbatims once Manus prototype v3 ships.</li>
+    </ul>
+  </div>
+
+  <!-- ── Must not do reminders ── -->
+  <div class="handoff-sec">
+    <div class="handoff-h">§8 must-not-do reminders</div>
+    <div class="callout warn">These are the most frequent failure modes for flows like this. Check every frame against them.</div>
+    <ul class="handoff-list" style="margin-top:12px">
+      <li>Do NOT make SMS pre-prompt or push contextual feel like a sales pitch. Emotive language and exclamation marks degrade trust.</li>
+      <li>Do NOT demote the skip on SMS pre-prompt or push contextual to a barely-visible text link. Denying must feel like a legitimate path.</li>
+      <li>Do NOT trigger OS SMS dialog on any screen other than SMS pre-prompt or re-prompt's Enable action. Never silently, never on load.</li>
+      <li>Do NOT request push during onboarding. Push is contextual, first-transaction-display only.</li>
+      <li>Do NOT visually demote either option on Entry. Google and phone are equal-weight. No "recommended" tag.</li>
+      <li>Do NOT pre-select a default OTP channel. CTA stays disabled until user chooses.</li>
+      <li>Do NOT silently fall back between OTP channels or from Google SSO to phone. User sees the error, makes an active choice.</li>
+      <li>Do NOT auto-send OTP after Hint API selection. User taps Send code explicitly.</li>
+      <li>Do NOT re-trigger Hint API sheet on subsequent taps. First tap only per screen session.</li>
+      <li>Do NOT surface a blocking error if Hint API is unavailable. Manual field is first-class.</li>
+      <li>Do NOT design a fixed-duration loading screen. Three outcomes based on actual scan result.</li>
+      <li>Do NOT show celebration when parseable_count = 0. Do NOT show "primed and ready" when backend timed out. Three distinct states.</li>
+      <li>Do NOT show Welcome back to new users. Path C only.</li>
+      <li>Do NOT show Name capture to Google SSO users or Path C users. Path A phone only.</li>
+      <li>Do NOT design manual fallback as a failure state. Manual_only users are legitimate users.</li>
+      <li>Do NOT make SMS or push re-prompts full-screen takeovers. Bottom sheets, dismissible.</li>
+      <li>Do NOT surface language menu on post-auth screens. Onboarding-only affordance in v1.</li>
+      <li>Do NOT write or modify copy. All strings defined in §5.</li>
+      <li>Do NOT convey state through colour alone. Icons + text + colour, not colour alone.</li>
+      <li>Do NOT flash branding behind Google consent sheet or Hint API sheet. In-flight states are neutral.</li>
+    </ul>
+  </div>
+
+  <!-- ── Missing from prototype ── -->
+  <div class="handoff-sec">
+    <div class="handoff-h">What's missing from this prototype</div>
+    <div class="handoff-p">Flagged for the designer picking this up — items not covered here that the §9 handoff checklist requires before engineering kickoff.</div>
+    <ul class="handoff-list" style="margin-top:10px">
+      <li><strong>Full Arabic RTL layouts for every screen.</strong> This prototype shows the language switch demo (welcome 2 AR), welcome 3 continuing in AR, and one reference AR Entry screen in Edges. Every other screen needs an AR layout produced in Figma — not just text flip, a full RTL layout (§9 Required).</li>
+      <li><strong>Resumed-entry states per EC-14.</strong> If user abandons onboarding mid-flow and reopens, flow must resume from last completed step. Requires designed states for: phone entered but no OTP sent, OTP sent but not verified, name captured but SMS pre-prompt not acted on.</li>
+      <li><strong>SMS re-prompts 2 and 3.</strong> Copy in §5, surface pattern matches re-prompt 1 — but designer should produce the specific bottom sheets for Budgets-tap trigger and 7-day catchall with correct copy.</li>
+      <li><strong>Push re-prompts 1-3.</strong> Copy placeholder in §5 pending OQ-08 lock in FP-030. Surface pattern follows SMS re-prompts.</li>
+      <li><strong>Disabled states for all interactive elements.</strong> CTAs while loading, resend links during countdown, OTP CTA while no channel selected — visually specified in prototype but not exhaustive.</li>
+      <li><strong>Animation specs.</strong> Language flip duration and easing, bottom sheet rise duration, loading message transitions, celebration checkmark animation, push prompt reveal. §9 requires this.</li>
+      <li><strong>Native-speaker Arabic review.</strong> Every AR string in §5 requires review before launch. Placeholder flag on every copy block.</li>
+      <li><strong>iOS brief.</strong> Parked per FP-030 §12. Future sprint.</li>
+      <li><strong>TalkBack audit.</strong> §7 requires every dynamic content element accessible via screen reader, tested before handoff.</li>
+      <li><strong>Touch-target verification.</strong> Language trigger, resend links, switch-channel link, dismiss actions on re-prompts all need 44×44px verification in Figma.</li>
+    </ul>
+  </div>
+
+  <!-- ── Next steps ── -->
+  <div class="handoff-sec">
+    <div class="handoff-h">Next steps</div>
+    <ul class="handoff-list">
+      <li>Get product sign-off on the 8 resolved OQs (especially OQ-02, OQ-05, OQ-06, OQ-08 — the subjective ones).</li>
+      <li>Confirm FP-030 OQ-05 (rate limit thresholds) and OQ-08 (push re-prompt triggers) before engineering kickoff.</li>
+      <li>Produce Figma file with full AR layouts, resumed-entry states, SMS re-prompts 2+3, push re-prompts 1-3.</li>
+      <li>Native-speaker Arabic review on all §5 strings.</li>
+      <li>Run the design against §8 "must not do" list and §3 appeal definition before design review.</li>
+      <li>Complete §9 handoff checklist in full.</li>
+      <li>Schedule TalkBack audit with QA before Release Quality Gate.</li>
+      <li>Complete designer sign-off in §Sign-off.</li>
+    </ul>
+  </div>
+
+</div>
+
+</div>
+</body>
+</html>
