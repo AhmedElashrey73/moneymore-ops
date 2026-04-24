@@ -1,0 +1,1972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoneyMore — Home Tab Revamp v2 · Designer Prototype (rebuild)</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --navy:#1A3C5E; --green:#2E8B57; --green-l:#E8F5EE;
+  --gold:#B8860B; --gold-l:#FBF4DC; --red:#C0392B; --red-l:#FDECEA;
+  --page-bg:#F9F8F5; --page-border:#E2DFD8;
+  --screen-bg:#FAFAF8; --screen-bg2:#F2F0EB; --screen-bg3:#E8E5DE;
+  --t1:#1A1714; --t2:#3D3A35; --t3:#7A7670; --t4:#ABA7A0;
+  --t-pos:#1A6E3C; --t-neg:#A82419; --t-inv:#FFFFFF;
+  --b1:#E8E5DF; --b2:#D4D0C8; --b3:#BCBAB2;
+  --frame-bg:#2A2724; --frame-border:#1A1614;
+  --f-body:'Plus Jakarta Sans',sans-serif; --f-mono:'DM Mono',monospace;
+  --s-xs:10px; --s-sm:12px; --s-base:14px; --s-md:16px;
+  --s-lg:18px; --s-xl:22px; --s-2xl:28px;
+  --r-sm:6px; --r-md:12px; --r-lg:16px; --r-xl:24px; --r-pill:999px;
+  --shadow-phone:0 8px 32px rgba(0,0,0,0.14),0 2px 8px rgba(0,0,0,0.08);
+  --shadow-card:0 1px 3px rgba(0,0,0,0.04),0 1px 2px rgba(0,0,0,0.03);
+  --ph-w:300px; --ph-h:800px; --ph-r:36px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-size:var(--s-base);line-height:1.6;-webkit-font-smoothing:antialiased;}
+.page{max-width:1500px;margin:0 auto;padding:48px 40px 96px;}
+
+/* ── DOC HEADER ─────────────────────────────────────────── */
+.doc-header{padding-bottom:32px;margin-bottom:40px;border-bottom:2px solid var(--b1);}
+.doc-meta{display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap;}
+.doc-tag{font-family:var(--f-mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;padding:4px 11px;border-radius:3px;font-weight:600;}
+.doc-tag.prototype{background:var(--green-l);color:#0F5830;}
+.doc-tag.designer{background:#EAE8FF;color:#3A3288;}
+.doc-tag.android{background:#E8F4EA;color:#1F5E2A;}
+.doc-tag.wip{background:var(--gold-l);color:#6B5210;}
+.doc-tag.version{background:var(--navy);color:#fff;}
+.doc-tag.rebuild{background:#1A1714;color:#fff;}
+.doc-date{font-family:var(--f-mono);font-size:11px;color:var(--t2);margin-left:auto;font-weight:500;}
+.doc-title{font-size:34px;font-weight:700;color:var(--t1);letter-spacing:-0.02em;line-height:1.15;margin-bottom:10px;}
+.doc-subtitle{font-size:15px;color:var(--t1);font-weight:400;margin-bottom:30px;line-height:1.5;max-width:920px;}
+
+.doc-info{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--b1);border-radius:var(--r-md);overflow:hidden;background:white;}
+.doc-info-cell{padding:16px 20px;border-right:1px solid var(--b1);}
+.doc-info-cell:last-child{border-right:none;}
+.info-label{font-family:var(--f-mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--t2);margin-bottom:8px;font-weight:600;}
+.info-body{font-size:13px;color:var(--t1);line-height:1.55;}
+.info-body strong{color:var(--t1);font-weight:700;}
+
+.flow-list{display:flex;flex-direction:column;gap:4px;}
+.flow-list-item{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--t1);line-height:1.45;}
+.flow-list-item::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--b3);flex-shrink:0;}
+.flow-list-item.active::before{background:var(--green);}
+
+/* ── FLOW SECTION ──────────────────────────────────────── */
+.flow-section{margin-bottom:64px;}
+.flow-section-header{display:flex;align-items:center;gap:16px;margin-bottom:28px;}
+.flow-section-line{flex:1;height:1px;background:var(--b2);}
+.flow-section-title{font-family:var(--f-body);font-size:16px;font-weight:700;letter-spacing:-0.01em;color:#fff;background:var(--navy);padding:6px 14px;border-radius:4px;white-space:nowrap;}
+
+.flow-intro{max-width:920px;font-size:13px;color:var(--t2);line-height:1.55;margin-bottom:20px;padding-left:2px;}
+
+.phone-row{display:flex;align-items:flex-start;gap:0;overflow-x:auto;padding-bottom:12px;}
+.phone-row::-webkit-scrollbar{height:4px;}
+.phone-row::-webkit-scrollbar-track{background:var(--b1);border-radius:2px;}
+.phone-row::-webkit-scrollbar-thumb{background:var(--b3);border-radius:2px;}
+
+.screen-col{display:flex;flex-direction:column;align-items:center;gap:10px;flex-shrink:0;}
+.screen-label{font-family:var(--f-body);font-size:11px;font-weight:600;color:var(--t2);text-align:center;max-width:var(--ph-w);line-height:1.4;}
+
+.state-badge{font-family:var(--f-mono);font-size:10px;font-weight:500;padding:3px 9px;border-radius:3px;letter-spacing:0.04em;}
+.state-badge.happy{background:#EBF7F1;color:#1A6E3C;}
+.state-badge.empty{background:var(--gold-l);color:#8A6510;}
+.state-badge.error{background:var(--red-l);color:var(--red);}
+.state-badge.loading{background:#E8F0FA;color:#103868;}
+.state-badge.success{background:var(--green-l);color:#0F5830;}
+.state-badge.interaction{background:#EAE8FF;color:#3A3288;}
+.state-badge.cached{background:#ECECEC;color:#555;}
+.state-badge.rtl{background:#FEF0E6;color:#B05A10;}
+
+.flow-arrow{display:flex;flex-direction:column;align-items:center;flex-shrink:0;padding-top:300px;padding-left:6px;padding-right:6px;}
+.arrow-line{width:32px;height:1px;background:var(--b2);position:relative;}
+.arrow-line::after{content:'';position:absolute;right:-1px;top:-3px;border-left:5px solid var(--b2);border-top:3px solid transparent;border-bottom:3px solid transparent;}
+.arrow-label{font-family:var(--f-body);font-size:10px;font-weight:600;color:var(--t2);text-align:center;max-width:72px;line-height:1.35;margin-top:6px;}
+
+/* ── PHONE FRAME ───────────────────────────────────────── */
+/* Auto-height: phone grows to fit its content. Status bar at top, nav at bottom,
+   screen content between them — all in normal document flow. No scroll containers. */
+.phone{width:var(--ph-w);border-radius:var(--ph-r);background:var(--frame-bg);box-shadow:var(--shadow-phone);position:relative;overflow:hidden;border:2px solid var(--frame-border);flex-shrink:0;display:flex;flex-direction:column;}
+.a-status{height:24px;background:var(--screen-bg);display:flex;align-items:center;justify-content:space-between;padding:0 14px;font-family:var(--f-mono);font-size:8px;color:var(--t1);flex-shrink:0;}
+.a-nav{height:52px;background:var(--screen-bg);border-top:1px solid var(--b1);display:flex;align-items:center;flex-shrink:0;}
+/* Centre plus — raised CTA in the middle of the nav */
+.a-nav-plus{flex:0 0 auto;width:44px;height:44px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:300;margin:-14px 2px 0;box-shadow:0 4px 12px rgba(46,139,87,0.32),0 2px 4px rgba(46,139,87,0.2);line-height:1;flex-direction:row;}
+.a-nav-plus-ico{font-size:24px;font-weight:300;line-height:1;}
+.a-nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 0;}
+.a-nav-icon{width:20px;height:20px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;}
+.a-nav-item.on .a-nav-icon{background:var(--green-l);}
+.a-nav-lbl{font-size:8px;color:var(--t4);font-weight:500;}
+.a-nav-item.on .a-nav-lbl{color:var(--green);}
+
+/* Screen area — grows with content, no scroll, no absolute positioning */
+.screen{background:var(--screen-bg);display:flex;flex-direction:column;flex:1;padding-bottom:10px;}
+.screen.no-nav{padding-bottom:14px;}
+/* Sheets and modals inside phones still need absolute positioning against phone frame */
+.screen.sheet-host{position:relative;min-height:640px;}
+/* Lock screens — fixed tall composition so the lock time and pushes compose properly */
+.screen.lock-screen{min-height:640px;padding-bottom:0;}
+
+/* ──────────────────────────────────────────────────────
+   REBUILD: CONSOLIDATED CARD ARCHITECTURE
+   
+   Three big cards, not eight sections. Section labels live
+   INSIDE cards, not above them. Rows are contained shapes
+   with negative space between them, not divider-separated
+   list items inside a list container.
+   ────────────────────────────────────────────────────── */
+
+/* Header (non-scrolling, outside the card stack) */
+.hm-header{display:flex;align-items:center;padding:14px 16px 12px;gap:10px;flex-shrink:0;}
+.hm-header.rtl{flex-direction:row-reverse;}
+.hm-greet{flex:1;min-width:0;}
+.hm-greet.rtl{direction:rtl;text-align:right;}
+.hm-greet-en{font-size:19px;font-weight:700;color:var(--t1);letter-spacing:-0.01em;line-height:1.2;}
+.hm-greet-ar{font-size:11px;color:var(--t3);direction:rtl;text-align:right;margin-top:1px;line-height:1.3;}
+.hm-greet.rtl .hm-greet-ar{text-align:right;}
+.hm-bell{position:relative;width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:var(--t2);font-size:16px;flex-shrink:0;border-radius:50%;background:var(--screen-bg);border:1px solid var(--b1);}
+.hm-bell-badge{position:absolute;top:-2px;right:-2px;min-width:16px;height:16px;border-radius:var(--r-pill);background:var(--red);color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 4px;border:2px solid var(--screen-bg);font-family:var(--f-mono);}
+.hm-avatar{width:36px;height:36px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;}
+
+/* Review prompt — narrow banner, stands alone above the big cards */
+.review-slot{margin:0 14px 12px;padding:12px 14px;background:#F0EFFE;border:1px solid #D4D0F0;border-left:3px solid #5B4FD0;border-radius:var(--r-md);display:flex;align-items:center;gap:10px;}
+.review-ico{width:30px;height:30px;border-radius:var(--r-sm);background:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;color:#5B4FD0;flex-shrink:0;}
+.review-body{flex:1;min-width:0;}
+.review-text{font-size:12px;font-weight:600;color:var(--t1);line-height:1.35;}
+.review-ar{font-size:10px;color:var(--t3);direction:rtl;text-align:right;margin-top:2px;}
+.review-cta{font-size:11px;font-weight:700;color:#5B4FD0;flex-shrink:0;padding-left:4px;}
+
+/* Offline pill — same weight as review, sits above big cards */
+.offline-pill{margin:0 14px 12px;padding:8px 12px;background:var(--screen-bg2);border-radius:var(--r-md);display:flex;align-items:center;gap:8px;}
+.offline-dot{width:6px;height:6px;border-radius:50%;background:var(--t4);flex-shrink:0;}
+.offline-text{font-size:11px;color:var(--t3);font-weight:600;flex:1;}
+.offline-ar{font-size:9px;color:var(--t4);direction:rtl;}
+
+/* ── BIG CARD — the unit ─────────────────────────── */
+.bcard{margin:0 14px 14px;background:#fff;border:1px solid var(--b1);border-radius:var(--r-lg);box-shadow:var(--shadow-card);overflow:hidden;}
+.bcard-pad{padding:14px 14px 10px;}
+.bcard-head{display:flex;align-items:center;justify-content:space-between;padding:14px 14px 10px;}
+.bcard-label{font-size:11px;font-weight:700;color:var(--t3);letter-spacing:0.04em;text-transform:uppercase;}
+.bcard-label-ar{font-size:10px;color:var(--t4);direction:rtl;text-align:right;margin-top:2px;letter-spacing:0;}
+.bcard-link{font-size:12px;font-weight:700;color:var(--green);display:flex;align-items:center;gap:2px;}
+
+/* Total card head — amount dominant */
+.te-amount-row{padding:2px 14px 4px;display:flex;align-items:baseline;gap:6px;}
+.te-amount{font-size:32px;font-weight:700;letter-spacing:-0.02em;line-height:1;color:var(--t1);font-variant-numeric:tabular-nums;}
+.te-cur{font-size:14px;font-weight:600;color:var(--t3);}
+.te-count{padding:0 14px 14px;font-size:11px;color:var(--t3);font-weight:500;}
+.te-count-ar{font-size:10px;color:var(--t4);direction:rtl;text-align:right;}
+
+/* Contained-row pattern — used across Total card categories, Mode B rows, and Latest Spending */
+.row-stack{padding:0 10px 10px;display:flex;flex-direction:column;gap:6px;}
+.crow{background:var(--screen-bg);border:1px solid var(--b1);border-radius:var(--r-md);padding:10px 12px;display:flex;align-items:center;gap:10px;}
+.crow-ico{width:34px;height:34px;border-radius:var(--r-sm);background:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;border:1px solid var(--b1);}
+.crow-body{flex:1;min-width:0;overflow:hidden;}
+.crow-title{font-size:12px;font-weight:700;color:var(--t1);line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.crow-sub{font-size:10px;color:var(--t3);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.crow-sub.pending{color:var(--t4);font-style:italic;}
+.crow-amt{font-size:13px;font-weight:700;color:var(--t1);font-variant-numeric:tabular-nums;flex-shrink:0;}
+.crow-amt.spend::before{content:'−';color:var(--t3);margin-right:1px;}
+.crow-amt.income{color:var(--t-pos);}
+.crow-amt.income::before{content:'+';margin-right:1px;}
+
+/* Internal full-width CTA inside a big card */
+.bcard-cta{margin:4px 10px 12px;padding:11px;background:var(--screen-bg2);border-radius:var(--r-md);text-align:center;font-size:12px;font-weight:700;color:var(--navy);}
+
+/* ── TAKEOVERS INSIDE THE TOTAL CARD ─────────────────────
+   Pending notice / expectations / manual-entry replace the
+   category row-stack. Same card container — different body.
+   ────────────────────────────────────────────────────── */
+.takeover{margin:0 14px 14px;padding:24px 18px;border-radius:var(--r-md);background:var(--screen-bg2);display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;min-height:100px;justify-content:center;}
+.takeover.expect{background:var(--green-l);}
+.takeover.manual{background:#FEF8E6;}
+.takeover-ico{font-size:22px;opacity:0.75;margin-bottom:2px;}
+.takeover-ttl{font-size:13px;font-weight:700;color:var(--t1);line-height:1.3;}
+.takeover-body{font-size:11px;color:var(--t2);line-height:1.45;max-width:200px;}
+.takeover-ar{font-size:10px;color:var(--t3);direction:rtl;line-height:1.45;max-width:200px;}
+
+/* ── SMART BUDGET — consolidated card ────────────────── */
+/* Mode A framing line sits INSIDE the card below the label row */
+.sb-framing{padding:0 14px 10px;}
+.sb-framing-en{font-size:12px;color:var(--t2);line-height:1.45;font-weight:500;}
+.sb-framing-ar{font-size:10px;color:var(--t4);direction:rtl;text-align:right;margin-top:2px;line-height:1.4;}
+
+/* Mode A card — sits inside the Smart Budget bcard row-stack */
+.mode-a-crow{background:var(--screen-bg);border:1px dashed var(--green);border-radius:var(--r-md);padding:11px 12px;display:flex;align-items:center;gap:10px;}
+.mode-a-ico{width:34px;height:34px;border-radius:var(--r-sm);background:var(--green-l);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.mode-a-body{flex:1;min-width:0;}
+.mode-a-cat{font-size:12px;font-weight:700;color:var(--t1);line-height:1.2;}
+.mode-a-sugg{font-size:11px;color:var(--t2);margin-top:2px;}
+.mode-a-sugg strong{font-weight:700;color:var(--t1);font-variant-numeric:tabular-nums;}
+.mode-a-btn{background:var(--green);color:#fff;font-size:11px;font-weight:700;padding:7px 12px;border-radius:var(--r-sm);flex-shrink:0;}
+
+/* Mode B row — contained shape, progress bar inside */
+.mode-b-crow{background:var(--screen-bg);border:1px solid var(--b1);border-radius:var(--r-md);padding:11px 12px;}
+.mode-b-top{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
+.mode-b-ico{width:28px;height:28px;border-radius:var(--r-sm);background:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;border:1px solid var(--b1);}
+.mode-b-cat{font-size:12px;font-weight:700;color:var(--t1);flex:1;}
+.mode-b-pill{font-size:9px;font-weight:700;padding:2px 7px;border-radius:var(--r-pill);flex-shrink:0;letter-spacing:0.02em;}
+.mode-b-pill.under{background:var(--green-l);color:#0F5830;}
+.mode-b-pill.near{background:var(--gold-l);color:#8A6510;}
+.mode-b-pill.over{background:var(--red-l);color:var(--red);}
+.mode-b-bar-wrap{height:6px;background:var(--screen-bg3);border-radius:var(--r-pill);overflow:hidden;position:relative;margin-bottom:6px;}
+.mode-b-bar{height:100%;border-radius:var(--r-pill);}
+.mode-b-bar.under{background:var(--green);}
+.mode-b-bar.near{background:var(--gold);}
+.mode-b-bar.over{background:var(--red);}
+.mode-b-bar-over-mark{position:absolute;top:0;bottom:0;width:1.5px;background:var(--t1);opacity:0.4;}
+.mode-b-amt{display:flex;justify-content:space-between;align-items:baseline;gap:8px;}
+.mode-b-amt-l{font-size:11px;color:var(--t2);font-weight:600;font-variant-numeric:tabular-nums;}
+.mode-b-amt-r{font-size:10px;color:var(--red);font-weight:700;}
+
+/* Mode C — single takeover card where the row-stack would be */
+.mode-c-body{margin:0 10px 12px;padding:14px;background:var(--green-l);border-radius:var(--r-md);}
+.mode-c-ttl{font-size:13px;font-weight:700;color:var(--t1);line-height:1.3;margin-bottom:2px;}
+.mode-c-ttl-ar{font-size:10px;color:var(--t3);direction:rtl;text-align:right;margin-bottom:8px;line-height:1.4;}
+.mode-c-support{font-size:11px;color:var(--t2);line-height:1.45;margin-bottom:10px;}
+.mode-c-support-ar{font-size:9px;color:var(--t4);direction:rtl;text-align:right;margin-bottom:10px;line-height:1.4;}
+.mode-c-btn{background:var(--green);color:#fff;font-size:12px;font-weight:700;padding:10px 14px;border-radius:var(--r-sm);text-align:center;display:inline-block;}
+
+/* Add Transaction — full-width contained CTA sitting below Latest Spending card */
+.addtx-util{margin:0 14px 14px;padding:12px;background:#fff;border:1.5px dashed var(--b2);border-radius:var(--r-md);text-align:center;font-size:12px;font-weight:700;color:var(--navy);display:flex;align-items:center;justify-content:center;gap:8px;}
+.addtx-util-ar{font-size:10px;color:var(--t4);direction:rtl;}
+.addtx-hero{margin:0 14px 8px;padding:18px;background:var(--green);border-radius:var(--r-lg);text-align:center;font-size:14px;font-weight:700;color:#fff;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 2px 6px rgba(46,139,87,0.2);}
+.addtx-hero-ar{font-size:11px;font-weight:600;color:rgba(255,255,255,0.85);direction:rtl;}
+.sms-link{padding:0 14px 14px;text-align:center;}
+.sms-link-en{font-size:11px;color:var(--t3);font-weight:500;text-decoration:underline;}
+.sms-link-ar{font-size:9px;color:var(--t4);direction:rtl;margin-top:2px;}
+
+/* ── TRANSACTION DETAIL BOTTOM SHEET ──────────────────── */
+.sheet-dim{position:absolute;inset:0;background:rgba(0,0,0,0.45);z-index:30;}
+.sheet{position:absolute;bottom:0;left:0;right:0;background:#fff;border-radius:var(--r-xl) var(--r-xl) 0 0;z-index:40;max-height:92%;display:flex;flex-direction:column;}
+.sheet-handle{width:32px;height:3px;background:var(--b2);border-radius:2px;margin:10px auto 0;flex-shrink:0;}
+.sheet-hdr{display:flex;align-items:flex-start;padding:12px 16px 8px;gap:10px;flex-shrink:0;}
+.sheet-close{font-size:20px;color:var(--t2);line-height:1;padding:2px 4px 0;}
+.sheet-hdr-body{flex:1;min-width:0;}
+.sheet-merch{font-size:16px;font-weight:700;color:var(--t1);line-height:1.2;}
+.sheet-amt{font-size:24px;font-weight:700;letter-spacing:-0.01em;margin-top:4px;font-variant-numeric:tabular-nums;}
+.sheet-amt.spend{color:var(--t1);}
+.sheet-amt.spend::before{content:'−';color:var(--t3);margin-right:2px;}
+.sheet-amt.income{color:var(--t-pos);}
+.sheet-amt.income::before{content:'+';margin-right:2px;}
+.sheet-meta{font-size:10px;color:var(--t3);margin-top:4px;}
+
+.sheet-body{flex:1;overflow-y:auto;padding:8px 14px 12px;}
+.sheet-field{background:var(--screen-bg);border:1px solid var(--b1);border-radius:var(--r-md);padding:10px 12px;margin-bottom:6px;}
+.sheet-flabel{font-size:10px;color:var(--t3);font-weight:700;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:4px;}
+.sheet-fvalue{font-size:13px;color:var(--t1);font-weight:600;display:flex;align-items:center;gap:7px;}
+.sheet-fvalue.ph{color:var(--t4);font-weight:400;font-style:italic;}
+.sheet-fvalue.disabled{color:var(--t3);}
+.sheet-fvalue.tappable{color:var(--navy);}
+.sheet-chip{display:inline-flex;align-items:center;gap:5px;padding:4px 8px;background:#fff;border:1px solid var(--b1);border-radius:var(--r-pill);font-size:11px;font-weight:600;color:var(--t1);}
+.sheet-chip-tap{background:var(--green-l);border-color:rgba(46,139,87,0.3);color:#0F5830;}
+.sheet-chev{margin-left:auto;color:var(--t4);font-size:13px;}
+.sheet-edit-input{border:1.5px solid var(--navy);border-radius:var(--r-sm);padding:7px 10px;font-size:13px;font-weight:600;color:var(--t1);background:#fff;min-height:36px;display:flex;align-items:center;box-shadow:0 0 0 3px rgba(26,60,94,0.07);}
+.sheet-edit-input.ro{border:1px solid var(--b2);box-shadow:none;background:var(--screen-bg2);color:var(--t3);}
+.sheet-edit-hint{font-size:10px;color:var(--t4);margin-top:4px;font-style:italic;}
+
+.sheet-toggle{background:var(--screen-bg);border:1px solid var(--b1);border-radius:var(--r-md);padding:10px 12px;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;}
+.sheet-toggle-lbl{font-size:12px;font-weight:600;color:var(--navy);}
+
+.sheet-actions{display:flex;gap:8px;padding:10px 14px 20px;background:#fff;flex-shrink:0;}
+.sheet-btn{flex:1;padding:12px;border-radius:var(--r-sm);font-size:13px;font-weight:700;text-align:center;}
+.sheet-btn.primary{background:var(--navy);color:#fff;}
+.sheet-btn.danger{background:transparent;color:var(--red);border:1px solid rgba(192,57,43,0.3);}
+.sheet-btn.save{background:var(--green);color:#fff;}
+.sheet-btn.cancel{background:transparent;color:var(--t2);border:1px solid var(--b2);}
+
+/* Native delete confirmation dialog */
+.dialog-ol{position:absolute;inset:0;background:rgba(0,0,0,0.55);display:flex;align-items:center;justify-content:center;padding:24px;z-index:60;}
+.dialog-box{background:#fff;border-radius:14px;width:100%;padding:20px 20px 10px;box-shadow:0 10px 40px rgba(0,0,0,0.3);}
+.dialog-ttl{font-size:14px;font-weight:700;color:var(--t1);line-height:1.35;margin-bottom:4px;}
+.dialog-ttl-ar{font-size:11px;color:var(--t3);direction:rtl;text-align:right;line-height:1.4;}
+.dialog-acts{display:flex;justify-content:flex-end;gap:4px;margin-top:16px;}
+.dialog-btn{padding:8px 14px;font-size:12px;font-weight:700;border-radius:var(--r-sm);letter-spacing:0.02em;text-transform:uppercase;}
+.dialog-btn.cancel{color:var(--t2);}
+.dialog-btn.delete{color:var(--red);}
+
+/* Quick-create sheet */
+.qc-sheet{position:absolute;bottom:0;left:0;right:0;background:#fff;border-radius:var(--r-xl) var(--r-xl) 0 0;z-index:40;display:flex;flex-direction:column;}
+.qc-hdr{padding:14px 16px 10px;}
+.qc-ttl{font-size:17px;font-weight:700;color:var(--t1);line-height:1.2;}
+.qc-ttl-ar{font-size:11px;color:var(--t3);direction:rtl;text-align:right;margin-top:2px;}
+.qc-body{padding:6px 14px 10px;}
+.qc-field{background:var(--screen-bg);border:1px solid var(--b1);border-radius:var(--r-md);padding:11px 12px;margin-bottom:8px;}
+.qc-flabel{font-size:10px;color:var(--t3);font-weight:700;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:6px;}
+.qc-chip-ro{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;background:#fff;border:1px solid var(--b1);border-radius:var(--r-pill);font-size:12px;font-weight:600;color:var(--t1);}
+.qc-input{border:1.5px solid var(--b2);border-radius:var(--r-sm);padding:10px 12px;font-size:18px;font-weight:700;color:var(--t1);background:#fff;font-variant-numeric:tabular-nums;}
+.qc-input.focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(26,60,94,0.08);}
+.qc-input.err{border-color:var(--red);box-shadow:0 0 0 3px rgba(192,57,43,0.1);}
+.qc-err{font-size:11px;color:var(--red);margin-top:6px;font-weight:600;}
+.qc-err-ar{font-size:10px;color:var(--red);direction:rtl;text-align:right;margin-top:2px;font-weight:500;opacity:0.8;}
+.qc-cap{padding:12px 14px;background:var(--gold-l);border:1px solid rgba(184,134,11,0.25);border-radius:var(--r-md);margin-bottom:8px;}
+.qc-cap-txt{font-size:11px;color:#6B5210;line-height:1.45;font-weight:500;}
+.qc-cap-txt-ar{font-size:10px;color:#6B5210;direction:rtl;text-align:right;margin-top:3px;line-height:1.45;opacity:0.85;}
+.qc-cap-link{font-size:11px;font-weight:700;color:#6B5210;margin-top:5px;text-decoration:underline;}
+.qc-net-err{padding:10px 12px;background:var(--red-l);border:1px solid rgba(192,57,43,0.2);border-left:3px solid var(--red);border-radius:var(--r-md);margin-bottom:10px;display:flex;align-items:flex-start;gap:8px;}
+.qc-net-err-ico{color:var(--red);font-size:13px;line-height:1.3;}
+.qc-net-err-txt{flex:1;}
+.qc-net-err-en{font-size:11px;color:var(--red);font-weight:600;line-height:1.4;}
+.qc-net-err-ar{font-size:10px;color:var(--red);direction:rtl;text-align:right;margin-top:2px;opacity:0.85;}
+.qc-net-err-retry{font-size:11px;font-weight:700;color:var(--red);text-decoration:underline;margin-top:2px;}
+.qc-actions{display:flex;gap:8px;padding:10px 14px 20px;}
+.qc-btn{flex:1;padding:12px;border-radius:var(--r-sm);font-size:13px;font-weight:700;text-align:center;}
+.qc-btn.primary{background:var(--navy);color:#fff;}
+.qc-btn.primary.disabled{background:var(--screen-bg3);color:var(--t4);}
+.qc-btn.cancel{background:transparent;color:var(--t2);border:1px solid var(--b2);}
+
+/* Push notification lock screen */
+.phone.lock .screen{background:linear-gradient(180deg,#1a1a2e 0%,#16213e 60%,#0f1626 100%);}
+.phone.lock .a-status{background:transparent;color:#fff;}
+.phone.lock .a-nav{display:none;}
+.phone.lock .screen{bottom:0;}
+.lock-time{padding:60px 0 8px;text-align:center;color:#fff;font-weight:300;font-size:56px;letter-spacing:-0.02em;font-variant-numeric:tabular-nums;line-height:1;}
+.lock-date{text-align:center;color:rgba(255,255,255,0.8);font-size:12px;font-weight:500;margin-bottom:36px;}
+.push-card{margin:0 10px 8px;padding:11px 13px;background:rgba(255,255,255,0.96);backdrop-filter:blur(20px);border-radius:14px;display:flex;gap:10px;align-items:flex-start;box-shadow:0 4px 16px rgba(0,0,0,0.2);}
+.push-app-ico{width:28px;height:28px;border-radius:7px;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0;}
+.push-body{flex:1;min-width:0;}
+.push-app-name{font-size:10px;font-weight:700;color:var(--t3);letter-spacing:0.02em;margin-bottom:1px;}
+.push-ttl{font-size:12px;font-weight:700;color:var(--t1);line-height:1.3;margin-bottom:2px;}
+.push-txt{font-size:11px;color:var(--t2);line-height:1.4;}
+.push-time{font-size:9px;color:var(--t4);font-weight:500;margin-left:auto;font-family:var(--f-mono);}
+
+/* Flow notes */
+.flow-note{max-width:var(--ph-w);padding:9px 12px;border-radius:4px;font-family:var(--f-body);font-size:11px;font-weight:500;line-height:1.5;}
+.flow-note.decision{background:#FBF4DC;color:#6B5210;border-left:3px solid var(--gold);}
+.flow-note.bug{background:var(--red-l);color:#7A1810;border-left:3px solid var(--red);}
+.flow-note.new{background:var(--green-l);color:#0F5830;border-left:3px solid var(--green);}
+
+/* Handoff */
+.handoff{margin-top:64px;padding:36px;background:white;border:1px solid var(--b1);border-radius:var(--r-md);}
+.handoff-title{font-size:26px;font-weight:700;color:var(--t1);margin-bottom:8px;letter-spacing:-0.01em;}
+.handoff-sub{font-size:14px;color:var(--t2);margin-bottom:28px;line-height:1.5;max-width:780px;}
+.handoff-sec{margin-top:28px;padding-top:24px;border-top:1px solid var(--b1);}
+.handoff-sec:first-of-type{border-top:none;padding-top:0;margin-top:0;}
+.handoff-h{font-size:18px;font-weight:700;color:var(--t1);margin-bottom:12px;}
+.handoff-p{font-size:14px;color:var(--t1);line-height:1.6;margin-bottom:8px;}
+.handoff-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.handoff-list li{font-size:14px;color:var(--t1);line-height:1.6;padding-left:16px;position:relative;}
+.handoff-list li::before{content:'—';position:absolute;left:0;color:var(--t3);font-weight:700;}
+
+.copy-table{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed;}
+.copy-table col.col-screen{width:22%;}
+.copy-table col.col-element{width:22%;}
+.copy-table col.col-en{width:28%;}
+.copy-table col.col-ar{width:28%;}
+.copy-table th{text-align:left;padding:10px 12px;border-bottom:2px solid var(--b2);font-size:11px;color:var(--t2);text-transform:uppercase;letter-spacing:0.06em;font-weight:700;background:var(--screen-bg);}
+.copy-table td{padding:10px 12px;border-bottom:1px solid var(--b1);vertical-align:top;color:var(--t1);line-height:1.55;word-wrap:break-word;overflow-wrap:break-word;}
+.copy-table td.screen-name{font-weight:700;color:var(--t1);background:var(--screen-bg);}
+.copy-table td.element-name{color:var(--t2);font-weight:500;}
+.copy-table td.en{font-size:12px;color:var(--t1);}
+.copy-table td.ar{font-size:12px;color:var(--t1);direction:rtl;text-align:right;font-family:var(--f-body);}
+.copy-table tr.group-start td{border-top:2px solid var(--b2);}
+
+.callout{padding:12px 14px;border-radius:0 var(--r-sm) var(--r-sm) 0;font-size:13px;line-height:1.55;margin-top:12px;}
+.callout.warn{background:var(--gold-l);border-left:3px solid var(--gold);color:#6B5210;}
+.callout.info{background:#EAF0FE;border-left:3px solid #4A80C0;color:#103868;}
+
+/* Dimmed content behind a sheet */
+.dim{opacity:0.35;}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- DOC HEADER -->
+<div class="doc-header">
+  <div class="doc-meta">
+    <span class="doc-tag prototype">Prototype</span>
+    <span class="doc-tag designer">Designer brief</span>
+    <span class="doc-tag android">Android</span>
+    <span class="doc-tag wip">Draft v3</span>
+    <span class="doc-tag version">DB-010</span>
+    <span class="doc-tag rebuild">v3 · updated brief, centre plus nav, final copy</span>
+    <span class="doc-date">Home Tab revamp · summary with light directional nudges</span>
+  </div>
+
+  <div class="doc-title">Home Tab Revamp</div>
+  <div class="doc-subtitle">A summary surface, not a dashboard. The Home Tab answers "what's happening with my money this month?" at a glance, and surfaces one next action when one exists.</div>
+
+  <div class="doc-info">
+    <div class="doc-info-cell">
+      <div class="info-label">The problem</div>
+      <div class="info-body">
+        Returning users see the same flat dashboard every session with no directional nudge. The revamp composes eight slots across six states into three big cards: Total Expenses (with category breakdown inside), Smart Budget, and Latest Spending. Slots that have nothing to say collapse. The smart budget slot is the one hero; everything else is informational.
+      </div>
+    </div>
+    <div class="doc-info-cell">
+      <div class="info-label">Flows in this document</div>
+      <div class="flow-list">
+        <div class="flow-list-item active">Flow 1 — State A · hybrid anchor (default)</div>
+        <div class="flow-list-item active">Flow 2 — State A-pure · ≤3 budgets + Manage budgets</div>
+        <div class="flow-list-item active">Flow 3 — State A-pure · more than 3 budgets</div>
+        <div class="flow-list-item active">Flow 4 — State B · review prompt + recommendations</div>
+        <div class="flow-list-item active">Flow 5 — State C · categorisation in progress</div>
+        <div class="flow-list-item active">Flow 6 — State D · primed-and-ready</div>
+        <div class="flow-list-item active">Flow 7 — State E · manual-only</div>
+        <div class="flow-list-item active">Flow 8 — State F · offline</div>
+        <div class="flow-list-item active">Flow 9 — Budget bar · under / near / over</div>
+        <div class="flow-list-item active">Flow 10 — Centre plus action sheet</div>
+        <div class="flow-list-item active">Flow 11 — Transaction Detail sheet</div>
+        <div class="flow-list-item active">Flow 12 — Quick-create sheet</div>
+        <div class="flow-list-item active">Flow 13 — Push notifications</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- FLOW 1 — STATE A · CANONICAL -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 1 — State A · Canonical anchor</div>
+    <div class="flow-section-line"></div>
+  </div>
+  <div class="flow-intro">Returning user. SMS connected, transactions parsed, 2 of the original 3 recommended budgets set. The third recommendation remains as a Mode A card below the Mode B rows. No footer CTA on the Smart Budget card while recommendations are still showing — the "Set" buttons are the action.</div>
+
+  <div class="phone-row">
+
+    <!-- 1.1 -->
+    <div class="screen-col">
+      <div class="screen-label">State A · canonical</div>
+      <div class="state-badge happy">default</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="hm-header">
+            <div class="hm-greet">
+              <div class="hm-greet-en">Good morning, Ahmed.</div>
+            </div>
+            <div class="hm-bell">🔔<div class="hm-bell-badge">3</div></div>
+            <div class="hm-avatar">A</div>
+          </div>
+
+          <div class="bcard">
+            <div class="bcard-head">
+              <div>
+                <div class="bcard-label">Total spending this month</div>
+              </div>
+            </div>
+            <div class="te-amount-row">
+              <div class="te-amount">4,820</div>
+              <div class="te-cur">EGP</div>
+            </div>
+            <div class="te-count">24 transactions</div>
+            <div class="row-stack">
+              <div class="crow">
+                <div class="crow-ico">🍕</div>
+                <div class="crow-body"><div class="crow-title">Food &amp; Dining</div><div class="crow-sub">12 transactions</div></div>
+                <div class="crow-amt">1,840 EGP</div>
+              </div>
+              <div class="crow">
+                <div class="crow-ico">🚗</div>
+                <div class="crow-body"><div class="crow-title">Transport</div><div class="crow-sub">6 transactions</div></div>
+                <div class="crow-amt">620 EGP</div>
+              </div>
+              <div class="crow">
+                <div class="crow-ico">🛍</div>
+                <div class="crow-body"><div class="crow-title">Shopping</div><div class="crow-sub">3 transactions</div></div>
+                <div class="crow-amt">890 EGP</div>
+              </div>
+            </div>
+            <div class="bcard-cta">See all categories</div>
+          </div>
+
+          <!-- Smart budget card — 2 Mode B + 1 Mode A remaining -->
+          <div class="bcard">
+            <div class="bcard-head">
+              <div>
+                <div class="bcard-label">Your budgets</div>
+              </div>
+            </div>
+            <div class="row-stack" style="padding-bottom:2px">
+              <div class="mode-b-crow">
+                <div class="mode-b-top">
+                  <div class="mode-b-ico">🍕</div>
+                  <div class="mode-b-cat">Food &amp; Dining</div>
+                  <div class="mode-b-pill near">Near</div>
+                </div>
+                <div class="mode-b-bar-wrap"><div class="mode-b-bar near" style="width:82%"></div></div>
+                <div class="mode-b-amt"><div class="mode-b-amt-l">1,640 of 2,000 EGP</div></div>
+              </div>
+              <div class="mode-b-crow">
+                <div class="mode-b-top">
+                  <div class="mode-b-ico">🚗</div>
+                  <div class="mode-b-cat">Transport</div>
+                  <div class="mode-b-pill under">Under</div>
+                </div>
+                <div class="mode-b-bar-wrap"><div class="mode-b-bar under" style="width:31%"></div></div>
+                <div class="mode-b-amt"><div class="mode-b-amt-l">310 of 1,000 EGP</div></div>
+              </div>
+            </div>
+            <div class="sb-framing" style="padding-top:6px;padding-bottom:10px">
+              <div class="sb-framing-en">Based on your spending, here's where a budget might help.</div>
+            </div>
+            <div class="row-stack">
+              <div class="mode-a-crow">
+                <div class="mode-a-ico">🛍</div>
+                <div class="mode-a-body">
+                  <div class="mode-a-cat">Shopping</div>
+                  <div class="mode-a-sugg">Try <strong>1,200 EGP</strong>/month</div>
+                </div>
+                <div class="mode-a-btn">Set</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bcard">
+            <div class="bcard-head">
+              <div>
+                <div class="bcard-label">Latest spending</div>
+              </div>
+            </div>
+            <div class="row-stack">
+              <div class="crow">
+                <div class="crow-ico">☕</div>
+                <div class="crow-body"><div class="crow-title">Starbucks</div><div class="crow-sub">Today, 9:12</div></div>
+                <div class="crow-amt spend">140 EGP</div>
+              </div>
+              <div class="crow">
+                <div class="crow-ico">⛽</div>
+                <div class="crow-body"><div class="crow-title">Shell</div><div class="crow-sub">Yesterday, 18:44</div></div>
+                <div class="crow-amt spend">380 EGP</div>
+              </div>
+              <div class="crow">
+                <div class="crow-ico">🛍</div>
+                <div class="crow-body"><div class="crow-title">Carrefour</div><div class="crow-sub">Apr 22, 14:30</div></div>
+                <div class="crow-amt spend">520 EGP</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="addtx-util">+ Add transaction</div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item on"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕️</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus"><span class="a-nav-plus-ico">+</span></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</div>
+
+
+<!-- FLOW 2 — STATE A-PURE · ≤3 BUDGETS -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 2 — State A-pure · ≤3 budgets + Manage budgets footer</div>
+    <div class="flow-section-line"></div>
+  </div>
+  <div class="flow-intro">All qualifying categories already have budgets. Pure Mode B, no recommendation cards. Footer CTA reads "Manage budgets" and routes to the Budgets tab. Edge case for most users — A-hybrid (Flow 1) is the common shape.</div>
+
+  <div class="phone-row">
+
+    <div class="screen-col">
+      <div class="screen-label">State A-pure · 3 Mode B rows + Manage budgets</div>
+      <div class="state-badge happy">pure Mode B</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="hm-header">
+            <div class="hm-greet"><div class="hm-greet-en">Good morning, Ahmed.</div></div>
+            <div class="hm-bell">🔔</div>
+            <div class="hm-avatar">A</div>
+          </div>
+
+          <div class="bcard">
+            <div class="bcard-head"><div><div class="bcard-label">Total spending this month</div></div></div>
+            <div class="te-amount-row"><div class="te-amount">4,820</div><div class="te-cur">EGP</div></div>
+            <div class="te-count">24 transactions</div>
+            <div class="row-stack">
+              <div class="crow">
+                <div class="crow-ico">🍕</div>
+                <div class="crow-body"><div class="crow-title">Food &amp; Dining</div><div class="crow-sub">12 transactions</div></div>
+                <div class="crow-amt">1,840 EGP</div>
+              </div>
+              <div class="crow">
+                <div class="crow-ico">🚗</div>
+                <div class="crow-body"><div class="crow-title">Transport</div><div class="crow-sub">6 transactions</div></div>
+                <div class="crow-amt">620 EGP</div>
+              </div>
+              <div class="crow">
+                <div class="crow-ico">🛍</div>
+                <div class="crow-body"><div class="crow-title">Shopping</div><div class="crow-sub">3 transactions</div></div>
+                <div class="crow-amt">890 EGP</div>
+              </div>
+            </div>
+            <div class="bcard-cta">See all categories</div>
+          </div>
+
+          <!-- Smart budget pure Mode B with Manage budgets footer -->
+          <div class="bcard">
+            <div class="bcard-head"><div><div class="bcard-label">Your budgets</div></div></div>
+            <div class="row-stack">
+              <div class="mode-b-crow">
+                <div class="mode-b-top">
+                  <div class="mode-b-ico">🍕</div>
+                  <div class="mode-b-cat">Food &amp; Dining</div>
+                  <div class="mode-b-pill near">Near</div>
+                </div>
+                <div class="mode-b-bar-wrap"><div class="mode-b-bar near" style="width:82%"></div></div>
+                <div class="mode-b-amt"><div class="mode-b-amt-l">1,640 of 2,000 EGP</div></div>
+              </div>
+              <div class="mode-b-crow">
+                <div class="mode-b-top">
+                  <div class="mode-b-ico">🚗</div>
+                  <div class="mode-b-cat">Transport</div>
+                  <div class="mode-b-pill under">Under</div>
+                </div>
+                <div class="mode-b-bar-wrap"><div class="mode-b-bar under" style="width:31%"></div></div>
+                <div class="mode-b-amt"><div class="mode-b-amt-l">310 of 1,000 EGP</div></div>
+              </div>
+              <div class="mode-b-crow">
+                <div class="mode-b-top">
+                  <div class="mode-b-ico">🛍</div>
+                  <div class="mode-b-cat">Shopping</div>
+                  <div class="mode-b-pill under">Under</div>
+                </div>
+                <div class="mode-b-bar-wrap"><div class="mode-b-bar under" style="width:74%"></div></div>
+                <div class="mode-b-amt"><div class="mode-b-amt-l">890 of 1,200 EGP</div></div>
+              </div>
+            </div>
+            <div class="bcard-cta">Manage budgets</div>
+          </div>
+
+          <div class="bcard">
+            <div class="bcard-head"><div><div class="bcard-label">Latest spending</div></div></div>
+            <div class="row-stack">
+              <div class="crow">
+                <div class="crow-ico">☕</div>
+                <div class="crow-body"><div class="crow-title">Starbucks</div><div class="crow-sub">Today, 9:12</div></div>
+                <div class="crow-amt spend">140 EGP</div>
+              </div>
+              <div class="crow">
+                <div class="crow-ico">⛽</div>
+                <div class="crow-body"><div class="crow-title">Shell</div><div class="crow-sub">Yesterday, 18:44</div></div>
+                <div class="crow-amt spend">380 EGP</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item on"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕️</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus"><span class="a-nav-plus-ico">+</span></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Footer CTA only appears in pure Mode B (no Mode A cards). "Manage budgets" at ≤3 budgets, "View all N budgets" at >3 — both route to the Budgets tab.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- FLOW 3 — STATE A · >3 BUDGETS -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 3 — State A · Mode B with &gt;3 budgets</div>
+    <div class="flow-section-line"></div>
+  </div>
+  <div class="flow-intro">User has 5 budgets, all in Mode B. 3 rows show by attention-weighted sort (over → near → under by % spent). "View all 5 budgets" sits inside the card below the rows.</div>
+
+  <div class="phone-row">
+
+    <div class="screen-col">
+      <div class="screen-label">Mode B · 3 rows attention-sorted + View all</div>
+      <div class="state-badge error">over · near · under</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="hm-header">
+            <div class="hm-greet"><div class="hm-greet-en">Good morning, Ahmed.</div></div>
+            <div class="hm-bell">🔔</div>
+            <div class="hm-avatar">A</div>
+          </div>
+
+          <div class="bcard">
+            <div class="bcard-head"><div><div class="bcard-label">Total spending this month</div></div></div>
+            <div class="te-amount-row"><div class="te-amount">6,420</div><div class="te-cur">EGP</div></div>
+            <div class="te-count">38 transactions</div>
+            <div class="row-stack">
+              <div class="crow">
+                <div class="crow-ico">🍕</div>
+                <div class="crow-body"><div class="crow-title">Food &amp; Dining</div><div class="crow-sub">18 transactions</div></div>
+                <div class="crow-amt">2,410 EGP</div>
+              </div>
+              <div class="crow">
+                <div class="crow-ico">🚗</div>
+                <div class="crow-body"><div class="crow-title">Transport</div><div class="crow-sub">9 transactions</div></div>
+                <div class="crow-amt">880 EGP</div>
+              </div>
+              <div class="crow">
+                <div class="crow-ico">🛍</div>
+                <div class="crow-body"><div class="crow-title">Shopping</div><div class="crow-sub">5 transactions</div></div>
+                <div class="crow-amt">780 EGP</div>
+              </div>
+            </div>
+            <div class="bcard-cta">See all categories</div>
+          </div>
+
+          <div class="bcard">
+            <div class="bcard-head"><div><div class="bcard-label">Your budgets</div></div></div>
+            <div class="row-stack">
+              <div class="mode-b-crow">
+                <div class="mode-b-top">
+                  <div class="mode-b-ico">🍕</div>
+                  <div class="mode-b-cat">Food &amp; Dining</div>
+                  <div class="mode-b-pill over">Over</div>
+                </div>
+                <div class="mode-b-bar-wrap">
+                  <div class="mode-b-bar over" style="width:100%"></div>
+                  <div class="mode-b-bar-over-mark" style="left:83%"></div>
+                </div>
+                <div class="mode-b-amt">
+                  <div class="mode-b-amt-l">2,410 of 2,000 EGP</div>
+                  <div class="mode-b-amt-r">410 over</div>
+                </div>
+              </div>
+              <div class="mode-b-crow">
+                <div class="mode-b-top">
+                  <div class="mode-b-ico">🚗</div>
+                  <div class="mode-b-cat">Transport</div>
+                  <div class="mode-b-pill near">Near</div>
+                </div>
+                <div class="mode-b-bar-wrap"><div class="mode-b-bar near" style="width:88%"></div></div>
+                <div class="mode-b-amt"><div class="mode-b-amt-l">880 of 1,000 EGP</div></div>
+              </div>
+              <div class="mode-b-crow">
+                <div class="mode-b-top">
+                  <div class="mode-b-ico">🛍</div>
+                  <div class="mode-b-cat">Shopping</div>
+                  <div class="mode-b-pill under">Under</div>
+                </div>
+                <div class="mode-b-bar-wrap"><div class="mode-b-bar under" style="width:65%"></div></div>
+                <div class="mode-b-amt"><div class="mode-b-amt-l">780 of 1,200 EGP</div></div>
+              </div>
+            </div>
+            <div class="bcard-cta">View all 5 budgets</div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item on"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕️</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus"><span class="a-nav-plus-ico">+</span></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+        </div>
+      </div>
+      <div class="flow-note bug">Over-limit bar: fills to 100% red with a vertical marker where the user crossed the limit (~83%). Copy shows "410 over". One option of three — alternatives in Flow 9.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- FLOW 4 — STATE B -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 4 — State B · First session, review prompt + Mode A</div>
+    <div class="flow-section-line"></div>
+  </div>
+  <div class="flow-intro">First session, transactions parsed, low-confidence items flagged. Review prompt banner sits above the card stack. Smart Budget card shows 3 Mode A recommendations.</div>
+
+  <div class="phone-row">
+
+    <div class="screen-col">
+      <div class="screen-label">State B · review prompt + 3 Mode A cards</div>
+      <div class="state-badge interaction">first session</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="hm-header">
+            <div class="hm-greet"><div class="hm-greet-en">Good morning, Ahmed.</div></div>
+            <div class="hm-bell">🔔</div>
+            <div class="hm-avatar">A</div>
+          </div>
+          <div class="review-slot">
+            <div class="review-ico">✎</div>
+            <div class="review-body">
+              <div class="review-text">Help us place a few transactions.</div>
+            </div>
+            <div class="review-cta">Review now →</div>
+          </div>
+
+          <div class="bcard">
+            <div class="bcard-head"><div><div class="bcard-label">Total spending this month</div></div></div>
+            <div class="te-amount-row"><div class="te-amount">1,240</div><div class="te-cur">EGP</div></div>
+            <div class="te-count">8 transactions</div>
+            <div class="row-stack">
+              <div class="crow">
+                <div class="crow-ico">🍕</div>
+                <div class="crow-body"><div class="crow-title">Food &amp; Dining</div><div class="crow-sub">4 transactions</div></div>
+                <div class="crow-amt">620 EGP</div>
+              </div>
+              <div class="crow">
+                <div class="crow-ico">🚗</div>
+                <div class="crow-body"><div class="crow-title">Transport</div><div class="crow-sub">2 transactions</div></div>
+                <div class="crow-amt">280 EGP</div>
+              </div>
+              <div class="crow">
+                <div class="crow-ico">🛍</div>
+                <div class="crow-body"><div class="crow-title">Shopping</div><div class="crow-sub">2 transactions</div></div>
+                <div class="crow-amt">340 EGP</div>
+              </div>
+            </div>
+            <div class="bcard-cta">See all categories</div>
+          </div>
+
+          <div class="bcard">
+            <div class="bcard-head"><div><div class="bcard-label">Suggested budgets</div></div></div>
+            <div class="sb-framing" style="padding-bottom:10px">
+              <div class="sb-framing-en">Based on your spending, here's where a budget might help.</div>
+            </div>
+            <div class="row-stack">
+              <div class="mode-a-crow">
+                <div class="mode-a-ico">🍕</div>
+                <div class="mode-a-body">
+                  <div class="mode-a-cat">Food &amp; Dining</div>
+                  <div class="mode-a-sugg">Try <strong>2,000 EGP</strong>/month</div>
+                </div>
+                <div class="mode-a-btn">Set</div>
+              </div>
+              <div class="mode-a-crow">
+                <div class="mode-a-ico">🚗</div>
+                <div class="mode-a-body">
+                  <div class="mode-a-cat">Transport</div>
+                  <div class="mode-a-sugg">Try <strong>800 EGP</strong>/month</div>
+                </div>
+                <div class="mode-a-btn">Set</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item on"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕️</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus"><span class="a-nav-plus-ico">+</span></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Smart Budget label reads "Suggested budgets" when only Mode A cards show. Swaps to "Your budgets" once the first budget is created.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- FLOW 5 — STATE C -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 5 — State C · Categorisation in progress</div>
+    <div class="flow-section-line"></div>
+  </div>
+  <div class="flow-intro">First session, categorisation still running. Total Expenses card shows the amount and count but the category rows are replaced with a pending notice. Smart Budget in Mode C. Latest Spending rows show "Sorting…" where a date would normally sit.</div>
+
+  <div class="phone-row">
+
+    <div class="screen-col">
+      <div class="screen-label">State C · pending takeover inside Total card</div>
+      <div class="state-badge loading">categorising</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="hm-header">
+            <div class="hm-greet"><div class="hm-greet-en">Good morning, Ahmed.</div></div>
+            <div class="hm-bell">🔔</div>
+            <div class="hm-avatar">A</div>
+          </div>
+
+          <div class="bcard">
+            <div class="bcard-head"><div><div class="bcard-label">Total spending this month</div></div></div>
+            <div class="te-amount-row"><div class="te-amount">1,240</div><div class="te-cur">EGP</div></div>
+            <div class="te-count">8 transactions</div>
+            <div class="takeover">
+              <div class="takeover-ico">⟳</div>
+              <div class="takeover-ttl">Sorting your latest spending.</div>
+              <div class="takeover-body">Breakdown shows up in a moment.</div>
+            </div>
+          </div>
+
+          <div class="bcard">
+            <div class="bcard-head"><div><div class="bcard-label">Your budgets</div></div></div>
+            <div class="mode-c-body">
+              <div class="mode-c-ttl">Set a budget to stay on top of your spending.</div>
+              <div class="mode-c-support">Tailored suggestions show up once we know your spending.</div>
+              <div class="mode-c-btn">Create budget</div>
+            </div>
+          </div>
+
+          <div class="bcard">
+            <div class="bcard-head"><div><div class="bcard-label">Latest spending</div></div></div>
+            <div class="row-stack">
+              <div class="crow">
+                <div class="crow-ico">☕</div>
+                <div class="crow-body"><div class="crow-title">Starbucks</div><div class="crow-sub pending">Sorting…</div></div>
+                <div class="crow-amt spend">140 EGP</div>
+              </div>
+              <div class="crow">
+                <div class="crow-ico">⛽</div>
+                <div class="crow-body"><div class="crow-title">Shell</div><div class="crow-sub pending">Sorting…</div></div>
+                <div class="crow-amt spend">380 EGP</div>
+              </div>
+              <div class="crow">
+                <div class="crow-ico">🛍</div>
+                <div class="crow-body"><div class="crow-title">Carrefour</div><div class="crow-sub">Apr 22, 14:30</div></div>
+                <div class="crow-amt spend">520 EGP</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="addtx-util">+ Add transaction</div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item on"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕️</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus"><span class="a-nav-plus-ico">+</span></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Total amount and count still render — they're computable without categorisation. Only the breakdown waits.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- FLOW 6 — STATE D -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 6 — State D · Primed-and-ready</div>
+    <div class="flow-section-line"></div>
+  </div>
+  <div class="flow-intro">First session, SMS granted, zero transactions yet. Total Expenses card shows an expectations takeover (no amount — nothing to total). Smart Budget in Mode C. Latest Spending card doesn't render.</div>
+
+  <div class="phone-row">
+
+    <div class="screen-col">
+      <div class="screen-label">State D · expectations takeover + Mode C</div>
+      <div class="state-badge success">primed</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="hm-header">
+            <div class="hm-greet"><div class="hm-greet-en">Good morning, Ahmed.</div></div>
+            <div class="hm-bell">🔔</div>
+            <div class="hm-avatar">A</div>
+          </div>
+
+          <div class="bcard">
+            <div class="bcard-head"><div><div class="bcard-label">Total spending this month</div></div></div>
+            <div class="takeover expect">
+              <div class="takeover-ico">✨</div>
+              <div class="takeover-ttl">You're in.</div>
+              <div class="takeover-body">The next time you spend, we'll catch it and sort it here.</div>
+            </div>
+          </div>
+
+          <div class="bcard">
+            <div class="bcard-head"><div><div class="bcard-label">Your budgets</div></div></div>
+            <div class="mode-c-body">
+              <div class="mode-c-ttl">Set a budget to stay on top of your spending.</div>
+              <div class="mode-c-support">Tailored suggestions show up once we know your spending.</div>
+              <div class="mode-c-btn">Create budget</div>
+            </div>
+          </div>
+
+          <div class="addtx-util">+ Add transaction</div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item on"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕️</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus"><span class="a-nav-plus-ico">+</span></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+        </div>
+      </div>
+      <div class="flow-note new">This is the only signal the user has that the app works. The word "here" is deliberate — when the first transaction lands, it appears in this spot.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- FLOW 7 — STATE E -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 7 — State E · Manual-only first session</div>
+    <div class="flow-section-line"></div>
+  </div>
+  <div class="flow-intro">User declined SMS. Manual entry is the primary action. The in-screen Add Transaction hero coexists with the centre plus in this state — the hero teaches the action during first manual-entry, the centre plus is the app-wide pattern. Secondary SMS link sits below.</div>
+
+  <div class="phone-row">
+
+    <div class="screen-col">
+      <div class="screen-label">State E · Add Transaction hero + centre plus</div>
+      <div class="state-badge empty">manual-only</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="hm-header">
+            <div class="hm-greet"><div class="hm-greet-en">Good morning, Ahmed.</div></div>
+            <div class="hm-bell">🔔</div>
+            <div class="hm-avatar">A</div>
+          </div>
+
+          <div class="bcard">
+            <div class="bcard-head"><div><div class="bcard-label">Total spending this month</div></div></div>
+            <div class="takeover manual">
+              <div class="takeover-ico">✎</div>
+              <div class="takeover-ttl">Add a transaction and you'll see where your money goes.</div>
+            </div>
+          </div>
+
+          <div class="bcard">
+            <div class="bcard-head"><div><div class="bcard-label">Your budgets</div></div></div>
+            <div class="mode-c-body">
+              <div class="mode-c-ttl">Set a budget to stay on top of your spending.</div>
+              <div class="mode-c-support">Tailored suggestions show up once we know your spending.</div>
+              <div class="mode-c-btn">Create budget</div>
+            </div>
+          </div>
+
+          <div class="addtx-hero">
+            <span style="font-size:18px;font-weight:700">+</span>
+            <span>Add transaction</span>
+          </div>
+          <div class="sms-link">
+            <div class="sms-link-en">Want automatic tracking? Turn on SMS.</div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item on"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕️</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus"><span class="a-nav-plus-ico">+</span></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">State E is the only state where in-screen Add Transaction and centre plus coexist. Hero is pedagogical — teaches the primary action during first manual-entry session. Every other state uses centre plus only.</div>
+      <div class="flow-note decision">Home Tab does not re-prompt for SMS after the secondary link. User declined once; no pressure.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- FLOW 8 — STATE F -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 8 — State F · Offline / cached</div>
+    <div class="flow-section-line"></div>
+  </div>
+  <div class="flow-intro">Backend unreachable. "Last updated" pill sits above the card stack. Cards render from cache. Smart Budget may not render if nothing useful is cached.</div>
+
+  <div class="phone-row">
+
+    <div class="screen-col">
+      <div class="screen-label">State F · cached</div>
+      <div class="state-badge cached">offline</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="hm-header">
+            <div class="hm-greet"><div class="hm-greet-en">Good morning, Ahmed.</div></div>
+            <div class="hm-bell">🔔</div>
+            <div class="hm-avatar">A</div>
+          </div>
+
+          <div class="offline-pill">
+            <div class="offline-dot"></div>
+            <div class="offline-text">Last updated 2 hours ago</div>
+          </div>
+
+          <div class="bcard">
+            <div class="bcard-head"><div><div class="bcard-label">Total spending this month</div></div></div>
+            <div class="te-amount-row"><div class="te-amount">4,820</div><div class="te-cur">EGP</div></div>
+            <div class="te-count">24 transactions</div>
+            <div class="row-stack">
+              <div class="crow">
+                <div class="crow-ico">🍕</div>
+                <div class="crow-body"><div class="crow-title">Food &amp; Dining</div><div class="crow-sub">12 transactions</div></div>
+                <div class="crow-amt">1,840 EGP</div>
+              </div>
+              <div class="crow">
+                <div class="crow-ico">🚗</div>
+                <div class="crow-body"><div class="crow-title">Transport</div><div class="crow-sub">6 transactions</div></div>
+                <div class="crow-amt">620 EGP</div>
+              </div>
+              <div class="crow">
+                <div class="crow-ico">🛍</div>
+                <div class="crow-body"><div class="crow-title">Shopping</div><div class="crow-sub">3 transactions</div></div>
+                <div class="crow-amt">890 EGP</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bcard">
+            <div class="bcard-head"><div><div class="bcard-label">Latest spending</div></div></div>
+            <div class="row-stack">
+              <div class="crow">
+                <div class="crow-ico">☕</div>
+                <div class="crow-body"><div class="crow-title">Starbucks</div><div class="crow-sub">Today, 9:12</div></div>
+                <div class="crow-amt spend">140 EGP</div>
+              </div>
+              <div class="crow">
+                <div class="crow-ico">⛽</div>
+                <div class="crow-body"><div class="crow-title">Shell</div><div class="crow-sub">Yesterday, 18:44</div></div>
+                <div class="crow-amt spend">380 EGP</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item on"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕️</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus"><span class="a-nav-plus-ico">+</span></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+        </div>
+      </div>
+      <div class="flow-note new">Offline pill and review prompt never coexist — an offline user can't have a live parse review. Smart Budget card is absent here because Mode A needs live logic and there are no cached budgets to show in Mode B.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- FLOW 9 — MODE B BAR STATES -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 9 — Mode B progress bar · 3 states isolated</div>
+    <div class="flow-section-line"></div>
+  </div>
+  <div class="flow-intro">The three bar states side by side so the designer can pick the over-limit convention.</div>
+
+  <div class="phone-row">
+
+    <!-- 9.1 Under -->
+    <div class="screen-col">
+      <div class="screen-label">Under-limit · green bar</div>
+      <div class="state-badge happy">under</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="hm-header">
+            <div class="hm-greet"><div class="hm-greet-en">Good morning, Ahmed.</div></div>
+            <div class="hm-bell">🔔</div>
+            <div class="hm-avatar">A</div>
+          </div>
+          <div class="bcard">
+            <div class="bcard-head"><div><div class="bcard-label">Your budgets</div></div></div>
+            <div class="row-stack">
+              <div class="mode-b-crow">
+                <div class="mode-b-top">
+                  <div class="mode-b-ico">🚗</div>
+                  <div class="mode-b-cat">Transport</div>
+                  <div class="mode-b-pill under">Under</div>
+                </div>
+                <div class="mode-b-bar-wrap"><div class="mode-b-bar under" style="width:31%"></div></div>
+                <div class="mode-b-amt"><div class="mode-b-amt-l">310 of 1,000 EGP</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item on"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕️</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus"><span class="a-nav-plus-ico">+</span></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Green fill to spent %. "Under" pill carries the label — state can't be colour-only.</div>
+    </div>
+
+    <!-- 9.2 Near -->
+    <div class="screen-col">
+      <div class="screen-label">Near-limit · amber bar</div>
+      <div class="state-badge loading">near</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="hm-header">
+            <div class="hm-greet"><div class="hm-greet-en">Good morning, Ahmed.</div></div>
+            <div class="hm-bell">🔔</div>
+            <div class="hm-avatar">A</div>
+          </div>
+          <div class="bcard">
+            <div class="bcard-head"><div><div class="bcard-label">Your budgets</div></div></div>
+            <div class="row-stack">
+              <div class="mode-b-crow">
+                <div class="mode-b-top">
+                  <div class="mode-b-ico">🍕</div>
+                  <div class="mode-b-cat">Food &amp; Dining</div>
+                  <div class="mode-b-pill near">Near</div>
+                </div>
+                <div class="mode-b-bar-wrap"><div class="mode-b-bar near" style="width:88%"></div></div>
+                <div class="mode-b-amt"><div class="mode-b-amt-l">1,760 of 2,000 EGP</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item on"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕️</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus"><span class="a-nav-plus-ico">+</span></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Amber bar. Copy unchanged from under-limit. State lives in the bar colour and the "Near" pill.</div>
+    </div>
+
+    <!-- 9.3 Over -->
+    <div class="screen-col">
+      <div class="screen-label">Over-limit · marked overflow region</div>
+      <div class="state-badge error">over</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="hm-header">
+            <div class="hm-greet"><div class="hm-greet-en">Good morning, Ahmed.</div></div>
+            <div class="hm-bell">🔔</div>
+            <div class="hm-avatar">A</div>
+          </div>
+          <div class="bcard">
+            <div class="bcard-head"><div><div class="bcard-label">Your budgets</div></div></div>
+            <div class="row-stack">
+              <div class="mode-b-crow">
+                <div class="mode-b-top">
+                  <div class="mode-b-ico">🍕</div>
+                  <div class="mode-b-cat">Food &amp; Dining</div>
+                  <div class="mode-b-pill over">Over</div>
+                </div>
+                <div class="mode-b-bar-wrap">
+                  <div class="mode-b-bar over" style="width:100%"></div>
+                  <div class="mode-b-bar-over-mark" style="left:83%"></div>
+                </div>
+                <div class="mode-b-amt">
+                  <div class="mode-b-amt-l">2,410 of 2,000 EGP</div>
+                  <div class="mode-b-amt-r">410 over</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item on"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕️</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus"><span class="a-nav-plus-ico">+</span></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+        </div>
+      </div>
+      <div class="flow-note bug">Fill to 100% red with a vertical marker at the %-of-limit where the user crossed (≈83% here). Alternatives: overflow extension past 100%, or a second-colour extension. Designer picks.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- FLOW 10 — CENTRE PLUS ACTION SHEET -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 10 — Centre plus action sheet</div>
+    <div class="flow-section-line"></div>
+  </div>
+  <div class="flow-intro">Opens from the raised [+] in the bottom nav on any tab. Two options read as equal peers. "Add transaction" routes to the transaction creation modal. "Add budget" routes to the Budgets tab full creation flow (not the Quick-create sheet).</div>
+
+  <div class="phone-row">
+
+    <div class="screen-col">
+      <div class="screen-label">Centre plus · action sheet open</div>
+      <div class="state-badge interaction">sheet open</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen sheet-host">
+          <div style="opacity:0.35;padding-top:14px">
+            <div class="hm-header">
+              <div class="hm-greet"><div class="hm-greet-en">Good morning, Ahmed.</div></div>
+              <div class="hm-bell">🔔</div>
+              <div class="hm-avatar">A</div>
+            </div>
+            <div class="bcard">
+              <div class="bcard-head"><div><div class="bcard-label">Total spending this month</div></div></div>
+              <div class="te-amount-row"><div class="te-amount">4,820</div><div class="te-cur">EGP</div></div>
+              <div class="te-count">24 transactions</div>
+            </div>
+          </div>
+          <div class="sheet-dim"></div>
+          <div class="sheet">
+            <div class="sheet-handle"></div>
+            <div style="padding:8px 16px 4px">
+              <div class="bs-title">What would you like to add?</div>
+            </div>
+            <div style="padding:4px 14px 18px;display:flex;flex-direction:column;gap:8px">
+              <div style="background:var(--screen-bg);border:1px solid var(--b1);border-radius:var(--r-md);padding:14px;display:flex;align-items:center;gap:12px">
+                <div style="width:42px;height:42px;border-radius:var(--r-sm);background:var(--green-l);display:flex;align-items:center;justify-content:center;font-size:20px">💸</div>
+                <div style="flex:1">
+                  <div style="font-size:14px;font-weight:700;color:var(--t1);line-height:1.2">Add transaction</div>
+                  <div style="font-size:11px;color:var(--t3);margin-top:2px">Log a purchase manually.</div>
+                </div>
+                <div style="color:var(--t4);font-size:14px">›</div>
+              </div>
+              <div style="background:var(--screen-bg);border:1px solid var(--b1);border-radius:var(--r-md);padding:14px;display:flex;align-items:center;gap:12px">
+                <div style="width:42px;height:42px;border-radius:var(--r-sm);background:var(--green-l);display:flex;align-items:center;justify-content:center;font-size:20px">🎯</div>
+                <div style="flex:1">
+                  <div style="font-size:14px;font-weight:700;color:var(--t1);line-height:1.2">Add budget</div>
+                  <div style="font-size:11px;color:var(--t3);margin-top:2px">Set a limit for a category.</div>
+                </div>
+                <div style="color:var(--t4);font-size:14px">›</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item on"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕️</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus"><span class="a-nav-plus-ico">×</span></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">The [+] icon rotates to an × while the sheet is open — tapping it closes the sheet. Dismiss also works via tap-outside or the back gesture.</div>
+      <div class="flow-note bug">"Add budget" from here opens the Budgets tab full creation flow, not the Quick-create sheet. Quick-create is reserved for taps on Mode A recommendation cards because those carry a pre-fill category.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- FLOW 11 — TRANSACTION DETAIL SHEET -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 11 — Transaction Detail sheet · 4 modes + delete</div>
+    <div class="flow-section-line"></div>
+  </div>
+  <div class="flow-intro">Four modes of the Transaction Detail sheet plus the native delete dialog. Same component, different fields locked for SMS-parsed vs. manual.</div>
+
+  <div class="phone-row">
+
+    <!-- 10.1 SMS view -->
+    <div class="screen-col">
+      <div class="screen-label">SMS-parsed · view mode</div>
+      <div class="state-badge happy">view</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav sheet-host">
+          <div class="sheet-dim"></div>
+          <div class="sheet">
+            <div class="sheet-handle"></div>
+            <div class="sheet-hdr">
+              <div class="sheet-close">✕</div>
+              <div class="sheet-hdr-body">
+                <div class="sheet-merch">Starbucks</div>
+                <div class="sheet-amt spend">140 EGP</div>
+                <div class="sheet-meta">Today, 9:12 AM</div>
+              </div>
+            </div>
+            <div class="sheet-body">
+              <div class="sheet-field">
+                <div class="sheet-flabel">Category</div>
+                <div class="sheet-fvalue tappable">
+                  <div class="sheet-chip sheet-chip-tap">🍕 Food &amp; Dining</div>
+                  <div class="sheet-chev">›</div>
+                </div>
+              </div>
+              <div class="sheet-field">
+                <div class="sheet-flabel">Paid with</div>
+                <div class="sheet-fvalue disabled">CIB · card ending 4827</div>
+              </div>
+              <div class="sheet-field">
+                <div class="sheet-flabel">Notes</div>
+                <div class="sheet-fvalue ph">Add a note</div>
+              </div>
+              <div class="sheet-toggle">
+                <div class="sheet-toggle-lbl">See original message</div>
+                <div style="color:var(--t3);font-size:12px">▾</div>
+              </div>
+            </div>
+            <div class="sheet-actions">
+              <div class="sheet-btn danger">Delete</div>
+              <div class="sheet-btn primary">Edit</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note decision">Category chip is tappable and opens a category picker on top of this sheet. Payment method is informational. Notes placeholder opens an inline editor on tap.</div>
+    </div>
+
+    <div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">Edit</div></div>
+
+    <!-- 10.2 SMS edit -->
+    <div class="screen-col">
+      <div class="screen-label">SMS-parsed · edit mode</div>
+      <div class="state-badge interaction">merchant/date locked</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav sheet-host">
+          <div class="sheet-dim"></div>
+          <div class="sheet">
+            <div class="sheet-handle"></div>
+            <div class="sheet-hdr">
+              <div class="sheet-close">✕</div>
+              <div class="sheet-hdr-body">
+                <div class="sheet-merch" style="color:var(--t3)">Starbucks</div>
+                <div class="sheet-meta">Today, 9:12 AM · locked</div>
+              </div>
+            </div>
+            <div class="sheet-body">
+              <div class="sheet-field">
+                <div class="sheet-flabel">Amount (EGP)</div>
+                <div class="sheet-edit-input">140</div>
+              </div>
+              <div class="sheet-field">
+                <div class="sheet-flabel">Category</div>
+                <div class="sheet-fvalue tappable">
+                  <div class="sheet-chip sheet-chip-tap">🍕 Food &amp; Dining</div>
+                  <div class="sheet-chev">›</div>
+                </div>
+              </div>
+              <div class="sheet-field">
+                <div class="sheet-flabel">Merchant</div>
+                <div class="sheet-edit-input ro">Starbucks</div>
+                <div class="sheet-edit-hint">Locked — from bank SMS.</div>
+              </div>
+              <div class="sheet-field">
+                <div class="sheet-flabel">Date</div>
+                <div class="sheet-edit-input ro">Today, 9:12 AM</div>
+                <div class="sheet-edit-hint">Locked — from bank SMS.</div>
+              </div>
+              <div class="sheet-field">
+                <div class="sheet-flabel">Notes</div>
+                <div class="sheet-edit-input">Meeting with Omar</div>
+              </div>
+            </div>
+            <div class="sheet-actions">
+              <div class="sheet-btn cancel">Cancel</div>
+              <div class="sheet-btn save">Save</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note bug">Merchant and Date locked for SMS-parsed. Greyed input with a "Locked" hint. User who needs to change either deletes and re-adds manually.</div>
+    </div>
+
+    <!-- 10.3 Manual view -->
+    <div class="screen-col">
+      <div class="screen-label">Manual · view mode</div>
+      <div class="state-badge happy">view</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav sheet-host">
+          <div class="sheet-dim"></div>
+          <div class="sheet">
+            <div class="sheet-handle"></div>
+            <div class="sheet-hdr">
+              <div class="sheet-close">✕</div>
+              <div class="sheet-hdr-body">
+                <div class="sheet-merch">Gym membership</div>
+                <div class="sheet-amt spend">450 EGP</div>
+                <div class="sheet-meta">Apr 20, 2026</div>
+              </div>
+            </div>
+            <div class="sheet-body">
+              <div class="sheet-field">
+                <div class="sheet-flabel">Category</div>
+                <div class="sheet-fvalue tappable">
+                  <div class="sheet-chip sheet-chip-tap">💪 Health</div>
+                  <div class="sheet-chev">›</div>
+                </div>
+              </div>
+              <div class="sheet-field">
+                <div class="sheet-flabel">Paid with</div>
+                <div class="sheet-fvalue disabled">Manual entry</div>
+              </div>
+              <div class="sheet-field">
+                <div class="sheet-flabel">Notes</div>
+                <div class="sheet-fvalue">Monthly fee for the downtown gym</div>
+              </div>
+            </div>
+            <div class="sheet-actions">
+              <div class="sheet-btn danger">Delete</div>
+              <div class="sheet-btn primary">Edit</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note decision">Manual transactions have no "See original message" toggle. Paid-with shows "Manual entry".</div>
+    </div>
+
+    <div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">Edit</div></div>
+
+    <!-- 10.4 Manual edit -->
+    <div class="screen-col">
+      <div class="screen-label">Manual · edit mode</div>
+      <div class="state-badge interaction">all editable</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav sheet-host">
+          <div class="sheet-dim"></div>
+          <div class="sheet">
+            <div class="sheet-handle"></div>
+            <div class="sheet-hdr">
+              <div class="sheet-close">✕</div>
+              <div class="sheet-hdr-body">
+                <div class="sheet-merch" style="color:var(--t3);font-size:13px">Editing transaction</div>
+              </div>
+            </div>
+            <div class="sheet-body">
+              <div class="sheet-field">
+                <div class="sheet-flabel">Amount (EGP)</div>
+                <div class="sheet-edit-input">450</div>
+              </div>
+              <div class="sheet-field">
+                <div class="sheet-flabel">Merchant</div>
+                <div class="sheet-edit-input">Gym membership</div>
+              </div>
+              <div class="sheet-field">
+                <div class="sheet-flabel">Date</div>
+                <div class="sheet-edit-input">Apr 20, 2026</div>
+              </div>
+              <div class="sheet-field">
+                <div class="sheet-flabel">Category</div>
+                <div class="sheet-fvalue tappable">
+                  <div class="sheet-chip sheet-chip-tap">💪 Health</div>
+                  <div class="sheet-chev">›</div>
+                </div>
+              </div>
+              <div class="sheet-field">
+                <div class="sheet-flabel">Notes</div>
+                <div class="sheet-edit-input">Monthly fee for the downtown gym</div>
+              </div>
+            </div>
+            <div class="sheet-actions">
+              <div class="sheet-btn cancel">Cancel</div>
+              <div class="sheet-btn save">Save</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note decision">All five fields editable. No locks.</div>
+    </div>
+
+    <div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">Delete</div></div>
+
+    <!-- 10.5 Delete dialog -->
+    <div class="screen-col">
+      <div class="screen-label">Native delete confirmation</div>
+      <div class="state-badge error">destructive confirm</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav sheet-host">
+          <div class="sheet-dim"></div>
+          <div class="sheet" style="opacity:0.5">
+            <div class="sheet-handle"></div>
+            <div class="sheet-hdr">
+              <div class="sheet-close">✕</div>
+              <div class="sheet-hdr-body">
+                <div class="sheet-merch">Starbucks</div>
+                <div class="sheet-amt spend">140 EGP</div>
+              </div>
+            </div>
+          </div>
+          <div class="dialog-ol">
+            <div class="dialog-box">
+              <div class="dialog-ttl">Delete 140 EGP at Starbucks?</div>
+              <div class="dialog-acts">
+                <div class="dialog-btn cancel">Cancel</div>
+                <div class="dialog-btn delete">Delete</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note bug">Native Android dialog. Title names the specific transaction. Cancel is the focus-first default.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- FLOW 12 — QUICK-CREATE SHEET -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 12 — Quick-create bottom sheet · 3 states</div>
+    <div class="flow-section-line"></div>
+  </div>
+  <div class="flow-intro">Opens from "Set" on a Mode A card. Three states: happy path, cap-reached, network error.</div>
+
+  <div class="phone-row">
+
+    <!-- 11.1 Happy -->
+    <div class="screen-col">
+      <div class="screen-label">Happy path · pre-filled</div>
+      <div class="state-badge happy">default</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav sheet-host">
+          <div class="sheet-dim"></div>
+          <div class="qc-sheet">
+            <div class="sheet-handle"></div>
+            <div class="qc-hdr">
+              <div class="qc-ttl">Create budget</div>
+            </div>
+            <div class="qc-body">
+              <div class="qc-field">
+                <div class="qc-flabel">Category</div>
+                <div class="qc-chip-ro">🚗 Transport</div>
+              </div>
+              <div class="qc-field">
+                <div class="qc-flabel">Monthly limit</div>
+                <div class="qc-input focus">800</div>
+              </div>
+            </div>
+            <div class="qc-actions">
+              <div class="qc-btn cancel">Cancel</div>
+              <div class="qc-btn primary">Create budget</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note decision">Two fields only. Monthly limit is pre-filled from the card's suggested amount. No other fields — Notes, rollover, notifications live in the Budgets tab full creation.</div>
+    </div>
+
+    <!-- 11.2 Cap -->
+    <div class="screen-col">
+      <div class="screen-label">Cap-reached · 10-budget limit</div>
+      <div class="state-badge empty">cap hit</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav sheet-host">
+          <div class="sheet-dim"></div>
+          <div class="qc-sheet">
+            <div class="sheet-handle"></div>
+            <div class="qc-hdr">
+              <div class="qc-ttl">Create budget</div>
+            </div>
+            <div class="qc-body">
+              <div class="qc-cap">
+                <div class="qc-cap-txt">You've reached the 10-budget cap. Manage your budgets to free up a slot.</div>
+                <div class="qc-cap-link">Go to Budgets →</div>
+              </div>
+              <div class="qc-field" style="opacity:0.5">
+                <div class="qc-flabel">Category</div>
+                <div class="qc-chip-ro">🚗 Transport</div>
+              </div>
+              <div class="qc-field" style="opacity:0.5">
+                <div class="qc-flabel">Monthly limit</div>
+                <div class="qc-input">800</div>
+              </div>
+            </div>
+            <div class="qc-actions">
+              <div class="qc-btn cancel">Cancel</div>
+              <div class="qc-btn primary disabled">Create budget</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note bug">Primary button disabled. Form fields dim to 50%. User exits via Cancel or Go to Budgets.</div>
+    </div>
+
+    <!-- 11.3 Network err -->
+    <div class="screen-col">
+      <div class="screen-label">Network error · inline retry</div>
+      <div class="state-badge error">save failed</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav sheet-host">
+          <div class="sheet-dim"></div>
+          <div class="qc-sheet">
+            <div class="sheet-handle"></div>
+            <div class="qc-hdr">
+              <div class="qc-ttl">Create budget</div>
+            </div>
+            <div class="qc-body">
+              <div class="qc-net-err">
+                <div class="qc-net-err-ico">⚠</div>
+                <div class="qc-net-err-txt">
+                  <div class="qc-net-err-en">Couldn't save. Check your connection and try again.</div>
+                  <div class="qc-net-err-retry">Retry →</div>
+                </div>
+              </div>
+              <div class="qc-field">
+                <div class="qc-flabel">Category</div>
+                <div class="qc-chip-ro">🚗 Transport</div>
+              </div>
+              <div class="qc-field">
+                <div class="qc-flabel">Monthly limit</div>
+                <div class="qc-input">800</div>
+              </div>
+            </div>
+            <div class="qc-actions">
+              <div class="qc-btn cancel">Cancel</div>
+              <div class="qc-btn primary">Create budget</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note bug">Sheet stays open until success. Form values preserved on retry. Validation errors (e.g. zero amount) use the same inline pattern below the input.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- FLOW 13 — PUSH NOTIFICATIONS -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 13 — Push notifications</div>
+    <div class="flow-section-line"></div>
+  </div>
+  <div class="flow-intro">Two pushes from the Spending Intelligence programme. Both deep-link to the same Budget detail view a Mode B row tap would open.</div>
+
+  <div class="phone-row">
+
+    <div class="screen-col">
+      <div class="screen-label">Budget 80% threshold · lock screen</div>
+      <div class="state-badge loading">heads-up</div>
+      <div class="phone lock">
+        <div class="a-status"><span style="color:#fff">9:41</span><span style="color:#fff">▲▲ 🔋</span></div>
+        <div class="screen lock-screen">
+          <div class="lock-time">9:41</div>
+          <div class="lock-date">Thursday, 23 April</div>
+          <div class="push-card">
+            <div class="push-app-ico">M</div>
+            <div class="push-body">
+              <div style="display:flex;align-items:center"><div class="push-app-name">MONEYMORE</div><div class="push-time">now</div></div>
+              <div class="push-ttl">Heads up on Food &amp; Dining</div>
+              <div class="push-txt">You've spent 80% of your Food &amp; Dining budget this month. Tap to see what's left.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note new">Title ~19 chars, body ~78 chars. Within CleverTap limits (50 / 100). Warm opening — user has 20% left, not an emergency.</div>
+    </div>
+
+    <div class="screen-col">
+      <div class="screen-label">Budget exceeded · lock screen</div>
+      <div class="state-badge error">exceeded</div>
+      <div class="phone lock">
+        <div class="a-status"><span style="color:#fff">14:28</span><span style="color:#fff">▲▲ 🔋</span></div>
+        <div class="screen lock-screen">
+          <div class="lock-time">14:28</div>
+          <div class="lock-date">Saturday, 26 April</div>
+          <div class="push-card">
+            <div class="push-app-ico">M</div>
+            <div class="push-body">
+              <div style="display:flex;align-items:center"><div class="push-app-name">MONEYMORE</div><div class="push-time">now</div></div>
+              <div class="push-ttl">Food &amp; Dining is over budget</div>
+              <div class="push-txt">You're 410 EGP past your Food &amp; Dining limit this month. Tap to see the breakdown.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note new">Title ~25 chars, body ~84 chars. Factual opening, no guilt.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- HANDOFF -->
+<div class="handoff">
+  <div class="handoff-title">Handoff</div>
+  <div class="handoff-sub">Designer reference for this prototype. All 46 strings grouped by moment. Accessibility rules that change what you draw.</div>
+
+  <div class="handoff-sec">
+    <div class="handoff-h">Copy · English + Arabic</div>
+    <div class="handoff-p">Every user-facing string shipped in the prototype. Arabic is Egyptian dialect; every row requires native-speaker review before publishing. Variables: <code>[name]</code>, <code>[amount]</code>, <code>[count]</code>, <code>[category]</code>, <code>[merchant]</code>, <code>[time]</code>, <code>[N]</code>, <code>[percent]</code>, <code>[over]</code>, <code>[spent]</code>, <code>[limit]</code>, <code>[bank]</code>, <code>[last4]</code>.</div>
+
+    <table class="copy-table" style="margin-top:12px">
+      <colgroup>
+        <col class="col-screen"><col class="col-element"><col class="col-en"><col class="col-ar">
+      </colgroup>
+      <thead><tr><th>Moment</th><th>Element</th><th>English</th><th>Arabic (pending review)</th></tr></thead>
+      <tbody>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="3">1–3 · Greeting</td>
+          <td class="element-name">1 · Morning (04:00–11:59)</td>
+          <td class="en">Good morning, [name].</td>
+          <td class="ar">صباح الخير يا [name].</td>
+        </tr>
+        <tr><td class="element-name">2 · Afternoon (12:00–17:59)</td><td class="en">Hey [name].</td><td class="ar">أهلاً يا [name].</td></tr>
+        <tr><td class="element-name">3 · Evening (18:00–03:59)</td><td class="en">Good evening, [name].</td><td class="ar">مساء الخير يا [name].</td></tr>
+
+        <tr class="group-start">
+          <td class="screen-name">4 · Bell badge accessibility label</td>
+          <td class="element-name">Screen reader label (number-aware)</td>
+          <td class="en">Notifications · 1 unread notification · [N] unread notifications · More than 9 unread notifications</td>
+          <td class="ar">الإشعارات · إشعار واحد جديد · [N] إشعارات جديدة · أكتر من 9 إشعارات جديدة</td>
+        </tr>
+
+        <tr class="group-start">
+          <td class="screen-name">5 · Review prompt slot</td>
+          <td class="element-name">Headline + CTA</td>
+          <td class="en">Help us place a few transactions. · <strong>CTA:</strong> Review now</td>
+          <td class="ar">ساعدنا نظبّط كام عملية. · <strong>CTA:</strong> راجع دلوقتي</td>
+        </tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="2">6–7 · Total Expenses</td>
+          <td class="element-name">6 · Amount label</td>
+          <td class="en">Total spending this month</td>
+          <td class="ar">إجمالي الصرف الشهر ده</td>
+        </tr>
+        <tr>
+          <td class="element-name">7 · Transaction count (number-aware)</td>
+          <td class="en">1 transaction · [count] transactions</td>
+          <td class="ar">عملية واحدة · [count] عمليات (2–10) · [count] عملية (11+)</td>
+        </tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="5">8–12 · Category breakdown</td>
+          <td class="element-name">8 · Section header</td>
+          <td class="en">Where it's going</td>
+          <td class="ar">فين بتروح</td>
+        </tr>
+        <tr><td class="element-name">9 · Pending notice (State C)</td><td class="en">Sorting your latest spending. Breakdown shows up in a moment.</td><td class="ar">بنرتّب آخر صرفك. التفاصيل هتظهر بعد لحظات.</td></tr>
+        <tr><td class="element-name">10 · Expectations (State D)</td><td class="en">You're in. The next time you spend, we'll catch it and sort it here.</td><td class="ar">دخلت. أول ما تصرف، هنلقطها ونصنّفها هنا.</td></tr>
+        <tr><td class="element-name">11 · Manual-only (State E)</td><td class="en">Add a transaction and you'll see where your money goes.</td><td class="ar">ضيف عملية وهتشوف فلوسك بتروح فين.</td></tr>
+        <tr><td class="element-name">12 · Show all categories (button)</td><td class="en">See all categories</td><td class="ar">شوف كل الفئات</td></tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="3">13–14 · Smart budget · Mode A</td>
+          <td class="element-name">13 · Framing line</td>
+          <td class="en">Based on your spending, here's where a budget might help.</td>
+          <td class="ar">على صرفك الفعلي، دي الفئات اللي ميزانية هتفرق فيها.</td>
+        </tr>
+        <tr><td class="element-name">14 · Mode A card · suggested limit</td><td class="en">[category] · Try [amount] EGP/month</td><td class="ar">[category] · جرّب [amount] جنيه/شهر</td></tr>
+        <tr><td class="element-name">14 · Mode A card button</td><td class="en">Set budget</td><td class="ar">حطّ ميزانية</td></tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="6">15–20 · Smart budget · Mode B</td>
+          <td class="element-name">15 · Section header</td>
+          <td class="en">Your budgets</td>
+          <td class="ar">ميزانياتك</td>
+        </tr>
+        <tr><td class="element-name">16 · Under-limit row</td><td class="en">[spent] of [limit] EGP · <strong>Pill:</strong> Under</td><td class="ar">[spent] من [limit] جنيه · <strong>Pill:</strong> تمام</td></tr>
+        <tr><td class="element-name">17 · Near-limit row</td><td class="en">[spent] of [limit] EGP · <strong>Pill:</strong> Near</td><td class="ar">[spent] من [limit] جنيه · <strong>Pill:</strong> قرّبت</td></tr>
+        <tr><td class="element-name">18 · Over-limit row</td><td class="en">[spent] of [limit] EGP · [over] over · <strong>Pill:</strong> Over</td><td class="ar">[spent] من [limit] جنيه · فوق بـ [over] · <strong>Pill:</strong> عدّيت</td></tr>
+        <tr><td class="element-name">19 · Manage budgets footer (≤3)</td><td class="en">Manage budgets</td><td class="ar">إدارة الميزانيات</td></tr>
+        <tr><td class="element-name">20 · View all footer (&gt;3, number-aware)</td><td class="en">View all [N] budgets</td><td class="ar">شوف كل الـ [N] ميزانيات (3–10) / شوف كل الـ [N] ميزانية (11+)</td></tr>
+
+        <tr class="group-start">
+          <td class="screen-name">21 · Smart budget · Mode C</td>
+          <td class="element-name">Headline + support + CTA</td>
+          <td class="en">Set a budget to stay on top of your spending. · Tailored suggestions show up once we know your spending. · <strong>CTA:</strong> Create budget</td>
+          <td class="ar">حطّ ميزانية تتحكم في صرفك. · هنقترح ميزانيات على صرفك الفعلي لما نعرفك أكتر. · <strong>CTA:</strong> اعمل ميزانية</td>
+        </tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="7">22–28 · Quick-create sheet</td>
+          <td class="element-name">22 · Title</td>
+          <td class="en">Create budget</td>
+          <td class="ar">اعمل ميزانية</td>
+        </tr>
+        <tr><td class="element-name">23 · Category chip label</td><td class="en">Category</td><td class="ar">الفئة</td></tr>
+        <tr><td class="element-name">24 · Limit input label</td><td class="en">Monthly limit</td><td class="ar">الحد الشهري</td></tr>
+        <tr><td class="element-name">25 · Primary + Cancel</td><td class="en">Create budget · Cancel</td><td class="ar">اعمل ميزانية · إلغاء</td></tr>
+        <tr><td class="element-name">26 · Validation error</td><td class="en">Enter an amount greater than zero.</td><td class="ar">اكتب رقم أكبر من صفر.</td></tr>
+        <tr><td class="element-name">27 · Cap-reached</td><td class="en">You've reached the 10-budget cap. Manage your budgets to free up a slot. · <strong>Link:</strong> Go to Budgets</td><td class="ar">وصلت للحد الأقصى — 10 ميزانيات. اتصرّف في ميزانياتك عشان تفضّي مكان. · <strong>Link:</strong> روح الميزانيات</td></tr>
+        <tr><td class="element-name">28 · Network error</td><td class="en">Couldn't save. Check your connection and try again.</td><td class="ar">ما قدرناش نحفظ. شيّك على الإنترنت وجرّب تاني.</td></tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="3">29–31 · Latest Spending</td>
+          <td class="element-name">29 · Section header</td>
+          <td class="en">Latest spending</td>
+          <td class="ar">آخر الحركات</td>
+        </tr>
+        <tr><td class="element-name">30 · Pending indicator</td><td class="en">Sorting…</td><td class="ar">بنرتّب…</td></tr>
+        <tr><td class="element-name">31 · Show all button</td><td class="en">See all</td><td class="ar">شوف الكل</td></tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="2">32–33 · State E only</td>
+          <td class="element-name">32 · In-screen hero label</td>
+          <td class="en">Add transaction</td>
+          <td class="ar">ضيف عملية</td>
+        </tr>
+        <tr><td class="element-name">33 · Secondary SMS link</td><td class="en">Want automatic tracking? Turn on SMS.</td><td class="ar">عايز المتابعة تلقائية؟ شغّل SMS.</td></tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="4">34–37 · Centre plus</td>
+          <td class="element-name">34 · Action sheet title (optional)</td>
+          <td class="en">What would you like to add?</td>
+          <td class="ar">عايز تضيف إيه؟</td>
+        </tr>
+        <tr><td class="element-name">35 · Add transaction option</td><td class="en">Add transaction · Log a purchase manually.</td><td class="ar">ضيف عملية · سجّل مصروف يدوي.</td></tr>
+        <tr><td class="element-name">36 · Add budget option</td><td class="en">Add budget · Set a limit for a category.</td><td class="ar">اعمل ميزانية · حطّ حد لفئة.</td></tr>
+        <tr><td class="element-name">37 · [+] accessibility label</td><td class="en">Add — opens create menu</td><td class="ar">إضافة — يفتح قائمة الإنشاء</td></tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="7">38–43 · Transaction Detail</td>
+          <td class="element-name">38 · Category chip label</td>
+          <td class="en">Category</td>
+          <td class="ar">الفئة</td>
+        </tr>
+        <tr><td class="element-name">39 · Payment method (SMS)</td><td class="en">[bank] · card ending [last4]</td><td class="ar">[bank] · بطاقة تنتهي بـ [last4]</td></tr>
+        <tr><td class="element-name">39 · Payment method (manual)</td><td class="en">Manual entry</td><td class="ar">إدخال يدوي</td></tr>
+        <tr><td class="element-name">40 · Notes placeholder</td><td class="en">Add a note</td><td class="ar">ضيف ملاحظة</td></tr>
+        <tr><td class="element-name">41 · Original SMS toggle</td><td class="en">See original message / Hide original message</td><td class="ar">شوف الرسالة الأصلية / اخفي الرسالة الأصلية</td></tr>
+        <tr><td class="element-name">42 · Action buttons</td><td class="en">Edit · Delete · Save · Cancel</td><td class="ar">تعديل · حذف · حفظ · إلغاء</td></tr>
+        <tr><td class="element-name">43 · Delete confirmation dialog</td><td class="en">Delete [amount] EGP at [merchant]? · <strong>Buttons:</strong> Cancel · Delete</td><td class="ar">تحذف [amount] جنيه في [merchant]؟ · <strong>Buttons:</strong> إلغاء · احذف</td></tr>
+
+        <tr class="group-start">
+          <td class="screen-name">44 · Offline indicator</td>
+          <td class="element-name">Last updated pill</td>
+          <td class="en">Last updated [time]</td>
+          <td class="ar">آخر تحديث [time]</td>
+        </tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="2">45 · Push · Budget 80%</td>
+          <td class="element-name">Title (~19 chars)</td>
+          <td class="en">Heads up on [category]</td>
+          <td class="ar">خد بالك من [category]</td>
+        </tr>
+        <tr><td class="element-name">Body (~78 chars)</td><td class="en">You've spent 80% of your [category] budget this month. Tap to see what's left.</td><td class="ar">صرفت 80% من ميزانية [category] الشهر ده. اضغط تشوف فاضل كام.</td></tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="2">46 · Push · Budget exceeded</td>
+          <td class="element-name">Title (~25 chars)</td>
+          <td class="en">[category] is over budget</td>
+          <td class="ar">[category] عدّت الميزانية</td>
+        </tr>
+        <tr><td class="element-name">Body (~84 chars)</td><td class="en">You're [over] EGP past your [category] limit this month. Tap to see the breakdown.</td><td class="ar">عدّيت حد [category] بـ [over] جنيه الشهر ده. اضغط تشوف التفاصيل.</td></tr>
+
+      </tbody>
+    </table>
+
+    <div class="callout info" style="margin-top:16px">
+      <strong>Pluralisation on moment 19 (View all):</strong> Arabic plural form changes with count. 3–10 budgets use <code>ميزانيات</code> (plural); 11+ revert to <code>ميزانية</code> (singular form) per Arabic counted-noun rules. Implement as a number-aware string resource, not a simple [N] swap.
+    </div>
+  </div>
+
+  <div class="handoff-sec">
+    <div class="handoff-h">Accessibility — what changes what you draw</div>
+    <ul class="handoff-list">
+      <li><strong>Touch targets — 48 dp minimum</strong> on every interactive element. Particular attention: header bell and avatar (icons may be visually smaller but tappable area ≥48 dp), contained rows across Total Expenses / Mode B / Latest Spending, sheet field rows, card-internal CTAs.</li>
+      <li><strong>Contrast — 4.5:1 for text, 7:1 for financial figures.</strong> Financial figures here: Total Expenses amount (32px tabular-nums), category amounts, Mode B spent/limit text, transaction amounts in cards and in Transaction Detail header, Mode A suggested limits, push notification amounts. Check the 32px Total Expenses amount especially.</li>
+      <li><strong>Budget state conveyed by label or position, not colour alone.</strong> Every Mode B row carries a state pill (Under / Near / Over) alongside the bar colour. Over-limit additionally carries the "[over] over" text on the right.</li>
+      <li><strong>Bell badge</strong> visible cap "9+" differs from the TalkBack label ("More than 9 unread notifications"). Count-aware label set in moment 4.</li>
+      <li><strong>Focus order top-to-bottom.</strong> Home Tab: header → review prompt / offline pill (if present) → Total Expenses card (amount → count → category rows → See all) → Smart Budget card (label → rows/mode-body) → Latest Spending card (label → rows) → Add Transaction. Transaction Detail sheet: close → header → fields in order → actions. Arabic RTL: visual flips at layout level, focus order stays top-to-bottom.</li>
+    </ul>
+  </div>
+
+</div>
+
+</div>
+</body>
+</html>
