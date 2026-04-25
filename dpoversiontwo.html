@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoneyMore — DPO Wireframes</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+:root{
+  --navy:#0A1F33;--navy-l:#E0EAF4;
+  --green:#166038;--green-l:#D4EDE1;--green-m:#1D7A48;
+  --amber:#7A4F00;--amber-l:#F5E6C0;
+  --red:#8C1A0E;--red-l:#FAD9D4;
+  --page:#F5F3EE;--white:#FFFFFF;
+  --s2:#ECEAE4;--s3:#DEDBD3;
+  --t1:#0A0906;--t2:#1A1714;--t3:#48443E;--t4:#787068;
+  --b1:#D8D4CC;--b2:#C0BDB4;
+  --sans:'Plus Jakarta Sans',sans-serif;
+  --mono:'DM Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--page);color:var(--t1);font-family:var(--sans);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased}
+.hero{background:var(--navy);padding:48px 40px 40px}
+.hero-label{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:rgba(255,255,255,0.35);text-transform:uppercase;margin-bottom:12px}
+.hero-title{font-size:28px;font-weight:800;color:white;line-height:1.1;letter-spacing:-.02em;margin-bottom:12px}
+.hero-title em{font-style:normal;color:#6ECFAA}
+.hero-sub{font-size:13px;color:rgba(255,255,255,0.55);max-width:580px;line-height:1.75}
+.page{max-width:1100px;margin:0 auto;padding:44px 40px 80px}
+.sec-label{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--t4);margin-bottom:20px;display:flex;align-items:center;gap:12px}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--b1)}
+.sec-title{font-size:20px;font-weight:800;color:var(--t1);margin-bottom:6px;letter-spacing:-.01em}
+.sec-desc{font-size:13px;color:var(--t3);line-height:1.75;max-width:680px;margin-bottom:32px}
+.page-divider{height:1px;background:var(--b1);margin:48px 0}
+.flow{display:flex;align-items:flex-start;gap:0;overflow-x:auto;padding-bottom:8px}
+.phone-col{display:flex;flex-direction:column;align-items:center;gap:10px;flex-shrink:0}
+.phone-badge{font-family:var(--mono);font-size:9px;font-weight:700;padding:3px 10px;border-radius:4px;text-transform:uppercase;letter-spacing:.06em}
+.phone-badge.entry{background:var(--s2);color:var(--t3)}
+.phone-badge.consent{background:var(--amber-l);color:var(--amber)}
+.phone-badge.done{background:var(--green-l);color:var(--green)}
+.phone-badge.promo{background:var(--navy-l);color:var(--navy)}
+.phone-label{font-family:var(--mono);font-size:10px;color:var(--t4);text-align:center;max-width:168px;line-height:1.4}
+.phone{width:168px;background:var(--white);border:1.5px solid var(--b1);border-radius:24px;overflow:hidden;flex-shrink:0;box-shadow:0 2px 12px rgba(0,0,0,0.06);display:flex;flex-direction:column}
+.phone-status{height:22px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;background:var(--white);border-bottom:0.5px solid var(--s2);flex-shrink:0}
+.phone-time{font-family:var(--mono);font-size:9px;color:var(--t4)}
+.phone-icons{font-size:8px;color:var(--t4)}
+.phone-screen{padding:14px 13px 8px;display:flex;flex-direction:column;gap:8px;flex:1}
+.bottom-tabs{display:flex;border-top:0.5px solid var(--s2);padding:6px 0 4px;flex-shrink:0;background:var(--white)}
+.btab{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px}
+.btab-icon{width:16px;height:16px;border-radius:3px;background:var(--s2)}
+.btab-icon.active{background:var(--navy)}
+.btab-icon.home{border-radius:50%}
+.btab-label{font-size:7px;color:var(--t4)}
+.btab-label.active{color:var(--navy);font-weight:700}
+.screen-q{font-size:12px;font-weight:700;color:var(--t1);line-height:1.35}
+.screen-sub{font-size:9px;color:var(--t3);line-height:1.5}
+.divider{height:0.5px;background:var(--s2);margin:2px 0}
+.benefit-list{display:flex;flex-direction:column;gap:5px}
+.benefit-item{display:flex;align-items:flex-start;gap:5px;font-size:9px;color:var(--t2);line-height:1.4}
+.benefit-tick{color:var(--green);font-weight:700;flex-shrink:0;font-size:9px}
+.checkbox-group{display:flex;flex-direction:column;gap:5px}
+.checkbox-row{display:flex;align-items:flex-start;gap:7px;padding:8px 9px;border-radius:6px;border:0.5px solid var(--b1);background:var(--s2)}
+.checkbox-box{width:13px;height:13px;border-radius:3px;border:1px solid var(--b2);flex-shrink:0;margin-top:1px;background:var(--white)}
+.checkbox-text{font-size:9px;color:var(--t2);line-height:1.45}
+.checkbox-lbl{font-size:9px;font-weight:700;color:var(--t4);margin-bottom:3px;font-family:var(--mono);letter-spacing:.04em;text-transform:uppercase}
+.cta-primary{background:var(--navy);color:var(--white);border-radius:6px;padding:8px;text-align:center;font-size:10px;font-weight:700;margin-top:auto}
+.cta-ghost{border:0.5px solid var(--b1);border-radius:6px;padding:8px;text-align:center;font-size:10px;font-weight:600;color:var(--t3);margin-top:4px}
+.privacy-note{font-size:8px;color:var(--t4);text-align:center;line-height:1.4}
+.warning-box{background:var(--amber-l);border:0.5px solid rgba(122,79,0,0.2);border-radius:5px;padding:7px 8px;font-size:8px;color:var(--amber);line-height:1.5}
+.promo-box{background:var(--green-l);border:0.5px solid rgba(22,96,56,0.2);border-radius:7px;padding:10px;text-align:center}
+.promo-val{font-family:var(--mono);font-size:15px;font-weight:700;color:var(--green);letter-spacing:.08em}
+.promo-lbl{font-size:8px;color:var(--green-m);margin-top:2px}
+.redirect-note{font-size:8px;color:var(--t4);text-align:center;line-height:1.5;padding:0 2px}
+.redirect-inner{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;flex:1;padding:16px 0}
+.redirect-logo{width:40px;height:40px;border-radius:10px;background:var(--green-l);display:flex;align-items:center;justify-content:center}
+.redirect-icon{width:22px;height:22px;border-radius:4px;background:var(--green)}
+.redirect-text{font-size:11px;font-weight:700;color:var(--t1);text-align:center;line-height:1.3}
+.redirect-sub{font-size:9px;color:var(--t4);text-align:center;line-height:1.4}
+.gate-center{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;flex:1;padding:12px 0}
+.gate-icon{width:40px;height:40px;border-radius:50%;background:var(--s2);border:0.5px solid var(--b1);display:flex;align-items:center;justify-content:center}
+.gate-icon-inner{width:18px;height:18px;border-radius:4px;background:var(--b1)}
+.gate-title{font-size:12px;font-weight:700;color:var(--t1);text-align:center;line-height:1.3}
+.gate-sub{font-size:9px;color:var(--t3);text-align:center;line-height:1.5}
+.offer-card{background:var(--s2);border-radius:6px;padding:8px 9px;margin-top:6px}
+.offer-tag{font-family:var(--mono);font-size:7px;font-weight:700;color:var(--green);letter-spacing:.06em;margin-bottom:3px}
+.offer-title{font-size:10px;font-weight:700;color:var(--t1)}
+.offer-sub{font-size:8px;color:var(--t3);margin-top:1px}
+.offer-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:5px}
+.offer-sm{background:var(--s2);border-radius:5px;padding:7px 8px}
+.offer-sm-title{font-size:9px;font-weight:700;color:var(--t1)}
+.offer-sm-sub{font-size:8px;color:var(--t4);margin-top:1px}
+.arr{display:flex;align-items:center;flex-shrink:0;padding:0 6px;margin-top:140px}
+.arr-line{width:18px;height:1px;background:var(--b2)}
+.arr-head{width:0;height:0;border-top:4px solid transparent;border-bottom:4px solid transparent;border-left:6px solid var(--b2)}
+.data-legend{background:var(--white);border:1px solid var(--b1);border-radius:8px;padding:16px 20px;margin-top:20px}
+.data-legend-label{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t4);margin-bottom:10px}
+.data-tags{display:flex;gap:6px;flex-wrap:wrap}
+.data-tag{font-family:var(--mono);font-size:10px;padding:3px 10px;border-radius:3px}
+.data-tag.travels{background:var(--amber-l);color:var(--amber);border:1px solid rgba(122,79,0,0.2)}
+.data-tag.stays{background:var(--red-l);color:var(--red);border:1px solid rgba(140,26,14,0.2)}
+footer{background:var(--navy);padding:22px 40px}
+.footer-inner{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.footer-text{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,0.25);letter-spacing:.06em}
+@media(max-width:700px){.hero,.page,footer{padding-left:20px;padding-right:20px}}
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-label">MoneyMore · DPO Wireframes · April 2026</div>
+  <h1 class="hero-title">Consent flows — <em>visual proposals</em></h1>
+  <p class="hero-sub">Two proposed flows for DPO review. Flow 1 covers the Offers tab consent gate with two independent checkboxes. Flow 2 covers the Elgameya promo code reveal and redirect with plain text disclosure.</p>
+</section>
+
+<div class="page">
+
+  <div class="sec-label">Flow 1 — Offers tab consent gate</div>
+  <h2 class="sec-title">Curiosity gap + two-checkbox consent</h2>
+  <p class="sec-desc">The Offers tab is visible in the bottom navigation but locked until the user chooses their preferences. The consent screen presents two independent checkboxes — each separately auditable and revocable from Settings at any time. Note on wording: rather than "I consent to", checkboxes are framed as user preferences. Pending DPO confirmation that affirmative checkbox language satisfies PDPL requirements without the literal phrase "I consent".</p>
+
+  <div class="flow">
+
+    <div class="phone-col">
+      <div class="phone-badge entry">locked state</div>
+      <div class="phone">
+        <div class="phone-status"><span class="phone-time">9:41</span><span class="phone-icons">▲▲ ▮</span></div>
+        <div class="phone-screen">
+          <div class="gate-center">
+            <div class="gate-icon"><div class="gate-icon-inner"></div></div>
+            <div class="gate-title">Unlock personalised offers</div>
+            <div class="gate-sub">Tell us your preferences to see offers tailored to you</div>
+            <div class="cta-primary" style="width:100%;margin-top:8px">Get started</div>
+            <div class="privacy-note">See our Privacy Policy</div>
+          </div>
+        </div>
+        <div class="bottom-tabs">
+          <div class="btab"><div class="btab-icon home"></div><div class="btab-label">Home</div></div>
+          <div class="btab"><div class="btab-icon"></div><div class="btab-label">Transactions</div></div>
+          <div class="btab"><div class="btab-icon active"></div><div class="btab-label active">Offers</div></div>
+          <div class="btab"><div class="btab-icon"></div><div class="btab-label">Budgets</div></div>
+          <div class="btab"><div class="btab-icon"></div><div class="btab-label">Profile</div></div>
+        </div>
+      </div>
+      <div class="phone-label">Offers tab — locked</div>
+    </div>
+
+    <div class="arr"><div class="arr-line"></div><div class="arr-head"></div></div>
+
+    <div class="phone-col">
+      <div class="phone-badge consent">consent screen</div>
+      <div class="phone">
+        <div class="phone-status"><span class="phone-time">9:41</span><span class="phone-icons">▲▲ ▮</span></div>
+        <div class="phone-screen">
+          <div class="screen-q">Choose your offer experience</div>
+          <div class="screen-sub">Select what you are comfortable with. Change this any time in Settings.</div>
+          <div class="divider"></div>
+          <div class="benefit-list">
+            <div class="benefit-item"><span class="benefit-tick">✓</span>Offers based on what you browse in this tab</div>
+            <div class="benefit-item"><span class="benefit-tick">✓</span>No data leaves MoneyMore</div>
+            <div class="benefit-item"><span class="benefit-tick">✓</span>Control your preferences in Settings</div>
+          </div>
+          <div class="divider"></div>
+          <div class="checkbox-lbl">Your preferences</div>
+          <div class="checkbox-group">
+            <div class="checkbox-row">
+              <div class="checkbox-box"></div>
+              <div class="checkbox-text">Use my spending patterns to personalise my offers and show me customised promotions</div>
+            </div>
+            <div class="checkbox-row">
+              <div class="checkbox-box"></div>
+              <div class="checkbox-text">Send me partner offers and selected third-party promotions via push notifications</div>
+            </div>
+          </div>
+          <div class="privacy-note">For more information, see our Privacy Policy</div>
+          <div class="cta-primary">Confirm and see offers</div>
+          <div class="cta-ghost">Not now</div>
+        </div>
+        <div class="bottom-tabs">
+          <div class="btab"><div class="btab-icon home"></div><div class="btab-label">Home</div></div>
+          <div class="btab"><div class="btab-icon"></div><div class="btab-label">Transactions</div></div>
+          <div class="btab"><div class="btab-icon active"></div><div class="btab-label active">Offers</div></div>
+          <div class="btab"><div class="btab-icon"></div><div class="btab-label">Budgets</div></div>
+          <div class="btab"><div class="btab-icon"></div><div class="btab-label">Profile</div></div>
+        </div>
+      </div>
+      <div class="phone-label">Two independent checkboxes — preference language</div>
+    </div>
+
+    <div class="arr"><div class="arr-line"></div><div class="arr-head"></div></div>
+
+    <div class="phone-col">
+      <div class="phone-badge done">unlocked</div>
+      <div class="phone">
+        <div class="phone-status"><span class="phone-time">9:42</span><span class="phone-icons">▲▲ ▮</span></div>
+        <div class="phone-screen">
+          <div class="screen-q">Offers</div>
+          <div class="offer-card">
+            <div class="offer-tag">FEATURED PARTNER</div>
+            <div class="offer-title">Join an Elgameya</div>
+            <div class="offer-sub">Exclusive promo for MoneyMore users</div>
+          </div>
+          <div class="offer-grid">
+            <div class="offer-sm">
+              <div class="offer-sm-title">Grocery offers</div>
+              <div class="offer-sm-sub">Based on your activity</div>
+            </div>
+            <div class="offer-sm" style="opacity:.6">
+              <div class="offer-sm-title">More offers</div>
+              <div class="offer-sm-sub">Personalised for you</div>
+            </div>
+          </div>
+        </div>
+        <div class="bottom-tabs">
+          <div class="btab"><div class="btab-icon home"></div><div class="btab-label">Home</div></div>
+          <div class="btab"><div class="btab-icon"></div><div class="btab-label">Transactions</div></div>
+          <div class="btab"><div class="btab-icon active"></div><div class="btab-label active">Offers</div></div>
+          <div class="btab"><div class="btab-icon"></div><div class="btab-label">Budgets</div></div>
+          <div class="btab"><div class="btab-icon"></div><div class="btab-label">Profile</div></div>
+        </div>
+      </div>
+      <div class="phone-label">Offers tab — unlocked after consent</div>
+    </div>
+
+  </div>
+
+  <div class="page-divider"></div>
+
+  <div class="sec-label">Flow 2 — Elgameya promo code and redirect</div>
+  <h2 class="sec-title">Consent → promo code reveal → plain text disclosure → redirect</h2>
+  <p class="sec-desc">After the four intent questions, the user sees a consent screen with a checkbox before the promo code is revealed. The redirect disclosure appears as plain text below the "Open Elgameya" button — visible before the tap, no pop-up required. Pending DPO confirmation that plain text disclosure satisfies the requirement.</p>
+
+  <div class="flow">
+
+    <div class="phone-col">
+      <div class="phone-badge consent">consent</div>
+      <div class="phone">
+        <div class="phone-status"><span class="phone-time">9:44</span><span class="phone-icons">▲▲ ▮</span></div>
+        <div class="phone-screen">
+          <div class="screen-q">Find your Elgameya match</div>
+          <div class="screen-sub">To continue, we will share these answers with Elgameya to find the right plan:</div>
+          <div class="benefit-list">
+            <div class="benefit-item"><span class="benefit-tick">✓</span>Your goal and seat preference</div>
+            <div class="benefit-item"><span class="benefit-tick">✓</span>Target amount and timeline</div>
+            <div class="benefit-item"><span class="benefit-tick">✓</span>MoneyMore may keep your answers to improve future offers</div>
+          </div>
+          <div class="warning-box">MoneyMore will not share your transaction history or spending data with Elgameya. For more information, see our Privacy Policy.</div>
+          <div class="checkbox-row">
+            <div class="checkbox-box"></div>
+            <div class="checkbox-text">Share my answers with Elgameya to find my match</div>
+          </div>
+          <div class="cta-primary">Get my promo code</div>
+          <div class="cta-ghost">Cancel</div>
+        </div>
+        <div class="bottom-tabs">
+          <div class="btab"><div class="btab-icon home"></div><div class="btab-label">Home</div></div>
+          <div class="btab"><div class="btab-icon"></div><div class="btab-label">Transactions</div></div>
+          <div class="btab"><div class="btab-icon active"></div><div class="btab-label active">Offers</div></div>
+          <div class="btab"><div class="btab-icon"></div><div class="btab-label">Budgets</div></div>
+          <div class="btab"><div class="btab-icon"></div><div class="btab-label">Profile</div></div>
+        </div>
+      </div>
+      <div class="phone-label">Consent before promo code is revealed</div>
+    </div>
+
+    <div class="arr"><div class="arr-line"></div><div class="arr-head"></div></div>
+
+    <div class="phone-col">
+      <div class="phone-badge promo">promo revealed</div>
+      <div class="phone">
+        <div class="phone-status"><span class="phone-time">9:44</span><span class="phone-icons">▲▲ ▮</span></div>
+        <div class="phone-screen">
+          <div class="screen-q">Your Elgameya offer is ready</div>
+          <div class="screen-sub">Use this code when you sign up with Elgameya to activate your exclusive plan.</div>
+          <div class="promo-box">
+            <div class="promo-val">MM-ELG-2026</div>
+            <div class="promo-lbl">Your exclusive promo code</div>
+          </div>
+          <div class="divider"></div>
+          <div class="cta-primary">Open Elgameya</div>
+          <div class="redirect-note">You are leaving MoneyMore. Elgameya will process your personal data as an independent data controller. Their Privacy Policy and Terms will apply.</div>
+          <div class="divider"></div>
+          <div class="cta-ghost">Done, I'll go later</div>
+        </div>
+        <div class="bottom-tabs">
+          <div class="btab"><div class="btab-icon home"></div><div class="btab-label">Home</div></div>
+          <div class="btab"><div class="btab-icon"></div><div class="btab-label">Transactions</div></div>
+          <div class="btab"><div class="btab-icon active"></div><div class="btab-label active">Offers</div></div>
+          <div class="btab"><div class="btab-icon"></div><div class="btab-label">Budgets</div></div>
+          <div class="btab"><div class="btab-icon"></div><div class="btab-label">Profile</div></div>
+        </div>
+      </div>
+      <div class="phone-label">Promo code — plain text disclosure below button</div>
+    </div>
+
+    <div class="arr"><div class="arr-line"></div><div class="arr-head"></div></div>
+
+    <div class="phone-col">
+      <div class="phone-badge done">redirect</div>
+      <div class="phone">
+        <div class="phone-status"><span class="phone-time">9:45</span><span class="phone-icons">▲▲ ▮</span></div>
+        <div class="phone-screen">
+          <div class="redirect-inner">
+            <div class="redirect-logo"><div class="redirect-icon"></div></div>
+            <div class="redirect-text">Taking you to Elgameya</div>
+            <div class="promo-val" style="font-size:12px">MM-ELG-2026</div>
+            <div class="redirect-sub">Your answers are ready. Elgameya will complete your sign-up.</div>
+          </div>
+        </div>
+        <div class="bottom-tabs">
+          <div class="btab"><div class="btab-icon home"></div><div class="btab-label">Home</div></div>
+          <div class="btab"><div class="btab-icon"></div><div class="btab-label">Transactions</div></div>
+          <div class="btab"><div class="btab-icon active"></div><div class="btab-label active">Offers</div></div>
+          <div class="btab"><div class="btab-icon"></div><div class="btab-label">Budgets</div></div>
+          <div class="btab"><div class="btab-icon"></div><div class="btab-label">Profile</div></div>
+        </div>
+      </div>
+      <div class="phone-label">Redirect screen</div>
+    </div>
+
+  </div>
+
+  <div class="data-legend">
+    <div class="data-legend-label">What travels to Elgameya on redirect</div>
+    <div class="data-tags">
+      <span class="data-tag travels">Goal</span>
+      <span class="data-tag travels">Amount</span>
+      <span class="data-tag travels">Timeline</span>
+      <span class="data-tag travels">Seat preference</span>
+      <span class="data-tag travels">Promo code</span>
+      <span class="data-tag stays">Transaction history — never shared</span>
+      <span class="data-tag stays">Spending data — never shared</span>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-text">MoneyMore · DPO Wireframes · April 2026 · Internal</div>
+    <div class="footer-text">Head of Growth & Product</div>
+  </div>
+</footer>
+
+</body>
+</html>
