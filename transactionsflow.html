@@ -1,0 +1,3258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoneyMore — Transactions Tab · Designer Prototype</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --navy:#1A3C5E; --green:#2E8B57; --green-l:#E8F5EE;
+  --gold:#B8860B; --gold-l:#FBF4DC; --red:#C0392B; --red-l:#FDECEA;
+  --page-bg:#F9F8F5; --page-border:#E2DFD8;
+  --screen-bg:#FAFAF8; --screen-bg2:#F2F0EB; --screen-bg3:#E8E5DE;
+  --t1:#1A1714; --t2:#3D3A35; --t3:#7A7670; --t4:#ABA7A0;
+  --t-pos:#1A6E3C; --t-neg:#A82419; --t-inv:#FFFFFF;
+  --b1:#E8E5DF; --b2:#D4D0C8; --b3:#BCBAB2;
+  --frame-bg:#2A2724; --frame-border:#1A1614;
+  --f-body:'Plus Jakarta Sans',sans-serif; --f-mono:'DM Mono',monospace;
+  --s-xs:10px; --s-sm:12px; --s-base:14px; --s-md:16px;
+  --s-lg:18px; --s-xl:22px; --s-2xl:28px;
+  --r-sm:6px; --r-md:12px; --r-lg:16px; --r-xl:24px; --r-pill:999px;
+  --shadow-phone:0 8px 32px rgba(0,0,0,0.14),0 2px 8px rgba(0,0,0,0.08);
+  --shadow-card:0 1px 4px rgba(0,0,0,0.06);
+  --ph-w:280px; --ph-r:32px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-size:var(--s-base);line-height:1.6;-webkit-font-smoothing:antialiased;}
+.page{max-width:1500px;margin:0 auto;padding:48px 40px 96px;}
+
+/* ── DOC HEADER ─────────────────────────────────────────── */
+.doc-header{padding-bottom:32px;margin-bottom:40px;border-bottom:2px solid var(--b1);}
+.doc-meta{display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap;}
+.doc-tag{font-family:var(--f-mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;padding:4px 11px;border-radius:3px;font-weight:600;}
+.doc-tag.prototype{background:var(--green-l);color:#0F5830;}
+.doc-tag.designer{background:#EAE8FF;color:#3A3288;}
+.doc-tag.android{background:#E8F4EA;color:#1F5E2A;}
+.doc-tag.wip{background:var(--gold-l);color:#6B5210;}
+.doc-tag.version{background:var(--navy);color:#fff;}
+.doc-date{font-family:var(--f-mono);font-size:11px;color:var(--t2);margin-left:auto;font-weight:500;}
+.doc-title{font-size:34px;font-weight:700;color:var(--t1);letter-spacing:-0.02em;line-height:1.15;margin-bottom:10px;}
+.doc-subtitle{font-size:15px;color:var(--t1);font-weight:400;margin-bottom:30px;line-height:1.5;max-width:920px;}
+
+.doc-info{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--b1);border-radius:var(--r-md);overflow:hidden;background:white;}
+.doc-info-cell{padding:16px 20px;border-right:1px solid var(--b1);}
+.doc-info-cell:last-child{border-right:none;}
+.info-label{font-family:var(--f-mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--t2);margin-bottom:8px;font-weight:600;}
+.info-body{font-size:13px;color:var(--t1);line-height:1.55;}
+.info-body strong{color:var(--t1);font-weight:700;}
+
+.flow-list{display:flex;flex-direction:column;gap:4px;}
+.flow-list-item{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--t1);line-height:1.45;}
+.flow-list-item::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--b3);flex-shrink:0;}
+.flow-list-item.active::before{background:var(--green);}
+
+/* ── FLOW SECTION ──────────────────────────────────────── */
+.flow-section{margin-bottom:64px;}
+.flow-section-header{display:flex;align-items:center;gap:16px;margin-bottom:28px;}
+.flow-section-line{flex:1;height:1px;background:var(--b2);}
+.flow-section-title{font-family:var(--f-body);font-size:16px;font-weight:700;letter-spacing:-0.01em;color:#fff;background:var(--navy);padding:6px 14px;border-radius:4px;white-space:nowrap;}
+.flow-intro{font-size:13px;color:var(--t2);line-height:1.55;margin-bottom:24px;max-width:920px;}
+
+.phone-row{display:flex;align-items:flex-start;gap:0;overflow-x:auto;padding-bottom:12px;}
+.phone-row::-webkit-scrollbar{height:4px;}
+.phone-row::-webkit-scrollbar-track{background:var(--b1);border-radius:2px;}
+.phone-row::-webkit-scrollbar-thumb{background:var(--b3);border-radius:2px;}
+
+.screen-col{display:flex;flex-direction:column;align-items:center;gap:10px;flex-shrink:0;}
+.screen-label{font-family:var(--f-body);font-size:11px;font-weight:600;color:var(--t2);text-align:center;max-width:var(--ph-w);line-height:1.4;}
+
+.state-badge{font-family:var(--f-mono);font-size:10px;font-weight:500;padding:3px 9px;border-radius:3px;letter-spacing:0.04em;}
+.state-badge.happy{background:#EBF7F1;color:#1A6E3C;}
+.state-badge.empty{background:var(--gold-l);color:#8A6510;}
+.state-badge.error{background:var(--red-l);color:var(--red);}
+.state-badge.loading{background:#E8F0FA;color:#103868;}
+.state-badge.success{background:var(--green-l);color:#0F5830;}
+.state-badge.warning{background:var(--gold-l);color:#6B5210;}
+.state-badge.interaction{background:#EAE8FF;color:#3A3288;}
+.state-badge.offline{background:#ECECEC;color:#555;}
+
+.flow-arrow{display:flex;flex-direction:column;align-items:center;flex-shrink:0;padding-top:296px;padding-left:6px;padding-right:6px;}
+.arrow-line{width:32px;height:1px;background:var(--b2);position:relative;}
+.arrow-line::after{content:'';position:absolute;right:-1px;top:-3px;border-left:5px solid var(--b2);border-top:3px solid transparent;border-bottom:3px solid transparent;}
+.arrow-label{font-family:var(--f-body);font-size:10px;font-weight:600;color:var(--t2);text-align:center;max-width:70px;line-height:1.35;margin-top:6px;}
+
+/* ── PHONE FRAME ───────────────────────────────────────── */
+.phone{width:var(--ph-w);min-height:560px;border-radius:var(--ph-r);background:var(--frame-bg);box-shadow:var(--shadow-phone);position:relative;overflow:hidden;border:2px solid var(--frame-border);flex-shrink:0;display:flex;flex-direction:column;}
+.a-status{height:20px;background:var(--screen-bg);display:flex;align-items:center;justify-content:space-between;padding:0 14px;flex-shrink:0;font-family:var(--f-mono);font-size:8px;color:var(--t1);position:relative;z-index:5;}
+.a-nav{height:48px;background:var(--screen-bg);border-top:1px solid var(--b1);display:flex;align-items:center;flex-shrink:0;position:relative;z-index:5;}
+.a-nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 0;position:relative;}
+.a-nav-icon{width:20px;height:20px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;}
+.a-nav-item.on .a-nav-icon{background:var(--green-l);}
+.a-nav-lbl{font-size:8px;color:var(--t4);font-weight:500;}
+.a-nav-item.on .a-nav-lbl{color:var(--green);}
+
+/* Centre raised plus button */
+.a-nav-plus{position:absolute;top:-14px;left:50%;transform:translateX(-50%);width:42px;height:42px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(46,139,87,0.32);color:#fff;font-size:20px;font-weight:300;line-height:1;}
+
+.screen{flex:1;background:var(--screen-bg);overflow:hidden;display:flex;flex-direction:column;min-height:492px;position:relative;}
+.screen.no-nav{min-height:540px;}
+
+/* ── TRANSACTIONS TAB SHELL ────────────────────────────── */
+.tx-app-bar{padding:12px 14px 8px;background:var(--screen-bg);}
+.tx-app-bar-title{font-size:var(--s-lg);font-weight:700;color:var(--t1);}
+
+/* Search bar */
+.search-bar{margin:0 14px 10px;height:38px;background:white;border:1px solid var(--b1);border-radius:var(--r-sm);padding:0 12px;display:flex;align-items:center;gap:8px;}
+.search-bar.focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(26,60,94,0.07);}
+.search-bar.disabled{background:var(--screen-bg2);opacity:0.55;}
+.search-icon{color:var(--t4);font-size:13px;}
+.search-text{font-size:var(--s-sm);color:var(--t1);flex:1;}
+.search-text.placeholder{color:var(--t4);}
+.search-clear{font-size:14px;color:var(--t3);}
+
+/* Type tabs (pills) */
+.type-tabs{display:flex;gap:6px;padding:0 14px 10px;overflow-x:auto;}
+.type-tab{padding:5px 12px;border-radius:var(--r-pill);background:white;border:1px solid var(--b2);font-size:var(--s-xs);font-weight:600;color:var(--t2);white-space:nowrap;flex-shrink:0;}
+.type-tab.on{background:var(--navy);border-color:var(--navy);color:#fff;}
+
+/* Filter affordance row */
+.filter-row{display:flex;align-items:center;gap:6px;padding:0 14px 10px;flex-wrap:wrap;}
+.filter-chip{display:inline-flex;align-items:center;gap:4px;padding:4px 9px;border-radius:var(--r-pill);background:var(--green-l);border:1px solid rgba(46,139,87,0.25);font-size:var(--s-xs);font-weight:600;color:#0F5830;}
+.filter-chip.muted{background:var(--screen-bg2);border-color:var(--b1);color:var(--t2);}
+.filter-chip-x{font-size:11px;color:#0F5830;font-weight:700;}
+.filter-clear-link{margin-left:auto;font-size:var(--s-xs);font-weight:700;color:var(--navy);text-decoration:underline;}
+
+/* Date affordance button */
+.date-btn{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:var(--r-pill);background:white;border:1px solid var(--b2);font-size:var(--s-xs);font-weight:600;color:var(--t1);}
+.date-btn-ico{font-size:11px;}
+
+/* Summary bar */
+.summary-bar{margin:0 14px 8px;padding:10px 12px;background:white;border:1px solid var(--b1);border-radius:var(--r-sm);display:flex;justify-content:space-between;align-items:center;box-shadow:var(--shadow-card);}
+.summary-cell{flex:1;text-align:center;}
+.summary-cell + .summary-cell{border-left:1px solid var(--b1);}
+.summary-lbl{font-size:9px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:2px;}
+.summary-val{font-size:13px;font-weight:700;color:var(--t1);font-feature-settings:"tnum";}
+.summary-val.neg{color:var(--t-neg);}
+.summary-val.pos{color:var(--t-pos);}
+
+/* List date header */
+.tx-date-header{padding:10px 14px 4px;font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:0.06em;background:var(--screen-bg);}
+
+/* Transaction row */
+.tx-row{display:flex;align-items:center;padding:10px 14px;gap:10px;background:var(--screen-bg);border-bottom:1px solid var(--b1);}
+.tx-icon{width:34px;height:34px;border-radius:var(--r-sm);background:var(--screen-bg2);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.tx-info{flex:1;min-width:0;}
+.tx-merchant{font-size:var(--s-sm);font-weight:600;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tx-cat{font-size:var(--s-xs);color:var(--t3);margin-top:1px;}
+.tx-cat.pending{color:var(--gold);font-style:italic;}
+.tx-right{text-align:right;flex-shrink:0;}
+.tx-amt{font-size:var(--s-sm);font-weight:700;font-feature-settings:"tnum";}
+.tx-amt.spend{color:var(--t1);}
+.tx-amt.spend::before{content:'−';margin-right:1px;}
+.tx-amt.income{color:var(--t-pos);}
+.tx-amt.income::before{content:'+';margin-right:1px;}
+.tx-amt.neutral{color:var(--t3);}
+.tx-time{font-size:9px;color:var(--t4);margin-top:2px;}
+
+/* Pending categorisation row variant */
+.tx-row.pending .tx-icon{background:var(--gold-l);color:var(--gold);}
+
+/* Internal transfer row */
+.tx-row.internal .tx-icon{background:var(--screen-bg3);}
+
+/* End-of-list cap message */
+.cap-msg{padding:24px 20px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px;background:var(--screen-bg);}
+.cap-msg-text{font-size:var(--s-xs);color:var(--t3);line-height:1.5;max-width:220px;}
+
+/* Empty state */
+.empty-state{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 20px;text-align:center;gap:10px;}
+.empty-icon{width:52px;height:52px;border-radius:50%;background:var(--screen-bg2);display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:2px;}
+.empty-ttl{font-size:var(--s-base);font-weight:700;color:var(--t1);}
+.empty-desc{font-size:var(--s-sm);color:var(--t3);line-height:1.5;max-width:230px;}
+.empty-ctas{display:flex;flex-direction:column;gap:8px;width:100%;max-width:220px;margin-top:10px;}
+
+/* Buttons */
+.btn{height:42px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;font-family:var(--f-body);font-size:var(--s-sm);font-weight:700;border:none;width:100%;}
+.btn-primary{background:var(--navy);color:white;}
+.btn-accent{background:var(--green);color:white;}
+.btn-outline{background:transparent;border:1.5px solid var(--navy);color:var(--navy);}
+.btn-ghost{background:transparent;color:var(--navy);}
+.btn-disabled{background:var(--screen-bg3);color:var(--t4);}
+.btn-lg{height:46px;font-size:var(--s-base);}
+.btn-sm{height:36px;font-size:var(--s-xs);}
+
+/* Offline indicator */
+.offline-indicator{padding:6px 14px;background:var(--screen-bg2);border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:6px;font-size:var(--s-xs);color:var(--t3);}
+.offline-dot{width:6px;height:6px;border-radius:50%;background:var(--t4);}
+
+/* Network error banner */
+.net-err-banner{margin:8px 14px;padding:10px 12px;background:var(--red-l);border:1px solid rgba(192,57,43,0.25);border-radius:var(--r-sm);display:flex;align-items:center;gap:8px;}
+.net-err-ico{color:var(--red);font-size:13px;flex-shrink:0;}
+.net-err-txt{font-size:var(--s-xs);color:var(--red);font-weight:600;flex:1;line-height:1.4;}
+.net-err-arrow{color:var(--red);font-size:14px;font-weight:700;}
+
+/* ── BOTTOM SHEET (date filter, manual add, category picker) ── */
+.overlay{position:absolute;inset:0;background:rgba(0,0,0,0.45);display:flex;align-items:flex-end;z-index:40;}
+.bottom-sheet{background:var(--screen-bg);border-radius:var(--r-xl) var(--r-xl) 0 0;width:100%;padding:14px 14px 24px;box-shadow:0 -4px 24px rgba(0,0,0,0.1);max-height:88%;display:flex;flex-direction:column;}
+.bs-handle{width:32px;height:3px;background:var(--b2);border-radius:2px;margin:0 auto 12px;flex-shrink:0;}
+.bs-title{font-size:var(--s-md);font-weight:700;color:var(--t1);margin-bottom:12px;}
+.bs-body{flex:1;overflow-y:auto;}
+
+/* Date preset list */
+.date-preset{padding:11px 4px;font-size:var(--s-sm);color:var(--t1);border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between;}
+.date-preset:last-child{border-bottom:none;}
+.date-preset.selected{font-weight:700;color:var(--navy);}
+.date-preset-check{color:var(--green);font-weight:700;}
+
+/* Custom range fields */
+.field-row{display:flex;gap:10px;margin-bottom:14px;}
+.field-grp{flex:1;display:flex;flex-direction:column;gap:4px;}
+.field-label{font-size:var(--s-xs);font-weight:700;color:var(--t2);letter-spacing:0.03em;}
+.input{height:40px;border:1.5px solid var(--b2);border-radius:var(--r-sm);background:white;padding:0 10px;font-size:var(--s-sm);color:var(--t1);display:flex;align-items:center;}
+.input.focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(26,60,94,0.07);}
+.input.err{border-color:var(--red);}
+.input.placeholder{color:var(--t4);}
+.input-hint{font-size:var(--s-xs);color:var(--t3);margin-top:3px;}
+.input-err-msg{font-size:var(--s-xs);color:var(--red);margin-top:3px;display:flex;align-items:center;gap:4px;}
+.input-warn-msg{font-size:var(--s-xs);color:#6B5210;margin-top:3px;background:var(--gold-l);padding:6px 8px;border-radius:4px;line-height:1.4;}
+.optional-tag{font-weight:400;color:var(--t4);}
+
+/* Segmented control */
+.seg{display:flex;border:1px solid var(--b2);border-radius:var(--r-sm);overflow:hidden;background:white;}
+.seg-opt{flex:1;padding:7px 4px;text-align:center;font-size:11px;font-weight:600;color:var(--t2);border-right:1px solid var(--b2);}
+.seg-opt:last-child{border-right:none;}
+.seg-opt.on{background:var(--navy);color:#fff;}
+
+/* Category picker rows */
+.cat-search{margin-bottom:12px;}
+.cat-list{flex:1;overflow-y:auto;display:flex;flex-direction:column;}
+.cat-row{display:flex;align-items:center;gap:10px;padding:10px 4px;border-bottom:1px solid var(--b1);}
+.cat-row:last-child{border-bottom:none;}
+.cat-icon{width:28px;height:28px;border-radius:var(--r-sm);background:var(--screen-bg2);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.cat-name{font-size:var(--s-sm);color:var(--t1);flex:1;}
+.cat-create-row{padding:10px 4px;border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:10px;}
+.cat-create-icon{width:28px;height:28px;border-radius:var(--r-sm);background:var(--green-l);color:var(--green);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:300;flex-shrink:0;}
+.cat-create-text{font-size:var(--s-sm);color:var(--green);font-weight:600;}
+
+/* Action sheet (centre plus) */
+.action-sheet-row{display:flex;align-items:center;gap:12px;padding:14px 4px;border-bottom:1px solid var(--b1);}
+.action-sheet-row:last-child{border-bottom:none;}
+.action-sheet-icon{width:36px;height:36px;border-radius:var(--r-sm);background:var(--green-l);color:var(--green);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.action-sheet-title{font-size:var(--s-sm);font-weight:700;color:var(--t1);}
+.action-sheet-sub{font-size:var(--s-xs);color:var(--t3);margin-top:1px;}
+
+/* Icon/colour preview row */
+.icon-color-preview{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:white;border:1.5px solid var(--b2);border-radius:var(--r-sm);}
+.icon-color-left{display:flex;align-items:center;gap:10px;}
+.icon-swatch{width:28px;height:28px;border-radius:var(--r-sm);background:#FEF0E6;color:#B05A10;display:flex;align-items:center;justify-content:center;font-size:14px;}
+.icon-color-text{font-size:var(--s-sm);color:var(--t1);}
+.icon-color-change{font-size:var(--s-xs);font-weight:700;color:var(--navy);text-decoration:underline;}
+
+/* ── DETAIL SHEET ─────────────────────────────────────── */
+.detail-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.detail-title-wrap{display:flex;align-items:center;gap:10px;flex:1;min-width:0;}
+.detail-icon{width:40px;height:40px;border-radius:var(--r-sm);background:var(--screen-bg2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.detail-merchant{font-size:var(--s-md);font-weight:700;color:var(--t1);line-height:1.2;}
+.detail-source{font-size:var(--s-xs);color:var(--t3);margin-top:2px;}
+.detail-mode-chip{font-family:var(--f-mono);font-size:9px;font-weight:600;padding:2px 7px;border-radius:3px;letter-spacing:0.04em;text-transform:uppercase;flex-shrink:0;}
+.detail-mode-chip.read{background:var(--screen-bg2);color:var(--t3);}
+.detail-mode-chip.edit{background:#EAE8FF;color:#3A3288;}
+
+.detail-amount{font-size:28px;font-weight:700;color:var(--t1);letter-spacing:-0.02em;line-height:1;margin-bottom:18px;font-feature-settings:"tnum";}
+.detail-amount.spend::before{content:'−';margin-right:2px;}
+.detail-amount.income{color:var(--t-pos);}
+.detail-amount.income::before{content:'+';margin-right:2px;}
+.detail-amount.neutral{color:var(--t3);}
+
+.detail-row{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--b1);gap:10px;}
+.detail-row:last-of-type{border-bottom:none;}
+.detail-row-label{font-size:var(--s-xs);font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:0.04em;flex-shrink:0;}
+.detail-row-value{font-size:var(--s-sm);color:var(--t1);font-weight:500;text-align:right;flex:1;min-width:0;display:flex;align-items:center;justify-content:flex-end;gap:6px;}
+.detail-row-value .row-icon{font-size:13px;}
+.detail-row.editable{cursor:default;}
+.detail-row.editable .detail-row-value::after{content:'›';color:var(--t4);font-size:14px;margin-left:4px;}
+
+.detail-note-row{padding:11px 0;border-bottom:1px solid var(--b1);}
+.detail-note-label{font-size:var(--s-xs);font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:5px;}
+.detail-note-text{font-size:var(--s-sm);color:var(--t1);line-height:1.5;}
+.detail-note-add{font-size:var(--s-sm);color:var(--navy);font-weight:600;}
+
+/* Toggle row (mark as internal transfer) */
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--b1);gap:10px;}
+.toggle-label{flex:1;}
+.toggle-label-title{font-size:var(--s-sm);color:var(--t1);font-weight:600;}
+.toggle-label-sub{font-size:var(--s-xs);color:var(--t3);margin-top:2px;line-height:1.4;}
+.toggle{width:38px;height:22px;border-radius:var(--r-pill);background:var(--screen-bg3);position:relative;flex-shrink:0;}
+.toggle.on{background:var(--green);}
+.toggle::after{content:'';position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:white;box-shadow:0 1px 2px rgba(0,0,0,0.18);}
+.toggle.on::after{left:19px;}
+
+/* Action row inside detail */
+.detail-actions{display:flex;flex-direction:column;gap:8px;margin-top:16px;}
+.btn-text-danger{height:42px;display:flex;align-items:center;justify-content:center;font-family:var(--f-body);font-size:var(--s-sm);font-weight:700;color:var(--red);background:transparent;border:none;}
+
+/* Edit-mode field row (label above value, tappable) */
+.edit-field{padding:10px 0;border-bottom:1px solid var(--b1);}
+.edit-field-label{font-size:var(--s-xs);font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:4px;}
+.edit-field-value{font-size:var(--s-sm);color:var(--t1);font-weight:500;display:flex;align-items:center;justify-content:space-between;gap:6px;}
+.edit-field-value.placeholder{color:var(--t4);}
+.edit-field-chev{color:var(--t4);font-size:14px;}
+
+/* Toast */
+.toast{position:absolute;bottom:64px;left:14px;right:14px;background:var(--t1);color:#fff;border-radius:var(--r-sm);padding:11px 14px;font-size:var(--s-xs);font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,0.22);display:flex;align-items:center;justify-content:space-between;gap:10px;z-index:50;}
+.toast.success{background:#0F5830;}
+.toast-text{flex:1;line-height:1.4;}
+.toast-action{font-size:var(--s-xs);font-weight:700;color:#fff;text-decoration:underline;flex-shrink:0;}
+
+/* New row highlight */
+.tx-row.new-highlight{background:#FBF4DC;}
+
+/* Delete confirmation modal */
+.modal-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;padding:24px;z-index:50;}
+.modal{background:#fff;border-radius:var(--r-lg);width:100%;padding:20px;display:flex;flex-direction:column;gap:14px;}
+.modal-title{font-size:var(--s-md);font-weight:700;color:var(--t1);}
+.modal-body{font-size:var(--s-sm);color:var(--t2);line-height:1.5;}
+.modal-actions{display:flex;flex-direction:column;gap:8px;}
+
+/* Flow notes */
+.flow-note{max-width:var(--ph-w);padding:9px 12px;border-radius:4px;font-family:var(--f-body);font-size:11px;font-weight:500;line-height:1.5;}
+.flow-note.decision{background:#FBF4DC;color:#6B5210;border-left:3px solid var(--gold);}
+.flow-note.bug{background:var(--red-l);color:#7A1810;border-left:3px solid var(--red);}
+.flow-note.new{background:var(--green-l);color:#0F5830;border-left:3px solid var(--green);}
+
+/* ── HANDOFF ───────────────────────────────────────────── */
+.handoff{margin-top:64px;padding:36px;background:white;border:1px solid var(--b1);border-radius:var(--r-md);}
+.handoff-title{font-size:26px;font-weight:700;color:var(--t1);margin-bottom:8px;letter-spacing:-0.01em;}
+.handoff-sub{font-size:14px;color:var(--t2);margin-bottom:28px;line-height:1.5;}
+.handoff-sec{margin-top:28px;padding-top:24px;border-top:1px solid var(--b1);}
+.handoff-sec:first-of-type{border-top:none;padding-top:0;margin-top:0;}
+.handoff-h{font-size:18px;font-weight:700;color:var(--t1);margin-bottom:12px;}
+.handoff-p{font-size:14px;color:var(--t1);line-height:1.6;margin-bottom:8px;}
+.handoff-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.handoff-list li{font-size:14px;color:var(--t1);line-height:1.6;padding-left:16px;position:relative;}
+.handoff-list li::before{content:'—';position:absolute;left:0;color:var(--t3);font-weight:700;}
+
+.copy-table{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed;}
+.copy-table col.col-screen{width:22%;}
+.copy-table col.col-element{width:20%;}
+.copy-table col.col-en{width:29%;}
+.copy-table col.col-ar{width:29%;}
+.copy-table th{text-align:left;padding:10px 12px;border-bottom:2px solid var(--b2);font-size:11px;color:var(--t2);text-transform:uppercase;letter-spacing:0.06em;font-weight:700;background:var(--screen-bg);}
+.copy-table td{padding:10px 12px;border-bottom:1px solid var(--b1);vertical-align:top;color:var(--t1);line-height:1.55;word-wrap:break-word;overflow-wrap:break-word;}
+.copy-table td.screen-name{font-weight:700;color:var(--t1);background:var(--screen-bg);}
+.copy-table td.element-name{color:var(--t2);font-weight:500;}
+.copy-table td.en{font-size:12px;color:var(--t1);}
+.copy-table td.ar{font-size:12px;color:var(--t1);direction:rtl;text-align:right;font-family:var(--f-body);}
+.copy-table tr.group-start td{border-top:2px solid var(--b2);}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ═══════════════════════════════════════════════════════
+     DOC HEADER
+═══════════════════════════════════════════════════════════ -->
+<div class="doc-header">
+  <div class="doc-meta">
+    <span class="doc-tag prototype">Prototype</span>
+    <span class="doc-tag designer">Designer brief</span>
+    <span class="doc-tag android">Android</span>
+    <span class="doc-tag wip">Draft v1</span>
+    <span class="doc-tag version">DB-Transactions</span>
+    <span class="doc-date">April 2026</span>
+  </div>
+
+  <div class="doc-title">Transactions Tab — Find &amp; Verify</div>
+  <div class="doc-subtitle">The list of every money movement, designed for finding a specific transaction and verifying it landed correctly. Search by merchant or amount, filter by type and date, with row-level states for pending categorisation, refunds, and internal transfers. Includes manual add, edit, delete with undo, and category creation.</div>
+
+  <div class="doc-info">
+    <div class="doc-info-cell">
+      <div class="info-label">The problem</div>
+      <div class="info-body">
+        Users come to this tab with a job: find a transaction they remember and confirm it's accurate. Today the list is undifferentiated — every row looks the same regardless of source, status, or type, and there is no way to filter or search. Internal transfers inflate the spending picture, refunds look identical to spending, and pending categorisation is invisible. The tab needs to behave like a tool, not a feed.
+      </div>
+    </div>
+    <div class="doc-info-cell">
+      <div class="info-label">Flows in this document</div>
+      <div class="flow-list">
+        <div class="flow-list-item active">Flow 1 — Tab shell, search, filter, summary</div>
+        <div class="flow-list-item active">Flow 2 — Row states (pending, refund, internal transfer)</div>
+        <div class="flow-list-item active">Flow 3 — Empty states (8 compositions)</div>
+        <div class="flow-list-item active">Flow 4 — Network and pagination cap</div>
+        <div class="flow-list-item active">Flow 5 — Manual add (entry, validation, success)</div>
+        <div class="flow-list-item active">Flow 6 — Category picker and creation</div>
+        <div class="flow-list-item active">Flow 7 — Detail screen (read mode)</div>
+        <div class="flow-list-item active">Flow 8 — Detail screen (edit mode)</div>
+        <div class="flow-list-item active">Flow 9 — Delete with undo toast</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 1 — TAB SHELL, SEARCH, FILTER, SUMMARY
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 1 — Tab shell, search, filter, summary</div>
+    <div class="flow-section-line"></div>
+  </div>
+  <div class="flow-intro">The default surface. Default state shows This month, all types, no search. Type tabs, date filter, and summary bar update the list together. Filter chips appear above the summary when any non-default filter is active.</div>
+
+  <div class="phone-row">
+
+    <!-- 1A: Default state -->
+    <div class="screen-col">
+      <div class="screen-label">Tab default · This month, all types</div>
+      <div class="state-badge happy">default</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="tx-app-bar">
+            <div class="tx-app-bar-title">Transactions</div>
+          </div>
+          <div class="search-bar">
+            <span class="search-icon">⌕</span>
+            <span class="search-text placeholder">Search merchant or amount</span>
+          </div>
+          <div class="type-tabs">
+            <div class="type-tab on">All</div>
+            <div class="type-tab">Spending</div>
+            <div class="type-tab">Income</div>
+            <div class="type-tab">Transfer</div>
+          </div>
+          <div class="filter-row">
+            <div class="date-btn"><span class="date-btn-ico">📅</span> This month</div>
+          </div>
+          <div class="summary-bar">
+            <div class="summary-cell"><div class="summary-lbl">Spent</div><div class="summary-val neg">3,240</div></div>
+            <div class="summary-cell"><div class="summary-lbl">Income</div><div class="summary-val pos">8,500</div></div>
+            <div class="summary-cell"><div class="summary-lbl">Net</div><div class="summary-val pos">+5,260</div></div>
+          </div>
+          <div class="tx-date-header">Today</div>
+          <div class="tx-row">
+            <div class="tx-icon">🍕</div>
+            <div class="tx-info"><div class="tx-merchant">Abou Tarek</div><div class="tx-cat">Food &amp; Dining</div></div>
+            <div class="tx-right"><div class="tx-amt spend">85 EGP</div><div class="tx-time">2:14 PM</div></div>
+          </div>
+          <div class="tx-row">
+            <div class="tx-icon">⛽</div>
+            <div class="tx-info"><div class="tx-merchant">Total Station</div><div class="tx-cat">Transport</div></div>
+            <div class="tx-right"><div class="tx-amt spend">350 EGP</div><div class="tx-time">11:42 AM</div></div>
+          </div>
+          <div class="tx-date-header">Yesterday</div>
+          <div class="tx-row">
+            <div class="tx-icon">💵</div>
+            <div class="tx-info"><div class="tx-merchant">Salary — Vodafone</div><div class="tx-cat">Income</div></div>
+            <div class="tx-right"><div class="tx-amt income">8,500 EGP</div><div class="tx-time">9:03 AM</div></div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Filter chip row only appears when one or more non-default filters are active. In default state, the chip row collapses to just the date pill.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">tap Spending</div>
+    </div>
+
+    <!-- 1B: Spending tab active -->
+    <div class="screen-col">
+      <div class="screen-label">Spending tab active · summary updates</div>
+      <div class="state-badge happy">filtered</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="tx-app-bar">
+            <div class="tx-app-bar-title">Transactions</div>
+          </div>
+          <div class="search-bar">
+            <span class="search-icon">⌕</span>
+            <span class="search-text placeholder">Search merchant or amount</span>
+          </div>
+          <div class="type-tabs">
+            <div class="type-tab">All</div>
+            <div class="type-tab on">Spending</div>
+            <div class="type-tab">Income</div>
+            <div class="type-tab">Transfer</div>
+          </div>
+          <div class="filter-row">
+            <div class="filter-chip">Spending <span class="filter-chip-x">×</span></div>
+            <div class="date-btn"><span class="date-btn-ico">📅</span> This month</div>
+            <div class="filter-clear-link">Clear all</div>
+          </div>
+          <div class="summary-bar">
+            <div class="summary-cell"><div class="summary-lbl">Spent</div><div class="summary-val neg">3,240</div></div>
+            <div class="summary-cell"><div class="summary-lbl">Income</div><div class="summary-val">—</div></div>
+            <div class="summary-cell"><div class="summary-lbl">Net</div><div class="summary-val neg">−3,240</div></div>
+          </div>
+          <div class="tx-date-header">Today</div>
+          <div class="tx-row">
+            <div class="tx-icon">🍕</div>
+            <div class="tx-info"><div class="tx-merchant">Abou Tarek</div><div class="tx-cat">Food &amp; Dining</div></div>
+            <div class="tx-right"><div class="tx-amt spend">85 EGP</div><div class="tx-time">2:14 PM</div></div>
+          </div>
+          <div class="tx-row">
+            <div class="tx-icon">⛽</div>
+            <div class="tx-info"><div class="tx-merchant">Total Station</div><div class="tx-cat">Transport</div></div>
+            <div class="tx-right"><div class="tx-amt spend">350 EGP</div><div class="tx-time">11:42 AM</div></div>
+          </div>
+          <div class="tx-date-header">Yesterday</div>
+          <div class="tx-row">
+            <div class="tx-icon">🛒</div>
+            <div class="tx-info"><div class="tx-merchant">Carrefour Maadi</div><div class="tx-cat">Groceries</div></div>
+            <div class="tx-right"><div class="tx-amt spend">1,240 EGP</div><div class="tx-time">7:18 PM</div></div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Income column shows em-dash, not zero. Zero implies "you earned 0" — em-dash signals "not applicable to this view".</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">tap date pill</div>
+    </div>
+
+    <!-- 1C: Date filter sheet -->
+    <div class="screen-col">
+      <div class="screen-label">Date filter sheet · presets</div>
+      <div class="state-badge interaction">bottom sheet</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="tx-app-bar" style="opacity:0.4">
+            <div class="tx-app-bar-title">Transactions</div>
+          </div>
+          <div class="search-bar" style="opacity:0.4">
+            <span class="search-icon">⌕</span>
+            <span class="search-text placeholder">Search merchant or amount</span>
+          </div>
+          <div class="overlay">
+            <div class="bottom-sheet">
+              <div class="bs-handle"></div>
+              <div class="bs-title">Pick a date range</div>
+              <div class="bs-body">
+                <div class="date-preset selected">This month <span class="date-preset-check">✓</span></div>
+                <div class="date-preset">Last month</div>
+                <div class="date-preset">Last 7 days</div>
+                <div class="date-preset">Last 30 days</div>
+                <div class="date-preset">Custom range</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">Custom range</div>
+    </div>
+
+    <!-- 1D: Custom range sheet -->
+    <div class="screen-col">
+      <div class="screen-label">Custom range · from / to</div>
+      <div class="state-badge interaction">bottom sheet</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="tx-app-bar" style="opacity:0.4">
+            <div class="tx-app-bar-title">Transactions</div>
+          </div>
+          <div class="overlay">
+            <div class="bottom-sheet">
+              <div class="bs-handle"></div>
+              <div class="bs-title">Pick a date range</div>
+              <div class="bs-body">
+                <div class="field-row">
+                  <div class="field-grp">
+                    <div class="field-label">FROM</div>
+                    <div class="input">01 Mar 2026</div>
+                  </div>
+                  <div class="field-grp">
+                    <div class="field-label">TO</div>
+                    <div class="input">27 Apr 2026</div>
+                  </div>
+                </div>
+                <div style="margin-top:12px"><div class="btn btn-accent">Apply</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note decision">Picker UI uses Western Arabic numerals (1, 2, 3) only, consistent with the rest of the app — even on AR locales.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">type query</div>
+    </div>
+
+    <!-- 1E: Search active -->
+    <div class="screen-col">
+      <div class="screen-label">Search active · query typed</div>
+      <div class="state-badge happy">searching</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="tx-app-bar">
+            <div class="tx-app-bar-title">Transactions</div>
+          </div>
+          <div class="search-bar focus">
+            <span class="search-icon">⌕</span>
+            <span class="search-text">carrefour</span>
+            <span class="search-clear">✕</span>
+          </div>
+          <div class="type-tabs">
+            <div class="type-tab on">All</div>
+            <div class="type-tab">Spending</div>
+            <div class="type-tab">Income</div>
+            <div class="type-tab">Transfer</div>
+          </div>
+          <div class="filter-row">
+            <div class="date-btn"><span class="date-btn-ico">📅</span> This month</div>
+          </div>
+          <div class="tx-date-header">Yesterday</div>
+          <div class="tx-row">
+            <div class="tx-icon">🛒</div>
+            <div class="tx-info"><div class="tx-merchant">Carrefour Maadi</div><div class="tx-cat">Groceries</div></div>
+            <div class="tx-right"><div class="tx-amt spend">1,240 EGP</div><div class="tx-time">7:18 PM</div></div>
+          </div>
+          <div class="tx-date-header">12 Apr 2026</div>
+          <div class="tx-row">
+            <div class="tx-icon">🛒</div>
+            <div class="tx-info"><div class="tx-merchant">Carrefour City Stars</div><div class="tx-cat">Groceries</div></div>
+            <div class="tx-right"><div class="tx-amt spend">680 EGP</div><div class="tx-time">3:45 PM</div></div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Summary bar disappears when search is active — search is for finding a specific transaction, not viewing aggregates.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 2 — ROW STATES
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 2 — Row states</div>
+    <div class="flow-section-line"></div>
+  </div>
+  <div class="flow-intro">Three row variants that differ from a default transaction row: pending categorisation, refund, and internal transfer. Each has its own treatment because each carries different meaning.</div>
+
+  <div class="phone-row">
+
+    <!-- 2A: Pending categorisation -->
+    <div class="screen-col">
+      <div class="screen-label">Pending categorisation row</div>
+      <div class="state-badge loading">in progress</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="tx-app-bar"><div class="tx-app-bar-title">Transactions</div></div>
+          <div class="search-bar"><span class="search-icon">⌕</span><span class="search-text placeholder">Search merchant or amount</span></div>
+          <div class="type-tabs">
+            <div class="type-tab on">All</div><div class="type-tab">Spending</div><div class="type-tab">Income</div><div class="type-tab">Transfer</div>
+          </div>
+          <div class="filter-row"><div class="date-btn"><span class="date-btn-ico">📅</span> This month</div></div>
+          <div class="tx-date-header">Today</div>
+          <div class="tx-row pending">
+            <div class="tx-icon">⏳</div>
+            <div class="tx-info"><div class="tx-merchant">CIB POS 4421</div><div class="tx-cat pending">Categorising…</div></div>
+            <div class="tx-right"><div class="tx-amt spend">120 EGP</div><div class="tx-time">3:02 PM</div></div>
+          </div>
+          <div class="tx-row">
+            <div class="tx-icon">🍕</div>
+            <div class="tx-info"><div class="tx-merchant">Abou Tarek</div><div class="tx-cat">Food &amp; Dining</div></div>
+            <div class="tx-right"><div class="tx-amt spend">85 EGP</div><div class="tx-time">2:14 PM</div></div>
+          </div>
+          <div class="tx-row">
+            <div class="tx-icon">⛽</div>
+            <div class="tx-info"><div class="tx-merchant">Total Station</div><div class="tx-cat">Transport</div></div>
+            <div class="tx-right"><div class="tx-amt spend">350 EGP</div><div class="tx-time">11:42 AM</div></div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">No spinner, no row-level retry. The text "Categorising…" updates live in place when the category resolves. Icon uses a placeholder hourglass tinted gold.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">resolves</div>
+    </div>
+
+    <!-- 2B: Refund row -->
+    <div class="screen-col">
+      <div class="screen-label">Refund row · with flag</div>
+      <div class="state-badge happy">refund</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="tx-app-bar"><div class="tx-app-bar-title">Transactions</div></div>
+          <div class="search-bar"><span class="search-icon">⌕</span><span class="search-text placeholder">Search merchant or amount</span></div>
+          <div class="type-tabs">
+            <div class="type-tab on">All</div><div class="type-tab">Spending</div><div class="type-tab">Income</div><div class="type-tab">Transfer</div>
+          </div>
+          <div class="filter-row"><div class="date-btn"><span class="date-btn-ico">📅</span> This month</div></div>
+          <div class="tx-date-header">Today</div>
+          <div class="tx-row">
+            <div class="tx-icon" style="background:var(--green-l);color:var(--green)">↩</div>
+            <div class="tx-info"><div class="tx-merchant">Noon</div><div class="tx-cat">Refund</div></div>
+            <div class="tx-right"><div class="tx-amt income">450 EGP</div><div class="tx-time">10:18 AM</div></div>
+          </div>
+          <div class="tx-row">
+            <div class="tx-icon">🛍</div>
+            <div class="tx-info"><div class="tx-merchant">Noon</div><div class="tx-cat">Shopping</div></div>
+            <div class="tx-right"><div class="tx-amt spend">450 EGP</div><div class="tx-time">2 days ago</div></div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Refund row uses category text "Refund" with a return-arrow icon. Amount renders in income green. If the backend flag does not ship for v1, fallback: keep visual treatment but label "Refund" replaces the merchant.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label"></div>
+    </div>
+
+    <!-- 2C: Internal transfer -->
+    <div class="screen-col">
+      <div class="screen-label">Internal transfer · neutral grey</div>
+      <div class="state-badge happy">internal</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="tx-app-bar"><div class="tx-app-bar-title">Transactions</div></div>
+          <div class="search-bar"><span class="search-icon">⌕</span><span class="search-text placeholder">Search merchant or amount</span></div>
+          <div class="type-tabs">
+            <div class="type-tab">All</div><div class="type-tab">Spending</div><div class="type-tab">Income</div><div class="type-tab on">Transfer</div>
+          </div>
+          <div class="filter-row">
+            <div class="filter-chip">Transfer <span class="filter-chip-x">×</span></div>
+            <div class="date-btn"><span class="date-btn-ico">📅</span> This month</div>
+          </div>
+          <div class="tx-date-header">Yesterday</div>
+          <div class="tx-row internal">
+            <div class="tx-icon">↔</div>
+            <div class="tx-info"><div class="tx-merchant">CIB Credit Card payment</div><div class="tx-cat">Internal transfer</div></div>
+            <div class="tx-right"><div class="tx-amt neutral">2,500 EGP</div><div class="tx-time">11:30 AM</div></div>
+          </div>
+          <div class="tx-row internal">
+            <div class="tx-icon">↔</div>
+            <div class="tx-info"><div class="tx-merchant">Cash deposit · NBE ATM</div><div class="tx-cat">Internal transfer</div></div>
+            <div class="tx-right"><div class="tx-amt neutral">1,000 EGP</div><div class="tx-time">3 days ago</div></div>
+          </div>
+          <div class="tx-row internal">
+            <div class="tx-icon">↔</div>
+            <div class="tx-info"><div class="tx-merchant">InstaPay → My CIB account</div><div class="tx-cat">Internal transfer</div></div>
+            <div class="tx-right"><div class="tx-amt neutral">3,200 EGP</div><div class="tx-time">5 days ago</div></div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note new">Amount in neutral grey — never red, never green. Screen reader appends caption: "Internal transfer — not counted as spending or income". Caption sits between amount and time-of-day in reading order.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 3 — EMPTY STATES (ES-01 to ES-08)
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 3 — Empty states</div>
+    <div class="flow-section-line"></div>
+  </div>
+  <div class="flow-intro">Eight distinct compositions. Each addresses a different cause of "no rows visible". No shared component — copy and CTAs are tuned to the cause. Filter chips and search bar remain visible above the empty area whenever they apply.</div>
+
+  <div class="phone-row">
+
+    <!-- ES-01: No SMS, no manual -->
+    <div class="screen-col">
+      <div class="screen-label">ES-01 · No SMS permission, no manual entries</div>
+      <div class="state-badge empty">empty</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="tx-app-bar"><div class="tx-app-bar-title">Transactions</div></div>
+          <div class="empty-state">
+            <div class="empty-icon">📱</div>
+            <div class="empty-ttl">Nothing here yet</div>
+            <div class="empty-desc">Turn on SMS access and MoneyMore picks up your transactions automatically. Or add one manually.</div>
+            <div class="empty-ctas">
+              <div class="btn btn-accent">Enable SMS Access</div>
+              <div class="btn btn-outline">Add Transaction</div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Primary CTA pushes SMS — the higher-value path. Manual is a viable secondary, not a fallback.</div>
+    </div>
+
+    <div class="flow-arrow"><div class="arrow-line"></div></div>
+
+    <!-- ES-02: SMS granted, no transactions yet -->
+    <div class="screen-col">
+      <div class="screen-label">ES-02 · SMS granted, no transactions yet</div>
+      <div class="state-badge empty">empty</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="tx-app-bar"><div class="tx-app-bar-title">Transactions</div></div>
+          <div class="empty-state">
+            <div class="empty-icon">📭</div>
+            <div class="empty-ttl">No transactions yet</div>
+            <div class="empty-desc">They'll show up here automatically when they happen.</div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">No spinner, no CTA. Parsing is async and the user need not know.</div>
+    </div>
+
+    <div class="flow-arrow"><div class="arrow-line"></div></div>
+
+    <!-- ES-03: Manual mode only -->
+    <div class="screen-col">
+      <div class="screen-label">ES-03 · Manual mode only</div>
+      <div class="state-badge empty">empty</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="tx-app-bar"><div class="tx-app-bar-title">Transactions</div></div>
+          <div class="empty-state">
+            <div class="empty-icon">✍</div>
+            <div class="empty-ttl">Add your first transaction</div>
+            <div class="empty-desc">Tap below to log a transaction. Everything you add lives here.</div>
+            <div class="empty-ctas">
+              <div class="btn btn-accent">Add Transaction</div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Acknowledges manual workflow as valid. No SMS nag.</div>
+    </div>
+
+    <div class="flow-arrow"><div class="arrow-line"></div></div>
+
+    <!-- ES-04: Filtered no-results -->
+    <div class="screen-col">
+      <div class="screen-label">ES-04 · Filters with no matches</div>
+      <div class="state-badge empty">filtered empty</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="tx-app-bar"><div class="tx-app-bar-title">Transactions</div></div>
+          <div class="search-bar"><span class="search-icon">⌕</span><span class="search-text placeholder">Search merchant or amount</span></div>
+          <div class="type-tabs">
+            <div class="type-tab">All</div><div class="type-tab on">Spending</div><div class="type-tab">Income</div><div class="type-tab">Transfer</div>
+          </div>
+          <div class="filter-row">
+            <div class="filter-chip">Spending <span class="filter-chip-x">×</span></div>
+            <div class="date-btn"><span class="date-btn-ico">📅</span> Last 7 days</div>
+            <div class="filter-clear-link">Clear all</div>
+          </div>
+          <div class="empty-state">
+            <div class="empty-icon">🔍</div>
+            <div class="empty-ttl">No matches</div>
+            <div class="empty-desc">Nothing matches the filters above. Try removing one or clearing them all.</div>
+            <div class="empty-ctas">
+              <div class="btn btn-outline">Clear all filters</div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Filter chips remain visible above. Empty copy doesn't repeat what the chips already show.</div>
+    </div>
+
+    <div class="flow-arrow"><div class="arrow-line"></div></div>
+
+    <!-- ES-05: Search no-results -->
+    <div class="screen-col">
+      <div class="screen-label">ES-05 · Search with no matches</div>
+      <div class="state-badge empty">search empty</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="tx-app-bar"><div class="tx-app-bar-title">Transactions</div></div>
+          <div class="search-bar focus">
+            <span class="search-icon">⌕</span>
+            <span class="search-text">talabat</span>
+            <span class="search-clear">✕</span>
+          </div>
+          <div class="type-tabs">
+            <div class="type-tab on">All</div><div class="type-tab">Spending</div><div class="type-tab">Income</div><div class="type-tab">Transfer</div>
+          </div>
+          <div class="filter-row"><div class="date-btn"><span class="date-btn-ico">📅</span> This month</div></div>
+          <div class="empty-state">
+            <div class="empty-icon">🔍</div>
+            <div class="empty-ttl">No matches for "talabat"</div>
+            <div class="empty-desc">Try a different search or widen the date range.</div>
+            <div class="empty-ctas">
+              <div class="btn btn-accent">Clear search</div>
+              <div class="btn btn-outline">Change date range</div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Query in headline is HTML-escaped before render. Truncate at 40 characters with ellipsis if longer.</div>
+    </div>
+
+    <div class="flow-arrow"><div class="arrow-line"></div></div>
+
+    <!-- ES-06: Filtered + search combined -->
+    <div class="screen-col">
+      <div class="screen-label">ES-06 · Search + filters, no matches</div>
+      <div class="state-badge empty">combined empty</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="tx-app-bar"><div class="tx-app-bar-title">Transactions</div></div>
+          <div class="search-bar focus">
+            <span class="search-icon">⌕</span>
+            <span class="search-text">talabat</span>
+            <span class="search-clear">✕</span>
+          </div>
+          <div class="type-tabs">
+            <div class="type-tab">All</div><div class="type-tab on">Spending</div><div class="type-tab">Income</div><div class="type-tab">Transfer</div>
+          </div>
+          <div class="filter-row">
+            <div class="filter-chip">Spending <span class="filter-chip-x">×</span></div>
+            <div class="date-btn"><span class="date-btn-ico">📅</span> Last 7 days</div>
+          </div>
+          <div class="empty-state">
+            <div class="empty-icon">🔍</div>
+            <div class="empty-ttl">No matches for "talabat" with these filters</div>
+            <div class="empty-desc">Try clearing the search or removing filters.</div>
+            <div class="empty-ctas">
+              <div class="btn btn-accent">Clear search</div>
+              <div class="btn btn-outline">Clear all filters</div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Two CTAs are independent operations. Clearing one doesn't clear the other.</div>
+    </div>
+
+    <div class="flow-arrow"><div class="arrow-line"></div></div>
+
+    <!-- ES-07: Date range, no transactions -->
+    <div class="screen-col">
+      <div class="screen-label">ES-07 · Date range with no transactions</div>
+      <div class="state-badge empty">date empty</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="tx-app-bar"><div class="tx-app-bar-title">Transactions</div></div>
+          <div class="search-bar"><span class="search-icon">⌕</span><span class="search-text placeholder">Search merchant or amount</span></div>
+          <div class="type-tabs">
+            <div class="type-tab on">All</div><div class="type-tab">Spending</div><div class="type-tab">Income</div><div class="type-tab">Transfer</div>
+          </div>
+          <div class="filter-row">
+            <div class="date-btn"><span class="date-btn-ico">📅</span> 01–07 Mar 2026</div>
+          </div>
+          <div class="empty-state">
+            <div class="empty-icon">📅</div>
+            <div class="empty-ttl">Nothing in this date range</div>
+            <div class="empty-desc">Try widening the range or pick a different period.</div>
+            <div class="empty-ctas">
+              <div class="btn btn-accent">Change date range</div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">CTA opens the date filter sheet directly — not back to defaults.</div>
+    </div>
+
+    <div class="flow-arrow"><div class="arrow-line"></div></div>
+
+    <!-- ES-08: First-session SMS scanning -->
+    <div class="screen-col">
+      <div class="screen-label">ES-08 · First-session SMS scanning</div>
+      <div class="state-badge loading">scanning</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="tx-app-bar"><div class="tx-app-bar-title">Transactions</div></div>
+          <div class="empty-state">
+            <div class="empty-icon">📥</div>
+            <div class="empty-ttl">Reading your SMS</div>
+            <div class="empty-desc">Your transactions will show up here in a few seconds.</div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">One-time message per install. Self-dismisses on first transaction landing or after about 30 seconds. No CTA.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 4 — NETWORK & PAGINATION CAP
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 4 — Network and pagination cap</div>
+    <div class="flow-section-line"></div>
+  </div>
+  <div class="flow-intro">Two network states (offline, error) plus the six-month pagination terminal.</div>
+
+  <div class="phone-row">
+
+    <!-- 4A: Offline -->
+    <div class="screen-col">
+      <div class="screen-label">Offline · cached list, controls disabled</div>
+      <div class="state-badge offline">offline</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="tx-app-bar"><div class="tx-app-bar-title">Transactions</div></div>
+          <div class="offline-indicator">
+            <div class="offline-dot"></div>
+            <span>Last updated 2 hours ago</span>
+          </div>
+          <div class="search-bar disabled">
+            <span class="search-icon">⌕</span>
+            <span class="search-text placeholder">Search merchant or amount</span>
+          </div>
+          <div class="type-tabs" style="opacity:0.5">
+            <div class="type-tab on">All</div><div class="type-tab">Spending</div><div class="type-tab">Income</div><div class="type-tab">Transfer</div>
+          </div>
+          <div class="filter-row" style="opacity:0.5">
+            <div class="date-btn"><span class="date-btn-ico">📅</span> This month</div>
+          </div>
+          <div class="tx-date-header">Today</div>
+          <div class="tx-row">
+            <div class="tx-icon">🍕</div>
+            <div class="tx-info"><div class="tx-merchant">Abou Tarek</div><div class="tx-cat">Food &amp; Dining</div></div>
+            <div class="tx-right"><div class="tx-amt spend">85 EGP</div><div class="tx-time">2:14 PM</div></div>
+          </div>
+          <div class="tx-row">
+            <div class="tx-icon">⛽</div>
+            <div class="tx-info"><div class="tx-merchant">Total Station</div><div class="tx-cat">Transport</div></div>
+            <div class="tx-right"><div class="tx-amt spend">350 EGP</div><div class="tx-time">11:42 AM</div></div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Cached list renders normally. Search and filter controls disabled at 50% opacity. Relative time string requires a pluralisation function on the AR side — see copy table.</div>
+    </div>
+
+    <div class="flow-arrow"><div class="arrow-line"></div></div>
+
+    <!-- 4B: Network error banner -->
+    <div class="screen-col">
+      <div class="screen-label">Network error · banner with retry</div>
+      <div class="state-badge error">network error</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="tx-app-bar"><div class="tx-app-bar-title">Transactions</div></div>
+          <div class="net-err-banner">
+            <span class="net-err-ico">⚠</span>
+            <span class="net-err-txt">Couldn't refresh — tap to retry</span>
+            <span class="net-err-arrow">↻</span>
+          </div>
+          <div class="search-bar"><span class="search-icon">⌕</span><span class="search-text placeholder">Search merchant or amount</span></div>
+          <div class="type-tabs">
+            <div class="type-tab on">All</div><div class="type-tab">Spending</div><div class="type-tab">Income</div><div class="type-tab">Transfer</div>
+          </div>
+          <div class="filter-row"><div class="date-btn"><span class="date-btn-ico">📅</span> This month</div></div>
+          <div class="tx-date-header">Today</div>
+          <div class="tx-row">
+            <div class="tx-icon">🍕</div>
+            <div class="tx-info"><div class="tx-merchant">Abou Tarek</div><div class="tx-cat">Food &amp; Dining</div></div>
+            <div class="tx-right"><div class="tx-amt spend">85 EGP</div><div class="tx-time">2:14 PM</div></div>
+          </div>
+          <div class="tx-row">
+            <div class="tx-icon">⛽</div>
+            <div class="tx-info"><div class="tx-merchant">Total Station</div><div class="tx-cat">Transport</div></div>
+            <div class="tx-right"><div class="tx-amt spend">350 EGP</div><div class="tx-time">11:42 AM</div></div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Cached data renders below the banner. Retry is a tap on the whole banner — no separate button. Banner is actionable, not catastrophic.</div>
+    </div>
+
+    <div class="flow-arrow"><div class="arrow-line"></div></div>
+
+    <!-- 4C: Six-month cap -->
+    <div class="screen-col">
+      <div class="screen-label">Six-month cap · terminal message</div>
+      <div class="state-badge happy">end of list</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="tx-app-bar"><div class="tx-app-bar-title">Transactions</div></div>
+          <div class="search-bar"><span class="search-icon">⌕</span><span class="search-text placeholder">Search merchant or amount</span></div>
+          <div class="type-tabs">
+            <div class="type-tab on">All</div><div class="type-tab">Spending</div><div class="type-tab">Income</div><div class="type-tab">Transfer</div>
+          </div>
+          <div class="filter-row"><div class="date-btn"><span class="date-btn-ico">📅</span> This month</div></div>
+          <div class="tx-date-header">28 Oct 2025</div>
+          <div class="tx-row">
+            <div class="tx-icon">🛒</div>
+            <div class="tx-info"><div class="tx-merchant">Carrefour Maadi</div><div class="tx-cat">Groceries</div></div>
+            <div class="tx-right"><div class="tx-amt spend">420 EGP</div><div class="tx-time">6:20 PM</div></div>
+          </div>
+          <div class="tx-row">
+            <div class="tx-icon">☕</div>
+            <div class="tx-info"><div class="tx-merchant">Costa Coffee</div><div class="tx-cat">Food &amp; Dining</div></div>
+            <div class="tx-right"><div class="tx-amt spend">65 EGP</div><div class="tx-time">8:10 AM</div></div>
+          </div>
+          <div class="cap-msg">
+            <div class="cap-msg-text">That's six months of transactions. To see further back, pick a date range.</div>
+            <div class="btn btn-outline btn-sm" style="max-width:160px">Pick a date range</div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Suppress this message when the user has fewer than six months of total data — the list simply ends without terminal copy. Showing it would be misleading.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 5 — MANUAL ADD
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 5 — Manual add</div>
+    <div class="flow-section-line"></div>
+  </div>
+  <div class="flow-intro">Centre plus opens an action sheet with two equal peers. Add transaction opens a bottom sheet with required and optional fields. Validation has three hard-blocks (zero, negative, non-numeric), one soft warning (large amount), and one type-change conflict. On save: sheet dismisses, toast confirms, list scrolls to and briefly highlights the new row.</div>
+
+  <div class="phone-row">
+
+    <!-- 5A: Action sheet from centre plus -->
+    <div class="screen-col">
+      <div class="screen-label">Centre + tapped · action sheet</div>
+      <div class="state-badge interaction">action sheet</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="tx-app-bar" style="opacity:0.4"><div class="tx-app-bar-title">Transactions</div></div>
+          <div class="overlay">
+            <div class="bottom-sheet">
+              <div class="bs-handle"></div>
+              <div class="action-sheet-row">
+                <div class="action-sheet-icon">+</div>
+                <div>
+                  <div class="action-sheet-title">Add transaction</div>
+                  <div class="action-sheet-sub">Log a spend or income</div>
+                </div>
+              </div>
+              <div class="action-sheet-row">
+                <div class="action-sheet-icon">🎯</div>
+                <div>
+                  <div class="action-sheet-title">Add budget</div>
+                  <div class="action-sheet-sub">Set a monthly limit</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus">×</div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Centre + opens the global action sheet — same pattern as the rest of the app. Two equal peers, no hierarchy.</div>
+    </div>
+
+    <div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">Add transaction</div></div>
+
+    <!-- 5B: Manual add sheet, default -->
+    <div class="screen-col">
+      <div class="screen-label">Add transaction · default</div>
+      <div class="state-badge happy">form open</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="tx-app-bar" style="opacity:0.4"><div class="tx-app-bar-title">Transactions</div></div>
+          <div class="overlay">
+            <div class="bottom-sheet">
+              <div class="bs-handle"></div>
+              <div class="bs-title">Add transaction</div>
+              <div class="bs-body">
+                <div class="field-grp" style="margin-bottom:12px">
+                  <div class="field-label">AMOUNT</div>
+                  <div class="input focus" style="font-size:18px;font-weight:700">85 <span style="font-size:11px;font-weight:500;color:var(--t3);margin-left:4px">EGP</span></div>
+                </div>
+                <div class="field-grp" style="margin-bottom:12px">
+                  <div class="field-label">TYPE</div>
+                  <div class="seg">
+                    <div class="seg-opt on">Spending</div>
+                    <div class="seg-opt">Income</div>
+                    <div class="seg-opt">Transfer</div>
+                  </div>
+                </div>
+                <div class="field-grp" style="margin-bottom:12px">
+                  <div class="field-label">CATEGORY</div>
+                  <div class="input"><span style="margin-right:6px">🍕</span> Food &amp; Dining</div>
+                </div>
+                <div class="field-grp" style="margin-bottom:12px">
+                  <div class="field-label">DATE</div>
+                  <div class="input">27 Apr 2026</div>
+                </div>
+                <div class="field-grp" style="margin-bottom:12px">
+                  <div class="field-label">MERCHANT <span class="optional-tag">(optional)</span></div>
+                  <div class="input placeholder">Abou Tarek</div>
+                </div>
+                <div class="field-grp" style="margin-bottom:14px">
+                  <div class="field-label">NOTE <span class="optional-tag">(optional)</span></div>
+                  <div class="input placeholder" style="height:auto;padding:10px;align-items:flex-start;min-height:48px"></div>
+                </div>
+                <div class="btn btn-accent btn-lg">Save</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Date defaults to today. Type defaults to Spending. EGP currency cue rendered as field affix in lighter weight, never replacing the amount.</div>
+    </div>
+
+    <div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">empty amount</div></div>
+
+    <!-- 5C: Validation hard-block -->
+    <div class="screen-col">
+      <div class="screen-label">Validation · hard-block (zero amount)</div>
+      <div class="state-badge error">validation error</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="tx-app-bar" style="opacity:0.4"><div class="tx-app-bar-title">Transactions</div></div>
+          <div class="overlay">
+            <div class="bottom-sheet">
+              <div class="bs-handle"></div>
+              <div class="bs-title">Add transaction</div>
+              <div class="bs-body">
+                <div class="field-grp" style="margin-bottom:12px">
+                  <div class="field-label">AMOUNT</div>
+                  <div class="input err placeholder">0</div>
+                  <div class="input-err-msg">⚠ Add an amount to save</div>
+                </div>
+                <div class="field-grp" style="margin-bottom:12px">
+                  <div class="field-label">TYPE</div>
+                  <div class="seg">
+                    <div class="seg-opt on">Spending</div>
+                    <div class="seg-opt">Income</div>
+                    <div class="seg-opt">Transfer</div>
+                  </div>
+                </div>
+                <div class="field-grp" style="margin-bottom:12px">
+                  <div class="field-label">CATEGORY</div>
+                  <div class="input placeholder">Pick a category</div>
+                </div>
+                <div class="field-grp" style="margin-bottom:14px">
+                  <div class="field-label">DATE</div>
+                  <div class="input">27 Apr 2026</div>
+                </div>
+                <div class="btn btn-disabled btn-lg">Save</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Three hard-block messages exist: zero/empty, negative, non-numeric. Each fires on blur and submit, not every keystroke. Save stays disabled until valid.</div>
+    </div>
+
+    <div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">large amount</div></div>
+
+    <!-- 5D: Soft warning -->
+    <div class="screen-col">
+      <div class="screen-label">Validation · soft warning (large amount)</div>
+      <div class="state-badge warning">soft warning</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="tx-app-bar" style="opacity:0.4"><div class="tx-app-bar-title">Transactions</div></div>
+          <div class="overlay">
+            <div class="bottom-sheet">
+              <div class="bs-handle"></div>
+              <div class="bs-title">Add transaction</div>
+              <div class="bs-body">
+                <div class="field-grp" style="margin-bottom:12px">
+                  <div class="field-label">AMOUNT</div>
+                  <div class="input focus" style="font-size:18px;font-weight:700">250,000 <span style="font-size:11px;font-weight:500;color:var(--t3);margin-left:4px">EGP</span></div>
+                  <div class="input-warn-msg">That's a big one — saving as 250,000 EGP. Looks right?</div>
+                </div>
+                <div class="field-grp" style="margin-bottom:12px">
+                  <div class="field-label">TYPE</div>
+                  <div class="seg">
+                    <div class="seg-opt on">Spending</div>
+                    <div class="seg-opt">Income</div>
+                    <div class="seg-opt">Transfer</div>
+                  </div>
+                </div>
+                <div class="field-grp" style="margin-bottom:12px">
+                  <div class="field-label">CATEGORY</div>
+                  <div class="input"><span style="margin-right:6px">🛍</span> Shopping</div>
+                </div>
+                <div class="field-grp" style="margin-bottom:14px">
+                  <div class="field-label">DATE</div>
+                  <div class="input">27 Apr 2026</div>
+                </div>
+                <div class="btn btn-accent btn-lg">Save</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Triggers above 100,000 EGP. Reassuring, not punitive. Submit stays enabled — user can save through the warning.</div>
+    </div>
+
+    <div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">type changed</div></div>
+
+    <!-- 5E: Type change conflict -->
+    <div class="screen-col">
+      <div class="screen-label">Type change invalidates category</div>
+      <div class="state-badge warning">conflict</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="tx-app-bar" style="opacity:0.4"><div class="tx-app-bar-title">Transactions</div></div>
+          <div class="overlay">
+            <div class="bottom-sheet">
+              <div class="bs-handle"></div>
+              <div class="bs-title">Add transaction</div>
+              <div class="bs-body">
+                <div class="field-grp" style="margin-bottom:12px">
+                  <div class="field-label">AMOUNT</div>
+                  <div class="input" style="font-size:18px;font-weight:700">8,500 <span style="font-size:11px;font-weight:500;color:var(--t3);margin-left:4px">EGP</span></div>
+                </div>
+                <div class="field-grp" style="margin-bottom:12px">
+                  <div class="field-label">TYPE</div>
+                  <div class="seg">
+                    <div class="seg-opt on">Spending</div>
+                    <div class="seg-opt">Income</div>
+                    <div class="seg-opt">Transfer</div>
+                  </div>
+                </div>
+                <div class="field-grp" style="margin-bottom:12px">
+                  <div class="field-label">CATEGORY</div>
+                  <div class="input err"><span style="margin-right:6px">💵</span> Salary</div>
+                  <div class="input-warn-msg" style="background:var(--red-l);color:#7A1810">"Salary" doesn't fit Spending. Pick a new category, or switch back to Income.</div>
+                </div>
+                <div class="field-grp" style="margin-bottom:14px">
+                  <div class="field-label">DATE</div>
+                  <div class="input">27 Apr 2026</div>
+                </div>
+                <div class="btn btn-disabled btn-lg">Save</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Default direction: keep type, clear category. The user just tapped the type control — that tap is the most recent intent. The message names the conflict and offers both paths.</div>
+    </div>
+
+    <div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">save valid</div></div>
+
+    <!-- 5F: Save success → toast + new row highlight -->
+    <div class="screen-col">
+      <div class="screen-label">Save success · toast + new row highlight</div>
+      <div class="state-badge success">saved</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="tx-app-bar"><div class="tx-app-bar-title">Transactions</div></div>
+          <div class="search-bar"><span class="search-icon">⌕</span><span class="search-text placeholder">Search merchant or amount</span></div>
+          <div class="type-tabs">
+            <div class="type-tab on">All</div><div class="type-tab">Spending</div><div class="type-tab">Income</div><div class="type-tab">Transfer</div>
+          </div>
+          <div class="filter-row"><div class="date-btn"><span class="date-btn-ico">📅</span> This month</div></div>
+          <div class="tx-date-header">Today</div>
+          <div class="tx-row new-highlight">
+            <div class="tx-icon">🍕</div>
+            <div class="tx-info"><div class="tx-merchant">Abou Tarek</div><div class="tx-cat">Food &amp; Dining</div></div>
+            <div class="tx-right"><div class="tx-amt spend">85 EGP</div><div class="tx-time">2:14 PM</div></div>
+          </div>
+          <div class="tx-row">
+            <div class="tx-icon">⛽</div>
+            <div class="tx-info"><div class="tx-merchant">Total Station</div><div class="tx-cat">Transport</div></div>
+            <div class="tx-right"><div class="tx-amt spend">350 EGP</div><div class="tx-time">11:42 AM</div></div>
+          </div>
+          <div class="toast success">
+            <div class="toast-text">Transaction added on 27 Apr 2026</div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Sheet dismisses, list auto-scrolls to the new row, soft yellow highlight fades after 1–2 seconds. If the new transaction is outside the current filter, the row doesn't appear here — toast date tells the user where it landed. Filter is never auto-modified.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 6 — CATEGORY PICKER & CREATION
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 6 — Category picker and creation</div>
+    <div class="flow-section-line"></div>
+  </div>
+  <div class="flow-intro">Tapping the category field opens a sheet-on-sheet. Search, type-ahead create, and a deliberate creation form. "Create new category" is always present at the top, even with no query.</div>
+
+  <div class="phone-row">
+
+    <!-- 6A: Picker default -->
+    <div class="screen-col">
+      <div class="screen-label">Category picker · default</div>
+      <div class="state-badge interaction">sheet on sheet</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="tx-app-bar" style="opacity:0.3"><div class="tx-app-bar-title">Transactions</div></div>
+          <div class="overlay" style="background:rgba(0,0,0,0.55)">
+            <div class="bottom-sheet">
+              <div class="bs-handle"></div>
+              <div class="bs-title">Pick a category</div>
+              <div class="cat-search">
+                <div class="input placeholder">⌕ &nbsp; Search or create</div>
+              </div>
+              <div class="cat-list">
+                <div class="cat-create-row">
+                  <div class="cat-create-icon">+</div>
+                  <div class="cat-create-text">Create new category</div>
+                </div>
+                <div class="cat-row">
+                  <div class="cat-icon">🍕</div>
+                  <div class="cat-name">Food &amp; Dining</div>
+                </div>
+                <div class="cat-row">
+                  <div class="cat-icon">🛒</div>
+                  <div class="cat-name">Groceries</div>
+                </div>
+                <div class="cat-row">
+                  <div class="cat-icon">⛽</div>
+                  <div class="cat-name">Transport</div>
+                </div>
+                <div class="cat-row">
+                  <div class="cat-icon">🛍</div>
+                  <div class="cat-name">Shopping</div>
+                </div>
+                <div class="cat-row">
+                  <div class="cat-icon">💊</div>
+                  <div class="cat-name">Health</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">"Create new category" is persistent at the top of the list, regardless of search state. Existing categories appear below it.</div>
+    </div>
+
+    <div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">type query</div></div>
+
+    <!-- 6B: Type-ahead create -->
+    <div class="screen-col">
+      <div class="screen-label">Type-ahead · create from query</div>
+      <div class="state-badge interaction">no match</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="tx-app-bar" style="opacity:0.3"><div class="tx-app-bar-title">Transactions</div></div>
+          <div class="overlay" style="background:rgba(0,0,0,0.55)">
+            <div class="bottom-sheet">
+              <div class="bs-handle"></div>
+              <div class="bs-title">Pick a category</div>
+              <div class="cat-search">
+                <div class="input focus">⌕ &nbsp; gym</div>
+              </div>
+              <div class="cat-list">
+                <div class="cat-create-row">
+                  <div class="cat-create-icon">+</div>
+                  <div class="cat-create-text">Create "gym"</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">When the typed query matches no category, the only option is "Create '[query]'". Tapping it creates the category instantly and assigns it to the transaction. Query is HTML-escaped, truncated at 30 characters with ellipsis.</div>
+    </div>
+
+    <div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">Create new</div></div>
+
+    <!-- 6C: Deliberate create form -->
+    <div class="screen-col">
+      <div class="screen-label">Create new category · deliberate form</div>
+      <div class="state-badge interaction">creation form</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="tx-app-bar" style="opacity:0.3"><div class="tx-app-bar-title">Transactions</div></div>
+          <div class="overlay" style="background:rgba(0,0,0,0.55)">
+            <div class="bottom-sheet">
+              <div class="bs-handle"></div>
+              <div class="bs-title">New category</div>
+              <div class="bs-body">
+                <div class="field-grp" style="margin-bottom:14px">
+                  <div class="field-label">CATEGORY NAME</div>
+                  <div class="input focus">Gym &amp; Fitness</div>
+                </div>
+                <div class="field-grp" style="margin-bottom:18px">
+                  <div class="field-label">ICON AND COLOUR</div>
+                  <div class="icon-color-preview">
+                    <div class="icon-color-left">
+                      <div class="icon-swatch">💪</div>
+                      <div class="icon-color-text">Default</div>
+                    </div>
+                    <div class="icon-color-change">Change</div>
+                  </div>
+                </div>
+                <div class="btn btn-accent btn-lg">Create</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Save button reads "Create" not "Save" — the action is creation. Default icon and colour suggested; user can tap "Change" to override.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 7 — DETAIL SCREEN (READ MODE)
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 7 — Detail screen, read mode</div>
+    <div class="flow-section-line"></div>
+  </div>
+  <div class="flow-intro">Tapping any row opens the Detail bottom sheet in read mode. Field order: Merchant header → Amount → Date and time → Type → Category → Note (or Add a note CTA) → "Mark as internal transfer" toggle → Edit / Delete actions. Pending and internal transfer rows render their own variants of this same sheet.</div>
+
+  <div class="phone-row">
+
+    <!-- 7A: Detail · standard spending transaction -->
+    <div class="screen-col">
+      <div class="screen-label">Detail · standard spending transaction</div>
+      <div class="state-badge happy">read mode</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="tx-app-bar" style="opacity:0.4"><div class="tx-app-bar-title">Transactions</div></div>
+          <div class="overlay">
+            <div class="bottom-sheet">
+              <div class="bs-handle"></div>
+              <div class="detail-header">
+                <div class="detail-title-wrap">
+                  <div class="detail-icon">🍕</div>
+                  <div>
+                    <div class="detail-merchant">Abou Tarek</div>
+                    <div class="detail-source">From SMS</div>
+                  </div>
+                </div>
+                <div class="detail-mode-chip read">Details</div>
+              </div>
+              <div class="detail-amount spend">85 EGP</div>
+              <div class="detail-row">
+                <div class="detail-row-label">Date</div>
+                <div class="detail-row-value">27 Apr 2026 · 2:14 PM</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-row-label">Type</div>
+                <div class="detail-row-value">Spending</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-row-label">Category</div>
+                <div class="detail-row-value"><span class="row-icon">🍕</span> Food &amp; Dining</div>
+              </div>
+              <div class="detail-note-row">
+                <div class="detail-note-label">Note</div>
+                <div class="detail-note-add">+ Add a note</div>
+              </div>
+              <div class="toggle-row">
+                <div class="toggle-label">
+                  <div class="toggle-label-title">Mark as internal transfer</div>
+                  <div class="toggle-label-sub">Won't count as spending or income.</div>
+                </div>
+                <div class="toggle"></div>
+              </div>
+              <div class="detail-actions">
+                <div class="btn btn-outline">Edit</div>
+                <div class="btn-text-danger">Delete</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">"From SMS" sub-label sits under merchant — only visible inside Detail, not on the list row. Source is metadata, not a row-level signal.</div>
+    </div>
+
+    <div class="flow-arrow"><div class="arrow-line"></div></div>
+
+    <!-- 7B: Detail · pending categorisation -->
+    <div class="screen-col">
+      <div class="screen-label">Detail · pending categorisation</div>
+      <div class="state-badge loading">pending</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="tx-app-bar" style="opacity:0.4"><div class="tx-app-bar-title">Transactions</div></div>
+          <div class="overlay">
+            <div class="bottom-sheet">
+              <div class="bs-handle"></div>
+              <div class="detail-header">
+                <div class="detail-title-wrap">
+                  <div class="detail-icon" style="background:var(--gold-l);color:var(--gold)">⏳</div>
+                  <div>
+                    <div class="detail-merchant">CIB POS 4421</div>
+                    <div class="detail-source">From SMS</div>
+                  </div>
+                </div>
+                <div class="detail-mode-chip read">Details</div>
+              </div>
+              <div class="detail-amount spend">120 EGP</div>
+              <div class="detail-row">
+                <div class="detail-row-label">Date</div>
+                <div class="detail-row-value">27 Apr 2026 · 3:02 PM</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-row-label">Type</div>
+                <div class="detail-row-value">Spending</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-row-label">Category</div>
+                <div class="detail-row-value" style="color:var(--gold);font-style:italic">Categorising…</div>
+              </div>
+              <div class="detail-note-row">
+                <div class="detail-note-label">Note</div>
+                <div class="detail-note-add">+ Add a note</div>
+              </div>
+              <div class="toggle-row">
+                <div class="toggle-label">
+                  <div class="toggle-label-title">Mark as internal transfer</div>
+                  <div class="toggle-label-sub">Won't count as spending or income.</div>
+                </div>
+                <div class="toggle"></div>
+              </div>
+              <div class="detail-actions">
+                <div class="btn btn-accent">Pick a category</div>
+                <div class="btn-text-danger">Delete</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">User can pick a category while the parser is still resolving — the green "Pick a category" CTA replaces the standard Edit button. User pick wins and the parser result is discarded silently if it arrives later.</div>
+    </div>
+
+    <div class="flow-arrow"><div class="arrow-line"></div></div>
+
+    <!-- 7C: Detail · internal transfer between A and B -->
+    <div class="screen-col">
+      <div class="screen-label">Detail · internal transfer (between A and B)</div>
+      <div class="state-badge happy">internal</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="tx-app-bar" style="opacity:0.4"><div class="tx-app-bar-title">Transactions</div></div>
+          <div class="overlay">
+            <div class="bottom-sheet">
+              <div class="bs-handle"></div>
+              <div class="detail-header">
+                <div class="detail-title-wrap">
+                  <div class="detail-icon" style="background:var(--screen-bg3)">↔</div>
+                  <div>
+                    <div class="detail-merchant">Between InstaPay and CIB</div>
+                    <div class="detail-source">From SMS</div>
+                  </div>
+                </div>
+                <div class="detail-mode-chip read">Details</div>
+              </div>
+              <div class="detail-amount neutral">3,200 EGP</div>
+              <div class="detail-row">
+                <div class="detail-row-label">Date</div>
+                <div class="detail-row-value">22 Apr 2026 · 5:10 PM</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-row-label">Type</div>
+                <div class="detail-row-value">Internal transfer</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-row-label">Category</div>
+                <div class="detail-row-value" style="color:var(--t3)">—</div>
+              </div>
+              <div class="detail-note-row">
+                <div class="detail-note-label">Note</div>
+                <div class="detail-note-add">+ Add a note</div>
+              </div>
+              <div class="toggle-row">
+                <div class="toggle-label">
+                  <div class="toggle-label-title">Mark as internal transfer</div>
+                  <div class="toggle-label-sub">Already marked. Toggle off to count it as spending or income.</div>
+                </div>
+                <div class="toggle on"></div>
+              </div>
+              <div class="detail-actions">
+                <div class="btn btn-outline">Edit</div>
+                <div class="btn-text-danger">Delete</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Internal transfer header reads "Between [account A] and [account B]". Amount is neutral grey. Category renders em-dash since transfers don't carry a category. Toggle subtitle adapts to current state ("Already marked. Toggle off…").</div>
+    </div>
+
+    <div class="flow-arrow"><div class="arrow-line"></div></div>
+
+    <!-- 7D: Detail · manually added with note -->
+    <div class="screen-col">
+      <div class="screen-label">Detail · manually added, with note</div>
+      <div class="state-badge happy">manual</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="tx-app-bar" style="opacity:0.4"><div class="tx-app-bar-title">Transactions</div></div>
+          <div class="overlay">
+            <div class="bottom-sheet">
+              <div class="bs-handle"></div>
+              <div class="detail-header">
+                <div class="detail-title-wrap">
+                  <div class="detail-icon">☕</div>
+                  <div>
+                    <div class="detail-merchant">Coffee with Hany</div>
+                    <div class="detail-source">Added manually</div>
+                  </div>
+                </div>
+                <div class="detail-mode-chip read">Details</div>
+              </div>
+              <div class="detail-amount spend">120 EGP</div>
+              <div class="detail-row">
+                <div class="detail-row-label">Date</div>
+                <div class="detail-row-value">26 Apr 2026 · 7:30 PM</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-row-label">Type</div>
+                <div class="detail-row-value">Spending</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-row-label">Category</div>
+                <div class="detail-row-value"><span class="row-icon">🍕</span> Food &amp; Dining</div>
+              </div>
+              <div class="detail-note-row">
+                <div class="detail-note-label">Note</div>
+                <div class="detail-note-text">Split bill at Cilantro. Paid in cash, owe Hany 60 back.</div>
+              </div>
+              <div class="toggle-row">
+                <div class="toggle-label">
+                  <div class="toggle-label-title">Mark as internal transfer</div>
+                  <div class="toggle-label-sub">Won't count as spending or income.</div>
+                </div>
+                <div class="toggle"></div>
+              </div>
+              <div class="detail-actions">
+                <div class="btn btn-outline">Edit</div>
+                <div class="btn-text-danger">Delete</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">"Added manually" replaces "From SMS" as the source line. Note renders inline as plain text when present; "+ Add a note" CTA only shows when empty.</div>
+    </div>
+
+  </div>
+
+  <!-- Flow 7 continued — Mark as internal transfer toggle behaviour -->
+  <div style="margin-top:36px">
+    <div class="flow-intro" style="margin-bottom:16px"><strong>Toggle: Mark as internal transfer.</strong> Toggling ON instantly recalculates the summary bar, recolours the row on the list (amount → neutral grey, category → "Internal transfer", icon → ↔), and adapts the toggle subtitle. Type field stays as original — toggle overrides the math and visuals, original type is preserved so toggling OFF reverts cleanly.</div>
+
+    <div class="phone-row">
+
+      <!-- 7E: Before toggle -->
+      <div class="screen-col">
+        <div class="screen-label">Detail · before toggle (regular spending)</div>
+        <div class="state-badge happy">toggle off</div>
+        <div class="phone">
+          <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+          <div class="screen">
+            <div class="tx-app-bar" style="opacity:0.4"><div class="tx-app-bar-title">Transactions</div></div>
+            <div class="overlay">
+              <div class="bottom-sheet">
+                <div class="bs-handle"></div>
+                <div class="detail-header">
+                  <div class="detail-title-wrap">
+                    <div class="detail-icon">💳</div>
+                    <div>
+                      <div class="detail-merchant">CIB POS 4421</div>
+                      <div class="detail-source">From SMS</div>
+                    </div>
+                  </div>
+                  <div class="detail-mode-chip read">Details</div>
+                </div>
+                <div class="detail-amount spend">2,500 EGP</div>
+                <div class="detail-row">
+                  <div class="detail-row-label">Date</div>
+                  <div class="detail-row-value">26 Apr 2026 · 11:30 AM</div>
+                </div>
+                <div class="detail-row">
+                  <div class="detail-row-label">Type</div>
+                  <div class="detail-row-value">Spending</div>
+                </div>
+                <div class="detail-row">
+                  <div class="detail-row-label">Category</div>
+                  <div class="detail-row-value"><span class="row-icon">🛍</span> Shopping</div>
+                </div>
+                <div class="detail-note-row">
+                  <div class="detail-note-label">Note</div>
+                  <div class="detail-note-add">+ Add a note</div>
+                </div>
+                <div class="toggle-row">
+                  <div class="toggle-label">
+                    <div class="toggle-label-title">Mark as internal transfer</div>
+                    <div class="toggle-label-sub">Won't count as spending or income.</div>
+                  </div>
+                  <div class="toggle"></div>
+                </div>
+                <div class="detail-actions">
+                  <div class="btn btn-outline">Edit</div>
+                  <div class="btn-text-danger">Delete</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="a-nav">
+            <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+            <div class="a-nav-item on"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+            <div class="a-nav-plus">+</div>
+            <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+            <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">tap toggle</div></div>
+
+      <!-- 7F: Toggle ON, sheet stays open -->
+      <div class="screen-col">
+        <div class="screen-label">Toggle ON · sheet adapts, amount neutral</div>
+        <div class="state-badge success">toggle on</div>
+        <div class="phone">
+          <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+          <div class="screen">
+            <div class="tx-app-bar" style="opacity:0.4"><div class="tx-app-bar-title">Transactions</div></div>
+            <div class="overlay">
+              <div class="bottom-sheet">
+                <div class="bs-handle"></div>
+                <div class="detail-header">
+                  <div class="detail-title-wrap">
+                    <div class="detail-icon" style="background:var(--screen-bg3)">↔</div>
+                    <div>
+                      <div class="detail-merchant">CIB POS 4421</div>
+                      <div class="detail-source">From SMS</div>
+                    </div>
+                  </div>
+                  <div class="detail-mode-chip read">Details</div>
+                </div>
+                <div class="detail-amount neutral">2,500 EGP</div>
+                <div class="detail-row">
+                  <div class="detail-row-label">Date</div>
+                  <div class="detail-row-value">26 Apr 2026 · 11:30 AM</div>
+                </div>
+                <div class="detail-row">
+                  <div class="detail-row-label">Type</div>
+                  <div class="detail-row-value">Internal transfer</div>
+                </div>
+                <div class="detail-row">
+                  <div class="detail-row-label">Category</div>
+                  <div class="detail-row-value" style="color:var(--t3)">—</div>
+                </div>
+                <div class="detail-note-row">
+                  <div class="detail-note-label">Note</div>
+                  <div class="detail-note-add">+ Add a note</div>
+                </div>
+                <div class="toggle-row">
+                  <div class="toggle-label">
+                    <div class="toggle-label-title">Mark as internal transfer</div>
+                    <div class="toggle-label-sub">Already marked. Toggle off to count it as spending or income.</div>
+                  </div>
+                  <div class="toggle on"></div>
+                </div>
+                <div class="detail-actions">
+                  <div class="btn btn-outline">Edit</div>
+                  <div class="btn-text-danger">Delete</div>
+                </div>
+              </div>
+              <div class="toast success">
+                <div class="toast-text">Marked as internal transfer</div>
+              </div>
+            </div>
+          </div>
+          <div class="a-nav">
+            <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+            <div class="a-nav-item on"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+            <div class="a-nav-plus">+</div>
+            <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+            <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+          </div>
+        </div>
+        <div class="flow-note decision">Sheet stays open. Header icon changes to ↔, amount goes neutral grey, type label flips to "Internal transfer", category renders em-dash. Original category ("Shopping") preserved internally — toggling OFF reverts everything.</div>
+      </div>
+
+      <div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">dismiss sheet</div></div>
+
+      <!-- 7G: List view after toggle -->
+      <div class="screen-col">
+        <div class="screen-label">List view · row recoloured, summary updated</div>
+        <div class="state-badge happy">summary recalculated</div>
+        <div class="phone">
+          <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+          <div class="screen">
+            <div class="tx-app-bar"><div class="tx-app-bar-title">Transactions</div></div>
+            <div class="search-bar"><span class="search-icon">⌕</span><span class="search-text placeholder">Search merchant or amount</span></div>
+            <div class="type-tabs">
+              <div class="type-tab on">All</div><div class="type-tab">Spending</div><div class="type-tab">Income</div><div class="type-tab">Transfer</div>
+            </div>
+            <div class="filter-row"><div class="date-btn"><span class="date-btn-ico">📅</span> This month</div></div>
+            <div class="summary-bar">
+              <div class="summary-cell"><div class="summary-lbl">Spent</div><div class="summary-val neg">740</div></div>
+              <div class="summary-cell"><div class="summary-lbl">Income</div><div class="summary-val pos">8,500</div></div>
+              <div class="summary-cell"><div class="summary-lbl">Net</div><div class="summary-val pos">+7,760</div></div>
+            </div>
+            <div class="tx-date-header">Yesterday</div>
+            <div class="tx-row internal new-highlight">
+              <div class="tx-icon">↔</div>
+              <div class="tx-info"><div class="tx-merchant">CIB POS 4421</div><div class="tx-cat">Internal transfer</div></div>
+              <div class="tx-right"><div class="tx-amt neutral">2,500 EGP</div><div class="tx-time">11:30 AM</div></div>
+            </div>
+            <div class="tx-row">
+              <div class="tx-icon">🍕</div>
+              <div class="tx-info"><div class="tx-merchant">Abou Tarek</div><div class="tx-cat">Food &amp; Dining</div></div>
+              <div class="tx-right"><div class="tx-amt spend">85 EGP</div><div class="tx-time">2:14 PM</div></div>
+            </div>
+            <div class="tx-row">
+              <div class="tx-icon">⛽</div>
+              <div class="tx-info"><div class="tx-merchant">Total Station</div><div class="tx-cat">Transport</div></div>
+              <div class="tx-right"><div class="tx-amt spend">350 EGP</div><div class="tx-time">11:42 AM</div></div>
+            </div>
+          </div>
+          <div class="a-nav">
+            <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+            <div class="a-nav-item on"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+            <div class="a-nav-plus">+</div>
+            <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+            <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+          </div>
+        </div>
+        <div class="flow-note decision">Spent dropped from 3,240 to 740 EGP (the 2,500 transfer no longer counted). Row stays in place chronologically with the same yellow highlight as a newly-added or restored row. Toggling OFF would revert all of this in the same way.</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 8 — DETAIL SCREEN (EDIT MODE)
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 8 — Detail screen, edit mode</div>
+    <div class="flow-section-line"></div>
+  </div>
+  <div class="flow-intro">Tapping Edit flips the same sheet from read mode to edit mode. All fields editable for both manual and SMS-parsed transactions. Same validation rules as Add Transaction. Type change resets category to empty and disables Save until a new category is picked. User edits permanently override parser values — future re-parses are silently suppressed.</div>
+
+  <div class="phone-row">
+
+    <!-- 8A: Edit mode default -->
+    <div class="screen-col">
+      <div class="screen-label">Edit mode · all fields editable</div>
+      <div class="state-badge interaction">edit mode</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="tx-app-bar" style="opacity:0.4"><div class="tx-app-bar-title">Transactions</div></div>
+          <div class="overlay">
+            <div class="bottom-sheet">
+              <div class="bs-handle"></div>
+              <div class="detail-header">
+                <div class="detail-title-wrap">
+                  <div class="detail-icon">🍕</div>
+                  <div>
+                    <div class="detail-merchant">Abou Tarek</div>
+                    <div class="detail-source">From SMS</div>
+                  </div>
+                </div>
+                <div class="detail-mode-chip edit">Editing</div>
+              </div>
+              <div class="edit-field">
+                <div class="edit-field-label">AMOUNT</div>
+                <div class="edit-field-value">85 EGP <span class="edit-field-chev">›</span></div>
+              </div>
+              <div class="edit-field">
+                <div class="edit-field-label">MERCHANT</div>
+                <div class="edit-field-value">Abou Tarek <span class="edit-field-chev">›</span></div>
+              </div>
+              <div class="edit-field">
+                <div class="edit-field-label">DATE &amp; TIME</div>
+                <div class="edit-field-value">27 Apr 2026 · 2:14 PM <span class="edit-field-chev">›</span></div>
+              </div>
+              <div class="edit-field">
+                <div class="edit-field-label">TYPE</div>
+                <div class="seg" style="margin-top:4px">
+                  <div class="seg-opt on">Spending</div>
+                  <div class="seg-opt">Income</div>
+                  <div class="seg-opt">Transfer</div>
+                </div>
+              </div>
+              <div class="edit-field">
+                <div class="edit-field-label">CATEGORY</div>
+                <div class="edit-field-value"><span style="margin-right:6px">🍕</span> Food &amp; Dining <span class="edit-field-chev">›</span></div>
+              </div>
+              <div class="edit-field">
+                <div class="edit-field-label">NOTE</div>
+                <div class="edit-field-value placeholder">Add a note <span class="edit-field-chev">›</span></div>
+              </div>
+              <div class="detail-actions" style="margin-top:18px">
+                <div class="btn btn-accent">Save changes</div>
+                <div class="btn btn-ghost">Cancel</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Mode chip flips from "Details" to "Editing" — same sheet, same scroll position, same header. Cancel returns to read mode without saving. Save changes commits and returns to read mode.</div>
+    </div>
+
+    <div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">tap Type</div></div>
+
+    <!-- 8B: Type change resets category -->
+    <div class="screen-col">
+      <div class="screen-label">Type changed · category reset, save disabled</div>
+      <div class="state-badge warning">category cleared</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="tx-app-bar" style="opacity:0.4"><div class="tx-app-bar-title">Transactions</div></div>
+          <div class="overlay">
+            <div class="bottom-sheet">
+              <div class="bs-handle"></div>
+              <div class="detail-header">
+                <div class="detail-title-wrap">
+                  <div class="detail-icon">🍕</div>
+                  <div>
+                    <div class="detail-merchant">Abou Tarek</div>
+                    <div class="detail-source">From SMS</div>
+                  </div>
+                </div>
+                <div class="detail-mode-chip edit">Editing</div>
+              </div>
+              <div class="edit-field">
+                <div class="edit-field-label">AMOUNT</div>
+                <div class="edit-field-value">85 EGP <span class="edit-field-chev">›</span></div>
+              </div>
+              <div class="edit-field">
+                <div class="edit-field-label">MERCHANT</div>
+                <div class="edit-field-value">Abou Tarek <span class="edit-field-chev">›</span></div>
+              </div>
+              <div class="edit-field">
+                <div class="edit-field-label">DATE &amp; TIME</div>
+                <div class="edit-field-value">27 Apr 2026 · 2:14 PM <span class="edit-field-chev">›</span></div>
+              </div>
+              <div class="edit-field">
+                <div class="edit-field-label">TYPE</div>
+                <div class="seg" style="margin-top:4px">
+                  <div class="seg-opt">Spending</div>
+                  <div class="seg-opt on">Income</div>
+                  <div class="seg-opt">Transfer</div>
+                </div>
+              </div>
+              <div class="edit-field">
+                <div class="edit-field-label">CATEGORY</div>
+                <div class="edit-field-value placeholder">Pick a category <span class="edit-field-chev">›</span></div>
+                <div class="input-warn-msg" style="margin-top:6px">Type changed — pick a new category to save.</div>
+              </div>
+              <div class="edit-field">
+                <div class="edit-field-label">NOTE</div>
+                <div class="edit-field-value placeholder">Add a note <span class="edit-field-chev">›</span></div>
+              </div>
+              <div class="detail-actions" style="margin-top:18px">
+                <div class="btn btn-disabled">Save changes</div>
+                <div class="btn btn-ghost">Cancel</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Different from Add Transaction's type-change conflict (Flow 5E): in edit mode the category is silently reset, not flagged as a conflict. The user is deliberately editing — assume the type change is intentional, just require them to refill category.</div>
+    </div>
+
+    <div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">save → return</div></div>
+
+    <!-- 8C: Edit saved → back to read mode -->
+    <div class="screen-col">
+      <div class="screen-label">Saved · returns to read mode + toast</div>
+      <div class="state-badge success">saved</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="tx-app-bar" style="opacity:0.4"><div class="tx-app-bar-title">Transactions</div></div>
+          <div class="overlay">
+            <div class="bottom-sheet">
+              <div class="bs-handle"></div>
+              <div class="detail-header">
+                <div class="detail-title-wrap">
+                  <div class="detail-icon">💵</div>
+                  <div>
+                    <div class="detail-merchant">Abou Tarek</div>
+                    <div class="detail-source">From SMS</div>
+                  </div>
+                </div>
+                <div class="detail-mode-chip read">Details</div>
+              </div>
+              <div class="detail-amount income">85 EGP</div>
+              <div class="detail-row">
+                <div class="detail-row-label">Date</div>
+                <div class="detail-row-value">27 Apr 2026 · 2:14 PM</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-row-label">Type</div>
+                <div class="detail-row-value">Income</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-row-label">Category</div>
+                <div class="detail-row-value"><span class="row-icon">💵</span> Refund</div>
+              </div>
+              <div class="detail-note-row">
+                <div class="detail-note-label">Note</div>
+                <div class="detail-note-add">+ Add a note</div>
+              </div>
+              <div class="toggle-row">
+                <div class="toggle-label">
+                  <div class="toggle-label-title">Mark as internal transfer</div>
+                  <div class="toggle-label-sub">Won't count as spending or income.</div>
+                </div>
+                <div class="toggle"></div>
+              </div>
+              <div class="detail-actions">
+                <div class="btn btn-outline">Edit</div>
+                <div class="btn-text-danger">Delete</div>
+              </div>
+            </div>
+            <div class="toast success">
+              <div class="toast-text">Changes saved</div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Save flips the chip back to "Details" without dismissing the sheet. Toast confirms inline at the bottom of the sheet. Sheet stays open in case the user wants to make further changes or delete. List behind updates silently on next render.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 9 — DELETE WITH UNDO
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 9 — Delete with undo</div>
+    <div class="flow-section-line"></div>
+  </div>
+  <div class="flow-intro">Single-step delete with a 5-second undo toast. No two-step confirmation dialog — the toast is the safety net. After the window closes, deletion is hard from the user's perspective. Backend stores the deletion as a per-SMS suppression flag so re-parsing won't re-create the row.</div>
+
+  <div class="phone-row">
+
+    <!-- 9A: Delete tapped from detail -->
+    <div class="screen-col">
+      <div class="screen-label">Delete tapped · confirm dialog</div>
+      <div class="state-badge interaction">confirming</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="tx-app-bar" style="opacity:0.4"><div class="tx-app-bar-title">Transactions</div></div>
+          <div class="overlay" style="background:rgba(0,0,0,0.55)">
+            <div class="bottom-sheet" style="opacity:0.4">
+              <div class="bs-handle"></div>
+              <div class="detail-header">
+                <div class="detail-title-wrap">
+                  <div class="detail-icon">🍕</div>
+                  <div>
+                    <div class="detail-merchant">Abou Tarek</div>
+                    <div class="detail-source">From SMS</div>
+                  </div>
+                </div>
+              </div>
+              <div class="detail-amount spend">85 EGP</div>
+            </div>
+          </div>
+          <div class="modal-overlay">
+            <div class="modal">
+              <div class="modal-title">Delete this transaction?</div>
+              <div class="modal-body">85 EGP at Abou Tarek on 27 Apr will be removed. You'll have a few seconds to undo.</div>
+              <div class="modal-actions">
+                <div class="btn btn-danger" style="background:var(--red);color:#fff">Delete</div>
+                <div class="btn btn-ghost">Cancel</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Lightweight confirm — names the transaction (amount + merchant + date) so the user knows exactly what's being deleted. Mentions undo upfront so it doesn't feel destructive.</div>
+    </div>
+
+    <div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">confirm</div></div>
+
+    <!-- 9B: Deleted → undo toast -->
+    <div class="screen-col">
+      <div class="screen-label">Deleted · undo toast (5s window)</div>
+      <div class="state-badge success">deleted</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="tx-app-bar"><div class="tx-app-bar-title">Transactions</div></div>
+          <div class="search-bar"><span class="search-icon">⌕</span><span class="search-text placeholder">Search merchant or amount</span></div>
+          <div class="type-tabs">
+            <div class="type-tab on">All</div><div class="type-tab">Spending</div><div class="type-tab">Income</div><div class="type-tab">Transfer</div>
+          </div>
+          <div class="filter-row"><div class="date-btn"><span class="date-btn-ico">📅</span> This month</div></div>
+          <div class="summary-bar">
+            <div class="summary-cell"><div class="summary-lbl">Spent</div><div class="summary-val neg">3,155</div></div>
+            <div class="summary-cell"><div class="summary-lbl">Income</div><div class="summary-val pos">8,500</div></div>
+            <div class="summary-cell"><div class="summary-lbl">Net</div><div class="summary-val pos">+5,345</div></div>
+          </div>
+          <div class="tx-date-header">Today</div>
+          <div class="tx-row">
+            <div class="tx-icon">⛽</div>
+            <div class="tx-info"><div class="tx-merchant">Total Station</div><div class="tx-cat">Transport</div></div>
+            <div class="tx-right"><div class="tx-amt spend">350 EGP</div><div class="tx-time">11:42 AM</div></div>
+          </div>
+          <div class="tx-date-header">Yesterday</div>
+          <div class="tx-row">
+            <div class="tx-icon">💵</div>
+            <div class="tx-info"><div class="tx-merchant">Salary — Vodafone</div><div class="tx-cat">Income</div></div>
+            <div class="tx-right"><div class="tx-amt income">8,500 EGP</div><div class="tx-time">9:03 AM</div></div>
+          </div>
+          <div class="toast">
+            <div class="toast-text">Transaction deleted</div>
+            <div class="toast-action">Undo</div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Detail sheet dismisses, list returns. Row is gone, summary bar updates instantly (Spent drops by 85 EGP). Undo toast sits above the bottom nav for 5 seconds. After the window closes, the toast fades and deletion becomes permanent from the user's perspective.</div>
+    </div>
+
+    <div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">undo within 5s</div></div>
+
+    <!-- 9C: Undo restored -->
+    <div class="screen-col">
+      <div class="screen-label">Undo tapped · row restored</div>
+      <div class="state-badge success">restored</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="tx-app-bar"><div class="tx-app-bar-title">Transactions</div></div>
+          <div class="search-bar"><span class="search-icon">⌕</span><span class="search-text placeholder">Search merchant or amount</span></div>
+          <div class="type-tabs">
+            <div class="type-tab on">All</div><div class="type-tab">Spending</div><div class="type-tab">Income</div><div class="type-tab">Transfer</div>
+          </div>
+          <div class="filter-row"><div class="date-btn"><span class="date-btn-ico">📅</span> This month</div></div>
+          <div class="summary-bar">
+            <div class="summary-cell"><div class="summary-lbl">Spent</div><div class="summary-val neg">3,240</div></div>
+            <div class="summary-cell"><div class="summary-lbl">Income</div><div class="summary-val pos">8,500</div></div>
+            <div class="summary-cell"><div class="summary-lbl">Net</div><div class="summary-val pos">+5,260</div></div>
+          </div>
+          <div class="tx-date-header">Today</div>
+          <div class="tx-row new-highlight">
+            <div class="tx-icon">🍕</div>
+            <div class="tx-info"><div class="tx-merchant">Abou Tarek</div><div class="tx-cat">Food &amp; Dining</div></div>
+            <div class="tx-right"><div class="tx-amt spend">85 EGP</div><div class="tx-time">2:14 PM</div></div>
+          </div>
+          <div class="tx-row">
+            <div class="tx-icon">⛽</div>
+            <div class="tx-info"><div class="tx-merchant">Total Station</div><div class="tx-cat">Transport</div></div>
+            <div class="tx-right"><div class="tx-amt spend">350 EGP</div><div class="tx-time">11:42 AM</div></div>
+          </div>
+          <div class="toast success">
+            <div class="toast-text">Transaction restored</div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Row reappears in its original position with the same yellow highlight as a newly-added row. Summary bar reverts. Confirmation toast replaces the undo toast.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     HANDOFF
+═══════════════════════════════════════════════════════════ -->
+<div class="handoff">
+  <div class="handoff-title">Handoff</div>
+  <div class="handoff-sub">Designer reference for this prototype. Every user-facing string in English and Egyptian Arabic, plus accessibility rules that change what you draw. Arabic strings pending native-speaker review and RTL layout sign-off in Figma.</div>
+
+  <!-- ── Copy table ── -->
+  <div class="handoff-sec">
+    <div class="handoff-h">Copy · English + Egyptian Arabic</div>
+    <div class="handoff-p">Grouped by surface. Numbers stay in Western Arabic numerals across both languages. Every conversational AR string requires native-speaker review.</div>
+
+    <table class="copy-table" style="margin-top:12px">
+      <colgroup>
+        <col class="col-screen">
+        <col class="col-element">
+        <col class="col-en">
+        <col class="col-ar">
+      </colgroup>
+      <thead>
+        <tr><th>Surface</th><th>Element</th><th>English</th><th>Arabic</th></tr>
+      </thead>
+      <tbody>
+
+        <!-- Tab shell -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="6">Tab shell</td>
+          <td class="element-name">Tab label (bottom nav)</td>
+          <td class="en">Transactions</td>
+          <td class="ar">المعاملات</td>
+        </tr>
+        <tr>
+          <td class="element-name">Search placeholder</td>
+          <td class="en">Search merchant or amount</td>
+          <td class="ar">ابحث باسم المتجر أو المبلغ</td>
+        </tr>
+        <tr>
+          <td class="element-name">Type tab — All</td>
+          <td class="en">All</td>
+          <td class="ar">الكل</td>
+        </tr>
+        <tr>
+          <td class="element-name">Type tab — Spending</td>
+          <td class="en">Spending</td>
+          <td class="ar">مصروفات</td>
+        </tr>
+        <tr>
+          <td class="element-name">Type tab — Income</td>
+          <td class="en">Income</td>
+          <td class="ar">دخل</td>
+        </tr>
+        <tr>
+          <td class="element-name">Type tab — Transfer</td>
+          <td class="en">Transfer</td>
+          <td class="ar">تحويلات</td>
+        </tr>
+
+        <!-- Filter chips -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="2">Filter chips</td>
+          <td class="element-name">Clear all link</td>
+          <td class="en">Clear all</td>
+          <td class="ar">امسح الكل</td>
+        </tr>
+        <tr>
+          <td class="element-name">Chip dismiss (icon)</td>
+          <td class="en">× (icon)</td>
+          <td class="ar">× (icon, mirrored in RTL)</td>
+        </tr>
+
+        <!-- Date filter -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="8">Date filter</td>
+          <td class="element-name">Preset — This month</td>
+          <td class="en">This month</td>
+          <td class="ar">الشهر ده</td>
+        </tr>
+        <tr>
+          <td class="element-name">Preset — Last month</td>
+          <td class="en">Last month</td>
+          <td class="ar">الشهر اللي فات</td>
+        </tr>
+        <tr>
+          <td class="element-name">Preset — Last 7 days</td>
+          <td class="en">Last 7 days</td>
+          <td class="ar">آخر 7 أيام</td>
+        </tr>
+        <tr>
+          <td class="element-name">Preset — Last 30 days</td>
+          <td class="en">Last 30 days</td>
+          <td class="ar">آخر 30 يوم</td>
+        </tr>
+        <tr>
+          <td class="element-name">Preset — Custom range</td>
+          <td class="en">Custom range</td>
+          <td class="ar">اختر تاريخ</td>
+        </tr>
+        <tr>
+          <td class="element-name">Custom sheet title</td>
+          <td class="en">Pick a date range</td>
+          <td class="ar">اختر تاريخ البداية والنهاية</td>
+        </tr>
+        <tr>
+          <td class="element-name">From field label</td>
+          <td class="en">From</td>
+          <td class="ar">من</td>
+        </tr>
+        <tr>
+          <td class="element-name">To field label</td>
+          <td class="en">To</td>
+          <td class="ar">لـ</td>
+        </tr>
+
+        <!-- Summary bar -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="3">Summary bar</td>
+          <td class="element-name">Spent label</td>
+          <td class="en">Spent</td>
+          <td class="ar">مصروف</td>
+        </tr>
+        <tr>
+          <td class="element-name">Income label</td>
+          <td class="en">Income</td>
+          <td class="ar">دخل</td>
+        </tr>
+        <tr>
+          <td class="element-name">Net label</td>
+          <td class="en">Net</td>
+          <td class="ar">الصافي</td>
+        </tr>
+
+        <!-- Row states -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="6">Row states</td>
+          <td class="element-name">Pending categorisation (visible)</td>
+          <td class="en">Categorising…</td>
+          <td class="ar">بنحدد التصنيف…</td>
+        </tr>
+        <tr>
+          <td class="element-name">Pending categorisation (screen reader)</td>
+          <td class="en">Categorising, please wait</td>
+          <td class="ar">بنحدد التصنيف، استنى شوية</td>
+        </tr>
+        <tr>
+          <td class="element-name">Refund row label</td>
+          <td class="en">Refund</td>
+          <td class="ar">استرداد</td>
+        </tr>
+        <tr>
+          <td class="element-name">Internal transfer category text</td>
+          <td class="en">Internal transfer</td>
+          <td class="ar">تحويل داخلي</td>
+        </tr>
+        <tr>
+          <td class="element-name">Internal transfer SR caption (after amount)</td>
+          <td class="en">Internal transfer — not counted as spending or income</td>
+          <td class="ar">تحويل داخلي — مش محسوب من المصروف أو الدخل</td>
+        </tr>
+        <tr>
+          <td class="element-name">Date headers</td>
+          <td class="en">Today / Yesterday / 27 Apr 2026</td>
+          <td class="ar">النهارده / امبارح / 27 أبريل 2026</td>
+        </tr>
+
+        <!-- Empty states -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="4">ES-01 · No SMS, no manual</td>
+          <td class="element-name">Headline</td>
+          <td class="en">Nothing here yet</td>
+          <td class="ar">لسه مفيش حاجة هنا</td>
+        </tr>
+        <tr>
+          <td class="element-name">Body</td>
+          <td class="en">Turn on SMS access and MoneyMore picks up your transactions automatically. Or add one manually.</td>
+          <td class="ar">افتح صلاحية الـ SMS و MoneyMore هيقرا معاملاتك لوحده. أو ضيف واحدة يدوي.</td>
+        </tr>
+        <tr>
+          <td class="element-name">Primary CTA</td>
+          <td class="en">Enable SMS Access</td>
+          <td class="ar">افتح صلاحية الـ SMS</td>
+        </tr>
+        <tr>
+          <td class="element-name">Secondary CTA</td>
+          <td class="en">Add Transaction</td>
+          <td class="ar">ضيف معاملة</td>
+        </tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="2">ES-02 · SMS granted, none yet</td>
+          <td class="element-name">Headline</td>
+          <td class="en">No transactions yet</td>
+          <td class="ar">لسه مفيش معاملات</td>
+        </tr>
+        <tr>
+          <td class="element-name">Body</td>
+          <td class="en">They'll show up here automatically when they happen.</td>
+          <td class="ar">هتظهر هنا أول ما تحصل.</td>
+        </tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="3">ES-03 · Manual mode only</td>
+          <td class="element-name">Headline</td>
+          <td class="en">Add your first transaction</td>
+          <td class="ar">ضيف أول معاملة</td>
+        </tr>
+        <tr>
+          <td class="element-name">Body</td>
+          <td class="en">Tap below to log a transaction. Everything you add lives here.</td>
+          <td class="ar">دوس تحت عشان تسجل معاملة. كل اللي بتضيفه بيظهر هنا.</td>
+        </tr>
+        <tr>
+          <td class="element-name">CTA</td>
+          <td class="en">Add Transaction</td>
+          <td class="ar">ضيف معاملة</td>
+        </tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="3">ES-04 · Filtered no-results</td>
+          <td class="element-name">Headline</td>
+          <td class="en">No matches</td>
+          <td class="ar">مفيش نتائج</td>
+        </tr>
+        <tr>
+          <td class="element-name">Body</td>
+          <td class="en">Nothing matches the filters above. Try removing one or clearing them all.</td>
+          <td class="ar">مفيش معاملات تطابق الفلاتر فوق. شيل واحد أو امسح الكل.</td>
+        </tr>
+        <tr>
+          <td class="element-name">CTA</td>
+          <td class="en">Clear all filters</td>
+          <td class="ar">امسح كل الفلاتر</td>
+        </tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="4">ES-05 · Search no-results</td>
+          <td class="element-name">Headline</td>
+          <td class="en">No matches for "[query]"</td>
+          <td class="ar">مفيش نتائج لـ "[query]"</td>
+        </tr>
+        <tr>
+          <td class="element-name">Body</td>
+          <td class="en">Try a different search or widen the date range.</td>
+          <td class="ar">جرب كلمة تانية أو وسّع نطاق التاريخ.</td>
+        </tr>
+        <tr>
+          <td class="element-name">Primary CTA</td>
+          <td class="en">Clear search</td>
+          <td class="ar">امسح البحث</td>
+        </tr>
+        <tr>
+          <td class="element-name">Secondary CTA</td>
+          <td class="en">Change date range</td>
+          <td class="ar">غيّر التاريخ</td>
+        </tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="4">ES-06 · Search + filters no-results</td>
+          <td class="element-name">Headline</td>
+          <td class="en">No matches for "[query]" with these filters</td>
+          <td class="ar">مفيش نتائج لـ "[query]" مع الفلاتر دي</td>
+        </tr>
+        <tr>
+          <td class="element-name">Body</td>
+          <td class="en">Try clearing the search or removing filters.</td>
+          <td class="ar">امسح البحث أو شيل الفلاتر.</td>
+        </tr>
+        <tr>
+          <td class="element-name">Primary CTA</td>
+          <td class="en">Clear search</td>
+          <td class="ar">امسح البحث</td>
+        </tr>
+        <tr>
+          <td class="element-name">Secondary CTA</td>
+          <td class="en">Clear all filters</td>
+          <td class="ar">امسح كل الفلاتر</td>
+        </tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="3">ES-07 · Date range, none</td>
+          <td class="element-name">Headline</td>
+          <td class="en">Nothing in this date range</td>
+          <td class="ar">مفيش حاجة في الفترة دي</td>
+        </tr>
+        <tr>
+          <td class="element-name">Body</td>
+          <td class="en">Try widening the range or pick a different period.</td>
+          <td class="ar">وسّع الفترة أو اختر تاريخ تاني.</td>
+        </tr>
+        <tr>
+          <td class="element-name">CTA</td>
+          <td class="en">Change date range</td>
+          <td class="ar">غيّر التاريخ</td>
+        </tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="2">ES-08 · First-session SMS scan</td>
+          <td class="element-name">Headline</td>
+          <td class="en">Reading your SMS</td>
+          <td class="ar">بنقرا الـ SMS بتاعتك</td>
+        </tr>
+        <tr>
+          <td class="element-name">Body</td>
+          <td class="en">Your transactions will show up here in a few seconds.</td>
+          <td class="ar">معاملاتك هتظهر هنا خلال ثواني.</td>
+        </tr>
+
+        <!-- Network states -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="7">Network states</td>
+          <td class="element-name">Offline indicator</td>
+          <td class="en">Last updated [relative time]</td>
+          <td class="ar">آخر تحديث [relative time]</td>
+        </tr>
+        <tr>
+          <td class="element-name">Relative time — just now</td>
+          <td class="en">Just now</td>
+          <td class="ar">دلوقتي</td>
+        </tr>
+        <tr>
+          <td class="element-name">Relative time — minutes</td>
+          <td class="en">[n] minute(s) ago</td>
+          <td class="ar">من دقيقة / دقيقتين / [n] دقايق / [n] دقيقة <em style="color:var(--t3)">(plural agreement, see notes)</em></td>
+        </tr>
+        <tr>
+          <td class="element-name">Relative time — hours</td>
+          <td class="en">[n] hour(s) ago</td>
+          <td class="ar">من ساعة / ساعتين / [n] ساعات / [n] ساعة</td>
+        </tr>
+        <tr>
+          <td class="element-name">Relative time — yesterday</td>
+          <td class="en">Yesterday</td>
+          <td class="ar">امبارح</td>
+        </tr>
+        <tr>
+          <td class="element-name">Relative time — days</td>
+          <td class="en">[n] days ago</td>
+          <td class="ar">من يوم / يومين / [n] أيام / [n] يوم</td>
+        </tr>
+        <tr>
+          <td class="element-name">Network error banner</td>
+          <td class="en">Couldn't refresh — tap to retry</td>
+          <td class="ar">مش قادرين نحدّث — دوس عشان نجرب تاني</td>
+        </tr>
+
+        <!-- Pagination cap -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="2">Six-month cap</td>
+          <td class="element-name">Message</td>
+          <td class="en">That's six months of transactions. To see further back, pick a date range.</td>
+          <td class="ar">دي معاملات 6 شهور. عشان تشوف أبعد من كده، اختر تاريخ.</td>
+        </tr>
+        <tr>
+          <td class="element-name">CTA</td>
+          <td class="en">Pick a date range</td>
+          <td class="ar">اختر تاريخ</td>
+        </tr>
+
+        <!-- Manual add -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="10">Manual add — sheet</td>
+          <td class="element-name">Sheet title</td>
+          <td class="en">Add transaction</td>
+          <td class="ar">ضيف معاملة</td>
+        </tr>
+        <tr>
+          <td class="element-name">Amount label</td>
+          <td class="en">Amount</td>
+          <td class="ar">المبلغ</td>
+        </tr>
+        <tr>
+          <td class="element-name">Category label</td>
+          <td class="en">Category</td>
+          <td class="ar">التصنيف</td>
+        </tr>
+        <tr>
+          <td class="element-name">Date label</td>
+          <td class="en">Date</td>
+          <td class="ar">التاريخ</td>
+        </tr>
+        <tr>
+          <td class="element-name">Type label</td>
+          <td class="en">Type</td>
+          <td class="ar">النوع</td>
+        </tr>
+        <tr>
+          <td class="element-name">Merchant label (optional)</td>
+          <td class="en">Merchant (optional)</td>
+          <td class="ar">اسم المتجر (اختياري)</td>
+        </tr>
+        <tr>
+          <td class="element-name">Note label (optional)</td>
+          <td class="en">Note (optional)</td>
+          <td class="ar">ملاحظة (اختياري)</td>
+        </tr>
+        <tr>
+          <td class="element-name">Save button — default</td>
+          <td class="en">Save</td>
+          <td class="ar">حفظ</td>
+        </tr>
+        <tr>
+          <td class="element-name">Save button — loading</td>
+          <td class="en">Saving…</td>
+          <td class="ar">بنحفظ…</td>
+        </tr>
+        <tr>
+          <td class="element-name">Currency cue (field affix)</td>
+          <td class="en">EGP</td>
+          <td class="ar">جنيه</td>
+        </tr>
+
+        <!-- Validation -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="5">Manual add — validation</td>
+          <td class="element-name">Hard-block · zero/empty</td>
+          <td class="en">Add an amount to save</td>
+          <td class="ar">حط المبلغ عشان تحفظ</td>
+        </tr>
+        <tr>
+          <td class="element-name">Hard-block · negative</td>
+          <td class="en">Amount must be more than zero</td>
+          <td class="ar">المبلغ لازم يكون أكبر من صفر</td>
+        </tr>
+        <tr>
+          <td class="element-name">Hard-block · non-numeric</td>
+          <td class="en">Use numbers only</td>
+          <td class="ar">أرقام بس</td>
+        </tr>
+        <tr>
+          <td class="element-name">Soft warning · large amount</td>
+          <td class="en">That's a big one — saving as [amount] EGP. Looks right?</td>
+          <td class="ar">مبلغ كبير — هنحفظ [amount] جنيه. متأكد؟</td>
+        </tr>
+        <tr>
+          <td class="element-name">Type-change conflict</td>
+          <td class="en">"[category]" doesn't fit Spending. Pick a new category, or switch back to Income.</td>
+          <td class="ar">"[category]" مش مناسب للمصروفات. اختار تصنيف تاني، أو ارجع للدخل.</td>
+        </tr>
+
+        <!-- Action sheet -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="4">Centre + action sheet</td>
+          <td class="element-name">Add transaction — title</td>
+          <td class="en">Add transaction</td>
+          <td class="ar">ضيف معاملة</td>
+        </tr>
+        <tr>
+          <td class="element-name">Add transaction — sub</td>
+          <td class="en">Log a spend or income</td>
+          <td class="ar">سجل مصروف أو دخل</td>
+        </tr>
+        <tr>
+          <td class="element-name">Add budget — title</td>
+          <td class="en">Add budget</td>
+          <td class="ar">ضيف ميزانية</td>
+        </tr>
+        <tr>
+          <td class="element-name">Add budget — sub</td>
+          <td class="en">Set a monthly limit</td>
+          <td class="ar">حدد حد شهري</td>
+        </tr>
+
+        <!-- Category picker -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="7">Category picker</td>
+          <td class="element-name">Sheet title</td>
+          <td class="en">Pick a category</td>
+          <td class="ar">اختر تصنيف</td>
+        </tr>
+        <tr>
+          <td class="element-name">Search placeholder</td>
+          <td class="en">Search or create</td>
+          <td class="ar">ابحث أو أنشئ</td>
+        </tr>
+        <tr>
+          <td class="element-name">Persistent create entry</td>
+          <td class="en">+ Create new category</td>
+          <td class="ar">+ تصنيف جديد</td>
+        </tr>
+        <tr>
+          <td class="element-name">Type-ahead create</td>
+          <td class="en">+ Create "[query]"</td>
+          <td class="ar">+ أنشئ "[query]"</td>
+        </tr>
+        <tr>
+          <td class="element-name">Creation form — name field</td>
+          <td class="en">Category name</td>
+          <td class="ar">اسم التصنيف</td>
+        </tr>
+        <tr>
+          <td class="element-name">Creation form — icon &amp; colour</td>
+          <td class="en">Icon and colour</td>
+          <td class="ar">الأيقونة واللون</td>
+        </tr>
+        <tr>
+          <td class="element-name">Creation form — Create button</td>
+          <td class="en">Create</td>
+          <td class="ar">أنشئ</td>
+        </tr>
+
+        <!-- Manual add success toast -->
+        <tr class="group-start">
+          <td class="screen-name">Manual add — success</td>
+          <td class="element-name">Save success toast</td>
+          <td class="en">Transaction added on [date]</td>
+          <td class="ar">اتضافت المعاملة في [date]</td>
+        </tr>
+
+        <!-- Detail screen -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="11">Detail screen — read mode</td>
+          <td class="element-name">Mode chip — read</td>
+          <td class="en">Details</td>
+          <td class="ar">التفاصيل</td>
+        </tr>
+        <tr>
+          <td class="element-name">Source line — SMS-parsed</td>
+          <td class="en">From SMS</td>
+          <td class="ar">من SMS</td>
+        </tr>
+        <tr>
+          <td class="element-name">Source line — manual</td>
+          <td class="en">Added manually</td>
+          <td class="ar">مضافة يدوياً</td>
+        </tr>
+        <tr>
+          <td class="element-name">Internal transfer header</td>
+          <td class="en">Between [account A] and [account B]</td>
+          <td class="ar">بين [account A] و [account B]</td>
+        </tr>
+        <tr>
+          <td class="element-name">Field label — Date</td>
+          <td class="en">Date</td>
+          <td class="ar">التاريخ</td>
+        </tr>
+        <tr>
+          <td class="element-name">Field label — Type</td>
+          <td class="en">Type</td>
+          <td class="ar">النوع</td>
+        </tr>
+        <tr>
+          <td class="element-name">Field label — Category</td>
+          <td class="en">Category</td>
+          <td class="ar">التصنيف</td>
+        </tr>
+        <tr>
+          <td class="element-name">Field label — Note</td>
+          <td class="en">Note</td>
+          <td class="ar">ملاحظة</td>
+        </tr>
+        <tr>
+          <td class="element-name">Add note CTA (when empty)</td>
+          <td class="en">+ Add a note</td>
+          <td class="ar">+ ضيف ملاحظة</td>
+        </tr>
+        <tr>
+          <td class="element-name">Edit button</td>
+          <td class="en">Edit</td>
+          <td class="ar">عدّل</td>
+        </tr>
+        <tr>
+          <td class="element-name">Delete button</td>
+          <td class="en">Delete</td>
+          <td class="ar">احذف</td>
+        </tr>
+
+        <!-- Internal transfer toggle -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="3">Internal transfer toggle</td>
+          <td class="element-name">Toggle title</td>
+          <td class="en">Mark as internal transfer</td>
+          <td class="ar">حدد كتحويل داخلي</td>
+        </tr>
+        <tr>
+          <td class="element-name">Toggle subtitle — off state</td>
+          <td class="en">Won't count as spending or income.</td>
+          <td class="ar">مش هيتحسب مصروف ولا دخل.</td>
+        </tr>
+        <tr>
+          <td class="element-name">Toggle subtitle — on state</td>
+          <td class="en">Already marked. Toggle off to count it as spending or income.</td>
+          <td class="ar">محدد بالفعل. اقفله عشان يتحسب مصروف أو دخل.</td>
+        </tr>
+        <tr>
+          <td class="element-name">Toggle ON confirmation toast</td>
+          <td class="en">Marked as internal transfer</td>
+          <td class="ar">اتحدد كتحويل داخلي</td>
+        </tr>
+        <tr>
+          <td class="element-name">Toggle OFF confirmation toast</td>
+          <td class="en">No longer an internal transfer</td>
+          <td class="ar">مش تحويل داخلي تاني</td>
+        </tr>
+
+        <!-- Detail — pending -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="2">Detail — pending</td>
+          <td class="element-name">Category placeholder (pending)</td>
+          <td class="en">Categorising…</td>
+          <td class="ar">بنحدد التصنيف…</td>
+        </tr>
+        <tr>
+          <td class="element-name">Pick category CTA (replaces Edit)</td>
+          <td class="en">Pick a category</td>
+          <td class="ar">اختر تصنيف</td>
+        </tr>
+
+        <!-- Edit mode -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="6">Detail screen — edit mode</td>
+          <td class="element-name">Mode chip — edit</td>
+          <td class="en">Editing</td>
+          <td class="ar">تعديل</td>
+        </tr>
+        <tr>
+          <td class="element-name">Field label — Amount</td>
+          <td class="en">Amount</td>
+          <td class="ar">المبلغ</td>
+        </tr>
+        <tr>
+          <td class="element-name">Field label — Merchant</td>
+          <td class="en">Merchant</td>
+          <td class="ar">اسم المتجر</td>
+        </tr>
+        <tr>
+          <td class="element-name">Field label — Date &amp; time</td>
+          <td class="en">Date &amp; time</td>
+          <td class="ar">التاريخ والوقت</td>
+        </tr>
+        <tr>
+          <td class="element-name">Save button</td>
+          <td class="en">Save changes</td>
+          <td class="ar">احفظ التعديلات</td>
+        </tr>
+        <tr>
+          <td class="element-name">Cancel button</td>
+          <td class="en">Cancel</td>
+          <td class="ar">إلغاء</td>
+        </tr>
+
+        <!-- Edit — type change reset -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="2">Edit — type change reset</td>
+          <td class="element-name">Category reset hint</td>
+          <td class="en">Type changed — pick a new category to save.</td>
+          <td class="ar">النوع اتغيّر — اختر تصنيف جديد عشان تحفظ.</td>
+        </tr>
+        <tr>
+          <td class="element-name">Save success toast</td>
+          <td class="en">Changes saved</td>
+          <td class="ar">اتحفظت التعديلات</td>
+        </tr>
+
+        <!-- Delete -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="6">Delete with undo</td>
+          <td class="element-name">Confirm dialog — title</td>
+          <td class="en">Delete this transaction?</td>
+          <td class="ar">تحذف المعاملة دي؟</td>
+        </tr>
+        <tr>
+          <td class="element-name">Confirm dialog — body</td>
+          <td class="en">[amount] EGP at [merchant] on [date] will be removed. You'll have a few seconds to undo.</td>
+          <td class="ar">[amount] جنيه في [merchant] يوم [date] هيتشال. هيكون عندك ثواني تتراجع.</td>
+        </tr>
+        <tr>
+          <td class="element-name">Confirm — Delete button</td>
+          <td class="en">Delete</td>
+          <td class="ar">احذف</td>
+        </tr>
+        <tr>
+          <td class="element-name">Confirm — Cancel button</td>
+          <td class="en">Cancel</td>
+          <td class="ar">إلغاء</td>
+        </tr>
+        <tr>
+          <td class="element-name">Deleted toast text</td>
+          <td class="en">Transaction deleted</td>
+          <td class="ar">اتحذفت المعاملة</td>
+        </tr>
+        <tr>
+          <td class="element-name">Deleted toast — Undo action</td>
+          <td class="en">Undo</td>
+          <td class="ar">تراجع</td>
+        </tr>
+
+        <!-- Restored -->
+        <tr class="group-start">
+          <td class="screen-name">Restored after undo</td>
+          <td class="element-name">Restored toast</td>
+          <td class="en">Transaction restored</td>
+          <td class="ar">اترجعت المعاملة</td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── Accessibility ── -->
+  <div class="handoff-sec">
+    <div class="handoff-h">Accessibility — what changes what you draw</div>
+    <ul class="handoff-list">
+      <li><strong>Touch targets — 44×44px minimum</strong> on every interactive element. Filter chip dismiss × icons, type tab pills, search clear icon, network error banner, six-month cap CTA, mode chip, internal transfer toggle, undo toast action.</li>
+      <li><strong>Contrast — 4.5:1 minimum for text</strong>, 7:1 for financial figures. Summary bar values, transaction amounts on rows and detail screen, and EGP currency cues all need contrast tool checks.</li>
+      <li><strong>Never colour-only for state.</strong> Internal transfer rows render amounts in neutral grey — colour alone cannot carry the "not counted" meaning. Append the screen reader caption "Internal transfer — not counted as spending or income" after the amount, between amount and time-of-day in reading order.</li>
+      <li><strong>Pending categorisation — screen reader cue.</strong> Visible string is "Categorising…" but the screen reader announces "Categorising, please wait" so non-sighted users get the wait cue.</li>
+      <li><strong>Mode chip is a visual cue, not the only one.</strong> The Details / Editing chip flips colour and label, but the Save changes / Cancel button pair is the primary signal. Don't rely on the chip alone to communicate edit mode — screen readers should announce mode change on entry to edit mode.</li>
+      <li><strong>Undo toast — 5-second window, screen reader announce on appear.</strong> The toast must be announced to screen readers as soon as it appears, including the time remaining (or at minimum that an undo is available). Tapping anywhere outside the toast does not dismiss it; only Undo or timeout closes it.</li>
+      <li><strong>Delete confirmation — destructive action treatment.</strong> Delete button uses red background (var(--red)). Cancel comes second in tap order but visually below — destructive action is never the default focus.</li>
+      <li><strong>Focus order — top to bottom on every screen, including RTL.</strong> Search → type tabs → filter chips → date pill → summary bar → list. On Arabic the visual direction flips but focus order stays top-to-bottom. In Detail sheet: header → amount → fields top-to-bottom → toggle → action buttons.</li>
+      <li><strong>Row reading order:</strong> merchant → category → amount → screen reader caption (internal transfer only) → time-of-day.</li>
+    </ul>
+  </div>
+</div>
+
+</div>
+</body>
+</html>
