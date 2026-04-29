@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MoneyMore — Budgets Tab · Designer Prototype v5</title>
+<title>MoneyMore — Budgets Tab · Designer Prototype v6</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
@@ -243,6 +243,59 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
 .group-hdr.alert{color:var(--red);}
 .group-hdr.warn{color:#8A6510;}
 
+/* ── SKELETON LOADING ─── */
+@keyframes skel-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+.skel{
+  background:var(--screen-bg2);
+  border-radius:var(--r-sm);
+  animation:skel-pulse 1.4s ease-in-out infinite;
+}
+.skel-banner{
+  height:18px;
+  width:65%;
+  margin:8px 4px 14px;
+  border-radius:var(--r-sm);
+}
+.skel-card{
+  background:white;
+  border:1px solid var(--b1);
+  border-radius:var(--r-md);
+  padding:13px 14px;
+  display:flex;
+  flex-direction:column;
+  gap:9px;
+}
+.skel-card-row{display:flex;align-items:center;gap:11px;}
+.skel-emoji{width:24px;height:18px;border-radius:4px;}
+.skel-label-l{height:12px;width:55%;border-radius:3px;}
+.skel-label-s{height:10px;width:30%;border-radius:3px;margin-left:auto;}
+.skel-bar{height:5px;width:100%;border-radius:var(--r-pill);}
+
+/* ── PULL TO REFRESH ─── */
+.ptr-indicator{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:14px 0 6px;
+  flex-shrink:0;
+}
+.ptr-spinner{
+  width:22px;height:22px;
+  border:2px solid var(--b2);
+  border-top-color:var(--navy);
+  border-radius:50%;
+  animation:ptr-spin 0.8s linear infinite;
+}
+@keyframes ptr-spin {
+  to { transform:rotate(360deg); }
+}
+.ptr-pushed{
+  /* List below the indicator gets pushed down visually — handled via natural flow */
+}
+
 /* ── RECOMMENDATION CARD ─── */
 .rec-section-hdr{display:flex;align-items:center;justify-content:space-between;padding:0 2px;}
 .rec-title{font-size:var(--s-sm);font-weight:700;color:var(--t1);letter-spacing:-0.01em;}
@@ -452,7 +505,7 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
     <span class="doc-tag prototype">Prototype</span>
     <span class="doc-tag designer">Designer brief</span>
     <span class="doc-tag android">Android</span>
-    <span class="doc-tag wip">Draft v5</span>
+    <span class="doc-tag wip">Draft v6</span>
     <span class="doc-tag version">DB-040</span>
     <span class="doc-tag parked">iOS parked</span>
     <span class="doc-date">29 April 2026</span>
@@ -491,11 +544,63 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
     <div class="flow-section-title">Flow 1 — Tab states</div>
     <div class="flow-section-line"></div>
   </div>
-  <div class="flow-section-intro">The Budgets tab opens in one of these states depending on the user's data. State selection is automatic — there is no toggle.</div>
+  <div class="flow-section-intro">The Budgets tab opens in one of these states depending on the user's data. First paint shows a loading skeleton; state selection is automatic once data lands. Pull-to-refresh is available in any list state, online or offline-cached.</div>
 
   <div class="phone-row">
 
-    <!-- 1a: Empty state -->
+    <!-- 1a: Loading state -->
+    <div class="screen-col">
+      <div class="screen-label">Budgets tab · first paint · data loading</div>
+      <div class="state-badge loading">loading</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="app-bar-title">Budgets</div>
+          </div>
+          <div class="sc-area">
+            <div class="sc-pad">
+              <div class="skel skel-banner"></div>
+              <div class="skel-card">
+                <div class="skel-card-row">
+                  <div class="skel skel-emoji"></div>
+                  <div class="skel skel-label-l"></div>
+                  <div class="skel skel-label-s"></div>
+                </div>
+                <div class="skel skel-bar"></div>
+              </div>
+              <div class="skel-card">
+                <div class="skel-card-row">
+                  <div class="skel skel-emoji"></div>
+                  <div class="skel skel-label-l"></div>
+                  <div class="skel skel-label-s"></div>
+                </div>
+                <div class="skel skel-bar"></div>
+              </div>
+              <div class="skel-card">
+                <div class="skel-card-row">
+                  <div class="skel skel-emoji"></div>
+                  <div class="skel skel-label-l"></div>
+                  <div class="skel skel-label-s"></div>
+                </div>
+                <div class="skel skel-bar"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-item plus-slot"><div class="a-nav-icon"></div><div class="a-nav-lbl"></div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item on"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">First paint while data is being fetched. Skeletons mirror the actual card structure so the layout doesn't jump when content lands. Same pattern serves first-load and tab re-entry.</div>
+    </div>
+
+    <!-- 1b: Empty state -->
     <div class="screen-col">
       <div class="screen-label">Budgets tab · zero budgets · manual or no averages</div>
       <div class="state-badge empty">empty state</div>
@@ -751,7 +856,58 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
       </div>
     </div>
 
-    <!-- 1f: Offline cached -->
+    <!-- 1f: Pull to refresh -->
+    <div class="screen-col">
+      <div class="screen-label">Budgets tab · pull-to-refresh active</div>
+      <div class="state-badge interaction">refreshing</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="app-bar-title">Budgets</div>
+          </div>
+          <div class="sc-area">
+            <div class="ptr-indicator">
+              <div class="ptr-spinner"></div>
+            </div>
+            <div class="sc-pad" style="padding-top:6px">
+              <div class="summary-banner alert">
+                <div class="summary-dot"></div>
+                <div class="summary-txt">2 budgets over, 1 close to the limit.</div>
+              </div>
+              <div class="group-hdr alert"><span>Over limit · 2</span><div class="group-hdr-line"></div></div>
+              <div class="budget-card active">
+                <div class="bc-top">
+                  <div class="bc-emoji">🍕</div>
+                  <div class="bc-cat">Food &amp; Dining</div>
+                </div>
+                <div class="bc-amount-hero over"><span class="num">340</span><span class="lbl">EGP over</span></div>
+                <div class="bc-bar-wrap"><div class="bc-bar over" style="width:100%"></div></div>
+              </div>
+              <div class="budget-card active">
+                <div class="bc-top">
+                  <div class="bc-emoji">🛍</div>
+                  <div class="bc-cat">Shopping</div>
+                </div>
+                <div class="bc-amount-hero over"><span class="num">220</span><span class="lbl">EGP over</span></div>
+                <div class="bc-bar-wrap"><div class="bc-bar over" style="width:100%"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-item plus-slot"><div class="a-nav-icon"></div><div class="a-nav-lbl"></div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item on"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">User pulls down on the list. Existing content stays visible; spinner sits at the top until the refresh completes. Same indicator works on the offline-cached state.</div>
+    </div>
+
+    <!-- 1g: Offline cached -->
     <div class="screen-col">
       <div class="screen-label">Budgets tab · offline · cached data</div>
       <div class="state-badge offline">offline read-only</div>
