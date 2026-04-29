@@ -1,0 +1,2024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoneyMore — Budgets Tab · Designer Prototype v5</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --navy:#1A3C5E; --green:#2E8B57; --green-l:#E8F5EE;
+  --gold:#B8860B; --gold-l:#FBF4DC; --red:#C0392B; --red-l:#FDECEA;
+  --page-bg:#F9F8F5; --page-border:#E2DFD8;
+  --screen-bg:#FAFAF8; --screen-bg2:#F2F0EB; --screen-bg3:#E8E5DE;
+  --t1:#1A1714; --t2:#3D3A35; --t3:#7A7670; --t4:#ABA7A0;
+  --t-pos:#1A6E3C; --t-neg:#A82419;
+  --b1:#E8E5DF; --b2:#D4D0C8; --b3:#BCBAB2;
+  --frame-bg:#2A2724; --frame-border:#1A1614;
+  --f-body:'Plus Jakarta Sans',sans-serif; --f-mono:'DM Mono',monospace;
+  --s-xs:10px; --s-sm:12px; --s-base:14px; --s-md:16px;
+  --s-lg:18px; --s-xl:22px; --s-2xl:28px;
+  --r-sm:6px; --r-md:12px; --r-lg:16px; --r-xl:24px; --r-pill:999px;
+  --shadow-phone:0 8px 32px rgba(0,0,0,0.14),0 2px 8px rgba(0,0,0,0.08);
+  --shadow-card:0 1px 4px rgba(0,0,0,0.06);
+  --ph-w:280px; --ph-r:32px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-size:var(--s-base);line-height:1.6;-webkit-font-smoothing:antialiased;}
+.page{max-width:1500px;margin:0 auto;padding:48px 40px 96px;}
+
+/* ── DOC HEADER ─── */
+.doc-header{padding-bottom:32px;margin-bottom:40px;border-bottom:2px solid var(--b1);}
+.doc-meta{display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap;}
+.doc-tag{font-family:var(--f-mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;padding:4px 11px;border-radius:3px;font-weight:600;}
+.doc-tag.prototype{background:var(--green-l);color:#0F5830;}
+.doc-tag.designer{background:#EAE8FF;color:#3A3288;}
+.doc-tag.android{background:#E8F4EA;color:#1F5E2A;}
+.doc-tag.parked{background:var(--screen-bg2);color:var(--t3);}
+.doc-tag.wip{background:var(--gold-l);color:#6B5210;}
+.doc-tag.version{background:var(--navy);color:#fff;}
+.doc-date{font-family:var(--f-mono);font-size:11px;color:var(--t2);margin-left:auto;font-weight:500;}
+.doc-title{font-size:34px;font-weight:700;color:var(--t1);letter-spacing:-0.02em;line-height:1.15;margin-bottom:10px;}
+.doc-subtitle{font-size:15px;color:var(--t1);font-weight:400;margin-bottom:30px;line-height:1.5;max-width:920px;}
+
+.doc-info{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--b1);border-radius:var(--r-md);overflow:hidden;background:white;}
+.doc-info-cell{padding:16px 20px;border-right:1px solid var(--b1);}
+.doc-info-cell:last-child{border-right:none;}
+.info-label{font-family:var(--f-mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--t2);margin-bottom:8px;font-weight:600;}
+.info-body{font-size:13px;color:var(--t1);line-height:1.55;}
+.info-body strong{color:var(--t1);font-weight:700;}
+
+.flow-list{display:flex;flex-direction:column;gap:4px;}
+.flow-list-item{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--t1);line-height:1.45;}
+.flow-list-item::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--b3);flex-shrink:0;}
+.flow-list-item.active::before{background:var(--green);}
+.flow-list-item.parked::before{background:var(--b3);}
+.flow-list-item.parked{color:var(--t3);text-decoration:line-through;}
+
+/* ── FLOW SECTION ─── */
+.flow-section{margin-bottom:64px;}
+.flow-section-header{display:flex;align-items:center;gap:16px;margin-bottom:14px;}
+.flow-section-line{flex:1;height:1px;background:var(--b2);}
+.flow-section-title{font-family:var(--f-body);font-size:16px;font-weight:700;letter-spacing:-0.01em;color:#fff;background:var(--navy);padding:6px 14px;border-radius:4px;white-space:nowrap;}
+.flow-section-intro{font-size:13px;color:var(--t2);line-height:1.5;margin-bottom:24px;max-width:780px;}
+
+.phone-row{display:flex;align-items:flex-start;gap:0;overflow-x:auto;padding-bottom:12px;}
+.phone-row::-webkit-scrollbar{height:4px;}
+.phone-row::-webkit-scrollbar-track{background:var(--b1);border-radius:2px;}
+.phone-row::-webkit-scrollbar-thumb{background:var(--b3);border-radius:2px;}
+
+.screen-col{display:flex;flex-direction:column;align-items:center;gap:10px;flex-shrink:0;}
+.screen-label{font-family:var(--f-body);font-size:11px;font-weight:600;color:var(--t2);text-align:center;max-width:var(--ph-w);line-height:1.4;}
+
+.state-badge{font-family:var(--f-mono);font-size:10px;font-weight:500;padding:3px 9px;border-radius:3px;letter-spacing:0.04em;}
+.state-badge.happy{background:#EBF7F1;color:#1A6E3C;}
+.state-badge.empty{background:var(--gold-l);color:#8A6510;}
+.state-badge.error{background:var(--red-l);color:var(--red);}
+.state-badge.loading{background:#E8F0FA;color:#103868;}
+.state-badge.success{background:var(--green-l);color:#0F5830;}
+.state-badge.os{background:#ECECEC;color:#555;}
+.state-badge.interaction{background:#EAE8FF;color:#3A3288;}
+.state-badge.offline{background:#F0EBE0;color:#6B5210;}
+.state-badge.entry{background:#FCE8D4;color:#8A4810;}
+
+.flow-arrow{display:flex;flex-direction:column;align-items:center;flex-shrink:0;padding-top:280px;padding-left:6px;padding-right:6px;}
+.arrow-line{width:32px;height:1px;background:var(--b2);position:relative;}
+.arrow-line::after{content:'';position:absolute;right:-1px;top:-3px;border-left:5px solid var(--b2);border-top:3px solid transparent;border-bottom:3px solid transparent;}
+.arrow-label{font-family:var(--f-body);font-size:10px;font-weight:600;color:var(--t2);text-align:center;max-width:74px;line-height:1.35;margin-top:6px;}
+.arrow-label.deny{color:#A82020;}
+.arrow-label.interaction{color:#3A3288;}
+
+/* ── PHONE FRAME (auto-height) ─── */
+.phone{
+  width:var(--ph-w);
+  border-radius:var(--ph-r);
+  background:var(--frame-bg);
+  box-shadow:var(--shadow-phone);
+  position:relative;
+  overflow:hidden;
+  border:2px solid var(--frame-border);
+  flex-shrink:0;
+  display:flex;
+  flex-direction:column;
+}
+.a-status{height:20px;background:var(--screen-bg);display:flex;align-items:center;justify-content:space-between;padding:0 14px;font-family:var(--f-mono);font-size:8px;color:var(--t1);flex-shrink:0;z-index:5;}
+.screen{
+  background:var(--screen-bg);
+  display:flex;
+  flex-direction:column;
+  flex:1;
+  position:relative;
+  min-height:540px;
+}
+.a-nav{height:48px;background:var(--screen-bg);border-top:1px solid var(--b1);display:flex;align-items:center;flex-shrink:0;position:relative;}
+.a-nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 0;}
+.a-nav-icon{width:20px;height:20px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;}
+.a-nav-item.on .a-nav-icon{background:var(--green-l);}
+.a-nav-lbl{font-size:8px;color:var(--t4);font-weight:500;}
+.a-nav-item.on .a-nav-lbl{color:var(--green);}
+.a-nav-plus{
+  position:absolute;
+  top:-14px;
+  left:50%;
+  transform:translateX(-50%);
+  width:44px;height:44px;
+  border-radius:50%;
+  background:var(--navy);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 12px rgba(26,60,94,0.32);
+  color:white;font-size:22px;font-weight:300;line-height:1;
+}
+.a-nav-plus.tapped{background:var(--green);box-shadow:0 0 0 4px rgba(46,139,87,0.25),0 4px 12px rgba(26,60,94,0.32);}
+.a-nav-item.plus-slot{visibility:hidden;}
+
+/* ── SCREEN PRIMITIVES ─── */
+.app-bar{height:46px;display:flex;align-items:center;padding:0 14px;background:var(--screen-bg);border-bottom:1px solid var(--b1);flex-shrink:0;gap:10px;}
+.app-bar-title{font-size:var(--s-md);font-weight:700;color:var(--t1);flex:1;}
+.app-bar-action{font-size:var(--s-sm);font-weight:700;color:var(--green);}
+.back-btn{font-size:18px;color:var(--navy);line-height:1;}
+
+.sc-area{flex:1;overflow:hidden;display:flex;flex-direction:column;}
+.sc-pad{padding:14px;display:flex;flex-direction:column;gap:10px;}
+.sc-pad-sm{padding:10px 14px;display:flex;flex-direction:column;gap:8px;}
+
+.t-title{font-size:var(--s-xl);font-weight:700;color:var(--t1);letter-spacing:-0.01em;line-height:1.2;}
+.t-heading{font-size:var(--s-lg);font-weight:600;color:var(--t1);line-height:1.25;}
+.t-body{font-size:var(--s-base);color:var(--t2);line-height:1.5;}
+.t-caption{font-size:var(--s-sm);color:var(--t3);line-height:1.5;}
+.t-xs{font-size:var(--s-xs);color:var(--t4);}
+.rtl{direction:rtl;text-align:right;}
+
+/* ── TAP HIGHLIGHT ─── */
+.tap-ring{
+  position:relative;
+  box-shadow:0 0 0 2px var(--green),0 0 0 6px rgba(46,139,87,0.18);
+  border-radius:inherit;
+}
+.tap-pulse{
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:36px;height:36px;
+  border-radius:50%;
+  background:rgba(46,139,87,0.22);
+  pointer-events:none;
+}
+
+/* ── SUMMARY STATUS BANNER ─── */
+.summary-banner{
+  padding:8px 4px 10px;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  border-bottom:1px solid var(--b1);
+}
+.summary-banner.alert .summary-dot{background:var(--red);}
+.summary-banner.warn .summary-dot{background:var(--gold);}
+.summary-banner.ok .summary-dot{background:var(--green);}
+.summary-dot{
+  width:8px;height:8px;
+  border-radius:50%;
+  flex-shrink:0;
+}
+.summary-txt{font-size:var(--s-sm);font-weight:600;color:var(--t1);line-height:1.4;}
+
+/* ── BUDGET CARD ─── */
+.budget-card{
+  background:white;
+  border:1px solid var(--b1);
+  border-radius:var(--r-md);
+  padding:13px 14px;
+  display:flex;
+  flex-direction:column;
+  gap:9px;
+}
+/* Calm card — single row, no bar. Used for on-track budgets. */
+.budget-card.calm{
+  flex-direction:row;
+  align-items:center;
+  gap:11px;
+  padding:11px 14px;
+}
+.budget-card.calm .bc-emoji{font-size:18px;flex-shrink:0;width:24px;text-align:center;}
+.budget-card.calm .bc-cat{flex:1;font-size:var(--s-sm);font-weight:700;color:var(--t1);}
+.budget-card.calm .bc-left{font-size:var(--s-xs);color:var(--t2);font-weight:600;white-space:nowrap;}
+/* Active card — alert or over. Has prominent number, bar. */
+.budget-card.active{
+  padding:14px;
+  gap:10px;
+}
+.budget-card.fresh{border-color:rgba(46,139,87,0.4);box-shadow:0 0 0 2px rgba(46,139,87,0.08);}
+.bc-top{display:flex;align-items:center;gap:11px;}
+.bc-emoji{font-size:18px;flex-shrink:0;width:24px;text-align:center;line-height:1;}
+.bc-cat{flex:1;font-size:var(--s-sm);font-weight:700;color:var(--t1);}
+.bc-amount-hero{display:flex;align-items:baseline;gap:5px;line-height:1;}
+.bc-amount-hero .num{font-size:22px;font-weight:700;letter-spacing:-0.01em;}
+.bc-amount-hero .lbl{font-size:var(--s-xs);color:var(--t3);font-weight:500;}
+.bc-amount-hero.over .num{color:var(--t-neg);}
+.bc-amount-hero.warn .num{color:#8A6510;}
+.bc-bar-wrap{height:5px;background:var(--screen-bg2);border-radius:var(--r-pill);overflow:hidden;}
+.bc-bar{height:100%;border-radius:var(--r-pill);background:var(--green);}
+.bc-bar.warn{background:var(--gold);}
+.bc-bar.over{background:var(--red);}
+.bc-foot{font-size:var(--s-xs);color:var(--t2);font-weight:500;}
+.bc-foot.warn{color:#8A6510;}
+.bc-foot.over{color:var(--t-neg);}
+
+/* ── GROUP SECTION HEADER ─── */
+.group-hdr{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:14px 2px 6px;
+  font-family:var(--f-mono);
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  color:var(--t3);
+}
+.group-hdr-line{flex:1;height:1px;background:var(--b1);}
+.group-hdr.alert{color:var(--red);}
+.group-hdr.warn{color:#8A6510;}
+
+/* ── RECOMMENDATION CARD ─── */
+.rec-section-hdr{display:flex;align-items:center;justify-content:space-between;padding:0 2px;}
+.rec-title{font-size:var(--s-sm);font-weight:700;color:var(--t1);letter-spacing:-0.01em;}
+.rec-dismiss{font-size:var(--s-xs);font-weight:600;color:var(--t3);text-decoration:underline;}
+.rec-card{
+  background:#FBFAF6;
+  border:1px solid var(--b1);
+  border-radius:var(--r-md);
+  padding:12px 14px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.rec-top{display:flex;align-items:center;gap:11px;}
+.rec-icon{font-size:18px;flex-shrink:0;width:24px;text-align:center;line-height:1;}
+.rec-cat{flex:1;font-size:var(--s-sm);font-weight:700;color:var(--t1);}
+.rec-amt{font-size:var(--s-sm);font-weight:700;color:var(--t1);}
+.rec-line{font-size:var(--s-xs);color:var(--t3);line-height:1.5;}
+.rec-cta{
+  align-self:flex-start;
+  margin-top:2px;
+  color:var(--green);
+  font-size:var(--s-xs);
+  font-weight:700;
+  text-decoration:underline;
+}
+
+/* Forms */
+.form-grp{display:flex;flex-direction:column;gap:5px;}
+.form-label{font-size:var(--s-xs);font-weight:700;color:var(--t2);letter-spacing:0.03em;}
+.input{height:42px;border:1.5px solid var(--b2);border-radius:var(--r-sm);background:white;padding:0 10px;font-size:var(--s-sm);color:var(--t1);display:flex;align-items:center;justify-content:space-between;}
+.input.focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(26,60,94,0.07);}
+.input.err{border-color:var(--red);}
+.input-ph{color:var(--t4);}
+.input-suffix{font-size:var(--s-xs);color:var(--t3);font-weight:600;}
+.input-err{font-size:var(--s-xs);color:var(--red);display:flex;align-items:center;gap:4px;}
+.input-err a{color:var(--red);text-decoration:underline;font-weight:700;}
+.input-hint{font-size:var(--s-xs);color:var(--t3);}
+
+/* Buttons */
+.btn{height:42px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;font-family:var(--f-body);font-size:var(--s-sm);font-weight:700;border:none;width:100%;cursor:default;}
+.btn-primary{background:var(--navy);color:white;}
+.btn-accent{background:var(--green);color:white;}
+.btn-outline{background:transparent;border:1.5px solid var(--navy);color:var(--navy);}
+.btn-ghost{background:transparent;color:var(--navy);}
+.btn-disabled{background:var(--screen-bg3);color:var(--t4);}
+.btn-lg{height:48px;font-size:var(--s-base);}
+.btn-danger{background:var(--red);color:white;}
+
+/* Empty / outcome */
+.empty-state{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 20px;text-align:center;gap:10px;}
+.empty-icon{width:56px;height:56px;border-radius:50%;background:var(--screen-bg2);display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:2px;}
+.empty-ttl{font-size:var(--s-base);font-weight:700;color:var(--t1);}
+.empty-desc{font-size:var(--s-sm);color:var(--t3);line-height:1.5;max-width:220px;}
+
+/* Category list rows */
+.cat-row{display:flex;align-items:center;gap:11px;padding:12px 13px;background:white;border:1px solid var(--b1);border-radius:var(--r-sm);}
+.cat-icon{font-size:18px;flex-shrink:0;width:24px;text-align:center;line-height:1;}
+.cat-info{flex:1;}
+.cat-name{font-size:var(--s-sm);font-weight:700;color:var(--t1);}
+.cat-sub{font-size:var(--s-xs);color:var(--t3);margin-top:1px;}
+.cat-chev{color:var(--t4);font-size:14px;}
+
+/* Banners */
+.offline-banner{
+  background:var(--gold-l);
+  border-bottom:1px solid rgba(184,134,11,0.25);
+  padding:9px 14px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-shrink:0;
+}
+.offline-banner-ico{font-size:13px;}
+.offline-banner-txt{font-size:var(--s-xs);color:#6B5210;font-weight:600;line-height:1.4;}
+
+/* Detail sheet */
+.overlay{position:absolute;inset:0;background:rgba(0,0,0,0.45);display:flex;align-items:flex-end;z-index:40;}
+.bottom-sheet{background:var(--screen-bg);border-radius:var(--r-xl) var(--r-xl) 0 0;width:100%;padding:14px 14px 22px;box-shadow:0 -4px 24px rgba(0,0,0,0.1);display:flex;flex-direction:column;gap:10px;}
+.bs-handle{width:32px;height:3px;background:var(--b2);border-radius:2px;margin:0 auto 6px;}
+.bs-cat-row{display:flex;align-items:center;gap:10px;}
+.bs-cat-icon{width:36px;height:36px;border-radius:var(--r-sm);background:var(--screen-bg2);display:flex;align-items:center;justify-content:center;font-size:18px;}
+.bs-cat-name{font-size:var(--s-md);font-weight:700;color:var(--t1);}
+.bs-stats-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;background:white;border:1px solid var(--b1);border-radius:var(--r-sm);padding:10px;}
+.bs-stat{display:flex;flex-direction:column;gap:2px;align-items:center;text-align:center;}
+.bs-stat-lbl{font-size:9px;color:var(--t3);font-weight:600;text-transform:uppercase;letter-spacing:0.04em;}
+.bs-stat-val{font-size:var(--s-sm);font-weight:700;color:var(--t1);}
+.bs-stat-val.over{color:var(--t-neg);}
+.bs-action-row{display:flex;align-items:center;justify-content:space-between;padding:11px 12px;background:white;border:1px solid var(--b1);border-radius:var(--r-sm);}
+.bs-action-row.danger .bs-action-lbl{color:var(--red);}
+.bs-action-row.disabled{opacity:0.5;}
+.bs-action-lbl{font-size:var(--s-sm);font-weight:600;color:var(--t1);}
+.bs-action-chev{color:var(--t4);font-size:14px;}
+
+/* Toast */
+.toast{
+  position:absolute;
+  bottom:60px;left:14px;right:14px;
+  background:var(--t1);
+  color:white;
+  border-radius:var(--r-sm);
+  padding:10px 14px;
+  font-size:var(--s-xs);
+  font-weight:600;
+  display:flex;align-items:center;gap:8px;
+  box-shadow:0 4px 16px rgba(0,0,0,0.18);
+  z-index:30;
+}
+.toast-ico{font-size:13px;}
+
+/* OS native dialog */
+.dialog-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;padding:20px;z-index:50;}
+.dialog-box{background:#FFFFFF;border-radius:14px;padding:22px 20px 8px;width:100%;display:flex;flex-direction:column;gap:8px;box-shadow:0 10px 30px rgba(0,0,0,0.28);}
+.dialog-title{font-size:var(--s-md);font-weight:700;color:#1F1F1F;line-height:1.3;}
+.dialog-body{font-size:var(--s-sm);color:#444;line-height:1.5;}
+.dialog-acts{display:flex;justify-content:flex-end;gap:0;margin-top:10px;margin-right:-8px;}
+.dialog-btn{padding:10px 14px;font-size:var(--s-sm);font-weight:700;text-transform:uppercase;letter-spacing:0.04em;}
+.dialog-btn.cancel{color:var(--t2);}
+.dialog-btn.delete{color:var(--red);}
+
+/* Action sheet (centre plus) */
+.action-sheet{background:var(--screen-bg);border-radius:var(--r-xl) var(--r-xl) 0 0;width:100%;padding:14px 14px 22px;display:flex;flex-direction:column;gap:8px;}
+.as-handle{width:32px;height:3px;background:var(--b2);border-radius:2px;margin:0 auto 6px;}
+.as-row{display:flex;align-items:center;gap:11px;padding:13px;background:white;border:1px solid var(--b1);border-radius:var(--r-sm);}
+.as-row.disabled{opacity:0.55;background:var(--screen-bg2);}
+.as-icon{width:32px;height:32px;border-radius:var(--r-sm);background:var(--screen-bg2);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.as-row.disabled .as-icon{background:var(--screen-bg3);}
+.as-info{flex:1;}
+.as-name{font-size:var(--s-sm);font-weight:700;color:var(--t1);}
+.as-row.disabled .as-name{color:var(--t3);}
+.as-sub{font-size:var(--s-xs);color:var(--t3);margin-top:2px;line-height:1.45;}
+
+/* Inline disclosure */
+.inline-note{
+  background:#EAF0FE;
+  border-left:3px solid #4A80C0;
+  padding:9px 11px;
+  border-radius:0 var(--r-sm) var(--r-sm) 0;
+  font-size:var(--s-xs);
+  color:#103868;
+  line-height:1.5;
+}
+
+/* Flow notes */
+.flow-note{max-width:var(--ph-w);padding:9px 12px;border-radius:4px;font-family:var(--f-body);font-size:11px;font-weight:500;line-height:1.5;}
+.flow-note.decision{background:#FBF4DC;color:#6B5210;border-left:3px solid var(--gold);}
+.flow-note.bug{background:var(--red-l);color:#7A1810;border-left:3px solid var(--red);}
+.flow-note.new{background:var(--green-l);color:#0F5830;border-left:3px solid var(--green);}
+
+/* Entry-point anchor row above each create flow */
+.entry-anchor{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 14px;
+  background:#FCE8D4;
+  border-left:3px solid #C97A2C;
+  border-radius:0 var(--r-sm) var(--r-sm) 0;
+  margin-bottom:18px;
+  font-size:12px;
+  color:#6B3D10;
+  font-weight:600;
+}
+.entry-anchor strong{color:#4A2A0A;font-weight:700;}
+
+/* ── HANDOFF ─── */
+.handoff{margin-top:64px;padding:36px;background:white;border:1px solid var(--b1);border-radius:var(--r-md);}
+.handoff-title{font-size:26px;font-weight:700;color:var(--t1);margin-bottom:8px;letter-spacing:-0.01em;}
+.handoff-sub{font-size:14px;color:var(--t2);margin-bottom:28px;line-height:1.5;}
+.handoff-sec{margin-top:28px;padding-top:24px;border-top:1px solid var(--b1);}
+.handoff-sec:first-of-type{border-top:none;padding-top:0;margin-top:0;}
+.handoff-h{font-size:18px;font-weight:700;color:var(--t1);margin-bottom:12px;}
+.handoff-p{font-size:14px;color:var(--t1);line-height:1.6;margin-bottom:8px;}
+.handoff-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.handoff-list li{font-size:14px;color:var(--t1);line-height:1.6;padding-left:16px;position:relative;}
+.handoff-list li::before{content:'—';position:absolute;left:0;color:var(--t3);font-weight:700;}
+
+.copy-table{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed;}
+.copy-table col.col-screen{width:20%;}
+.copy-table col.col-element{width:22%;}
+.copy-table col.col-en{width:29%;}
+.copy-table col.col-ar{width:29%;}
+.copy-table th{text-align:left;padding:10px 12px;border-bottom:2px solid var(--b2);font-size:11px;color:var(--t2);text-transform:uppercase;letter-spacing:0.06em;font-weight:700;background:var(--screen-bg);}
+.copy-table td{padding:10px 12px;border-bottom:1px solid var(--b1);vertical-align:top;color:var(--t1);line-height:1.55;word-wrap:break-word;overflow-wrap:break-word;}
+.copy-table td.screen-name{font-weight:700;color:var(--t1);background:var(--screen-bg);}
+.copy-table td.element-name{color:var(--t2);font-weight:500;}
+.copy-table td.en{font-size:12px;color:var(--t1);}
+.copy-table td.ar{font-size:12px;color:var(--t1);direction:rtl;text-align:right;font-family:var(--f-body);}
+.copy-table tr.group-start td{border-top:2px solid var(--b2);}
+
+.callout{padding:12px 14px;border-radius:0 var(--r-sm) var(--r-sm) 0;font-size:13px;line-height:1.55;margin-top:12px;}
+.callout.warn{background:var(--gold-l);border-left:3px solid var(--gold);color:#6B5210;}
+.callout.info{background:#EAF0FE;border-left:3px solid #4A80C0;color:#103868;}
+
+.spacer{flex:1;}
+.w-full{width:100%;}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ═══════════════════════════════════════════════════════
+     DOC HEADER
+═══════════════════════════════════════════════════════════ -->
+<div class="doc-header">
+  <div class="doc-meta">
+    <span class="doc-tag prototype">Prototype</span>
+    <span class="doc-tag designer">Designer brief</span>
+    <span class="doc-tag android">Android</span>
+    <span class="doc-tag wip">Draft v5</span>
+    <span class="doc-tag version">DB-040</span>
+    <span class="doc-tag parked">iOS parked</span>
+    <span class="doc-date">29 April 2026</span>
+  </div>
+
+  <div class="doc-title">Budgets Tab</div>
+  <div class="doc-subtitle">A dedicated tab where users see, create, edit, and delete budgets. The tab opens in one of four states depending on the user's data: empty, recommendation, hybrid, or list. Recommendations come from spending averages and are permanently dismissible.</div>
+
+  <div class="doc-info">
+    <div class="doc-info-cell">
+      <div class="info-label">The problem</div>
+      <div class="info-body">
+        Users with imported transactions can see what they spent but have no way to set a limit. Without budgets, the app is a record-keeper, not a spending tool. The tab needs to do two things at once: make the value of budgeting obvious for users with no budgets yet, and make ongoing budget management feel light for users who already have them.
+      </div>
+    </div>
+    <div class="doc-info-cell">
+      <div class="info-label">Flows in this document</div>
+      <div class="flow-list">
+        <div class="flow-list-item active">Flow 1 — Tab states (empty, recommendation, hybrid, list, offline, error)</div>
+        <div class="flow-list-item active">Flow 2 — Create budget · full path (from centre plus or empty state)</div>
+        <div class="flow-list-item active">Flow 3 — Create budget · Quick-create (from recommendation card)</div>
+        <div class="flow-list-item active">Flow 4 — Detail, edit limit, edit category, delete</div>
+        <div class="flow-list-item active">Flow 5 — Centre plus disabled states</div>
+        <div class="flow-list-item parked">iOS variants (parked)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 1 — TAB STATES
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 1 — Tab states</div>
+    <div class="flow-section-line"></div>
+  </div>
+  <div class="flow-section-intro">The Budgets tab opens in one of these states depending on the user's data. State selection is automatic — there is no toggle.</div>
+
+  <div class="phone-row">
+
+    <!-- 1a: Empty state -->
+    <div class="screen-col">
+      <div class="screen-label">Budgets tab · zero budgets · manual or no averages</div>
+      <div class="state-badge empty">empty state</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="app-bar-title">Budgets</div>
+          </div>
+          <div class="empty-state">
+            <div class="empty-icon">🎯</div>
+            <div class="empty-ttl">Decide where your money goes</div>
+            <div class="empty-desc">Start with one category. You can add more anytime.</div>
+            <div class="btn btn-accent" style="max-width:180px;margin-top:10px">Create budget</div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-item plus-slot"><div class="a-nav-icon"></div><div class="a-nav-lbl"></div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item on"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Same screen serves manual users and SMS users with no spending averages.</div>
+    </div>
+
+    <!-- 1b: Recommendation state -->
+    <div class="screen-col">
+      <div class="screen-label">Budgets tab · zero budgets · SMS user with averages</div>
+      <div class="state-badge happy">recommendation state</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="app-bar-title">Budgets</div>
+          </div>
+          <div class="sc-area">
+            <div class="sc-pad">
+              <div class="rec-section-hdr">
+                <div class="rec-title">Based on your spending</div>
+                <div class="rec-dismiss">Hide suggestions</div>
+              </div>
+              <div class="rec-card">
+                <div class="rec-top">
+                  <div class="rec-icon">🍕</div>
+                  <div class="rec-cat">Food &amp; Dining</div>
+                  <div class="rec-amt">2,000 EGP</div>
+                </div>
+                <div class="rec-line">You average 2,000 EGP a month on Food &amp; Dining.</div>
+                <div class="rec-cta">Set budget</div>
+              </div>
+              <div class="rec-card">
+                <div class="rec-top">
+                  <div class="rec-icon">🚗</div>
+                  <div class="rec-cat">Transport</div>
+                  <div class="rec-amt">800 EGP</div>
+                </div>
+                <div class="rec-line">You average 800 EGP a month on Transport.</div>
+                <div class="rec-cta">Set budget</div>
+              </div>
+              <div class="rec-card">
+                <div class="rec-top">
+                  <div class="rec-icon">🛍</div>
+                  <div class="rec-cat">Shopping</div>
+                  <div class="rec-amt">1,200 EGP</div>
+                </div>
+                <div class="rec-line">You average 1,200 EGP a month on Shopping.</div>
+                <div class="rec-cta">Set budget</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-item plus-slot"><div class="a-nav-icon"></div><div class="a-nav-lbl"></div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item on"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Recommendation cards on a cream surface; budget cards on white. Section is permanently killed once dismissed, ≥3 budgets ever held, or all recommended categories budgeted.</div>
+    </div>
+
+    <!-- 1c: Hybrid state -->
+    <div class="screen-col">
+      <div class="screen-label">Budgets tab · 1–2 budgets · recommendations remain</div>
+      <div class="state-badge happy">hybrid state</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="app-bar-title">Budgets</div>
+          </div>
+          <div class="sc-area">
+            <div class="sc-pad">
+              <div class="summary-banner warn">
+                <div class="summary-dot"></div>
+                <div class="summary-txt">1 budget over, 1 close to the limit.</div>
+              </div>
+              <div class="rec-section-hdr" style="margin-top:4px">
+                <div class="rec-title">Based on your spending</div>
+                <div class="rec-dismiss">Hide suggestions</div>
+              </div>
+              <div class="rec-card">
+                <div class="rec-top">
+                  <div class="rec-icon">🛍</div>
+                  <div class="rec-cat">Shopping</div>
+                  <div class="rec-amt">1,200 EGP</div>
+                </div>
+                <div class="rec-line">You average 1,200 EGP a month on Shopping.</div>
+                <div class="rec-cta">Set budget</div>
+              </div>
+              <div class="group-hdr alert"><span>Over limit · 1</span><div class="group-hdr-line"></div></div>
+              <div class="budget-card active">
+                <div class="bc-top">
+                  <div class="bc-emoji">🍕</div>
+                  <div class="bc-cat">Food &amp; Dining</div>
+                </div>
+                <div class="bc-amount-hero over"><span class="num">340</span><span class="lbl">EGP over</span></div>
+                <div class="bc-bar-wrap"><div class="bc-bar over" style="width:100%"></div></div>
+              </div>
+              <div class="group-hdr warn"><span>Close to limit · 1</span><div class="group-hdr-line"></div></div>
+              <div class="budget-card active">
+                <div class="bc-top">
+                  <div class="bc-emoji">🚗</div>
+                  <div class="bc-cat">Transport</div>
+                </div>
+                <div class="bc-amount-hero warn"><span class="num">80</span><span class="lbl">EGP left</span></div>
+                <div class="bc-bar-wrap"><div class="bc-bar warn" style="width:90%"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-item plus-slot"><div class="a-nav-icon"></div><div class="a-nav-lbl"></div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item on"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Summary banner colour reflects the most severe state present. Sort: exceeded → warning → on-track.</div>
+    </div>
+
+    <!-- 1d: List state · alert -->
+    <div class="screen-col">
+      <div class="screen-label">Budgets tab · ≥3 budgets · recommendations gone</div>
+      <div class="state-badge happy">list state</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="app-bar-title">Budgets</div>
+          </div>
+          <div class="sc-area">
+            <div class="sc-pad">
+              <div class="summary-banner alert">
+                <div class="summary-dot"></div>
+                <div class="summary-txt">2 budgets over, 1 close to the limit.</div>
+              </div>
+              <div class="group-hdr alert"><span>Over limit · 2</span><div class="group-hdr-line"></div></div>
+              <div class="budget-card active">
+                <div class="bc-top">
+                  <div class="bc-emoji">🍕</div>
+                  <div class="bc-cat">Food &amp; Dining</div>
+                </div>
+                <div class="bc-amount-hero over"><span class="num">340</span><span class="lbl">EGP over</span></div>
+                <div class="bc-bar-wrap"><div class="bc-bar over" style="width:100%"></div></div>
+              </div>
+              <div class="budget-card active">
+                <div class="bc-top">
+                  <div class="bc-emoji">🛍</div>
+                  <div class="bc-cat">Shopping</div>
+                </div>
+                <div class="bc-amount-hero over"><span class="num">220</span><span class="lbl">EGP over</span></div>
+                <div class="bc-bar-wrap"><div class="bc-bar over" style="width:100%"></div></div>
+              </div>
+              <div class="group-hdr warn"><span>Close to limit · 1</span><div class="group-hdr-line"></div></div>
+              <div class="budget-card active">
+                <div class="bc-top">
+                  <div class="bc-emoji">🚗</div>
+                  <div class="bc-cat">Transport</div>
+                </div>
+                <div class="bc-amount-hero warn"><span class="num">80</span><span class="lbl">EGP left</span></div>
+                <div class="bc-bar-wrap"><div class="bc-bar warn" style="width:90%"></div></div>
+              </div>
+              <div class="group-hdr"><span>On track · 1</span><div class="group-hdr-line"></div></div>
+              <div class="budget-card calm">
+                <div class="bc-emoji">💊</div>
+                <div class="bc-cat">Health</div>
+                <div class="bc-left">420 EGP left</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-item plus-slot"><div class="a-nav-icon"></div><div class="a-nav-lbl"></div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item on"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1e: List state · all on track -->
+    <div class="screen-col">
+      <div class="screen-label">Budgets tab · all on track</div>
+      <div class="state-badge success">healthy month</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="app-bar-title">Budgets</div>
+          </div>
+          <div class="sc-area">
+            <div class="sc-pad">
+              <div class="summary-banner ok">
+                <div class="summary-dot"></div>
+                <div class="summary-txt">All 3 budgets on track this month.</div>
+              </div>
+              <div class="budget-card calm">
+                <div class="bc-emoji">🍕</div>
+                <div class="bc-cat">Food &amp; Dining</div>
+                <div class="bc-left">1,180 EGP left</div>
+              </div>
+              <div class="budget-card calm">
+                <div class="bc-emoji">🚗</div>
+                <div class="bc-cat">Transport</div>
+                <div class="bc-left">460 EGP left</div>
+              </div>
+              <div class="budget-card calm">
+                <div class="bc-emoji">🛍</div>
+                <div class="bc-cat">Shopping</div>
+                <div class="bc-left">680 EGP left</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-item plus-slot"><div class="a-nav-icon"></div><div class="a-nav-lbl"></div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item on"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1f: Offline cached -->
+    <div class="screen-col">
+      <div class="screen-label">Budgets tab · offline · cached data</div>
+      <div class="state-badge offline">offline read-only</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>✕ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="app-bar-title">Budgets</div>
+          </div>
+          <div class="offline-banner">
+            <div class="offline-banner-ico">⚡</div>
+            <div class="offline-banner-txt">Offline. Showing your last update.</div>
+          </div>
+          <div class="sc-area">
+            <div class="sc-pad">
+              <div class="summary-banner alert">
+                <div class="summary-dot"></div>
+                <div class="summary-txt">2 budgets over, 1 close to the limit.</div>
+              </div>
+              <div class="group-hdr alert"><span>Over limit · 2</span><div class="group-hdr-line"></div></div>
+              <div class="budget-card active" style="opacity:0.85">
+                <div class="bc-top">
+                  <div class="bc-emoji">🍕</div>
+                  <div class="bc-cat">Food &amp; Dining</div>
+                </div>
+                <div class="bc-amount-hero over"><span class="num">340</span><span class="lbl">EGP over</span></div>
+                <div class="bc-bar-wrap"><div class="bc-bar over" style="width:100%"></div></div>
+              </div>
+              <div class="budget-card active" style="opacity:0.85">
+                <div class="bc-top">
+                  <div class="bc-emoji">🛍</div>
+                  <div class="bc-cat">Shopping</div>
+                </div>
+                <div class="bc-amount-hero over"><span class="num">220</span><span class="lbl">EGP over</span></div>
+                <div class="bc-bar-wrap"><div class="bc-bar over" style="width:100%"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-item plus-slot"><div class="a-nav-icon"></div><div class="a-nav-lbl"></div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item on"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Cards still tappable to open detail sheet — but edit and delete actions inside the sheet are disabled.</div>
+    </div>
+
+    <!-- 1g: Network error -->
+    <div class="screen-col">
+      <div class="screen-label">Budgets tab · no cache · network failure</div>
+      <div class="state-badge error">network error</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>✕ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="app-bar-title">Budgets</div>
+          </div>
+          <div class="empty-state">
+            <div class="empty-icon">📡</div>
+            <div class="empty-ttl">No connection</div>
+            <div class="empty-desc">Check your network and try again.</div>
+            <div class="btn btn-primary" style="max-width:180px;margin-top:10px">Try again</div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-item plus-slot"><div class="a-nav-icon"></div><div class="a-nav-lbl"></div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item on"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1h: Server error -->
+    <div class="screen-col">
+      <div class="screen-label">Budgets tab · no cache · server failure</div>
+      <div class="state-badge error">server error</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="app-bar-title">Budgets</div>
+          </div>
+          <div class="empty-state">
+            <div class="empty-icon">⚠</div>
+            <div class="empty-ttl">Our end is down</div>
+            <div class="empty-desc">Try again in a minute.</div>
+            <div class="btn btn-primary" style="max-width:180px;margin-top:10px">Try again</div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-item plus-slot"><div class="a-nav-icon"></div><div class="a-nav-lbl"></div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item on"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 2 — CREATE BUDGET · FULL PATH
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 2 — Create budget · full path</div>
+    <div class="flow-section-line"></div>
+  </div>
+  <div class="flow-section-intro">Two ways into this flow: <strong>centre plus → "Add budget"</strong> from anywhere in the app, or <strong>"Create budget" CTA on the Budgets tab empty state</strong>. Both land on step 1 (pick a category). Step 2 is set the limit. Step 3 is success — the user lands back on the Budgets tab with the new card visible.</div>
+
+  <div class="entry-anchor">
+    <span>↳</span>
+    <span><strong>Entry A:</strong> centre plus button (anywhere in the app) → action sheet → tap "Add budget"</span>
+  </div>
+  <div class="entry-anchor">
+    <span>↳</span>
+    <span><strong>Entry B:</strong> Budgets tab empty state → tap "Create budget" CTA</span>
+  </div>
+
+  <div class="phone-row">
+
+    <!-- 2a: Entry A — centre plus tapped -->
+    <div class="screen-col">
+      <div class="screen-label">Entry A · centre plus tapped</div>
+      <div class="state-badge entry">entry point</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar" style="opacity:0.5">
+            <div class="app-bar-title">Budgets</div>
+          </div>
+          <div class="sc-area" style="opacity:0.35">
+            <div class="sc-pad">
+              <div class="summary-banner ok">
+                <div class="summary-dot"></div>
+                <div class="summary-txt">All 2 budgets on track this month.</div>
+              </div>
+              <div class="budget-card calm">
+                <div class="bc-emoji">🍕</div>
+                <div class="bc-cat">Food &amp; Dining</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-item plus-slot"><div class="a-nav-icon"></div><div class="a-nav-lbl"></div></div>
+          <div class="a-nav-plus tapped">+</div>
+          <div class="a-nav-item on"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Centre plus is reachable from any tab — Home, Transactions, Budgets, Profile. Pressed-state ring shown for clarity.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">tap [+]</div>
+    </div>
+
+    <!-- 2b: Action sheet open -->
+    <div class="screen-col">
+      <div class="screen-label">Action sheet · "Add budget" highlighted</div>
+      <div class="state-badge interaction">action sheet</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar" style="opacity:0.4">
+            <div class="app-bar-title">Budgets</div>
+          </div>
+          <div class="sc-area" style="opacity:0.3">
+            <div class="sc-pad">
+              <div class="summary-banner ok">
+                <div class="summary-dot"></div>
+                <div class="summary-txt">All 2 budgets on track this month.</div>
+              </div>
+            </div>
+          </div>
+          <div class="overlay">
+            <div class="action-sheet">
+              <div class="as-handle"></div>
+              <div class="as-row">
+                <div class="as-icon">↕</div>
+                <div class="as-info">
+                  <div class="as-name">Add transaction</div>
+                </div>
+              </div>
+              <div class="as-row tap-ring">
+                <div class="as-icon">🎯</div>
+                <div class="as-info">
+                  <div class="as-name">Add budget</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note decision">"Add transaction" and "Add budget" are equal peers — no implied priority. Sheet dismisses on tap of either or on backdrop tap.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">tap Add budget</div>
+    </div>
+
+    <!-- 2c: Entry B — empty state CTA -->
+    <div class="screen-col">
+      <div class="screen-label">Entry B · empty state CTA tapped</div>
+      <div class="state-badge entry">entry point</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="app-bar-title">Budgets</div>
+          </div>
+          <div class="empty-state">
+            <div class="empty-icon">🎯</div>
+            <div class="empty-ttl">Decide where your money goes</div>
+            <div class="empty-desc">Start with one category. You can add more anytime.</div>
+            <div class="btn btn-accent tap-ring" style="max-width:180px;margin-top:10px">Create budget</div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-item plus-slot"><div class="a-nav-icon"></div><div class="a-nav-lbl"></div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item on"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Both entry A and entry B converge on the same next screen — the category picker.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">both paths converge</div>
+    </div>
+
+    <!-- 2d: Category picker -->
+    <div class="screen-col">
+      <div class="screen-label">Step 1 · pick a category</div>
+      <div class="state-badge happy">step 1 of 2</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="back-btn">‹</div>
+            <div class="app-bar-title">Pick a category</div>
+          </div>
+          <div class="sc-area">
+            <div class="sc-pad-sm">
+              <div class="cat-row">
+                <div class="cat-icon">🍕</div>
+                <div class="cat-info">
+                  <div class="cat-name">Food &amp; Dining</div>
+                  <div class="cat-sub">2,000 EGP / month avg</div>
+                </div>
+                <div class="cat-chev">›</div>
+              </div>
+              <div class="cat-row">
+                <div class="cat-icon">🚗</div>
+                <div class="cat-info">
+                  <div class="cat-name">Transport</div>
+                  <div class="cat-sub">800 EGP / month avg</div>
+                </div>
+                <div class="cat-chev">›</div>
+              </div>
+              <div class="cat-row">
+                <div class="cat-icon">🛍</div>
+                <div class="cat-info">
+                  <div class="cat-name">Shopping</div>
+                  <div class="cat-sub">1,200 EGP / month avg</div>
+                </div>
+                <div class="cat-chev">›</div>
+              </div>
+              <div class="cat-row">
+                <div class="cat-icon">💊</div>
+                <div class="cat-info">
+                  <div class="cat-name">Health</div>
+                  <div class="cat-sub">No spending yet</div>
+                </div>
+                <div class="cat-chev">›</div>
+              </div>
+              <div class="cat-row">
+                <div class="cat-icon">📱</div>
+                <div class="cat-info">
+                  <div class="cat-name">Bills &amp; Utilities</div>
+                  <div class="cat-sub">450 EGP / month avg</div>
+                </div>
+                <div class="cat-chev">›</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note decision">Only un-budgeted categories appear. Sub-line shows monthly average where available; falls back to "No spending yet" with no data.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">tap category</div>
+    </div>
+
+    <!-- 2e: Monthly limit -->
+    <div class="screen-col">
+      <div class="screen-label">Step 2 · set monthly limit</div>
+      <div class="state-badge happy">step 2 of 2</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="back-btn">‹</div>
+            <div class="app-bar-title">New budget</div>
+          </div>
+          <div class="sc-area">
+            <div class="sc-pad">
+              <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:white;border:1px solid var(--b1);border-radius:var(--r-sm)">
+                <div class="cat-icon">🍕</div>
+                <div>
+                  <div class="cat-name">Food &amp; Dining</div>
+                  <div class="cat-sub">You average 2,000 EGP a month</div>
+                </div>
+              </div>
+              <div class="form-grp" style="margin-top:6px">
+                <div class="form-label">MONTHLY LIMIT</div>
+                <div class="input focus">
+                  <span class="input-ph">e.g. 2,000</span>
+                  <span class="input-suffix">EGP</span>
+                </div>
+                <div class="input-hint">We'll alert you as you get close.</div>
+              </div>
+              <div class="spacer"></div>
+              <div class="btn btn-disabled btn-lg">Create budget</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note decision">CTA disabled until amount &gt; 0. Average line above the field is informational, not pre-filled into the input.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">enter amount<br>tap Create</div>
+    </div>
+
+    <!-- 2f: Success — back on Budgets tab -->
+    <div class="screen-col">
+      <div class="screen-label">Step 3 · back on Budgets tab · new card visible</div>
+      <div class="state-badge success">budget created</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="app-bar-title">Budgets</div>
+          </div>
+          <div class="sc-area">
+            <div class="sc-pad">
+              <div class="summary-banner ok">
+                <div class="summary-dot"></div>
+                <div class="summary-txt">All 1 budget on track this month.</div>
+              </div>
+              <div class="budget-card calm fresh">
+                <div class="bc-emoji">🍕</div>
+                <div class="bc-cat">Food &amp; Dining</div>
+                <div class="bc-left">2,000 EGP left</div>
+              </div>
+            </div>
+          </div>
+          <div class="toast">
+            <div class="toast-ico">✓</div>
+            <div>Budget created</div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-item plus-slot"><div class="a-nav-icon"></div><div class="a-nav-lbl"></div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item on"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">No success screen. User lands back on the Budgets tab with the new card highlighted briefly (green border). Toast confirms the action; spent shows 0 until next sync.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 3 — CREATE BUDGET · QUICK-CREATE
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 3 — Create budget · Quick-create from recommendation</div>
+    <div class="flow-section-line"></div>
+  </div>
+  <div class="flow-section-intro">SMS users with averages tap "Set budget" on a recommendation card. Category is pre-selected, the limit input is pre-filled with the average. The user can save as-is or edit. On save, the recommendation card converts to a budget card in place.</div>
+
+  <div class="entry-anchor">
+    <span>↳</span>
+    <span><strong>Entry C:</strong> recommendation card → tap "Set budget" CTA → skip step 1, land directly on monthly limit screen with category locked</span>
+  </div>
+
+  <div class="phone-row">
+
+    <!-- 3a: Recommendation card tapped -->
+    <div class="screen-col">
+      <div class="screen-label">Entry C · "Set budget" tapped on Food &amp; Dining</div>
+      <div class="state-badge entry">entry point</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="app-bar-title">Budgets</div>
+          </div>
+          <div class="sc-area">
+            <div class="sc-pad">
+              <div class="rec-section-hdr">
+                <div class="rec-title">Based on your spending</div>
+                <div class="rec-dismiss">Hide suggestions</div>
+              </div>
+              <div class="rec-card">
+                <div class="rec-top">
+                  <div class="rec-icon">🍕</div>
+                  <div class="rec-cat">Food &amp; Dining</div>
+                  <div class="rec-amt">2,000 EGP</div>
+                </div>
+                <div class="rec-line">You average 2,000 EGP a month on Food &amp; Dining.</div>
+                <div class="rec-cta tap-ring">Set budget</div>
+              </div>
+              <div class="rec-card">
+                <div class="rec-top">
+                  <div class="rec-icon">🚗</div>
+                  <div class="rec-cat">Transport</div>
+                  <div class="rec-amt">800 EGP</div>
+                </div>
+                <div class="rec-line">You average 800 EGP a month on Transport.</div>
+                <div class="rec-cta">Set budget</div>
+              </div>
+              <div class="rec-card">
+                <div class="rec-top">
+                  <div class="rec-icon">🛍</div>
+                  <div class="rec-cat">Shopping</div>
+                  <div class="rec-amt">1,200 EGP</div>
+                </div>
+                <div class="rec-line">You average 1,200 EGP a month on Shopping.</div>
+                <div class="rec-cta">Set budget</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-item plus-slot"><div class="a-nav-icon"></div><div class="a-nav-lbl"></div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item on"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">tap Set budget</div>
+    </div>
+
+    <!-- 3b: Quick-create limit screen with prefilled value -->
+    <div class="screen-col">
+      <div class="screen-label">Quick-create · category locked · limit pre-filled</div>
+      <div class="state-badge happy">single step</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="back-btn">‹</div>
+            <div class="app-bar-title">New budget</div>
+          </div>
+          <div class="sc-area">
+            <div class="sc-pad">
+              <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:white;border:1px solid var(--b1);border-radius:var(--r-sm)">
+                <div class="cat-icon">🍕</div>
+                <div>
+                  <div class="cat-name">Food &amp; Dining</div>
+                  <div class="cat-sub">You average 2,000 EGP a month</div>
+                </div>
+              </div>
+              <div class="form-grp" style="margin-top:6px">
+                <div class="form-label">MONTHLY LIMIT</div>
+                <div class="input focus">
+                  <span style="font-weight:700;color:var(--t1)">2,000</span>
+                  <span class="input-suffix">EGP</span>
+                </div>
+                <div class="input-hint">Edit this if you'd rather set a different limit.</div>
+              </div>
+              <div class="spacer"></div>
+              <div class="btn btn-accent btn-lg">Create budget</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note decision">Quick-create differs from the full path in two ways: category is locked (no back to picker), and the limit is pre-filled with the recommended average. Hint copy reflects this.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">tap Create</div>
+    </div>
+
+    <!-- 3c: Recommendation converts to budget card in place -->
+    <div class="screen-col">
+      <div class="screen-label">Recommendation card converts to budget card in place</div>
+      <div class="state-badge success">conversion</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="app-bar-title">Budgets</div>
+          </div>
+          <div class="sc-area">
+            <div class="sc-pad">
+              <div class="summary-banner ok">
+                <div class="summary-dot"></div>
+                <div class="summary-txt">All 1 budget on track this month.</div>
+              </div>
+              <div class="rec-section-hdr" style="margin-top:4px">
+                <div class="rec-title">Based on your spending</div>
+                <div class="rec-dismiss">Hide suggestions</div>
+              </div>
+              <div class="budget-card calm fresh">
+                <div class="bc-emoji">🍕</div>
+                <div class="bc-cat">Food &amp; Dining</div>
+                <div class="bc-left">2,000 EGP left</div>
+              </div>
+              <div class="rec-card">
+                <div class="rec-top">
+                  <div class="rec-icon">🚗</div>
+                  <div class="rec-cat">Transport</div>
+                  <div class="rec-amt">800 EGP</div>
+                </div>
+                <div class="rec-line">You average 800 EGP a month on Transport.</div>
+                <div class="rec-cta">Set budget</div>
+              </div>
+              <div class="rec-card">
+                <div class="rec-top">
+                  <div class="rec-icon">🛍</div>
+                  <div class="rec-cat">Shopping</div>
+                  <div class="rec-amt">1,200 EGP</div>
+                </div>
+                <div class="rec-line">You average 1,200 EGP a month on Shopping.</div>
+                <div class="rec-cta">Set budget</div>
+              </div>
+            </div>
+          </div>
+          <div class="toast">
+            <div class="toast-ico">✓</div>
+            <div>Budget created</div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-item plus-slot"><div class="a-nav-icon"></div><div class="a-nav-lbl"></div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item on"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note new">The recommendation card for Food &amp; Dining is replaced in place by a budget card. Other recommendations stay until they're acted on or the section is dismissed. After 3 budgets the section disappears entirely.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 4 — DETAIL, EDIT LIMIT, EDIT CATEGORY, DELETE
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 4 — Detail, edit limit, edit category, delete</div>
+    <div class="flow-section-line"></div>
+  </div>
+  <div class="flow-section-intro">User taps any budget card on the Budgets tab to open the detail sheet. From there: edit the limit inline, change the category, or delete.</div>
+
+  <div class="phone-row">
+
+    <!-- 4a: Detail sheet -->
+    <div class="screen-col">
+      <div class="screen-label">Budget card tapped · detail sheet opens</div>
+      <div class="state-badge interaction">bottom sheet</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar" style="opacity:0.5">
+            <div class="app-bar-title">Budgets</div>
+          </div>
+          <div class="sc-area" style="opacity:0.4">
+            <div class="sc-pad">
+              <div class="summary-banner alert">
+                <div class="summary-dot"></div>
+                <div class="summary-txt">2 budgets over, 1 close to the limit.</div>
+              </div>
+              <div class="budget-card active">
+                <div class="bc-top">
+                  <div class="bc-emoji">🍕</div>
+                  <div class="bc-cat">Food &amp; Dining</div>
+                </div>
+                <div class="bc-amount-hero over"><span class="num">340</span><span class="lbl">EGP over</span></div>
+                <div class="bc-bar-wrap"><div class="bc-bar over" style="width:100%"></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="overlay">
+            <div class="bottom-sheet">
+              <div class="bs-handle"></div>
+              <div class="bs-cat-row">
+                <div class="bs-cat-icon">🍕</div>
+                <div class="bs-cat-name">Food &amp; Dining</div>
+              </div>
+              <div class="form-grp">
+                <div class="form-label">MONTHLY LIMIT</div>
+                <div class="input">
+                  <span style="font-weight:700;color:var(--t1)">2,000</span>
+                  <span class="input-suffix">EGP</span>
+                </div>
+              </div>
+              <div class="bs-stats-grid">
+                <div class="bs-stat">
+                  <div class="bs-stat-lbl">Spent</div>
+                  <div class="bs-stat-val over">2,340</div>
+                </div>
+                <div class="bs-stat">
+                  <div class="bs-stat-lbl">Remaining</div>
+                  <div class="bs-stat-val over">−340</div>
+                </div>
+                <div class="bs-stat">
+                  <div class="bs-stat-lbl">% Used</div>
+                  <div class="bs-stat-val over">117%</div>
+                </div>
+              </div>
+              <div class="bs-action-row">
+                <div class="bs-action-lbl">Change category</div>
+                <div class="bs-action-chev">›</div>
+              </div>
+              <div class="bs-action-row danger">
+                <div class="bs-action-lbl">Delete budget</div>
+                <div class="bs-action-chev">›</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note decision">Limit field is editable in place. Stats grid is read-only. "View transactions in [Category]" CTA hidden until Transactions tab ships.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">tap limit · edit · save</div>
+    </div>
+
+    <!-- 4b: Edit limit — input focused -->
+    <div class="screen-col">
+      <div class="screen-label">Edit limit · input focused with new value</div>
+      <div class="state-badge interaction">input focused</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar" style="opacity:0.5">
+            <div class="app-bar-title">Budgets</div>
+          </div>
+          <div class="sc-area" style="opacity:0.4">
+            <div class="sc-pad">
+              <div class="budget-card calm">
+                <div class="bc-emoji">🍕</div>
+                <div class="bc-cat">Food &amp; Dining</div>
+              </div>
+            </div>
+          </div>
+          <div class="overlay">
+            <div class="bottom-sheet">
+              <div class="bs-handle"></div>
+              <div class="bs-cat-row">
+                <div class="bs-cat-icon">🍕</div>
+                <div class="bs-cat-name">Food &amp; Dining</div>
+              </div>
+              <div class="form-grp">
+                <div class="form-label">MONTHLY LIMIT</div>
+                <div class="input focus">
+                  <span style="font-weight:700;color:var(--t1)">2,500</span>
+                  <span class="input-suffix">EGP</span>
+                </div>
+              </div>
+              <div class="btn btn-primary">Save changes</div>
+              <div class="btn btn-ghost">Cancel</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note decision">Stats grid hides while editing — replaced by Save / Cancel. Stats reappear after save with the new limit.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">back · tap Change category</div>
+    </div>
+
+    <!-- 4c: Edit category picker -->
+    <div class="screen-col">
+      <div class="screen-label">Pick a new category</div>
+      <div class="state-badge happy">edit category</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="back-btn">‹</div>
+            <div class="app-bar-title">Pick new category</div>
+          </div>
+          <div class="sc-area">
+            <div class="sc-pad-sm">
+              <div class="inline-note">Past spending in this category won't move over.</div>
+              <div class="cat-row">
+                <div class="cat-icon">🚗</div>
+                <div class="cat-info">
+                  <div class="cat-name">Transport</div>
+                  <div class="cat-sub">800 EGP / month avg</div>
+                </div>
+                <div class="cat-chev">›</div>
+              </div>
+              <div class="cat-row">
+                <div class="cat-icon">🛍</div>
+                <div class="cat-info">
+                  <div class="cat-name">Shopping</div>
+                  <div class="cat-sub">1,200 EGP / month avg</div>
+                </div>
+                <div class="cat-chev">›</div>
+              </div>
+              <div class="cat-row">
+                <div class="cat-icon">💊</div>
+                <div class="cat-info">
+                  <div class="cat-name">Health</div>
+                  <div class="cat-sub">No spending yet</div>
+                </div>
+                <div class="cat-chev">›</div>
+              </div>
+              <div class="cat-row">
+                <div class="cat-icon">📱</div>
+                <div class="cat-info">
+                  <div class="cat-name">Bills &amp; Utilities</div>
+                  <div class="cat-sub">450 EGP / month avg</div>
+                </div>
+                <div class="cat-chev">›</div>
+              </div>
+              <div style="margin-top:10px">
+                <div class="btn btn-primary">Confirm change</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note new">Inline note added per push-back on the brief. Change is silent and irreversible (historical spend doesn't transfer), so the user should know before tapping. Not a dialog — one line above the picker.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">back · tap Delete</div>
+    </div>
+
+    <!-- 4d: Delete confirmation -->
+    <div class="screen-col">
+      <div class="screen-label">Delete confirmation · native dialog</div>
+      <div class="state-badge os">OS-rendered</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar" style="opacity:0.4">
+            <div class="app-bar-title">Budgets</div>
+          </div>
+          <div class="sc-area" style="opacity:0.3">
+            <div class="sc-pad">
+              <div class="budget-card calm">
+                <div class="bc-emoji">🍕</div>
+                <div class="bc-cat">Food &amp; Dining</div>
+              </div>
+            </div>
+          </div>
+          <div class="dialog-overlay">
+            <div class="dialog-box">
+              <div class="dialog-title">Delete Food &amp; Dining budget?</div>
+              <div class="dialog-body">The budget is removed. You can create a new one anytime.</div>
+              <div class="dialog-acts">
+                <div class="dialog-btn cancel">Cancel</div>
+                <div class="dialog-btn delete">Delete</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note new">Native Android dialog — not designed by MoneyMore. Only the title and body strings are MoneyMore-authored.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 5 — CENTRE PLUS DISABLED STATES
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 5 — Centre plus disabled states</div>
+    <div class="flow-section-line"></div>
+  </div>
+  <div class="flow-section-intro">When the user has reached the 10-budget cap or budgeted every available category, the action sheet still opens but the "Add budget" row is disabled with an explanatory line.</div>
+
+  <div class="phone-row">
+
+    <!-- 5a: 10-budget cap -->
+    <div class="screen-col">
+      <div class="screen-label">Action sheet · 10-budget cap reached</div>
+      <div class="state-badge interaction">disabled state</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar" style="opacity:0.4">
+            <div class="app-bar-title">Budgets</div>
+          </div>
+          <div class="sc-area" style="opacity:0.3">
+            <div class="sc-pad">
+              <div class="summary-banner ok">
+                <div class="summary-dot"></div>
+                <div class="summary-txt">All 10 budgets on track this month.</div>
+              </div>
+            </div>
+          </div>
+          <div class="overlay">
+            <div class="action-sheet">
+              <div class="as-handle"></div>
+              <div class="as-row">
+                <div class="as-icon">↕</div>
+                <div class="as-info">
+                  <div class="as-name">Add transaction</div>
+                </div>
+              </div>
+              <div class="as-row disabled">
+                <div class="as-icon">🎯</div>
+                <div class="as-info">
+                  <div class="as-name">Add budget</div>
+                  <div class="as-sub">10 budgets max. Delete one to add another.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note decision">Disabled row stays visually present rather than being hidden — explains the cap so the user understands why they can't proceed.</div>
+    </div>
+
+    <!-- 5b: All categories budgeted -->
+    <div class="screen-col">
+      <div class="screen-label">Action sheet · all categories budgeted</div>
+      <div class="state-badge interaction">disabled state</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar" style="opacity:0.4">
+            <div class="app-bar-title">Budgets</div>
+          </div>
+          <div class="sc-area" style="opacity:0.3">
+            <div class="sc-pad">
+              <div class="summary-banner ok">
+                <div class="summary-dot"></div>
+                <div class="summary-txt">All 7 budgets on track this month.</div>
+              </div>
+            </div>
+          </div>
+          <div class="overlay">
+            <div class="action-sheet">
+              <div class="as-handle"></div>
+              <div class="as-row">
+                <div class="as-icon">↕</div>
+                <div class="as-info">
+                  <div class="as-name">Add transaction</div>
+                </div>
+              </div>
+              <div class="as-row disabled">
+                <div class="as-icon">🎯</div>
+                <div class="as-info">
+                  <div class="as-name">Add budget</div>
+                  <div class="as-sub">Every category has a budget. Edit existing ones from the Budgets tab.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5c: Category picker fallback -->
+    <div class="screen-col">
+      <div class="screen-label">Category picker · empty fallback</div>
+      <div class="state-badge empty">picker empty</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="back-btn">‹</div>
+            <div class="app-bar-title">Pick a category</div>
+          </div>
+          <div class="empty-state">
+            <div class="empty-icon">✓</div>
+            <div class="empty-ttl">All set</div>
+            <div class="empty-desc">Every category is budgeted. Edit existing budgets from the list.</div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note decision">The action sheet should normally block this path by disabling "Add budget" when no categories remain. This screen keeps the user oriented if they get here anyway.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     HANDOFF
+═══════════════════════════════════════════════════════════ -->
+<div class="handoff">
+  <div class="handoff-title">Handoff</div>
+  <div class="handoff-sub">Designer reference for this prototype. Copy for every screen and accessibility rules that change what you draw. Arabic copy throughout is in Egyptian dialect and pending native-speaker review.</div>
+
+  <!-- ── Copy table ── -->
+  <div class="handoff-sec">
+    <div class="handoff-h">Copy · English + Egyptian Arabic</div>
+    <div class="handoff-p">Every user-facing string in the flows above, grouped by screen. Variables in {curly braces} are populated at runtime. Numbers stay in Western Arabic numerals (1, 2, 3) per Egyptian fintech convention.</div>
+
+    <table class="copy-table" style="margin-top:12px">
+      <colgroup>
+        <col class="col-screen">
+        <col class="col-element">
+        <col class="col-en">
+        <col class="col-ar">
+      </colgroup>
+      <thead>
+        <tr>
+          <th>Screen</th>
+          <th>Element</th>
+          <th>English</th>
+          <th>Egyptian Arabic</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <!-- Tab — empty state -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="3">Tab · empty state</td>
+          <td class="element-name">Headline</td>
+          <td class="en">Decide where your money goes</td>
+          <td class="ar">حدد فلوسك رايحة فين</td>
+        </tr>
+        <tr>
+          <td class="element-name">Supporting line</td>
+          <td class="en">Start with one category. You can add more anytime.</td>
+          <td class="ar">ابدأ بتصنيف واحد. تقدر تضيف كمان في أي وقت.</td>
+        </tr>
+        <tr>
+          <td class="element-name">Primary CTA</td>
+          <td class="en">Create budget</td>
+          <td class="ar">اعمل ميزانية</td>
+        </tr>
+
+        <!-- Tab — recommendation state -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="4">Tab · recommendation state</td>
+          <td class="element-name">Section header</td>
+          <td class="en">Based on your spending</td>
+          <td class="ar">حسب مصاريفك</td>
+        </tr>
+        <tr>
+          <td class="element-name">Card supporting line</td>
+          <td class="en">You average {amount} EGP a month on {category}.</td>
+          <td class="ar">بتصرف في المتوسط {amount} جنيه في الشهر على {category}.</td>
+        </tr>
+        <tr>
+          <td class="element-name">Card CTA</td>
+          <td class="en">Set budget</td>
+          <td class="ar">حدد ميزانية</td>
+        </tr>
+        <tr>
+          <td class="element-name">Dismiss action</td>
+          <td class="en">Hide suggestions</td>
+          <td class="ar">إخفاء المقترحات</td>
+        </tr>
+
+        <!-- Tab — summary banners -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="4">Tab · summary banner</td>
+          <td class="element-name">Both states present</td>
+          <td class="en">{x} budgets over, {y} close to the limit.</td>
+          <td class="ar">{x} ميزانيات اتعدت، {y} قرب الحد.</td>
+        </tr>
+        <tr>
+          <td class="element-name">Exceeded only</td>
+          <td class="en">{x} budgets over the limit.</td>
+          <td class="ar">{x} ميزانيات عدّت الحد.</td>
+        </tr>
+        <tr>
+          <td class="element-name">Warning only</td>
+          <td class="en">{x} budgets close to the limit.</td>
+          <td class="ar">{x} ميزانيات قرّبت من الحد.</td>
+        </tr>
+        <tr>
+          <td class="element-name">All on track</td>
+          <td class="en">All {x} budgets on track this month.</td>
+          <td class="ar">كل الـ{x} ميزانيات تمام الشهر ده.</td>
+        </tr>
+
+        <!-- Tab — budget card status badges -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="3">Budget card · status badge</td>
+          <td class="element-name">On track</td>
+          <td class="en">On track</td>
+          <td class="ar">تمام</td>
+        </tr>
+        <tr>
+          <td class="element-name">Warning</td>
+          <td class="en">Close to limit</td>
+          <td class="ar">قرب الحد</td>
+        </tr>
+        <tr>
+          <td class="element-name">Exceeded</td>
+          <td class="en">Over limit</td>
+          <td class="ar">عدّى الحد</td>
+        </tr>
+
+        <!-- Action sheet -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="2">Centre plus action sheet</td>
+          <td class="element-name">Add transaction row</td>
+          <td class="en">Add transaction</td>
+          <td class="ar">إضافة معاملة</td>
+        </tr>
+        <tr>
+          <td class="element-name">Add budget row</td>
+          <td class="en">Add budget</td>
+          <td class="ar">إضافة ميزانية</td>
+        </tr>
+
+        <!-- Tab — offline -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="2">Tab · offline (cached)</td>
+          <td class="element-name">Banner</td>
+          <td class="en">Offline. Showing your last update.</td>
+          <td class="ar">مفيش نت. بنعرضلك آخر تحديث.</td>
+        </tr>
+        <tr>
+          <td class="element-name">Detail sheet disabled message</td>
+          <td class="en">You'll need a connection to edit or delete.</td>
+          <td class="ar">محتاج نت عشان تعدّل أو تحذف.</td>
+        </tr>
+
+        <!-- Tab — error -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="3">Tab · error state</td>
+          <td class="element-name">Network failure</td>
+          <td class="en">No connection. Check your network and try again.</td>
+          <td class="ar">مفيش اتصال. اتأكد من الشبكة وحاول تاني.</td>
+        </tr>
+        <tr>
+          <td class="element-name">Server failure</td>
+          <td class="en">Our end is down. Try again in a minute.</td>
+          <td class="ar">عندنا مشكلة. جرّب تاني بعد دقيقة.</td>
+        </tr>
+        <tr>
+          <td class="element-name">Retry CTA</td>
+          <td class="en">Try again</td>
+          <td class="ar">حاول تاني</td>
+        </tr>
+
+        <!-- Create — category picker -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="2">Create · category picker</td>
+          <td class="element-name">Header</td>
+          <td class="en">Pick a category</td>
+          <td class="ar">اختار تصنيف</td>
+        </tr>
+        <tr>
+          <td class="element-name">Empty state — all budgeted</td>
+          <td class="en">Every category is budgeted. Edit existing budgets from the list.</td>
+          <td class="ar">كل تصنيف ليه ميزانية. تقدر تعدّل الموجود من اللستة.</td>
+        </tr>
+
+        <!-- Create — monthly limit (full path) -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="4">Create · monthly limit (full path)</td>
+          <td class="element-name">Field label</td>
+          <td class="en">Monthly limit</td>
+          <td class="ar">الحد الشهري</td>
+        </tr>
+        <tr>
+          <td class="element-name">Field placeholder</td>
+          <td class="en">e.g. 2,000</td>
+          <td class="ar">مثلاً 2,000</td>
+        </tr>
+        <tr>
+          <td class="element-name">Field hint</td>
+          <td class="en">We'll alert you as you get close.</td>
+          <td class="ar">هننبهك لما تقرب من الحد.</td>
+        </tr>
+        <tr>
+          <td class="element-name">Save CTA</td>
+          <td class="en">Create budget</td>
+          <td class="ar">اعمل الميزانية</td>
+        </tr>
+
+        <!-- Create — Quick-create -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="2">Create · Quick-create (from recommendation)</td>
+          <td class="element-name">Field hint (pre-filled context)</td>
+          <td class="en">Edit this if you'd rather set a different limit.</td>
+          <td class="ar">عدّلها لو حابب تحط حد مختلف.</td>
+        </tr>
+        <tr>
+          <td class="element-name">Save CTA</td>
+          <td class="en">Create budget</td>
+          <td class="ar">اعمل الميزانية</td>
+        </tr>
+
+        <!-- Success toast -->
+        <tr class="group-start">
+          <td class="screen-name">Success after create</td>
+          <td class="element-name">Toast</td>
+          <td class="en">Budget created</td>
+          <td class="ar">تمام، الميزانية اتعملت</td>
+        </tr>
+
+        <!-- Detail sheet -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="8">Detail sheet</td>
+          <td class="element-name">Limit field label</td>
+          <td class="en">Monthly limit</td>
+          <td class="ar">الحد الشهري</td>
+        </tr>
+        <tr>
+          <td class="element-name">Spent label</td>
+          <td class="en">Spent</td>
+          <td class="ar">اتصرف</td>
+        </tr>
+        <tr>
+          <td class="element-name">Remaining label</td>
+          <td class="en">Remaining</td>
+          <td class="ar">الباقي</td>
+        </tr>
+        <tr>
+          <td class="element-name">% used label</td>
+          <td class="en">% used</td>
+          <td class="ar">% مستخدم</td>
+        </tr>
+        <tr>
+          <td class="element-name">Edit limit save</td>
+          <td class="en">Save changes</td>
+          <td class="ar">احفظ التغييرات</td>
+        </tr>
+        <tr>
+          <td class="element-name">Edit limit cancel</td>
+          <td class="en">Cancel</td>
+          <td class="ar">إلغاء</td>
+        </tr>
+        <tr>
+          <td class="element-name">Change category action</td>
+          <td class="en">Change category</td>
+          <td class="ar">غيّر التصنيف</td>
+        </tr>
+        <tr>
+          <td class="element-name">Delete action</td>
+          <td class="en">Delete budget</td>
+          <td class="ar">احذف الميزانية</td>
+        </tr>
+
+        <!-- Edit category picker -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="3">Edit category picker</td>
+          <td class="element-name">Header</td>
+          <td class="en">Pick new category</td>
+          <td class="ar">اختار تصنيف جديد</td>
+        </tr>
+        <tr>
+          <td class="element-name">Inline disclosure</td>
+          <td class="en">Past spending in this category won't move over.</td>
+          <td class="ar">المصاريف القديمة في التصنيف ده مش هتتنقل.</td>
+        </tr>
+        <tr>
+          <td class="element-name">Confirm CTA</td>
+          <td class="en">Confirm change</td>
+          <td class="ar">أكّد التغيير</td>
+        </tr>
+
+        <!-- Delete dialog -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="4">Delete dialog</td>
+          <td class="element-name">Title</td>
+          <td class="en">Delete {category} budget?</td>
+          <td class="ar">تحذف ميزانية {category}؟</td>
+        </tr>
+        <tr>
+          <td class="element-name">Body</td>
+          <td class="en">The budget is removed. You can create a new one anytime.</td>
+          <td class="ar">الميزانية بتتحذف. تقدر تعمل واحدة جديدة في أي وقت.</td>
+        </tr>
+        <tr>
+          <td class="element-name">Cancel label</td>
+          <td class="en">Cancel</td>
+          <td class="ar">إلغاء</td>
+        </tr>
+        <tr>
+          <td class="element-name">Confirm label</td>
+          <td class="en">Delete</td>
+          <td class="ar">احذف</td>
+        </tr>
+
+        <!-- Centre plus disabled states -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="2">Centre plus · disabled "Add budget"</td>
+          <td class="element-name">10-budget cap message</td>
+          <td class="en">10 budgets max. Delete one to add another.</td>
+          <td class="ar">الحد الأقصى 10 ميزانيات. احذف واحدة عشان تضيف.</td>
+        </tr>
+        <tr>
+          <td class="element-name">All categories budgeted message</td>
+          <td class="en">Every category has a budget. Edit existing ones from the Budgets tab.</td>
+          <td class="ar">كل تصنيف ليه ميزانية. تقدر تعدّل الموجود من تبويب الميزانيات.</td>
+        </tr>
+
+      </tbody>
+    </table>
+
+    <div class="callout warn">All Egyptian Arabic copy requires native-speaker review before publishing. RTL layout to be confirmed in Figma per screen.</div>
+    <div class="callout info">Two strings on this draft are not in the original brief and should go through Project 5 before final review: the field hint on the full-path limit screen ("We'll alert you as you get close.") and the field hint on Quick-create ("Edit this if you'd rather set a different limit."). The Quick-create CTA reuses the full-path "Create budget" string. The success toast ("Budget created") is also new.</div>
+  </div>
+
+  <!-- ── Accessibility ── -->
+  <div class="handoff-sec">
+    <div class="handoff-h">Accessibility — what changes what you draw</div>
+    <ul class="handoff-list">
+      <li><strong>Touch targets — 44×44px minimum</strong> on every interactive element. Includes the recommendation card "Set budget" CTA, dismiss link, status badges (if tappable), category picker rows, detail sheet action rows, and the centre plus button.</li>
+      <li><strong>Contrast — 4.5:1 minimum for text</strong>, 7:1 for financial figures (limits, spent amounts, remaining values). Verify across white card surface and the cream recommendation surface.</li>
+      <li><strong>Never colour-only for state.</strong> Budget status badges combine colour with text label. Progress bars combine colour with badge text. Disabled action sheet rows combine reduced opacity with the explanatory sub-line.</li>
+      <li><strong>Focus order — banner → recommendations → budget list → bottom nav.</strong> Logical top-to-bottom on the tab. On Arabic the visual flips to RTL but focus order stays top-to-bottom. Inside the detail sheet: limit field → stats → change category → delete.</li>
+      <li><strong>Status badge width</strong> must accommodate "Close to limit" (14 chars) at standard density. If badge truncation occurs, fall back to "Close" / "قرب" before going single-letter or icon-only.</li>
+    </ul>
+  </div>
+
+</div>
+
+</div>
+</body>
+</html>
