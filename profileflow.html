@@ -1,0 +1,2209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoneyMore — Profile v1 · Designer Prototype v3</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --navy:#15324F;
+  --navy-d:#0E2238;
+  --navy-l:#E8EEF5;
+  --green:#1F7A4D;
+  --green-d:#155A38;
+  --green-l:#E5F2EB;
+  --gold:#A67318;
+  --gold-l:#FAF3E1;
+  --red:#B0342A;
+  --red-d:#822620;
+  --red-l:#FBEAE8;
+  --whatsapp:#25D366;
+
+  --page-bg:#F5F4EF;
+  --page-grad:linear-gradient(180deg,#F5F4EF 0%,#EFEDE6 100%);
+
+  --screen-bg:#FCFBF8;
+  --screen-bg2:#F2F0EA;
+  --screen-bg3:#E5E2DA;
+  --surface:#FFFFFF;
+  --surface-2:#FAFAF7;
+
+  --t1:#14110D;
+  --t2:#3A3630;
+  --t3:#74706A;
+  --t4:#A8A49C;
+  --t-pos:#155A38;
+  --t-neg:#822620;
+
+  --b1:#EDEAE3;
+  --b2:#D8D4CB;
+  --b3:#B8B4AB;
+
+  --frame-bg:#1A1714;
+  --frame-edge:#0A0907;
+
+  --f-body:'Plus Jakarta Sans',sans-serif;
+  --f-mono:'DM Mono',monospace;
+
+  --s-xs:10px; --s-sm:12px; --s-base:14px; --s-md:16px;
+  --s-lg:18px; --s-xl:22px; --s-2xl:28px; --s-3xl:32px;
+
+  --r-xs:4px; --r-sm:8px; --r-md:12px; --r-lg:16px; --r-xl:24px; --r-pill:999px;
+
+  --shadow-phone:0 24px 48px -12px rgba(20,17,13,0.18), 0 8px 16px -8px rgba(20,17,13,0.12), 0 0 0 1px rgba(20,17,13,0.04);
+  --shadow-card:0 1px 3px rgba(20,17,13,0.04);
+
+  --ph-w:300px;
+  --ph-r:38px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{
+  background:var(--page-grad);
+  font-family:var(--f-body);
+  color:var(--t1);
+  font-size:var(--s-base);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+.page{max-width:1500px;margin:0 auto;padding:56px 40px 96px;}
+
+/* SVG icon defaults */
+.ico{width:18px;height:18px;stroke-width:1.75;stroke:currentColor;fill:none;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;display:block;}
+.ico-sm{width:14px;height:14px;}
+.ico-lg{width:22px;height:22px;}
+.ico-xl{width:28px;height:28px;}
+.ico-fill{fill:currentColor;stroke:none;}
+
+/* ── DOC HEADER ─────────────────────────────────────────── */
+.doc-header{padding-bottom:36px;margin-bottom:48px;border-bottom:1px solid var(--b1);}
+.doc-meta{display:flex;align-items:center;gap:8px;margin-bottom:22px;flex-wrap:wrap;}
+.doc-tag{font-family:var(--f-mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;padding:5px 10px;border-radius:var(--r-xs);font-weight:600;}
+.doc-tag.prototype{background:var(--green-l);color:var(--green-d);}
+.doc-tag.designer{background:#E8E5FE;color:#3A2E8C;}
+.doc-tag.android{background:#E5F0E8;color:#1F5E2A;}
+.doc-tag.wip{background:var(--gold-l);color:#6B4810;}
+.doc-tag.version{background:var(--navy);color:#fff;}
+.doc-date{font-family:var(--f-mono);font-size:11px;color:var(--t3);margin-left:auto;font-weight:500;}
+.doc-title{font-size:42px;font-weight:800;color:var(--t1);letter-spacing:-0.03em;line-height:1.05;margin-bottom:14px;}
+.doc-subtitle{font-size:16px;color:var(--t2);font-weight:400;margin-bottom:32px;line-height:1.55;max-width:780px;}
+
+.doc-info{display:grid;grid-template-columns:1.2fr 1fr;gap:0;border:1px solid var(--b1);border-radius:var(--r-md);overflow:hidden;background:var(--surface);}
+.doc-info-cell{padding:22px 26px;border-right:1px solid var(--b1);}
+.doc-info-cell:last-child{border-right:none;background:var(--surface-2);}
+.info-label{font-family:var(--f-mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--t3);margin-bottom:12px;font-weight:600;}
+.info-body{font-size:14px;color:var(--t1);line-height:1.6;}
+
+.flow-list{display:flex;flex-direction:column;gap:8px;}
+.flow-list-item{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--t1);line-height:1.45;}
+.flow-list-item .num{font-family:var(--f-mono);font-size:10px;font-weight:600;color:var(--t3);background:var(--surface-2);border:1px solid var(--b1);width:22px;height:22px;border-radius:var(--r-xs);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+
+/* ── FLOW SECTION ──────────────────────────────────────── */
+.flow-section{margin-bottom:80px;}
+.flow-section-header{display:flex;align-items:baseline;gap:14px;margin-bottom:36px;}
+.flow-section-num{font-family:var(--f-mono);font-size:12px;font-weight:600;color:var(--navy);background:var(--navy-l);padding:4px 10px;border-radius:var(--r-xs);letter-spacing:0.04em;}
+.flow-section-title{font-size:22px;font-weight:700;letter-spacing:-0.015em;color:var(--t1);}
+.flow-section-line{flex:1;height:1px;background:var(--b1);margin-left:8px;}
+
+.phone-row{display:flex;align-items:flex-start;gap:0;overflow-x:auto;padding-bottom:16px;}
+.phone-row::-webkit-scrollbar{height:6px;}
+.phone-row::-webkit-scrollbar-track{background:transparent;}
+.phone-row::-webkit-scrollbar-thumb{background:var(--b2);border-radius:3px;}
+
+.screen-col{display:flex;flex-direction:column;align-items:center;gap:14px;flex-shrink:0;}
+.screen-meta{display:flex;flex-direction:column;align-items:center;gap:6px;max-width:var(--ph-w);}
+.screen-label{font-size:12px;font-weight:600;color:var(--t1);text-align:center;line-height:1.35;}
+.screen-sub{font-size:11px;font-weight:500;color:var(--t3);text-align:center;line-height:1.35;}
+
+.state-badge{font-family:var(--f-mono);font-size:10px;font-weight:600;padding:3px 8px;border-radius:var(--r-xs);letter-spacing:0.04em;display:inline-flex;align-items:center;gap:4px;}
+.state-badge::before{content:'';width:5px;height:5px;border-radius:50%;background:currentColor;opacity:0.7;}
+.state-badge.happy{background:var(--green-l);color:var(--green-d);}
+.state-badge.empty{background:var(--gold-l);color:#6B4810;}
+.state-badge.error{background:var(--red-l);color:var(--red-d);}
+.state-badge.loading{background:#E5EEFA;color:#10387A;}
+.state-badge.success{background:var(--green-l);color:var(--green-d);}
+.state-badge.destructive{background:var(--red-l);color:var(--red-d);}
+.state-badge.interaction{background:#E8E5FE;color:#3A2E8C;}
+
+.flow-arrow{display:flex;flex-direction:column;align-items:center;flex-shrink:0;align-self:center;padding:0 12px;margin-top:120px;}
+.arrow-svg{color:var(--b3);}
+.arrow-label{font-family:var(--f-body);font-size:10px;font-weight:600;color:var(--t3);text-align:center;max-width:80px;line-height:1.35;margin-top:8px;}
+.arrow-label.deny{color:var(--red-d);}
+
+/* ── PHONE FRAME ───────────────────────────────────────── */
+.phone{
+  width:var(--ph-w);
+  border-radius:var(--ph-r);
+  background:var(--frame-bg);
+  box-shadow:var(--shadow-phone);
+  position:relative;
+  overflow:hidden;
+  border:1px solid var(--frame-edge);
+  flex-shrink:0;
+  display:flex;
+  flex-direction:column;
+  padding:6px;
+}
+.phone-inner{
+  border-radius:calc(var(--ph-r) - 6px);
+  overflow:hidden;
+  background:var(--screen-bg);
+  display:flex;
+  flex-direction:column;
+}
+
+.a-status{
+  height:28px;
+  background:var(--screen-bg);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 18px;
+  font-family:var(--f-body);
+  font-size:11px;
+  font-weight:600;
+  color:var(--t1);
+  flex-shrink:0;
+}
+.a-status-icons{display:flex;align-items:center;gap:5px;}
+.a-status-icons .ico{width:11px;height:11px;stroke-width:2;}
+
+.a-nav{
+  height:56px;
+  background:var(--surface);
+  border-top:1px solid var(--b1);
+  display:flex;
+  align-items:center;
+  flex-shrink:0;
+  padding:0 4px;
+}
+.a-nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:6px 0;color:var(--t3);}
+.a-nav-item.on{color:var(--green-d);}
+.a-nav-icon-wrap{width:48px;height:24px;border-radius:var(--r-pill);display:flex;align-items:center;justify-content:center;}
+.a-nav-item.on .a-nav-icon-wrap{background:var(--green-l);}
+.a-nav-lbl{font-size:10px;font-weight:500;}
+.a-nav-item.on .a-nav-lbl{font-weight:600;}
+
+.screen{background:var(--screen-bg);display:flex;flex-direction:column;position:relative;flex:1;}
+.screen.scroll{min-height:600px;}
+
+/* ── SCREEN PRIMITIVES ─────────────────────────────────── */
+.app-bar{
+  height:52px;
+  display:flex;
+  align-items:center;
+  padding:0 16px;
+  background:var(--screen-bg);
+  flex-shrink:0;
+  gap:12px;
+}
+.app-bar.bordered{border-bottom:1px solid var(--b1);}
+.app-bar-title{font-size:var(--s-md);font-weight:700;color:var(--t1);flex:1;letter-spacing:-0.005em;}
+.back-btn{width:36px;height:36px;border-radius:var(--r-pill);display:flex;align-items:center;justify-content:center;color:var(--t1);margin-left:-8px;}
+
+.sc-area{flex:1;display:flex;flex-direction:column;}
+.sc-pad{padding:16px;display:flex;flex-direction:column;gap:14px;}
+
+.t-display{font-size:var(--s-2xl);font-weight:800;color:var(--t1);letter-spacing:-0.025em;line-height:1.1;}
+.t-title{font-size:var(--s-xl);font-weight:700;color:var(--t1);letter-spacing:-0.015em;line-height:1.2;}
+.t-heading{font-size:var(--s-lg);font-weight:700;color:var(--t1);line-height:1.25;letter-spacing:-0.01em;}
+.t-body{font-size:var(--s-base);color:var(--t2);line-height:1.55;}
+.t-caption{font-size:var(--s-sm);color:var(--t3);line-height:1.5;}
+.t-xs{font-size:var(--s-xs);color:var(--t4);font-weight:500;}
+
+/* ════════════════════════════════════════════════════════
+   OPTION A — Hero with avatar beside name
+═══════════════════════════════════════════════════════════ */
+.opt-a-hero{
+  background:linear-gradient(165deg, #15324F 0%, #0E2238 100%);
+  padding:48px 24px 80px;
+  position:relative;
+  color:#fff;
+  overflow:hidden;
+}
+.opt-a-hero::before{
+  content:'';
+  position:absolute;
+  top:-60px;right:-60px;
+  width:240px;height:240px;
+  background:radial-gradient(circle,rgba(31,122,77,0.2) 0%,transparent 65%);
+  pointer-events:none;
+}
+.opt-a-hero::after{
+  content:'';
+  position:absolute;
+  bottom:-40px;left:-30px;
+  width:140px;height:140px;
+  background:radial-gradient(circle,rgba(255,255,255,0.06) 0%,transparent 70%);
+  pointer-events:none;
+}
+.opt-a-hero-bar{
+  position:relative;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:28px;
+}
+.opt-a-hero-label{
+  font-size:11px;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,0.55);
+  font-weight:600;
+}
+.opt-a-hero-icon{
+  width:32px;height:32px;
+  border-radius:50%;
+  background:rgba(255,255,255,0.1);
+  display:flex;align-items:center;justify-content:center;
+  color:rgba(255,255,255,0.7);
+}
+.opt-a-hero-content{position:relative;display:flex;align-items:center;gap:16px;}
+.opt-a-avatar{
+  width:64px;height:64px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#3D7BB5 0%,var(--green) 100%);
+  color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:26px;font-weight:700;
+  letter-spacing:-0.02em;
+  border:2px solid rgba(255,255,255,0.15);
+  flex-shrink:0;
+}
+.opt-a-name{font-size:19px;font-weight:700;color:#fff;letter-spacing:-0.01em;line-height:1.2;}
+.opt-a-id{font-size:12px;color:rgba(255,255,255,0.6);font-weight:500;margin-top:3px;}
+.opt-a-badge{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:3px 8px;
+  background:rgba(31,122,77,0.25);
+  border:1px solid rgba(31,122,77,0.4);
+  border-radius:999px;
+  font-size:10px;font-weight:600;
+  color:#A8E5C5;
+  margin-top:6px;
+}
+
+/* Pulled-up content */
+.under-hero{
+  margin-top:-44px;
+  padding:0 12px;
+  position:relative;
+  z-index:2;
+}
+
+/* Section labels */
+.sec-lbl{
+  font-size:11px;
+  font-weight:600;
+  color:var(--t3);
+  letter-spacing:0.02em;
+  padding:0 4px;
+  margin-top:18px;
+  margin-bottom:8px;
+}
+
+/* Card group */
+.row-card{
+  background:var(--surface);
+  border:1px solid var(--b1);
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 1px 3px rgba(20,17,13,0.04);
+}
+.row{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:14px 16px;
+  background:var(--surface);
+  position:relative;
+}
+.row + .row::before{
+  content:'';
+  position:absolute;
+  top:0;left:50px;right:0;
+  height:1px;
+  background:var(--b1);
+}
+.row-icon{
+  width:34px;height:34px;
+  border-radius:8px;
+  background:var(--screen-bg2);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--t2);
+  flex-shrink:0;
+}
+.row-icon.tinted-navy{background:var(--navy-l);color:var(--navy);}
+.row-icon.tinted-green{background:var(--green-l);color:var(--green-d);}
+.row-icon.tinted-red{background:var(--red-l);color:var(--red-d);}
+.row-body{flex:1;min-width:0;}
+.row-title{font-size:13px;font-weight:600;color:var(--t1);line-height:1.35;letter-spacing:-0.005em;}
+.row-sub{font-size:11px;color:var(--t3);margin-top:2px;font-weight:500;}
+.row-action{font-size:var(--s-xs);font-weight:700;color:var(--green-d);flex-shrink:0;letter-spacing:0.02em;text-transform:uppercase;}
+.row-chev{color:var(--t4);flex-shrink:0;}
+.row-val{font-size:11px;font-weight:600;color:var(--t2);background:var(--screen-bg2);padding:3px 8px;border-radius:var(--r-xs);flex-shrink:0;}
+.row.danger .row-title{color:var(--red-d);}
+.row.add{
+  background:var(--surface-2);
+  position:relative;
+}
+.row.add::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  border:1.5px dashed var(--b2);
+  border-radius:inherit;
+  pointer-events:none;
+}
+
+/* Forms */
+.form-grp{display:flex;flex-direction:column;gap:8px;}
+.form-label{font-size:11px;font-weight:600;color:var(--t2);letter-spacing:0.02em;text-transform:uppercase;}
+.input{
+  height:48px;
+  border:1.5px solid var(--b2);
+  border-radius:var(--r-sm);
+  background:var(--surface);
+  padding:0 14px;
+  font-size:var(--s-base);
+  color:var(--t1);
+  display:flex;
+  align-items:center;
+  font-weight:500;
+}
+.input.focus{border-color:var(--navy);box-shadow:0 0 0 4px rgba(21,50,79,0.08);}
+.input.err{border-color:var(--red);box-shadow:0 0 0 4px rgba(176,52,42,0.08);}
+.input.with-counter{justify-content:space-between;}
+.input-counter{font-family:var(--f-mono);font-size:11px;color:var(--t3);font-weight:500;}
+.input-err{font-size:var(--s-xs);color:var(--red-d);display:flex;align-items:center;gap:6px;font-weight:500;}
+.input-hint{font-size:var(--s-xs);color:var(--t3);line-height:1.5;font-weight:500;}
+.input.ph,.input.ph *{color:var(--t4);}
+
+/* Phone input */
+.phone-input{display:flex;gap:8px;}
+.phone-cc{
+  height:48px;
+  border:1.5px solid var(--b2);
+  border-radius:var(--r-sm);
+  background:var(--surface);
+  padding:0 12px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  font-size:var(--s-base);
+  font-weight:600;
+  color:var(--t1);
+  flex-shrink:0;
+}
+.phone-num{flex:1;}
+
+/* OTP */
+.otp-row{display:flex;gap:8px;justify-content:center;}
+.otp-box{
+  width:40px;height:48px;
+  border:1.5px solid var(--b2);
+  border-radius:var(--r-sm);
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;font-weight:700;
+  color:var(--t1);
+  background:var(--surface);
+  font-feature-settings:"tnum";
+}
+.otp-box.filled{border-color:var(--navy);}
+.otp-box.active{border-color:var(--navy);box-shadow:0 0 0 4px rgba(21,50,79,0.08);}
+.otp-box .caret{width:1.5px;height:20px;background:var(--navy);animation:blink 1s infinite;}
+@keyframes blink{50%{opacity:0;}}
+
+/* Buttons */
+.btn{
+  height:48px;
+  border-radius:var(--r-sm);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:var(--f-body);
+  font-size:var(--s-sm);
+  font-weight:700;
+  border:none;
+  width:100%;
+  cursor:default;
+  gap:8px;
+  letter-spacing:0;
+}
+.btn-primary{background:var(--navy);color:#fff;box-shadow:0 1px 2px rgba(21,50,79,0.2);}
+.btn-accent{background:var(--green);color:#fff;box-shadow:0 1px 2px rgba(31,122,77,0.2);}
+.btn-outline{background:transparent;border:1.5px solid var(--b2);color:var(--t1);}
+.btn-outline.dark{border-color:var(--navy);color:var(--navy);}
+.btn-ghost{background:transparent;color:var(--t2);}
+.btn-danger{background:var(--red);color:#fff;box-shadow:0 1px 2px rgba(176,52,42,0.2);}
+.btn-disabled{background:var(--screen-bg2);color:var(--t4);box-shadow:none;}
+.btn-whatsapp{background:var(--whatsapp);color:#fff;box-shadow:0 1px 2px rgba(37,211,102,0.25);}
+.btn-lg{height:52px;font-size:var(--s-base);}
+.btn-link{background:transparent;color:var(--navy);font-weight:600;font-size:var(--s-sm);height:auto;padding:6px 0;width:auto;}
+.btn-link.muted{color:var(--t3);}
+.btn-row{display:flex;gap:10px;}
+
+/* Radio list */
+.radio-list{display:flex;flex-direction:column;gap:8px;}
+.radio-row{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:16px;
+  background:var(--surface);
+  border:1.5px solid var(--b1);
+  border-radius:var(--r-sm);
+}
+.radio-row.selected{border-color:var(--navy);background:var(--navy-l);}
+.radio-circle{
+  width:20px;height:20px;
+  border-radius:50%;
+  border:1.5px solid var(--b3);
+  background:var(--surface);
+  flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+}
+.radio-row.selected .radio-circle{border-color:var(--navy);border-width:2px;}
+.radio-row.selected .radio-circle::after{content:'';width:10px;height:10px;border-radius:50%;background:var(--navy);}
+.radio-label{flex:1;font-size:var(--s-base);font-weight:600;color:var(--t1);letter-spacing:-0.005em;}
+
+/* Theme segmented */
+.seg{
+  display:flex;
+  background:var(--screen-bg2);
+  border-radius:var(--r-sm);
+  padding:4px;
+  gap:4px;
+}
+.seg-opt{
+  flex:1;height:42px;
+  display:flex;align-items:center;justify-content:center;
+  gap:8px;
+  font-size:var(--s-sm);
+  font-weight:600;
+  color:var(--t3);
+  border-radius:6px;
+}
+.seg-opt.on{background:var(--surface);color:var(--t1);box-shadow:0 1px 3px rgba(20,17,13,0.08), 0 0 0 0.5px var(--b2);}
+
+/* Banners */
+.err-banner{
+  padding:14px;
+  background:var(--red-l);
+  border-radius:var(--r-sm);
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  border-left:3px solid var(--red);
+}
+.err-ico-wrap{color:var(--red-d);flex-shrink:0;display:flex;align-items:center;justify-content:center;width:18px;height:18px;}
+.err-content{flex:1;}
+.err-txt{font-size:var(--s-xs);color:var(--red-d);line-height:1.5;font-weight:500;}
+.err-retry{font-size:var(--s-xs);font-weight:700;color:var(--red-d);text-decoration:underline;margin-top:4px;display:inline-block;}
+
+.info-banner{
+  padding:14px;
+  background:var(--navy-l);
+  border-radius:var(--r-sm);
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  border-left:3px solid var(--navy);
+}
+.info-ico-wrap{color:var(--navy);flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.info-txt{font-size:var(--s-xs);color:var(--navy-d);line-height:1.5;font-weight:500;}
+
+/* Success states */
+.success-state{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  padding:40px 24px 16px;
+  gap:14px;
+}
+.success-icon-lg{
+  width:72px;height:72px;
+  border-radius:50%;
+  background:var(--green-l);
+  color:var(--green-d);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+}
+.success-icon-lg::before{
+  content:'';
+  position:absolute;
+  inset:-8px;
+  border-radius:50%;
+  background:var(--green-l);
+  opacity:0.4;
+  z-index:-1;
+}
+.success-icon-lg.warn{background:var(--gold-l);color:#7A5A0E;}
+.success-icon-lg.warn::before{background:var(--gold-l);}
+.success-icon-lg.danger{background:var(--screen-bg2);color:var(--t3);}
+.success-icon-lg.danger::before{background:var(--screen-bg2);}
+
+/* Loading */
+.loading-state{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  padding:64px 24px;
+  gap:18px;
+}
+.spinner{width:42px;height:42px;position:relative;}
+.spinner::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  border:3px solid var(--screen-bg2);
+  border-top-color:var(--navy);
+  border-radius:50%;
+  animation:spin 0.8s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* Overlays */
+.dialog-overlay{
+  position:absolute;inset:0;
+  background:rgba(20,17,13,0.55);
+  display:flex;align-items:center;justify-content:center;
+  padding:24px;z-index:40;
+  backdrop-filter:blur(2px);
+}
+.dialog{
+  background:var(--surface);
+  border-radius:var(--r-lg);
+  padding:24px;
+  width:100%;
+  display:flex;flex-direction:column;
+  gap:16px;
+  box-shadow:0 24px 48px -12px rgba(0,0,0,0.3);
+}
+.dialog-icon{
+  width:48px;height:48px;
+  border-radius:var(--r-md);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:-4px;
+}
+.dialog-icon.warn{background:var(--gold-l);color:#7A5A0E;}
+.dialog-icon.danger{background:var(--red-l);color:var(--red-d);}
+.dialog-icon.info{background:var(--navy-l);color:var(--navy);}
+.dialog-title{font-size:var(--s-lg);font-weight:700;color:var(--t1);line-height:1.25;letter-spacing:-0.01em;}
+.dialog-body{font-size:var(--s-sm);color:var(--t2);line-height:1.55;}
+
+/* Toast */
+.toast{
+  position:absolute;
+  left:16px;right:16px;
+  bottom:74px;
+  background:var(--t1);
+  color:#fff;
+  padding:14px 16px;
+  border-radius:var(--r-sm);
+  font-size:var(--s-sm);
+  font-weight:500;
+  box-shadow:0 8px 20px rgba(0,0,0,0.2);
+  z-index:30;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+/* Bottom sheet */
+.sheet-overlay{
+  position:absolute;inset:0;
+  background:rgba(20,17,13,0.5);
+  display:flex;align-items:flex-end;
+  z-index:40;
+  backdrop-filter:blur(2px);
+}
+.sheet{
+  background:var(--surface);
+  border-radius:var(--r-xl) var(--r-xl) 0 0;
+  width:100%;
+  padding:14px 0 24px;
+  box-shadow:0 -8px 24px rgba(0,0,0,0.18);
+}
+.sheet-handle{
+  width:36px;height:4px;
+  background:var(--b2);
+  border-radius:2px;
+  margin:0 auto 14px;
+}
+.sheet-title{
+  font-size:var(--s-md);
+  font-weight:700;
+  color:var(--t1);
+  padding:0 20px 6px;
+  letter-spacing:-0.005em;
+}
+.sheet-list{display:flex;flex-direction:column;}
+.sheet-row{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:14px 20px;
+  background:var(--surface);
+}
+.sheet-row.selected{background:var(--navy-l);}
+.sheet-row-icon{
+  width:32px;height:32px;
+  border-radius:8px;
+  background:var(--screen-bg2);
+  color:var(--t2);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.sheet-row.selected .sheet-row-icon{background:var(--navy);color:#fff;}
+.sheet-row-body{flex:1;}
+.sheet-row-title{font-size:13px;font-weight:600;color:var(--t1);line-height:1.3;}
+.sheet-row-sub{font-size:11px;color:var(--t3);font-weight:500;margin-top:2px;}
+.sheet-check{color:var(--navy);}
+
+/* Help & support hero card on Contact us screen */
+.help-hero{
+  background:linear-gradient(135deg,var(--navy) 0%,#1F4870 100%);
+  border-radius:var(--r-md);
+  padding:18px;
+  color:#fff;
+  position:relative;
+  overflow:hidden;
+}
+.help-hero::after{
+  content:'';
+  position:absolute;
+  top:-30px;right:-30px;
+  width:120px;height:120px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,0.08) 0%,transparent 70%);
+}
+.help-hero-title{font-size:var(--s-md);font-weight:700;color:#fff;margin-bottom:4px;}
+.help-hero-body{font-size:var(--s-xs);color:rgba(255,255,255,0.75);line-height:1.5;}
+
+.textarea{
+  border:1.5px solid var(--b2);
+  border-radius:var(--r-sm);
+  background:var(--surface);
+  padding:12px 14px;
+  font-size:var(--s-base);
+  color:var(--t1);
+  min-height:104px;
+  display:flex;
+  flex-direction:column;
+  font-weight:500;
+}
+.textarea.ph{color:var(--t4);}
+
+/* Play store mock */
+.playstore-mock{
+  background:var(--surface);
+  border-radius:18px;
+  width:100%;
+  overflow:hidden;
+  box-shadow:0 24px 48px -12px rgba(0,0,0,0.3);
+}
+.ps-header{padding:20px 20px 14px;display:flex;align-items:center;gap:12px;}
+.ps-app-icon{
+  width:48px;height:48px;
+  border-radius:12px;
+  background:linear-gradient(135deg,var(--navy) 0%,var(--green) 100%);
+  color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;font-weight:800;
+  letter-spacing:-0.02em;
+}
+.ps-meta{flex:1;}
+.ps-app-name{font-size:var(--s-sm);font-weight:700;color:var(--t1);line-height:1.2;}
+.ps-source{font-size:11px;color:var(--t3);font-weight:500;margin-top:2px;}
+.ps-stars{padding:8px 20px 14px;display:flex;justify-content:center;gap:6px;}
+.ps-star{width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:#A67318;}
+.ps-star.empty{color:var(--b2);}
+.ps-hint{padding:0 20px 14px;text-align:center;font-size:11px;color:var(--t3);font-weight:500;}
+.ps-actions{padding:10px 20px 18px;display:flex;justify-content:flex-end;gap:8px;border-top:1px solid var(--b1);}
+.ps-btn{padding:10px 18px;font-size:var(--s-sm);font-weight:700;color:var(--navy);}
+
+/* Flow notes */
+.flow-note{
+  max-width:var(--ph-w);
+  padding:12px 14px;
+  border-radius:var(--r-sm);
+  font-family:var(--f-body);
+  font-size:11px;
+  font-weight:500;
+  line-height:1.55;
+  display:flex;
+  gap:8px;
+  align-items:flex-start;
+}
+.flow-note .note-ico{flex-shrink:0;margin-top:1px;}
+.flow-note.decision{background:var(--gold-l);color:#5A4810;border-left:3px solid var(--gold);}
+.flow-note.warn{background:var(--red-l);color:#691F1A;border-left:3px solid var(--red);}
+.flow-note.info{background:var(--navy-l);color:var(--navy-d);border-left:3px solid var(--navy);}
+
+/* Handoff */
+.handoff{margin-top:80px;padding:48px;background:var(--surface);border:1px solid var(--b1);border-radius:var(--r-lg);box-shadow:0 1px 2px rgba(20,17,13,0.04);}
+.handoff-title{font-size:32px;font-weight:800;color:var(--t1);margin-bottom:10px;letter-spacing:-0.025em;}
+.handoff-sub{font-size:15px;color:var(--t2);margin-bottom:36px;line-height:1.55;max-width:680px;}
+.handoff-sec{margin-top:36px;padding-top:32px;border-top:1px solid var(--b1);}
+.handoff-sec:first-of-type{border-top:none;padding-top:0;margin-top:0;}
+.handoff-h{font-size:20px;font-weight:700;color:var(--t1);margin-bottom:14px;letter-spacing:-0.015em;}
+.handoff-p{font-size:14px;color:var(--t2);line-height:1.6;margin-bottom:12px;max-width:680px;}
+.handoff-list{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.handoff-list li{font-size:14px;color:var(--t1);line-height:1.6;padding-left:20px;position:relative;}
+.handoff-list li::before{content:'';position:absolute;left:0;top:11px;width:6px;height:6px;border-radius:50%;background:var(--navy);}
+
+.copy-table{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed;}
+.copy-table col.col-screen{width:20%;}
+.copy-table col.col-element{width:22%;}
+.copy-table col.col-en{width:29%;}
+.copy-table col.col-ar{width:29%;}
+.copy-table th{text-align:left;padding:12px 14px;border-bottom:2px solid var(--b2);font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:0.06em;font-weight:700;background:var(--surface-2);}
+.copy-table td{padding:11px 14px;border-bottom:1px solid var(--b1);vertical-align:top;color:var(--t1);line-height:1.55;word-wrap:break-word;}
+.copy-table td.screen-name{font-weight:700;color:var(--navy);background:var(--surface-2);font-size:12px;}
+.copy-table td.element-name{color:var(--t2);font-weight:500;font-size:12px;}
+.copy-table td.en{font-size:12.5px;}
+.copy-table td.ar{font-size:12.5px;direction:rtl;text-align:right;}
+.copy-table tr.group-start td{border-top:2px solid var(--b2);}
+
+.callout{padding:14px 16px;border-radius:var(--r-sm);font-size:13px;line-height:1.55;margin-top:14px;display:flex;gap:10px;align-items:flex-start;}
+.callout.info{background:var(--navy-l);border-left:3px solid var(--navy);color:var(--navy-d);}
+</style>
+</head>
+<body>
+
+<!-- LUCIDE ICONS -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-user" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
+    <symbol id="i-message" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></symbol>
+    <symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></symbol>
+    <symbol id="i-chevron-right" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></symbol>
+    <symbol id="i-chevron-left" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></symbol>
+    <symbol id="i-chevron-down" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"/><line x1="5" x2="19" y1="12" y2="12"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
+    <symbol id="i-alert-triangle" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="16" y2="12"/><line x1="12" x2="12.01" y1="8" y2="8"/></symbol>
+    <symbol id="i-wifi-off" viewBox="0 0 24 24"><line x1="2" x2="22" y1="2" y2="22"/><path d="M8.5 16.5a5 5 0 0 1 7 0"/><path d="M2 8.82a15 15 0 0 1 4.17-2.65"/><path d="M10.66 5c4.01-.36 8.14.9 11.34 3.76"/><path d="M16.85 11.25a10 10 0 0 1 2.22 1.68"/><path d="M5 13a10 10 0 0 1 5.24-2.76"/><line x1="12" x2="12.01" y1="20" y2="20"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></symbol>
+    <symbol id="i-arrow-up-down" viewBox="0 0 24 24"><path d="m21 16-4 4-4-4M17 20V4M3 8l4-4 4 4M7 4v16"/></symbol>
+    <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></symbol>
+    <symbol id="i-signal" viewBox="0 0 24 24"><path d="M2 20h.01M7 20v-4M12 20v-8M17 20v-12M22 4v16"/></symbol>
+    <symbol id="i-battery" viewBox="0 0 24 24"><rect width="16" height="10" x="2" y="7" rx="2"/><line x1="22" x2="22" y1="11" y2="13"/></symbol>
+    <symbol id="i-key" viewBox="0 0 24 24"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></symbol>
+    <symbol id="i-credit-card" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></symbol>
+    <symbol id="i-piggy" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
+    <symbol id="i-inbox" viewBox="0 0 24 24"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></symbol>
+    <symbol id="i-bug" viewBox="0 0 24 24"><path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/></symbol>
+    <symbol id="i-more" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></symbol>
+  </defs>
+</svg>
+
+<div class="page">
+
+<!-- ── DOC HEADER ─────────────────────────────────────────── -->
+<div class="doc-header">
+  <div class="doc-meta">
+    <span class="doc-tag prototype">Prototype</span>
+    <span class="doc-tag designer">Designer brief</span>
+    <span class="doc-tag android">Android</span>
+    <span class="doc-tag wip">Draft v3</span>
+    <span class="doc-tag version">DB-Profile</span>
+    <span class="doc-date">30 Apr 2026 · iOS parked</span>
+  </div>
+
+  <div class="doc-title">Profile v1</div>
+  <div class="doc-subtitle">Activated users manage their account — name, contact identity, language, theme, sign-out, and deletion — without contacting support.</div>
+
+  <div class="doc-info">
+    <div class="doc-info-cell">
+      <div class="info-label">The problem</div>
+      <div class="info-body">
+        Activated users have no self-serve way to update their account. Name edits, adding a missing sign-in method, language and theme switching, signing out, and deletion all currently route through support. Profile v1 brings these into the app as a single screen with branching flows. The hardest moment is account deletion — it must feel deliberate and irreversible without being theatrical.
+      </div>
+    </div>
+    <div class="doc-info-cell">
+      <div class="info-label">Flows in this document</div>
+      <div class="flow-list">
+        <div class="flow-list-item"><span class="num">1</span><span>Profile root + edit name</span></div>
+        <div class="flow-list-item"><span class="num">2</span><span>Add missing identity (phone or email)</span></div>
+        <div class="flow-list-item"><span class="num">3</span><span>Help and support</span></div>
+        <div class="flow-list-item"><span class="num">4</span><span>Language and theme</span></div>
+        <div class="flow-list-item"><span class="num">5</span><span>Sign out</span></div>
+        <div class="flow-list-item"><span class="num">6</span><span>Delete account</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── FLOW 1 — Profile root + edit name ─────────────────── -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <span class="flow-section-num">FLOW 01</span>
+    <div class="flow-section-title">Profile root and edit name</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="phone-row">
+
+    <!-- Profile root — full -->
+    <div class="screen-col">
+      <div class="screen-meta">
+        <div class="screen-label">Profile root</div>
+        <div class="screen-sub">Both identities present</div>
+      </div>
+      <div class="state-badge happy">default</div>
+      <div class="phone">
+        <div class="phone-inner">
+          <div class="a-status"><span>9:41</span><div class="a-status-icons"><svg class="ico"><use href="#i-signal"/></svg><svg class="ico"><use href="#i-battery"/></svg></div></div>
+          <div class="screen scroll">
+            <div class="opt-a-hero">
+              <div class="opt-a-hero-bar">
+                <div class="opt-a-hero-label">Profile</div>
+                <div class="opt-a-hero-icon"><svg class="ico ico-sm"><use href="#i-settings"/></svg></div>
+              </div>
+              <div class="opt-a-hero-content">
+                <div class="opt-a-avatar">A</div>
+                <div>
+                  <div class="opt-a-name">Ahmed Hassan</div>
+                  <div class="opt-a-id">ahmed@example.com</div>
+                  <div class="opt-a-badge">
+                    <svg class="ico" style="width:9px;height:9px;stroke-width:3"><use href="#i-check"/></svg>
+                    Verified
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="under-hero">
+              <div class="row-card">
+                <div class="row">
+                  <div class="row-icon tinted-navy"><svg class="ico ico-sm"><use href="#i-user"/></svg></div>
+                  <div class="row-body">
+                    <div class="row-title">Name</div>
+                    <div class="row-sub">Ahmed Hassan</div>
+                  </div>
+                  <svg class="ico ico-sm row-chev"><use href="#i-chevron-right"/></svg>
+                </div>
+                <div class="row">
+                  <div class="row-icon tinted-navy"><svg class="ico ico-sm"><use href="#i-mail"/></svg></div>
+                  <div class="row-body">
+                    <div class="row-title">Email</div>
+                    <div class="row-sub">ahmed@example.com</div>
+                  </div>
+                  <svg class="ico ico-sm row-chev"><use href="#i-chevron-right"/></svg>
+                </div>
+                <div class="row">
+                  <div class="row-icon tinted-navy"><svg class="ico ico-sm"><use href="#i-phone"/></svg></div>
+                  <div class="row-body">
+                    <div class="row-title">Phone</div>
+                    <div class="row-sub">+20 100 123 4567</div>
+                  </div>
+                  <svg class="ico ico-sm row-chev"><use href="#i-chevron-right"/></svg>
+                </div>
+              </div>
+
+              <div class="sec-lbl">Preferences</div>
+              <div class="row-card">
+                <div class="row">
+                  <div class="row-icon"><svg class="ico ico-sm"><use href="#i-globe"/></svg></div>
+                  <div class="row-body"><div class="row-title">Language</div></div>
+                  <span class="row-val">English</span>
+                  <svg class="ico ico-sm row-chev"><use href="#i-chevron-right"/></svg>
+                </div>
+                <div class="row">
+                  <div class="row-icon"><svg class="ico ico-sm"><use href="#i-sun"/></svg></div>
+                  <div class="row-body"><div class="row-title">Theme</div></div>
+                  <span class="row-val">Light</span>
+                  <svg class="ico ico-sm row-chev"><use href="#i-chevron-right"/></svg>
+                </div>
+              </div>
+
+              <div class="sec-lbl">Help &amp; support</div>
+              <div class="row-card">
+                <div class="row">
+                  <div class="row-icon"><svg class="ico ico-sm"><use href="#i-message"/></svg></div>
+                  <div class="row-body"><div class="row-title">Contact us</div></div>
+                  <svg class="ico ico-sm row-chev"><use href="#i-chevron-right"/></svg>
+                </div>
+                <div class="row">
+                  <div class="row-icon"><svg class="ico ico-sm"><use href="#i-star"/></svg></div>
+                  <div class="row-body"><div class="row-title">Send feedback</div></div>
+                  <svg class="ico ico-sm row-chev"><use href="#i-chevron-right"/></svg>
+                </div>
+              </div>
+
+              <div class="sec-lbl">Account actions</div>
+              <div class="row-card">
+                <div class="row">
+                  <div class="row-icon"><svg class="ico ico-sm"><use href="#i-logout"/></svg></div>
+                  <div class="row-body"><div class="row-title">Sign out</div></div>
+                  <svg class="ico ico-sm row-chev"><use href="#i-chevron-right"/></svg>
+                </div>
+                <div class="row danger">
+                  <div class="row-icon tinted-red"><svg class="ico ico-sm"><use href="#i-trash"/></svg></div>
+                  <div class="row-body"><div class="row-title">Delete account</div></div>
+                  <svg class="ico ico-sm row-chev"><use href="#i-chevron-right"/></svg>
+                </div>
+              </div>
+              <div style="height:16px"></div>
+            </div>
+          </div>
+          <div class="a-nav">
+            <div class="a-nav-item"><div class="a-nav-icon-wrap"><svg class="ico"><use href="#i-home"/></svg></div><div class="a-nav-lbl">Home</div></div>
+            <div class="a-nav-item"><div class="a-nav-icon-wrap"><svg class="ico"><use href="#i-arrow-up-down"/></svg></div><div class="a-nav-lbl">Transactions</div></div>
+            <div class="a-nav-item"><div class="a-nav-icon-wrap"><svg class="ico"><use href="#i-target"/></svg></div><div class="a-nav-lbl">Budgets</div></div>
+            <div class="a-nav-item on"><div class="a-nav-icon-wrap"><svg class="ico"><use href="#i-user"/></svg></div><div class="a-nav-lbl">Profile</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note decision">
+        <svg class="ico ico-sm note-ico"><use href="#i-info"/></svg>
+        <div>Hero on root only — gradient navy with avatar beside name. Sub-screens drop the hero so the form takes focus.</div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">
+      <svg width="32" height="20" viewBox="0 0 32 20" class="arrow-svg"><line x1="0" y1="10" x2="28" y2="10" stroke="currentColor" stroke-width="1.5"/><polyline points="22,4 28,10 22,16" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+      <div class="arrow-label">tap Name</div>
+    </div>
+
+    <!-- Edit name -->
+    <div class="screen-col">
+      <div class="screen-meta">
+        <div class="screen-label">Edit name</div>
+        <div class="screen-sub">Input focused</div>
+      </div>
+      <div class="state-badge interaction">edit state</div>
+      <div class="phone">
+        <div class="phone-inner">
+          <div class="a-status"><span>9:41</span><div class="a-status-icons"><svg class="ico"><use href="#i-signal"/></svg><svg class="ico"><use href="#i-battery"/></svg></div></div>
+          <div class="screen scroll">
+            <div class="app-bar bordered">
+              <div class="back-btn"><svg class="ico"><use href="#i-chevron-left"/></svg></div>
+              <div class="app-bar-title">Edit name</div>
+            </div>
+            <div class="sc-pad">
+              <div class="form-grp">
+                <div class="form-label">Name</div>
+                <div class="input focus with-counter">
+                  <span>Ahmed Hassan</span>
+                  <span class="input-counter">12 / 50</span>
+                </div>
+                <div class="input-hint">What should we call you?</div>
+              </div>
+              <div style="flex:1;min-height:200px"></div>
+              <div class="btn-row">
+                <div class="btn btn-outline" style="flex:1">Cancel</div>
+                <div class="btn btn-accent" style="flex:1.5">Save</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">
+      <svg width="32" height="20" viewBox="0 0 32 20" class="arrow-svg"><line x1="0" y1="10" x2="28" y2="10" stroke="currentColor" stroke-width="1.5"/><polyline points="22,4 28,10 22,16" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+      <div class="arrow-label">invalid input</div>
+    </div>
+
+    <!-- Validation error -->
+    <div class="screen-col">
+      <div class="screen-meta">
+        <div class="screen-label">Edit name</div>
+        <div class="screen-sub">Validation error</div>
+      </div>
+      <div class="state-badge error">letters only</div>
+      <div class="phone">
+        <div class="phone-inner">
+          <div class="a-status"><span>9:41</span><div class="a-status-icons"><svg class="ico"><use href="#i-signal"/></svg><svg class="ico"><use href="#i-battery"/></svg></div></div>
+          <div class="screen scroll">
+            <div class="app-bar bordered">
+              <div class="back-btn"><svg class="ico"><use href="#i-chevron-left"/></svg></div>
+              <div class="app-bar-title">Edit name</div>
+            </div>
+            <div class="sc-pad">
+              <div class="form-grp">
+                <div class="form-label">Name</div>
+                <div class="input err with-counter">
+                  <span>Ahmed 123 😀</span>
+                  <span class="input-counter">12 / 50</span>
+                </div>
+                <div class="input-err">
+                  <svg class="ico ico-sm"><use href="#i-alert-triangle"/></svg>
+                  Letters only — no numbers or emoji.
+                </div>
+              </div>
+              <div style="flex:1;min-height:170px"></div>
+              <div class="btn-row">
+                <div class="btn btn-outline" style="flex:1">Cancel</div>
+                <div class="btn btn-disabled" style="flex:1.5">Save</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note decision">
+        <svg class="ico ico-sm note-ico"><use href="#i-info"/></svg>
+        <div>Validate on input, not on save. Error appears as the user types so they correct before reaching for Save. Save stays disabled while invalid.</div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">
+      <svg width="32" height="20" viewBox="0 0 32 20" class="arrow-svg"><line x1="0" y1="10" x2="28" y2="10" stroke="currentColor" stroke-width="1.5"/><polyline points="22,4 28,10 22,16" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+      <div class="arrow-label">save fails</div>
+    </div>
+
+    <!-- Save failure -->
+    <div class="screen-col">
+      <div class="screen-meta">
+        <div class="screen-label">Edit name</div>
+        <div class="screen-sub">Save failed — backend</div>
+      </div>
+      <div class="state-badge error">backend error</div>
+      <div class="phone">
+        <div class="phone-inner">
+          <div class="a-status"><span>9:41</span><div class="a-status-icons"><svg class="ico"><use href="#i-signal"/></svg><svg class="ico"><use href="#i-battery"/></svg></div></div>
+          <div class="screen scroll">
+            <div class="app-bar bordered">
+              <div class="back-btn"><svg class="ico"><use href="#i-chevron-left"/></svg></div>
+              <div class="app-bar-title">Edit name</div>
+            </div>
+            <div class="sc-pad">
+              <div class="err-banner">
+                <div class="err-ico-wrap"><svg class="ico"><use href="#i-alert-triangle"/></svg></div>
+                <div class="err-content">
+                  <div class="err-txt">That didn't go through. Try again in a moment.</div>
+                  <span class="err-retry">Try again</span>
+                </div>
+              </div>
+              <div class="form-grp">
+                <div class="form-label">Name</div>
+                <div class="input">Ahmed Hassan Ali</div>
+              </div>
+              <div style="flex:1;min-height:120px"></div>
+              <div class="btn-row">
+                <div class="btn btn-outline" style="flex:1">Cancel</div>
+                <div class="btn btn-accent" style="flex:1.5">Save</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note warn">
+        <svg class="ico ico-sm note-ico"><use href="#i-alert-triangle"/></svg>
+        <div>Edited value is preserved. Don't drop the user back to read state — they'd lose their edit.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── FLOW 2 — Add missing identity ─────────────────────── -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <span class="flow-section-num">FLOW 02</span>
+    <div class="flow-section-title">Add missing identity · phone path · email mirrors</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="phone-row">
+
+    <!-- Profile root with phone missing -->
+    <div class="screen-col">
+      <div class="screen-meta">
+        <div class="screen-label">Profile root</div>
+        <div class="screen-sub">Phone missing</div>
+      </div>
+      <div class="state-badge empty">missing identity</div>
+      <div class="phone">
+        <div class="phone-inner">
+          <div class="a-status"><span>9:41</span><div class="a-status-icons"><svg class="ico"><use href="#i-signal"/></svg><svg class="ico"><use href="#i-battery"/></svg></div></div>
+          <div class="screen scroll">
+            <div class="opt-a-hero">
+              <div class="opt-a-hero-bar">
+                <div class="opt-a-hero-label">Profile</div>
+                <div class="opt-a-hero-icon"><svg class="ico ico-sm"><use href="#i-settings"/></svg></div>
+              </div>
+              <div class="opt-a-hero-content">
+                <div class="opt-a-avatar">A</div>
+                <div>
+                  <div class="opt-a-name">Ahmed Hassan</div>
+                  <div class="opt-a-id">ahmed@example.com</div>
+                </div>
+              </div>
+            </div>
+            <div class="under-hero">
+              <div class="row-card">
+                <div class="row">
+                  <div class="row-icon tinted-navy"><svg class="ico ico-sm"><use href="#i-user"/></svg></div>
+                  <div class="row-body">
+                    <div class="row-title">Name</div>
+                    <div class="row-sub">Ahmed Hassan</div>
+                  </div>
+                  <svg class="ico ico-sm row-chev"><use href="#i-chevron-right"/></svg>
+                </div>
+                <div class="row">
+                  <div class="row-icon tinted-navy"><svg class="ico ico-sm"><use href="#i-mail"/></svg></div>
+                  <div class="row-body">
+                    <div class="row-title">Email</div>
+                    <div class="row-sub">ahmed@example.com</div>
+                  </div>
+                  <svg class="ico ico-sm row-chev"><use href="#i-chevron-right"/></svg>
+                </div>
+                <div class="row add">
+                  <div class="row-icon tinted-green"><svg class="ico ico-sm"><use href="#i-plus"/></svg></div>
+                  <div class="row-body">
+                    <div class="row-title">Add a phone number</div>
+                    <div class="row-sub">A second way to sign in</div>
+                  </div>
+                  <span class="row-action">Add</span>
+                </div>
+              </div>
+            </div>
+            <div style="height:24px"></div>
+          </div>
+          <div class="a-nav">
+            <div class="a-nav-item"><div class="a-nav-icon-wrap"><svg class="ico"><use href="#i-home"/></svg></div><div class="a-nav-lbl">Home</div></div>
+            <div class="a-nav-item"><div class="a-nav-icon-wrap"><svg class="ico"><use href="#i-arrow-up-down"/></svg></div><div class="a-nav-lbl">Transactions</div></div>
+            <div class="a-nav-item"><div class="a-nav-icon-wrap"><svg class="ico"><use href="#i-target"/></svg></div><div class="a-nav-lbl">Budgets</div></div>
+            <div class="a-nav-item on"><div class="a-nav-icon-wrap"><svg class="ico"><use href="#i-user"/></svg></div><div class="a-nav-lbl">Profile</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note decision">
+        <svg class="ico ico-sm note-ico"><use href="#i-info"/></svg>
+        <div>Missing-identity row uses a dashed border and green plus-icon. Same row shape as a regular row, not a separate card — keeps the section rhythm.</div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">
+      <svg width="32" height="20" viewBox="0 0 32 20" class="arrow-svg"><line x1="0" y1="10" x2="28" y2="10" stroke="currentColor" stroke-width="1.5"/><polyline points="22,4 28,10 22,16" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+      <div class="arrow-label">tap Add</div>
+    </div>
+
+    <!-- Add phone entry -->
+    <div class="screen-col">
+      <div class="screen-meta">
+        <div class="screen-label">Add a phone number</div>
+        <div class="screen-sub">Step 1 — entry</div>
+      </div>
+      <div class="state-badge happy">step 1</div>
+      <div class="phone">
+        <div class="phone-inner">
+          <div class="a-status"><span>9:41</span><div class="a-status-icons"><svg class="ico"><use href="#i-signal"/></svg><svg class="ico"><use href="#i-battery"/></svg></div></div>
+          <div class="screen scroll">
+            <div class="app-bar bordered">
+              <div class="back-btn"><svg class="ico"><use href="#i-chevron-left"/></svg></div>
+              <div class="app-bar-title">Add a phone number</div>
+            </div>
+            <div class="sc-pad">
+              <div class="t-title">Add your phone</div>
+              <div class="t-body" style="margin-top:-4px">Adding your phone gives you a second way to sign in. Useful if you ever lose access to your email.</div>
+              <div class="form-grp" style="margin-top:8px">
+                <div class="form-label">Phone number</div>
+                <div class="phone-input">
+                  <div class="phone-cc">🇪🇬 +20 <svg class="ico ico-sm" style="opacity:0.5"><use href="#i-chevron-down"/></svg></div>
+                  <div class="input phone-num focus">100 123 4567</div>
+                </div>
+              </div>
+              <div style="flex:1;min-height:80px"></div>
+              <div class="btn btn-primary btn-lg">Continue</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">
+      <svg width="32" height="20" viewBox="0 0 32 20" class="arrow-svg"><line x1="0" y1="10" x2="28" y2="10" stroke="currentColor" stroke-width="1.5"/><polyline points="22,4 28,10 22,16" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+      <div class="arrow-label">submit</div>
+    </div>
+
+    <!-- OTP entry -->
+    <div class="screen-col">
+      <div class="screen-meta">
+        <div class="screen-label">Verify your number</div>
+        <div class="screen-sub">Step 2 — OTP via SMS</div>
+      </div>
+      <div class="state-badge happy">step 2</div>
+      <div class="phone">
+        <div class="phone-inner">
+          <div class="a-status"><span>9:41</span><div class="a-status-icons"><svg class="ico"><use href="#i-signal"/></svg><svg class="ico"><use href="#i-battery"/></svg></div></div>
+          <div class="screen scroll">
+            <div class="app-bar bordered">
+              <div class="back-btn"><svg class="ico"><use href="#i-chevron-left"/></svg></div>
+              <div class="app-bar-title">Verify your number</div>
+            </div>
+            <div class="sc-pad">
+              <div class="t-title">Check your messages</div>
+              <div class="t-body" style="margin-top:-4px">We sent a 6-digit code to <strong style="color:var(--t1);font-weight:700">+20 100 123 4567</strong>.</div>
+              <div class="otp-row" style="margin-top:12px">
+                <div class="otp-box filled">4</div>
+                <div class="otp-box filled">8</div>
+                <div class="otp-box filled">2</div>
+                <div class="otp-box active"><div class="caret"></div></div>
+                <div class="otp-box"></div>
+                <div class="otp-box"></div>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
+                <span class="btn-link muted">Resend code</span>
+                <span class="t-xs" style="font-family:var(--f-mono)">in 0:42</span>
+              </div>
+              <div style="flex:1;min-height:60px"></div>
+              <div class="btn btn-outline">
+                <svg class="ico"><use href="#i-message"/></svg>
+                Send code by WhatsApp
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note info">
+        <svg class="ico ico-sm note-ico"><use href="#i-info"/></svg>
+        <div>Switch-channel CTA hides if WhatsApp is unavailable for the user's region. Don't show a fallback the system can't fulfill.</div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">
+      <svg width="32" height="20" viewBox="0 0 32 20" class="arrow-svg"><line x1="0" y1="10" x2="28" y2="10" stroke="currentColor" stroke-width="1.5"/><polyline points="22,4 28,10 22,16" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+      <div class="arrow-label">delivery fails</div>
+    </div>
+
+    <!-- OTP failure -->
+    <div class="screen-col">
+      <div class="screen-meta">
+        <div class="screen-label">Verify your number</div>
+        <div class="screen-sub">SMS didn't arrive</div>
+      </div>
+      <div class="state-badge error">delivery failed</div>
+      <div class="phone">
+        <div class="phone-inner">
+          <div class="a-status"><span>9:41</span><div class="a-status-icons"><svg class="ico"><use href="#i-signal"/></svg><svg class="ico"><use href="#i-battery"/></svg></div></div>
+          <div class="screen scroll">
+            <div class="app-bar bordered">
+              <div class="back-btn"><svg class="ico"><use href="#i-chevron-left"/></svg></div>
+              <div class="app-bar-title">Verify your number</div>
+            </div>
+            <div class="sc-pad">
+              <div class="err-banner">
+                <div class="err-ico-wrap"><svg class="ico"><use href="#i-alert-triangle"/></svg></div>
+                <div class="err-content">
+                  <div class="err-txt">SMS didn't get through. Try WhatsApp instead.</div>
+                </div>
+              </div>
+              <div class="otp-row">
+                <div class="otp-box"></div><div class="otp-box"></div><div class="otp-box"></div>
+                <div class="otp-box"></div><div class="otp-box"></div><div class="otp-box"></div>
+              </div>
+              <div style="flex:1;min-height:80px"></div>
+              <div class="btn btn-whatsapp">
+                <svg class="ico"><use href="#i-message"/></svg>
+                Send code by WhatsApp
+              </div>
+              <div style="text-align:center;margin-top:4px"><span class="btn-link muted">Resend SMS</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note warn">
+        <svg class="ico ico-sm note-ico"><use href="#i-alert-triangle"/></svg>
+        <div>Per-channel error names what failed and the alternative. Never silent-fallback between SMS and WhatsApp — the user chooses.</div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">
+      <svg width="32" height="20" viewBox="0 0 32 20" class="arrow-svg"><line x1="0" y1="10" x2="28" y2="10" stroke="currentColor" stroke-width="1.5"/><polyline points="22,4 28,10 22,16" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+      <div class="arrow-label">verified</div>
+    </div>
+
+    <!-- Phone added success -->
+    <div class="screen-col">
+      <div class="screen-meta">
+        <div class="screen-label">Phone added</div>
+        <div class="screen-sub">Identity linked</div>
+      </div>
+      <div class="state-badge success">linked</div>
+      <div class="phone">
+        <div class="phone-inner">
+          <div class="a-status"><span>9:41</span><div class="a-status-icons"><svg class="ico"><use href="#i-signal"/></svg><svg class="ico"><use href="#i-battery"/></svg></div></div>
+          <div class="screen scroll">
+            <div class="app-bar"></div>
+            <div class="success-state">
+              <div class="success-icon-lg"><svg class="ico ico-xl" style="stroke-width:2.5"><use href="#i-check"/></svg></div>
+              <div class="t-title">Phone added</div>
+              <div class="t-body" style="max-width:240px">You can now sign in with phone or email.</div>
+            </div>
+            <div style="flex:1"></div>
+            <div class="sc-pad">
+              <div class="btn btn-accent btn-lg">Done</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note info">
+        <svg class="ico ico-sm note-ico"><use href="#i-info"/></svg>
+        <div>Email-add flow mirrors this exactly — same screens, swap input type, swap copy strings. Email verification mechanism is an open thread; code-entry assumed for symmetry.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── FLOW 3 — Help and support ─────────────────────────── -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <span class="flow-section-num">FLOW 03</span>
+    <div class="flow-section-title">Help and support</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="phone-row">
+
+    <!-- Contact us form -->
+    <div class="screen-col">
+      <div class="screen-meta">
+        <div class="screen-label">Contact us</div>
+        <div class="screen-sub">In-app support form</div>
+      </div>
+      <div class="state-badge happy">default</div>
+      <div class="phone">
+        <div class="phone-inner">
+          <div class="a-status"><span>9:41</span><div class="a-status-icons"><svg class="ico"><use href="#i-signal"/></svg><svg class="ico"><use href="#i-battery"/></svg></div></div>
+          <div class="screen scroll">
+            <div class="app-bar bordered">
+              <div class="back-btn"><svg class="ico"><use href="#i-chevron-left"/></svg></div>
+              <div class="app-bar-title">Contact us</div>
+            </div>
+            <div class="sc-pad">
+              <div class="help-hero">
+                <div class="help-hero-title">We reply within 24 hours</div>
+                <div class="help-hero-body">Tell us what you need help with — a real person on the team will get back to you by email.</div>
+              </div>
+              <div class="form-grp">
+                <div class="form-label">Topic</div>
+                <div class="input" style="justify-content:space-between">
+                  <span>Sign-in &amp; account access</span>
+                  <svg class="ico ico-sm" style="color:var(--t3)"><use href="#i-chevron-down"/></svg>
+                </div>
+              </div>
+              <div class="form-grp">
+                <div class="form-label">Message</div>
+                <div class="textarea ph">Describe the issue…</div>
+                <div class="input-hint">Minimum 20 characters</div>
+              </div>
+              <div style="flex:1;min-height:20px"></div>
+              <div class="btn btn-primary btn-lg">Send message</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note decision">
+        <svg class="ico ico-sm note-ico"><use href="#i-info"/></svg>
+        <div>In-app form, not a mailto. Sender identity is pulled from the signed-in account — no email field needed.</div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">
+      <svg width="32" height="20" viewBox="0 0 32 20" class="arrow-svg"><line x1="0" y1="10" x2="28" y2="10" stroke="currentColor" stroke-width="1.5"/><polyline points="22,4 28,10 22,16" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+      <div class="arrow-label">tap Topic</div>
+    </div>
+
+    <!-- Topic picker bottom sheet -->
+    <div class="screen-col">
+      <div class="screen-meta">
+        <div class="screen-label">Topic picker</div>
+        <div class="screen-sub">Bottom sheet</div>
+      </div>
+      <div class="state-badge interaction">selection</div>
+      <div class="phone">
+        <div class="phone-inner">
+          <div class="a-status"><span>9:41</span><div class="a-status-icons"><svg class="ico"><use href="#i-signal"/></svg><svg class="ico"><use href="#i-battery"/></svg></div></div>
+          <div class="screen scroll" style="min-height:600px">
+            <!-- Dimmed Contact us form behind sheet -->
+            <div style="opacity:0.35;pointer-events:none">
+              <div class="app-bar bordered">
+                <div class="back-btn"><svg class="ico"><use href="#i-chevron-left"/></svg></div>
+                <div class="app-bar-title">Contact us</div>
+              </div>
+              <div class="sc-pad">
+                <div class="help-hero">
+                  <div class="help-hero-title">We reply within 24 hours</div>
+                  <div class="help-hero-body">Tell us what you need help with — a real person on the team will get back to you by email.</div>
+                </div>
+                <div class="form-grp">
+                  <div class="form-label">Topic</div>
+                  <div class="input" style="justify-content:space-between">
+                    <span>Sign-in &amp; account access</span>
+                    <svg class="ico ico-sm" style="color:var(--t3)"><use href="#i-chevron-down"/></svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bottom sheet overlay -->
+            <div class="sheet-overlay">
+              <div class="sheet">
+                <div class="sheet-handle"></div>
+                <div class="sheet-title">What do you need help with?</div>
+                <div class="sheet-list">
+                  <div class="sheet-row selected">
+                    <div class="sheet-row-icon"><svg class="ico ico-sm"><use href="#i-key"/></svg></div>
+                    <div class="sheet-row-body">
+                      <div class="sheet-row-title">Sign-in &amp; account access</div>
+                      <div class="sheet-row-sub">Can't sign in, lost a sign-in method, identity issues</div>
+                    </div>
+                    <svg class="ico ico-sm sheet-check"><use href="#i-check"/></svg>
+                  </div>
+                  <div class="sheet-row">
+                    <div class="sheet-row-icon"><svg class="ico ico-sm"><use href="#i-credit-card"/></svg></div>
+                    <div class="sheet-row-body">
+                      <div class="sheet-row-title">Transactions</div>
+                      <div class="sheet-row-sub">Missing, duplicate, or wrongly categorised</div>
+                    </div>
+                  </div>
+                  <div class="sheet-row">
+                    <div class="sheet-row-icon"><svg class="ico ico-sm"><use href="#i-target"/></svg></div>
+                    <div class="sheet-row-body">
+                      <div class="sheet-row-title">Budgets</div>
+                      <div class="sheet-row-sub">Wrong calculations or category mapping</div>
+                    </div>
+                  </div>
+                  <div class="sheet-row">
+                    <div class="sheet-row-icon"><svg class="ico ico-sm"><use href="#i-inbox"/></svg></div>
+                    <div class="sheet-row-body">
+                      <div class="sheet-row-title">SMS &amp; bank parsing</div>
+                      <div class="sheet-row-sub">Bank messages not picked up or parsed wrong</div>
+                    </div>
+                  </div>
+                  <div class="sheet-row">
+                    <div class="sheet-row-icon"><svg class="ico ico-sm"><use href="#i-bug"/></svg></div>
+                    <div class="sheet-row-body">
+                      <div class="sheet-row-title">Something's not working</div>
+                      <div class="sheet-row-sub">Crashes, errors, anything off</div>
+                    </div>
+                  </div>
+                  <div class="sheet-row">
+                    <div class="sheet-row-icon"><svg class="ico ico-sm"><use href="#i-more"/></svg></div>
+                    <div class="sheet-row-body">
+                      <div class="sheet-row-title">Something else</div>
+                      <div class="sheet-row-sub">Anything not covered above</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note decision">
+        <svg class="ico ico-sm note-ico"><use href="#i-info"/></svg>
+        <div>Starter list — six topics ordered by likely volume. Validate with the support team before lock; they may want to split or merge based on how their inbox is routed.</div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">
+      <svg width="32" height="20" viewBox="0 0 32 20" class="arrow-svg"><line x1="0" y1="10" x2="28" y2="10" stroke="currentColor" stroke-width="1.5"/><polyline points="22,4 28,10 22,16" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+      <div class="arrow-label">tap Send</div>
+    </div>
+
+    <!-- Sent confirmation -->
+    <div class="screen-col">
+      <div class="screen-meta">
+        <div class="screen-label">Message sent</div>
+        <div class="screen-sub">Confirmation</div>
+      </div>
+      <div class="state-badge success">sent</div>
+      <div class="phone">
+        <div class="phone-inner">
+          <div class="a-status"><span>9:41</span><div class="a-status-icons"><svg class="ico"><use href="#i-signal"/></svg><svg class="ico"><use href="#i-battery"/></svg></div></div>
+          <div class="screen scroll">
+            <div class="app-bar"></div>
+            <div class="success-state">
+              <div class="success-icon-lg"><svg class="ico ico-xl" style="stroke-width:2.5"><use href="#i-check"/></svg></div>
+              <div class="t-title">We've got your message</div>
+              <div class="t-body" style="max-width:240px">A reply will land in your email within 24 hours.</div>
+            </div>
+            <div style="flex:1"></div>
+            <div class="sc-pad">
+              <div class="btn btn-accent btn-lg">Done</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">
+      <svg width="32" height="20" viewBox="0 0 32 20" class="arrow-svg"><line x1="0" y1="10" x2="28" y2="10" stroke="currentColor" stroke-width="1.5"/><polyline points="22,4 28,10 22,16" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+      <div class="arrow-label">tap Send feedback</div>
+    </div>
+
+    <!-- Play Store overlay -->
+    <div class="screen-col">
+      <div class="screen-meta">
+        <div class="screen-label">Send feedback</div>
+        <div class="screen-sub">Play Store review · OS-rendered</div>
+      </div>
+      <div class="state-badge interaction">OS overlay</div>
+      <div class="phone">
+        <div class="phone-inner">
+          <div class="a-status"><span>9:41</span><div class="a-status-icons"><svg class="ico"><use href="#i-signal"/></svg><svg class="ico"><use href="#i-battery"/></svg></div></div>
+          <div class="screen scroll">
+            <div style="opacity:0.3;pointer-events:none">
+              <div class="opt-a-hero">
+                <div class="opt-a-hero-bar">
+                  <div class="opt-a-hero-label">Profile</div>
+                </div>
+                <div class="opt-a-hero-content">
+                  <div class="opt-a-avatar">A</div>
+                  <div><div class="opt-a-name">Ahmed Hassan</div></div>
+                </div>
+              </div>
+              <div class="under-hero">
+                <div class="row-card">
+                  <div class="row"><div class="row-icon"><svg class="ico ico-sm"><use href="#i-message"/></svg></div><div class="row-body"><div class="row-title">Contact us</div></div></div>
+                  <div class="row"><div class="row-icon"><svg class="ico ico-sm"><use href="#i-star"/></svg></div><div class="row-body"><div class="row-title">Send feedback</div></div></div>
+                </div>
+              </div>
+            </div>
+            <div class="dialog-overlay">
+              <div class="playstore-mock">
+                <div class="ps-header">
+                  <div class="ps-app-icon">M</div>
+                  <div class="ps-meta">
+                    <div class="ps-app-name">Rate MoneyMore</div>
+                    <div class="ps-source">Google Play</div>
+                  </div>
+                </div>
+                <div class="ps-stars">
+                  <div class="ps-star"><svg class="ico ico-lg ico-fill"><use href="#i-star"/></svg></div>
+                  <div class="ps-star"><svg class="ico ico-lg ico-fill"><use href="#i-star"/></svg></div>
+                  <div class="ps-star"><svg class="ico ico-lg ico-fill"><use href="#i-star"/></svg></div>
+                  <div class="ps-star"><svg class="ico ico-lg ico-fill"><use href="#i-star"/></svg></div>
+                  <div class="ps-star empty"><svg class="ico ico-lg ico-fill"><use href="#i-star"/></svg></div>
+                </div>
+                <div class="ps-hint">Tap a star to rate</div>
+                <div class="ps-actions">
+                  <div class="ps-btn" style="color:var(--t3)">Not now</div>
+                  <div class="ps-btn">Submit</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note info">
+        <svg class="ico ico-sm note-ico"><use href="#i-info"/></svg>
+        <div>Not designed by MoneyMore — Play Store renders this via the in-app review API. Visual is reference only. We don't control layout, copy, or behaviour.</div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">
+      <svg width="32" height="20" viewBox="0 0 32 20" class="arrow-svg"><line x1="0" y1="10" x2="28" y2="10" stroke="currentColor" stroke-width="1.5"/><polyline points="22,4 28,10 22,16" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+      <div class="arrow-label">quota exhausted</div>
+    </div>
+
+    <!-- Toast fallback -->
+    <div class="screen-col">
+      <div class="screen-meta">
+        <div class="screen-label">Send feedback</div>
+        <div class="screen-sub">Review unavailable · toast</div>
+      </div>
+      <div class="state-badge empty">silent fallback</div>
+      <div class="phone">
+        <div class="phone-inner">
+          <div class="a-status"><span>9:41</span><div class="a-status-icons"><svg class="ico"><use href="#i-signal"/></svg><svg class="ico"><use href="#i-battery"/></svg></div></div>
+          <div class="screen scroll">
+            <div class="opt-a-hero">
+              <div class="opt-a-hero-bar">
+                <div class="opt-a-hero-label">Profile</div>
+                <div class="opt-a-hero-icon"><svg class="ico ico-sm"><use href="#i-settings"/></svg></div>
+              </div>
+              <div class="opt-a-hero-content">
+                <div class="opt-a-avatar">A</div>
+                <div>
+                  <div class="opt-a-name">Ahmed Hassan</div>
+                  <div class="opt-a-id">ahmed@example.com</div>
+                </div>
+              </div>
+            </div>
+            <div class="under-hero">
+              <div class="row-card">
+                <div class="row">
+                  <div class="row-icon"><svg class="ico ico-sm"><use href="#i-message"/></svg></div>
+                  <div class="row-body"><div class="row-title">Contact us</div></div>
+                  <svg class="ico ico-sm row-chev"><use href="#i-chevron-right"/></svg>
+                </div>
+                <div class="row">
+                  <div class="row-icon"><svg class="ico ico-sm"><use href="#i-star"/></svg></div>
+                  <div class="row-body"><div class="row-title">Send feedback</div></div>
+                  <svg class="ico ico-sm row-chev"><use href="#i-chevron-right"/></svg>
+                </div>
+              </div>
+            </div>
+            <div class="toast">
+              <svg class="ico" style="color:#fff;flex-shrink:0"><use href="#i-info"/></svg>
+              <span>Couldn't open the rating prompt right now.</span>
+            </div>
+          </div>
+          <div class="a-nav">
+            <div class="a-nav-item"><div class="a-nav-icon-wrap"><svg class="ico"><use href="#i-home"/></svg></div><div class="a-nav-lbl">Home</div></div>
+            <div class="a-nav-item"><div class="a-nav-icon-wrap"><svg class="ico"><use href="#i-arrow-up-down"/></svg></div><div class="a-nav-lbl">Transactions</div></div>
+            <div class="a-nav-item"><div class="a-nav-icon-wrap"><svg class="ico"><use href="#i-target"/></svg></div><div class="a-nav-lbl">Budgets</div></div>
+            <div class="a-nav-item on"><div class="a-nav-icon-wrap"><svg class="ico"><use href="#i-user"/></svg></div><div class="a-nav-lbl">Profile</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note warn">
+        <svg class="ico ico-sm note-ico"><use href="#i-alert-triangle"/></svg>
+        <div>Play Store throttles the review prompt — same user can't see it more than a few times a year. When the API returns no overlay, show this toast. Don't fall back to a custom rating screen.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── FLOW 4 — Language and theme ───────────────────────── -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <span class="flow-section-num">FLOW 04</span>
+    <div class="flow-section-title">Language and theme</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="phone-row">
+
+    <!-- Language picker -->
+    <div class="screen-col">
+      <div class="screen-meta">
+        <div class="screen-label">Language</div>
+        <div class="screen-sub">Selection</div>
+      </div>
+      <div class="state-badge interaction">selection</div>
+      <div class="phone">
+        <div class="phone-inner">
+          <div class="a-status"><span>9:41</span><div class="a-status-icons"><svg class="ico"><use href="#i-signal"/></svg><svg class="ico"><use href="#i-battery"/></svg></div></div>
+          <div class="screen scroll">
+            <div class="app-bar bordered">
+              <div class="back-btn"><svg class="ico"><use href="#i-chevron-left"/></svg></div>
+              <div class="app-bar-title">Language</div>
+            </div>
+            <div class="sc-pad">
+              <div class="radio-list">
+                <div class="radio-row selected">
+                  <div class="radio-circle"></div>
+                  <div class="radio-label">English</div>
+                </div>
+                <div class="radio-row">
+                  <div class="radio-circle"></div>
+                  <div class="radio-label">العربية</div>
+                </div>
+              </div>
+              <div class="info-banner" style="margin-top:8px">
+                <div class="info-ico-wrap"><svg class="ico ico-sm"><use href="#i-info"/></svg></div>
+                <div class="info-txt">Selecting a language applies it immediately. The whole app flips, including layout direction.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note decision">
+        <svg class="ico ico-sm note-ico"><use href="#i-info"/></svg>
+        <div>Each language displays in its own script — never translate the option labels. Selection applies live, no Save button.</div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">
+      <svg width="32" height="20" viewBox="0 0 32 20" class="arrow-svg"><line x1="0" y1="10" x2="28" y2="10" stroke="currentColor" stroke-width="1.5"/><polyline points="22,4 28,10 22,16" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+      <div class="arrow-label">back to root</div>
+    </div>
+
+    <!-- Theme picker -->
+    <div class="screen-col">
+      <div class="screen-meta">
+        <div class="screen-label">Theme</div>
+        <div class="screen-sub">Selection</div>
+      </div>
+      <div class="state-badge interaction">selection</div>
+      <div class="phone">
+        <div class="phone-inner">
+          <div class="a-status"><span>9:41</span><div class="a-status-icons"><svg class="ico"><use href="#i-signal"/></svg><svg class="ico"><use href="#i-battery"/></svg></div></div>
+          <div class="screen scroll">
+            <div class="app-bar bordered">
+              <div class="back-btn"><svg class="ico"><use href="#i-chevron-left"/></svg></div>
+              <div class="app-bar-title">Theme</div>
+            </div>
+            <div class="sc-pad">
+              <div class="seg">
+                <div class="seg-opt on"><svg class="ico"><use href="#i-sun"/></svg> Light</div>
+                <div class="seg-opt"><svg class="ico"><use href="#i-moon"/></svg> Dark</div>
+              </div>
+              <div class="info-banner" style="margin-top:8px">
+                <div class="info-ico-wrap"><svg class="ico ico-sm"><use href="#i-info"/></svg></div>
+                <div class="info-txt">Theme applies immediately. No Save button.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note decision">
+        <svg class="ico ico-sm note-ico"><use href="#i-info"/></svg>
+        <div>Two states only — Light, Dark. No "system default" in v1. Segmented control because the choice is binary and visual.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── FLOW 5 — Sign out ─────────────────────────────────── -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <span class="flow-section-num">FLOW 05</span>
+    <div class="flow-section-title">Sign out</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="phone-row">
+
+    <!-- Sign-out confirmation dialog -->
+    <div class="screen-col">
+      <div class="screen-meta">
+        <div class="screen-label">Sign-out confirmation</div>
+        <div class="screen-sub">Alert dialog</div>
+      </div>
+      <div class="state-badge interaction">dialog</div>
+      <div class="phone">
+        <div class="phone-inner">
+          <div class="a-status"><span>9:41</span><div class="a-status-icons"><svg class="ico"><use href="#i-signal"/></svg><svg class="ico"><use href="#i-battery"/></svg></div></div>
+          <div class="screen scroll" style="min-height:600px">
+            <div style="opacity:0.4;pointer-events:none">
+              <div class="opt-a-hero">
+                <div class="opt-a-hero-bar">
+                  <div class="opt-a-hero-label">Profile</div>
+                </div>
+                <div class="opt-a-hero-content">
+                  <div class="opt-a-avatar">A</div>
+                  <div><div class="opt-a-name">Ahmed Hassan</div></div>
+                </div>
+              </div>
+            </div>
+            <div class="dialog-overlay">
+              <div class="dialog">
+                <div class="dialog-icon info"><svg class="ico ico-lg"><use href="#i-logout"/></svg></div>
+                <div class="dialog-title">Sign out of MoneyMore?</div>
+                <div class="dialog-body">You'll need to sign back in next time.</div>
+                <div class="btn-row" style="margin-top:4px">
+                  <div class="btn btn-outline" style="flex:1">Cancel</div>
+                  <div class="btn btn-primary" style="flex:1">Sign out</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="a-nav">
+            <div class="a-nav-item"><div class="a-nav-icon-wrap"><svg class="ico"><use href="#i-home"/></svg></div><div class="a-nav-lbl">Home</div></div>
+            <div class="a-nav-item"><div class="a-nav-icon-wrap"><svg class="ico"><use href="#i-arrow-up-down"/></svg></div><div class="a-nav-lbl">Transactions</div></div>
+            <div class="a-nav-item"><div class="a-nav-icon-wrap"><svg class="ico"><use href="#i-target"/></svg></div><div class="a-nav-lbl">Budgets</div></div>
+            <div class="a-nav-item on"><div class="a-nav-icon-wrap"><svg class="ico"><use href="#i-user"/></svg></div><div class="a-nav-lbl">Profile</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note decision">
+        <svg class="ico ico-sm note-ico"><use href="#i-info"/></svg>
+        <div>Standard alert dialog — not a bottom sheet. Sign-out is reversible (just sign back in) so the confirmation is light. Distinguishes it from delete, which uses typed-confirmation.</div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">
+      <svg width="32" height="20" viewBox="0 0 32 20" class="arrow-svg"><line x1="0" y1="10" x2="28" y2="10" stroke="currentColor" stroke-width="1.5"/><polyline points="22,4 28,10 22,16" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+      <div class="arrow-label">request fails</div>
+    </div>
+
+    <!-- Sign-out failure -->
+    <div class="screen-col">
+      <div class="screen-meta">
+        <div class="screen-label">Sign-out failed</div>
+        <div class="screen-sub">No connection</div>
+      </div>
+      <div class="state-badge error">retry inline</div>
+      <div class="phone">
+        <div class="phone-inner">
+          <div class="a-status"><span>9:41</span><div class="a-status-icons"><svg class="ico"><use href="#i-signal"/></svg><svg class="ico"><use href="#i-battery"/></svg></div></div>
+          <div class="screen scroll" style="min-height:600px">
+            <div style="opacity:0.4;pointer-events:none">
+              <div class="opt-a-hero">
+                <div class="opt-a-hero-bar"><div class="opt-a-hero-label">Profile</div></div>
+                <div class="opt-a-hero-content">
+                  <div class="opt-a-avatar">A</div>
+                  <div><div class="opt-a-name">Ahmed Hassan</div></div>
+                </div>
+              </div>
+            </div>
+            <div class="dialog-overlay">
+              <div class="dialog">
+                <div class="dialog-icon warn"><svg class="ico ico-lg"><use href="#i-wifi-off"/></svg></div>
+                <div class="dialog-title">Couldn't sign out</div>
+                <div class="dialog-body">No connection. Check your internet and try again.</div>
+                <div class="btn-row" style="margin-top:4px">
+                  <div class="btn btn-outline" style="flex:1">Cancel</div>
+                  <div class="btn btn-primary" style="flex:1">Try again</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="a-nav">
+            <div class="a-nav-item"><div class="a-nav-icon-wrap"><svg class="ico"><use href="#i-home"/></svg></div><div class="a-nav-lbl">Home</div></div>
+            <div class="a-nav-item"><div class="a-nav-icon-wrap"><svg class="ico"><use href="#i-arrow-up-down"/></svg></div><div class="a-nav-lbl">Transactions</div></div>
+            <div class="a-nav-item"><div class="a-nav-icon-wrap"><svg class="ico"><use href="#i-target"/></svg></div><div class="a-nav-lbl">Budgets</div></div>
+            <div class="a-nav-item on"><div class="a-nav-icon-wrap"><svg class="ico"><use href="#i-user"/></svg></div><div class="a-nav-lbl">Profile</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note warn">
+        <svg class="ico ico-sm note-ico"><use href="#i-alert-triangle"/></svg>
+        <div>Don't clear the session optimistically. The user stays signed in until the server confirms — otherwise a failed request leaves them locally signed-out but server-side active.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── FLOW 6 — Delete account ───────────────────────────── -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <span class="flow-section-num">FLOW 06</span>
+    <div class="flow-section-title">Delete account</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="phone-row">
+
+    <!-- Delete entry, disabled -->
+    <div class="screen-col">
+      <div class="screen-meta">
+        <div class="screen-label">Delete account</div>
+        <div class="screen-sub">Step 1 — entry, disabled</div>
+      </div>
+      <div class="state-badge destructive">step 1</div>
+      <div class="phone">
+        <div class="phone-inner">
+          <div class="a-status"><span>9:41</span><div class="a-status-icons"><svg class="ico"><use href="#i-signal"/></svg><svg class="ico"><use href="#i-battery"/></svg></div></div>
+          <div class="screen scroll">
+            <div class="app-bar bordered">
+              <div class="back-btn"><svg class="ico"><use href="#i-chevron-left"/></svg></div>
+              <div class="app-bar-title">Delete account</div>
+            </div>
+            <div class="sc-pad">
+              <div style="display:flex;align-items:center;gap:12px">
+                <div style="width:44px;height:44px;border-radius:var(--r-md);background:var(--red-l);color:var(--red-d);display:flex;align-items:center;justify-content:center">
+                  <svg class="ico ico-lg"><use href="#i-trash"/></svg>
+                </div>
+                <div class="t-title" style="color:var(--red-d)">This can't be undone</div>
+              </div>
+              <div class="t-body">Deleting your account wipes your transactions, budgets, categories, and sign-in. This can't be undone — and we can't recover it for you later.</div>
+              <div class="form-grp" style="margin-top:6px">
+                <div class="form-label">Type "delete my account" to confirm</div>
+                <div class="input ph">delete my account</div>
+              </div>
+              <div style="flex:1;min-height:40px"></div>
+              <div class="btn-row">
+                <div class="btn btn-outline" style="flex:1">Cancel</div>
+                <div class="btn btn-disabled" style="flex:1.3">Delete account</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note decision">
+        <svg class="ico ico-sm note-ico"><use href="#i-info"/></svg>
+        <div>Typed-confirmation phrase is the friction. Delete button stays disabled until the input matches "delete my account" exactly (case-insensitive, whitespace trimmed, diacritics-stripped in Arabic).</div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">
+      <svg width="32" height="20" viewBox="0 0 32 20" class="arrow-svg"><line x1="0" y1="10" x2="28" y2="10" stroke="currentColor" stroke-width="1.5"/><polyline points="22,4 28,10 22,16" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+      <div class="arrow-label">phrase matches</div>
+    </div>
+
+    <!-- Delete enabled -->
+    <div class="screen-col">
+      <div class="screen-meta">
+        <div class="screen-label">Delete account</div>
+        <div class="screen-sub">Step 1 — phrase matched</div>
+      </div>
+      <div class="state-badge destructive">enabled</div>
+      <div class="phone">
+        <div class="phone-inner">
+          <div class="a-status"><span>9:41</span><div class="a-status-icons"><svg class="ico"><use href="#i-signal"/></svg><svg class="ico"><use href="#i-battery"/></svg></div></div>
+          <div class="screen scroll">
+            <div class="app-bar bordered">
+              <div class="back-btn"><svg class="ico"><use href="#i-chevron-left"/></svg></div>
+              <div class="app-bar-title">Delete account</div>
+            </div>
+            <div class="sc-pad">
+              <div style="display:flex;align-items:center;gap:12px">
+                <div style="width:44px;height:44px;border-radius:var(--r-md);background:var(--red-l);color:var(--red-d);display:flex;align-items:center;justify-content:center">
+                  <svg class="ico ico-lg"><use href="#i-trash"/></svg>
+                </div>
+                <div class="t-title" style="color:var(--red-d)">This can't be undone</div>
+              </div>
+              <div class="t-body">Deleting your account wipes your transactions, budgets, categories, and sign-in. This can't be undone — and we can't recover it for you later.</div>
+              <div class="form-grp" style="margin-top:6px">
+                <div class="form-label">Type "delete my account" to confirm</div>
+                <div class="input focus">delete my account</div>
+              </div>
+              <div style="flex:1;min-height:40px"></div>
+              <div class="btn-row">
+                <div class="btn btn-outline" style="flex:1">Cancel</div>
+                <div class="btn btn-danger" style="flex:1.3">Delete account</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note decision">
+        <svg class="ico ico-sm note-ico"><use href="#i-info"/></svg>
+        <div>Confirm button repeats "Delete account" rather than "Confirm". This is the last point the user can back out — reading the verb again is small but useful friction.</div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">
+      <svg width="32" height="20" viewBox="0 0 32 20" class="arrow-svg"><line x1="0" y1="10" x2="28" y2="10" stroke="currentColor" stroke-width="1.5"/><polyline points="22,4 28,10 22,16" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+      <div class="arrow-label">confirm</div>
+    </div>
+
+    <!-- Loading -->
+    <div class="screen-col">
+      <div class="screen-meta">
+        <div class="screen-label">Deleting your account</div>
+        <div class="screen-sub">Blocking screen</div>
+      </div>
+      <div class="state-badge loading">blocking</div>
+      <div class="phone">
+        <div class="phone-inner">
+          <div class="a-status"><span>9:41</span><div class="a-status-icons"><svg class="ico"><use href="#i-signal"/></svg><svg class="ico"><use href="#i-battery"/></svg></div></div>
+          <div class="screen scroll">
+            <div class="app-bar"></div>
+            <div class="loading-state">
+              <div class="spinner"></div>
+              <div class="t-title">Deleting your account</div>
+              <div class="t-body">Hold on a second.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note warn">
+        <svg class="ico ico-sm note-ico"><use href="#i-alert-triangle"/></svg>
+        <div>Block screen — no back, no nav, no escape. Don't let the user navigate away mid-deletion or trigger a second request.</div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">
+      <svg width="32" height="20" viewBox="0 0 32 20" class="arrow-svg"><line x1="0" y1="10" x2="28" y2="10" stroke="currentColor" stroke-width="1.5"/><polyline points="22,4 28,10 22,16" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+      <div class="arrow-label">connection drops</div>
+    </div>
+
+    <!-- Connection lost -->
+    <div class="screen-col">
+      <div class="screen-meta">
+        <div class="screen-label">Deletion paused</div>
+        <div class="screen-sub">Connection lost — retry</div>
+      </div>
+      <div class="state-badge error">retry</div>
+      <div class="phone">
+        <div class="phone-inner">
+          <div class="a-status"><span>9:41</span><div class="a-status-icons"><svg class="ico"><use href="#i-signal"/></svg><svg class="ico"><use href="#i-battery"/></svg></div></div>
+          <div class="screen scroll">
+            <div class="app-bar"></div>
+            <div class="success-state" style="padding-top:32px">
+              <div class="success-icon-lg warn"><svg class="ico ico-xl" style="stroke-width:2"><use href="#i-wifi-off"/></svg></div>
+              <div class="t-title">Connection lost</div>
+              <div class="t-body" style="max-width:250px">Lost the connection mid-delete. Check your internet and tap retry — your account hasn't been deleted yet.</div>
+            </div>
+            <div style="flex:1"></div>
+            <div class="sc-pad">
+              <div class="btn btn-primary btn-lg">Retry</div>
+              <div class="btn btn-ghost" style="margin-top:4px">Cancel</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note warn">
+        <svg class="ico ico-sm note-ico"><use href="#i-alert-triangle"/></svg>
+        <div>"Your account hasn't been deleted yet" is the critical reassurance. Without it the user doesn't know if they're half-deleted. Keep this exact wording.</div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">
+      <svg width="32" height="20" viewBox="0 0 32 20" class="arrow-svg"><line x1="0" y1="10" x2="28" y2="10" stroke="currentColor" stroke-width="1.5"/><polyline points="22,4 28,10 22,16" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+      <div class="arrow-label">deleted</div>
+    </div>
+
+    <!-- Account deleted terminal -->
+    <div class="screen-col">
+      <div class="screen-meta">
+        <div class="screen-label">Account deleted</div>
+        <div class="screen-sub">Terminal screen</div>
+      </div>
+      <div class="state-badge success">terminal</div>
+      <div class="phone">
+        <div class="phone-inner">
+          <div class="a-status"><span>9:41</span><div class="a-status-icons"><svg class="ico"><use href="#i-signal"/></svg><svg class="ico"><use href="#i-battery"/></svg></div></div>
+          <div class="screen scroll">
+            <div class="app-bar"></div>
+            <div class="success-state" style="padding-top:80px">
+              <div class="success-icon-lg danger"><svg class="ico ico-xl" style="stroke-width:2"><use href="#i-check"/></svg></div>
+              <div class="t-title">Account deleted</div>
+              <div class="t-body" style="max-width:240px">Take care.</div>
+            </div>
+            <div style="flex:1"></div>
+            <div class="sc-pad">
+              <div class="btn btn-outline dark btn-lg">Close MoneyMore</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note info">
+        <svg class="ico ico-sm note-ico"><use href="#i-info"/></svg>
+        <div>Open thread for designer — does the app close, return to sign-up entry, or hold this screen until dismissed? Copy is short on purpose: the user just left, let them leave with dignity.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── HANDOFF ───────────────────────────────────────────── -->
+<div class="handoff">
+  <div class="handoff-title">Handoff</div>
+  <div class="handoff-sub">Designer reference for this prototype. Every user-facing string in English and Egyptian Arabic, plus accessibility rules that change what you draw.</div>
+
+  <div class="handoff-sec">
+    <div class="handoff-h">Copy · English + Egyptian Arabic</div>
+    <div class="handoff-p">Every string from the flows above, grouped by screen. Egyptian Arabic dialect throughout — pending native-speaker review. Numbers stay in Western Arabic numerals (50, 6, 30) per Egyptian fintech convention.</div>
+
+    <table class="copy-table" style="margin-top:14px">
+      <colgroup><col class="col-screen"><col class="col-element"><col class="col-en"><col class="col-ar"></colgroup>
+      <thead><tr><th>Screen</th><th>Element</th><th>English</th><th>Arabic</th></tr></thead>
+      <tbody>
+
+        <tr class="group-start"><td class="screen-name" rowspan="9">Profile root</td><td class="element-name">Hero — eyebrow label</td><td class="en">Profile</td><td class="ar">الملف الشخصي</td></tr>
+        <tr><td class="element-name">Hero — verified badge</td><td class="en">Verified</td><td class="ar">موثّق</td></tr>
+        <tr><td class="element-name">Section: Preferences</td><td class="en">Preferences</td><td class="ar">التفضيلات</td></tr>
+        <tr><td class="element-name">Section: Help &amp; support</td><td class="en">Help &amp; support</td><td class="ar">المساعدة والدعم</td></tr>
+        <tr><td class="element-name">Section: Account actions</td><td class="en">Account actions</td><td class="ar">إجراءات الحساب</td></tr>
+        <tr><td class="element-name">Avatar a11y label</td><td class="en">Profile photo, initials shown</td><td class="ar">صورة الحساب، الحروف الأولى ظاهرة</td></tr>
+        <tr><td class="element-name">Help — Contact us</td><td class="en">Contact us</td><td class="ar">كلّمنا</td></tr>
+        <tr><td class="element-name">Help — Send feedback</td><td class="en">Send feedback</td><td class="ar">قول لنا رأيك</td></tr>
+        <tr><td class="element-name">Sign out row label</td><td class="en">Sign out</td><td class="ar">تسجيل خروج</td></tr>
+
+        <tr class="group-start"><td class="screen-name" rowspan="6">Edit name</td><td class="element-name">Field label</td><td class="en">Name</td><td class="ar">الاسم</td></tr>
+        <tr><td class="element-name">Placeholder / hint</td><td class="en">What should we call you?</td><td class="ar">نناديك بإيه؟</td></tr>
+        <tr><td class="element-name">50-char validation</td><td class="en">Names cap at 50 characters. Trim a few and try again.</td><td class="ar">الاسم لازم يكون 50 حرف أو أقل. اختصره وحاول تاني.</td></tr>
+        <tr><td class="element-name">Emoji/numeral rejection</td><td class="en">Letters only — no numbers or emoji.</td><td class="ar">حروف بس — مفيش أرقام ولا إيموجي.</td></tr>
+        <tr><td class="element-name">Save</td><td class="en">Save</td><td class="ar">احفظ</td></tr>
+        <tr><td class="element-name">Cancel</td><td class="en">Cancel</td><td class="ar">إلغاء</td></tr>
+
+        <tr class="group-start"><td class="screen-name" rowspan="4">Add phone — entry</td><td class="element-name">Screen title</td><td class="en">Add a phone number</td><td class="ar">ضيف رقم تليفون</td></tr>
+        <tr><td class="element-name">Helper</td><td class="en">Adding your phone gives you a second way to sign in. Useful if you ever lose access to your email.</td><td class="ar">لما تضيف رقمك، هيبقى عندك طريقة تانية تدخل بيها على حسابك. مفيدة لو يوم فقدت الوصول لإيميلك.</td></tr>
+        <tr><td class="element-name">Phone input label</td><td class="en">Phone number</td><td class="ar">رقم التليفون</td></tr>
+        <tr><td class="element-name">Continue CTA</td><td class="en">Continue</td><td class="ar">كمل</td></tr>
+
+        <tr class="group-start"><td class="screen-name" rowspan="5">Add phone — OTP</td><td class="element-name">Instruction</td><td class="en">We sent a 6-digit code to {phone_number}. Enter it below to verify.</td><td class="ar">بعتنالك كود من 6 أرقام على {phone_number}. اكتبه تحت عشان نأكد الرقم.</td></tr>
+        <tr><td class="element-name">Resend</td><td class="en">Resend code</td><td class="ar">ابعت تاني</td></tr>
+        <tr><td class="element-name">Switch-channel CTA</td><td class="en">Send code by WhatsApp</td><td class="ar">ابعت الكود على واتساب</td></tr>
+        <tr><td class="element-name">SMS delivery failure</td><td class="en">SMS didn't get through. Try WhatsApp instead.</td><td class="ar">الرسالة ماوصلتش. جرب واتساب.</td></tr>
+        <tr><td class="element-name">WhatsApp delivery failure</td><td class="en">WhatsApp didn't deliver. Try SMS instead.</td><td class="ar">واتساب ماوصلش. جرب SMS.</td></tr>
+
+        <tr class="group-start"><td class="screen-name" rowspan="2">Add phone — success</td><td class="element-name">Confirmation</td><td class="en">Phone added. You can now sign in with phone or email.</td><td class="ar">الرقم اتضاف. تقدر دلوقتي تسجل دخول بالتليفون أو الإيميل.</td></tr>
+        <tr><td class="element-name">Dismiss CTA</td><td class="en">Done</td><td class="ar">تمام</td></tr>
+
+        <tr class="group-start"><td class="screen-name" rowspan="4">Add email — entry</td><td class="element-name">Screen title</td><td class="en">Add an email</td><td class="ar">ضيف إيميل</td></tr>
+        <tr><td class="element-name">Helper</td><td class="en">Adding your email gives you a second way to sign in. Useful if you ever change your phone number.</td><td class="ar">لما تضيف إيميلك، هيبقى عندك طريقة تانية تدخل بيها على حسابك. مفيدة لو يوم غيرت رقم تليفونك.</td></tr>
+        <tr><td class="element-name">Email input label</td><td class="en">Email</td><td class="ar">الإيميل</td></tr>
+        <tr><td class="element-name">Continue CTA</td><td class="en">Continue</td><td class="ar">كمل</td></tr>
+
+        <tr class="group-start"><td class="screen-name" rowspan="3">Add email — verify</td><td class="element-name">Instruction (code-entry, pending OQ)</td><td class="en">We sent a 6-digit code to {email}. Enter it below to verify.</td><td class="ar">بعتنالك كود من 6 أرقام على {email}. اكتبه تحت عشان نأكد الإيميل.</td></tr>
+        <tr><td class="element-name">Verification failure</td><td class="en">That didn't work. Resend the code, or contact us if it keeps failing.</td><td class="ar">ماظبطش. ابعت الكود تاني، أو كلمنا لو فضل بيفشل.</td></tr>
+        <tr><td class="element-name">Verification success</td><td class="en">Email added. You can now sign in with email or phone.</td><td class="ar">الإيميل اتضاف. تقدر دلوقتي تسجل دخول بالإيميل أو التليفون.</td></tr>
+
+        <tr class="group-start"><td class="screen-name" rowspan="13">Contact us</td><td class="element-name">Screen title</td><td class="en">Contact us</td><td class="ar">كلّمنا</td></tr>
+        <tr><td class="element-name">Hero card</td><td class="en">We reply within 24 hours · Tell us what you need help with — a real person on the team will get back to you by email.</td><td class="ar">بنرد خلال 24 ساعة · قولنا محتاج مساعدة في إيه — حد من الفريق هيرد عليك على إيميلك.</td></tr>
+        <tr><td class="element-name">Topic field label</td><td class="en">Topic</td><td class="ar">الموضوع</td></tr>
+        <tr><td class="element-name">Topic picker title</td><td class="en">What do you need help with?</td><td class="ar">محتاج مساعدة في إيه؟</td></tr>
+        <tr><td class="element-name">Topic 1 — title + sub</td><td class="en">Sign-in &amp; account access · Can't sign in, lost a sign-in method, identity issues</td><td class="ar">تسجيل الدخول والوصول للحساب · مش قادر تدخل، ضيعت طريقة دخول، مشاكل الهوية</td></tr>
+        <tr><td class="element-name">Topic 2 — title + sub</td><td class="en">Transactions · Missing, duplicate, or wrongly categorised</td><td class="ar">المعاملات · ناقصة، مكررة، أو في تصنيف غلط</td></tr>
+        <tr><td class="element-name">Topic 3 — title + sub</td><td class="en">Budgets · Wrong calculations or category mapping</td><td class="ar">الميزانيات · حسابات غلط أو تصنيف غلط</td></tr>
+        <tr><td class="element-name">Topic 4 — title + sub</td><td class="en">SMS &amp; bank parsing · Bank messages not picked up or parsed wrong</td><td class="ar">رسائل البنك · مش بتظهر أو بتتقرأ غلط</td></tr>
+        <tr><td class="element-name">Topic 5 — title + sub</td><td class="en">Something's not working · Crashes, errors, anything off</td><td class="ar">في حاجة مش شغالة · التطبيق بيقفل، أخطاء، أي حاجة</td></tr>
+        <tr><td class="element-name">Topic 6 — title + sub</td><td class="en">Something else · Anything not covered above</td><td class="ar">حاجة تانية · أي حاجة مش موجودة فوق</td></tr>
+        <tr><td class="element-name">Message field + hint</td><td class="en">Message · Describe the issue… · Minimum 20 characters</td><td class="ar">الرسالة · اوصف المشكلة… · 20 حرف على الأقل</td></tr>
+        <tr><td class="element-name">Submit CTA</td><td class="en">Send message</td><td class="ar">ابعت الرسالة</td></tr>
+        <tr><td class="element-name">Sent confirmation</td><td class="en">We've got your message. A reply will land in your email within 24 hours.</td><td class="ar">رسالتك وصلتنا. هيوصلك رد على إيميلك خلال 24 ساعة.</td></tr>
+
+        <tr class="group-start"><td class="screen-name" rowspan="2">Send feedback</td><td class="element-name">Row label (Profile root)</td><td class="en">Send feedback</td><td class="ar">قول لنا رأيك</td></tr>
+        <tr><td class="element-name">Fallback toast</td><td class="en">Couldn't open the rating prompt right now.</td><td class="ar">مش قادرين نفتح تقييم التطبيق دلوقتي.</td></tr>
+
+        <tr class="group-start"><td class="screen-name" rowspan="3">Language picker</td><td class="element-name">Screen title</td><td class="en">Language</td><td class="ar">اللغة</td></tr>
+        <tr><td class="element-name">Option: Arabic</td><td class="en">العربية (always shown in Arabic script)</td><td class="ar">العربية</td></tr>
+        <tr><td class="element-name">Option: English</td><td class="en">English</td><td class="ar">English (always shown in Latin script)</td></tr>
+
+        <tr class="group-start"><td class="screen-name" rowspan="3">Theme picker</td><td class="element-name">Row label</td><td class="en">Theme</td><td class="ar">المظهر</td></tr>
+        <tr><td class="element-name">Option: Light</td><td class="en">Light</td><td class="ar">فاتح</td></tr>
+        <tr><td class="element-name">Option: Dark</td><td class="en">Dark</td><td class="ar">غامق</td></tr>
+
+        <tr class="group-start"><td class="screen-name" rowspan="3">Sign out — confirmation</td><td class="element-name">Dialog title</td><td class="en">Sign out of MoneyMore?</td><td class="ar">تسجل خروج من MoneyMore؟</td></tr>
+        <tr><td class="element-name">Confirm CTA</td><td class="en">Sign out</td><td class="ar">اخرج</td></tr>
+        <tr><td class="element-name">Cancel CTA</td><td class="en">Cancel</td><td class="ar">إلغاء</td></tr>
+
+        <tr class="group-start"><td class="screen-name" rowspan="5">Delete account — typed confirmation</td><td class="element-name">Entry-point row label</td><td class="en">Delete account</td><td class="ar">احذف الحساب</td></tr>
+        <tr><td class="element-name">Header (red)</td><td class="en">This can't be undone</td><td class="ar">الخطوة دي مالهاش رجوع</td></tr>
+        <tr><td class="element-name">Irreversibility statement</td><td class="en">Deleting your account wipes your transactions, budgets, categories, and sign-in. This can't be undone — and we can't recover it for you later.</td><td class="ar">حذف حسابك معناه إن معاملاتك وميزانياتك وتصنيفاتك وبيانات دخولك كلها هتروح. الخطوة دي مالهاش رجوع — وإحنا كمان مش هنقدر نرجعها.</td></tr>
+        <tr><td class="element-name">Typed-confirmation instruction</td><td class="en">Type "delete my account" to confirm.</td><td class="ar">اكتب "احذف حسابي" عشان تأكد.</td></tr>
+        <tr><td class="element-name">Confirm CTA (destructive)</td><td class="en">Delete account</td><td class="ar">احذف الحساب</td></tr>
+
+        <tr class="group-start"><td class="screen-name" rowspan="4">Delete account — states</td><td class="element-name">In progress</td><td class="en">Deleting your account. Hold on a second.</td><td class="ar">بنحذف حسابك. ثانية واحدة.</td></tr>
+        <tr><td class="element-name">Connectivity failure</td><td class="en">Lost the connection mid-delete. Check your internet and tap retry — your account hasn't been deleted yet.</td><td class="ar">الاتصال قطع وإحنا بنحذف. اتأكد من النت واضغط حاول تاني — حسابك لسه ماتمسحش.</td></tr>
+        <tr><td class="element-name">Post-deletion success</td><td class="en">Account deleted. Take care.</td><td class="ar">الحساب اتمسح. خد بالك من نفسك.</td></tr>
+        <tr><td class="element-name">Deletion failure</td><td class="en">Deletion didn't complete. Tap retry, or contact us and we'll finish it for you.</td><td class="ar">الحذف ماكملش. اضغط حاول تاني، أو كلمنا وإحنا هنكمله.</td></tr>
+
+        <tr class="group-start"><td class="screen-name" rowspan="2">Global error states</td><td class="element-name">Generic network failure</td><td class="en">No connection. Check your internet and try again.</td><td class="ar">مفيش نت. اتأكد من الاتصال وحاول تاني.</td></tr>
+        <tr><td class="element-name">Generic backend failure</td><td class="en">That didn't go through. Try again in a moment.</td><td class="ar">ماظبطش. حاول تاني بعد شوية.</td></tr>
+
+      </tbody>
+    </table>
+
+    <div class="callout info">
+      <svg class="ico ico-sm" style="margin-top:2px"><use href="#i-info"/></svg>
+      <div>Brand name <strong>MoneyMore</strong> stays in Latin script in both languages — never transliterated to Arabic.</div>
+    </div>
+  </div>
+
+  <div class="handoff-sec">
+    <div class="handoff-h">Accessibility — what changes what you draw</div>
+    <ul class="handoff-list">
+      <li><strong>Touch targets — 44×44px minimum</strong> on every interactive row, the avatar, theme segments, language radio rows, and dialog buttons. Profile rows look compact but the tap target must extend to the full row height.</li>
+      <li><strong>Contrast — 4.5:1 minimum for text</strong>, with extra care on the destructive Delete account row. Red text on cream must meet AA in both light and dark themes.</li>
+      <li><strong>Never colour-only for state.</strong> The Delete account row pairs red text with the trash icon. Disabled Save and Delete buttons need the disabled visual treatment plus reduced opacity, not just colour change.</li>
+      <li><strong>Focus order — top to bottom.</strong> On the Profile root: avatar → Account section → Preferences → Help → Account actions. On Arabic the visual flips RTL but focus order stays top-to-bottom.</li>
+      <li><strong>Avatar a11y label</strong> reads "Profile photo, initials shown" / "صورة الحساب، الحروف الأولى ظاهرة". Confirm with reviewer that this reads cleanly in both languages.</li>
+    </ul>
+  </div>
+
+</div>
+
+</div>
+</body>
+</html>
