@@ -628,6 +628,25 @@ body{
 }
 .seg-opt.on{background:var(--surface);color:var(--t1);box-shadow:0 1px 3px rgba(20,17,13,0.08), 0 0 0 0.5px var(--b2);}
 
+/* Three-up segmented (theme picker with System added) */
+.seg-3{
+  display:flex;
+  background:var(--screen-bg2);
+  border-radius:var(--r-sm);
+  padding:4px;
+  gap:4px;
+}
+.seg-3-opt{
+  flex:1;height:64px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:6px;
+  font-size:11px;
+  font-weight:600;
+  color:var(--t3);
+  border-radius:6px;
+}
+.seg-3-opt.on{background:var(--surface);color:var(--t1);box-shadow:0 1px 3px rgba(20,17,13,0.08), 0 0 0 0.5px var(--b2);}
+
 /* Banners */
 .err-banner{
   padding:14px;
@@ -1002,6 +1021,7 @@ body{
     <symbol id="i-msg-square" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
     <symbol id="i-external" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></symbol>
     <symbol id="i-pause" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></symbol>
+    <symbol id="i-monitor" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></symbol>
   </defs>
 </svg>
 
@@ -1118,9 +1138,9 @@ body{
                   <svg class="ico ico-sm row-chev"><use href="#i-chevron-right"/></svg>
                 </div>
                 <div class="row">
-                  <div class="row-icon"><svg class="ico ico-sm"><use href="#i-sun"/></svg></div>
+                  <div class="row-icon"><svg class="ico ico-sm"><use href="#i-monitor"/></svg></div>
                   <div class="row-body"><div class="row-title">Theme</div></div>
-                  <span class="row-val">Light</span>
+                  <span class="row-val">System</span>
                   <svg class="ico ico-sm row-chev"><use href="#i-chevron-right"/></svg>
                 </div>
               </div>
@@ -2345,13 +2365,14 @@ body{
               <div class="app-bar-title">Theme</div>
             </div>
             <div class="sc-pad">
-              <div class="seg">
-                <div class="seg-opt on"><svg class="ico"><use href="#i-sun"/></svg> Light</div>
-                <div class="seg-opt"><svg class="ico"><use href="#i-moon"/></svg> Dark</div>
+              <div class="seg-3">
+                <div class="seg-3-opt on"><svg class="ico"><use href="#i-monitor"/></svg> System</div>
+                <div class="seg-3-opt"><svg class="ico"><use href="#i-sun"/></svg> Light</div>
+                <div class="seg-3-opt"><svg class="ico"><use href="#i-moon"/></svg> Dark</div>
               </div>
               <div class="info-banner" style="margin-top:8px">
                 <div class="info-ico-wrap"><svg class="ico ico-sm"><use href="#i-info"/></svg></div>
-                <div class="info-txt">Theme applies immediately. No Save button.</div>
+                <div class="info-txt">System matches your phone's appearance setting and switches automatically. Light or Dark always stays the same.</div>
               </div>
             </div>
           </div>
@@ -2359,7 +2380,7 @@ body{
       </div>
       <div class="flow-note decision">
         <svg class="ico ico-sm note-ico"><use href="#i-info"/></svg>
-        <div>Two states only — Light, Dark. No "system default" in v1. Segmented control because the choice is binary and visual.</div>
+        <div>Three states — System (default for new users), Light, Dark. Segmented control with icon-above-label so all three labels stay readable on narrow phones. System mirrors the OS-level dark/light setting and follows it live, including auto-schedules.</div>
       </div>
     </div>
 
@@ -2783,9 +2804,11 @@ body{
         <tr><td class="element-name">Option: Arabic</td><td class="en">العربية (always shown in Arabic script)</td><td class="ar">العربية</td></tr>
         <tr><td class="element-name">Option: English</td><td class="en">English</td><td class="ar">English (always shown in Latin script)</td></tr>
 
-        <tr class="group-start"><td class="screen-name" rowspan="3">Theme picker</td><td class="element-name">Row label</td><td class="en">Theme</td><td class="ar">المظهر</td></tr>
+        <tr class="group-start"><td class="screen-name" rowspan="5">Theme picker</td><td class="element-name">Row label</td><td class="en">Theme</td><td class="ar">المظهر</td></tr>
+        <tr><td class="element-name">Option: System (default for new users)</td><td class="en">System</td><td class="ar">النظام</td></tr>
         <tr><td class="element-name">Option: Light</td><td class="en">Light</td><td class="ar">فاتح</td></tr>
         <tr><td class="element-name">Option: Dark</td><td class="en">Dark</td><td class="ar">غامق</td></tr>
+        <tr><td class="element-name">System explainer (info banner)</td><td class="en">System matches your phone's appearance setting and switches automatically. Light or Dark always stays the same.</td><td class="ar">النظام بيتبع إعدادات موبايلك ويغيّر لوحده. فاتح أو غامق بيفضل ثابت.</td></tr>
 
         <tr class="group-start"><td class="screen-name" rowspan="3">Sign out — confirmation</td><td class="element-name">Dialog title</td><td class="en">Sign out of MoneyMore?</td><td class="ar">تسجل خروج من MoneyMore؟</td></tr>
         <tr><td class="element-name">Confirm CTA</td><td class="en">Sign out</td><td class="ar">اخرج</td></tr>
