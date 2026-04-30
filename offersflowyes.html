@@ -544,7 +544,7 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
     <span class="doc-tag prototype">Prototype</span>
     <span class="doc-tag designer">Designer brief</span>
     <span class="doc-tag android">Android</span>
-    <span class="doc-tag wip">Draft v6 · with logos</span>
+    <span class="doc-tag wip">Draft v7 · with logos</span>
     <span class="doc-tag version">DB · Offers v1</span>
     <span class="doc-date">29 April 2026</span>
   </div>
@@ -1721,6 +1721,116 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
     </div>
 
   </div>
+
+  <div style="margin-top:36px;padding-top:24px;border-top:1px dashed var(--b2);">
+    <div style="font-family:var(--f-mono);font-size:10px;font-weight:600;color:var(--t3);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:18px;">Edge case · push tapped after expiration</div>
+
+    <div class="phone-row">
+
+      <div class="screen-col">
+        <div class="screen-label">Lock screen · push from earlier</div>
+        <div class="state-badge os">OS-rendered</div>
+        <div class="phone">
+          <div style="position:absolute;inset:0;background:linear-gradient(180deg,#0F1419 0%,#1A2330 100%);"></div>
+          <div style="position:absolute;top:0;left:0;right:0;height:22px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;font-family:var(--f-body);font-size:9px;font-weight:600;color:white;z-index:10;"><span>11:42</span><span>▲▲ 🔋</span></div>
+
+          <div style="position:absolute;top:54px;left:0;right:0;text-align:center;color:white;z-index:5;">
+            <div style="font-size:48px;font-weight:300;letter-spacing:-0.04em;line-height:1;">11:42</div>
+            <div style="font-size:11px;opacity:0.7;margin-top:4px;font-weight:500;">Wednesday, 29 April</div>
+          </div>
+
+          <div style="position:absolute;top:160px;left:12px;right:12px;background:rgba(245,243,238,0.95);backdrop-filter:blur(20px);border-radius:16px;padding:12px;z-index:6;box-shadow:0 4px 20px rgba(0,0,0,0.3);">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+              <div style="width:18px;height:18px;border-radius:5px;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:10px;color:white;font-weight:800;">M</div>
+              <div style="font-size:10px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:0.05em;">MoneyMore</div>
+              <div style="font-size:10px;color:var(--t3);margin-left:auto;">4h ago</div>
+            </div>
+            <div style="font-size:13px;font-weight:700;color:var(--t1);line-height:1.3;margin-bottom:3px;">New offer from Talabat 🎁</div>
+            <div style="font-size:12px;color:var(--t2);line-height:1.4;">25% off — only for 6 hours. Tap to claim.</div>
+          </div>
+
+          <div style="position:absolute;bottom:14px;left:0;right:0;text-align:center;color:white;font-size:11px;opacity:0.7;font-weight:500;z-index:5;">Swipe up to unlock</div>
+        </div>
+        <div class="flow-note decision">Same notification, tapped 4 hours later. The offer was 6h-window so by now it's expired. The deep-link still resolves but the user lands on a "you just missed this" state instead of a live offer.</div>
+      </div>
+
+      <div class="flow-arrow">
+        <div class="arrow-line"></div>
+        <div class="arrow-label">tap notification</div>
+      </div>
+
+      <div class="screen-col">
+        <div class="screen-label">App opens · deep-link transition</div>
+        <div class="state-badge loading">launching</div>
+        <div class="phone">
+          <div class="a-status"><span>11:42</span><span>▲▲ 🔋</span></div>
+          <div class="screen">
+            <div style="flex:1;background:linear-gradient(180deg,var(--screen-bg) 0%,var(--screen-bg2) 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:32px;text-align:center;">
+              <div style="width:64px;height:64px;border-radius:18px;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:28px;color:white;font-weight:800;box-shadow:0 8px 24px rgba(46,139,87,0.3);">M</div>
+              <div style="font-size:14px;color:var(--t3);font-weight:600;">Opening offer…</div>
+            </div>
+          </div>
+          <div class="a-nav">
+            <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+            <div class="a-nav-item"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+            <div class="a-nav-item"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+            <div class="a-nav-item on"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+            <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flow-arrow">
+        <div class="arrow-line"></div>
+        <div class="arrow-label">offer expired</div>
+      </div>
+
+      <div class="screen-col">
+        <div class="screen-label">Sheet · you just missed it</div>
+        <div class="state-badge empty">missed offer</div>
+        <div class="phone">
+          <div class="a-status"><span>11:42</span><span>▲▲ 🔋</span></div>
+          <div class="screen">
+            <div class="app-bar" style="opacity:0.25">
+              <div class="app-bar-eyebrow">Curated for you</div>
+              <div class="app-bar-title">Offers</div>
+            </div>
+            <div style="opacity:0.25;flex:1;background:var(--screen-bg)"></div>
+            <div class="overlay">
+              <div class="bottom-sheet">
+                <div class="bs-handle"></div>
+                <div class="sheet-header">
+                  <div class="sheet-merchant-logo talabat" style="filter:saturate(0.5);opacity:0.7"><svg viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg"><text x="21" y="26" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="800" fill="white" text-anchor="middle" letter-spacing="-0.5">talabat</text></svg></div>
+                  <div class="sheet-merchant-info">
+                    <div class="sheet-merchant-name">Talabat · expired</div>
+                    <div class="sheet-offer-title" style="color:var(--t3)">25% off your next order</div>
+                  </div>
+                  <div class="sheet-close">✕</div>
+                </div>
+
+                <div style="background:linear-gradient(135deg,#5A5650 0%,#7A7670 100%);color:white;border-radius:14px;padding:22px 16px;margin-bottom:14px;text-align:center;position:relative;overflow:hidden;">
+                  <div style="font-size:32px;margin-bottom:8px;">⏱</div>
+                  <div style="font-size:16px;font-weight:700;letter-spacing:-0.015em;line-height:1.3;margin-bottom:4px;">You just missed this</div>
+                  <div style="font-size:11px;opacity:0.85;line-height:1.5;font-weight:500;max-width:200px;margin:0 auto;">This offer expired before you got to it. Check Available for what's live now.</div>
+                </div>
+
+                <div class="terms-block" style="background:var(--screen-bg2);">
+                  <div class="terms-label">What you missed</div>
+                  <div class="terms-text" style="color:var(--t2);">25% off your next order from Talabat. Pushed at 7:14pm, expired at 1:14am.</div>
+                </div>
+
+                <div class="btn btn-primary btn-lg">Browse Available</div>
+                <div style="text-align:center;margin-top:10px;"><span style="font-size:11px;color:var(--t3);font-weight:600;">Dismiss</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="a-nav" style="opacity:0.25"></div>
+        </div>
+        <div class="flow-note new">New edge case state. Empathetic framing — converts a dead-end into a re-engagement moment. Primary CTA returns user to live Available offers; secondary dismisses to Available without forcing the click.</div>
+      </div>
+
+    </div>
+  </div>
 </div>
 
 
@@ -1973,6 +2083,15 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
           <td class="element-name">Title — templated by merchant</td><td class="en">New offer from {merchant} 🎁</td><td class="ar">عرض جديد من {merchant} 🎁</td>
         </tr>
         <tr><td class="element-name">Body — templated by discount + duration</td><td class="en">{discount} — only for {duration}. Tap to claim.</td><td class="ar">{discount} — لمدة {duration} بس. دوس عشان تاخده.</td></tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="5">Missed offer · push tapped after expiration</td>
+          <td class="element-name">Sheet header — merchant suffix</td><td class="en">{merchant} · expired</td><td class="ar">{merchant} · منتهي</td>
+        </tr>
+        <tr><td class="element-name">Hero headline</td><td class="en">You just missed this</td><td class="ar">للأسف فاتك العرض ده</td></tr>
+        <tr><td class="element-name">Hero body</td><td class="en">This offer expired before you got to it. Check Available for what's live now.</td><td class="ar">العرض ده انتهى قبل ما توصله. شوف اللي متاح دلوقتي.</td></tr>
+        <tr><td class="element-name">What you missed label</td><td class="en">What you missed</td><td class="ar">اللي فاتك</td></tr>
+        <tr><td class="element-name">Primary CTA</td><td class="en">Browse Available</td><td class="ar">شوف اللي متاح</td></tr>
       </tbody>
     </table>
 
