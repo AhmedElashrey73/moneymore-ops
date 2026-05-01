@@ -166,11 +166,16 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
 .crow-body{flex:1;min-width:0;overflow:hidden;}
 .crow-title{font-size:12px;font-weight:700;color:var(--t1);line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .crow-sub{font-size:10px;color:var(--t3);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.crow-sub.pending{color:var(--t4);font-style:italic;}
+.crow-sub.pending{color:var(--gold);font-style:italic;font-weight:600;}
 .crow-amt{font-size:13px;font-weight:700;color:var(--t1);font-variant-numeric:tabular-nums;flex-shrink:0;}
 .crow-amt.spend::before{content:'−';color:var(--t3);margin-right:1px;}
 .crow-amt.income{color:var(--t-pos);}
 .crow-amt.income::before{content:'+';margin-right:1px;}
+/* Right-side stack — amount on top, time below */
+.crow-right{display:flex;flex-direction:column;align-items:flex-end;gap:2px;flex-shrink:0;}
+.crow-time{font-size:9px;color:var(--t4);font-weight:500;}
+/* Pending row icon — gold tint */
+.crow.pending .crow-ico{background:var(--gold-l);color:var(--gold);}
 
 /* Internal full-width CTA inside a big card */
 .bcard-cta{margin:4px 10px 12px;padding:11px;background:var(--screen-bg2);border-radius:var(--r-md);text-align:center;font-size:12px;font-weight:700;color:var(--navy);}
@@ -246,10 +251,25 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
 .sheet-close{font-size:20px;color:var(--t2);line-height:1;padding:2px 4px 0;}
 .sheet-hdr-body{flex:1;min-width:0;}
 .sheet-merch{font-size:16px;font-weight:700;color:var(--t1);line-height:1.2;}
+/* Source line — sits directly under merchant name. Only place SMS vs manual is shown. */
+.sheet-source{font-size:11px;color:var(--t3);font-weight:500;margin-top:2px;letter-spacing:0.01em;}
+/* Mode chip — "Details" / "Editing" */
+.sheet-mode-chip{display:inline-flex;align-items:center;gap:4px;font-family:var(--f-mono);font-size:9px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:3px 8px;border-radius:var(--r-pill);margin-bottom:8px;}
+.sheet-mode-chip.view{background:var(--screen-bg2);color:var(--t2);}
+.sheet-mode-chip.edit{background:#EAE8FF;color:#3A3288;}
 .sheet-amt{font-size:24px;font-weight:700;letter-spacing:-0.01em;margin-top:4px;font-variant-numeric:tabular-nums;}
 .sheet-amt.spend{color:var(--t1);}
 .sheet-amt.spend::before{content:'−';color:var(--t3);margin-right:2px;}
 .sheet-amt.income{color:var(--t-pos);}
+.sheet-amt.income::before{content:'+';margin-right:2px;}
+/* Internal transfer — neutral grey, sign-less */
+.sheet-amt.transfer{color:var(--t3);font-weight:600;}
+/* Refund — income-style green */
+.sheet-amt.refund{color:var(--t-pos);}
+.sheet-amt.refund::before{content:'+';margin-right:2px;}
+/* Internal transfer header replaces merchant name */
+.sheet-transfer-hdr{font-size:14px;font-weight:600;color:var(--t1);line-height:1.35;}
+.sheet-transfer-hdr strong{font-weight:700;}
 .sheet-amt.income::before{content:'+';margin-right:2px;}
 .sheet-meta{font-size:10px;color:var(--t3);margin-top:4px;}
 
@@ -269,6 +289,25 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
 
 .sheet-toggle{background:var(--screen-bg);border:1px solid var(--b1);border-radius:var(--r-md);padding:10px 12px;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;}
 .sheet-toggle-lbl{font-size:12px;font-weight:600;color:var(--navy);}
+
+/* Type segmented control */
+.sheet-seg{display:flex;background:var(--screen-bg2);border-radius:var(--r-sm);padding:2px;gap:2px;}
+.sheet-seg-opt{flex:1;text-align:center;padding:7px 4px;font-size:11px;font-weight:600;color:var(--t3);border-radius:4px;}
+.sheet-seg-opt.on{background:#fff;color:var(--t1);font-weight:700;box-shadow:0 1px 2px rgba(0,0,0,0.06);}
+
+/* Categorising state — replaces category chip */
+.sheet-categorising{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;background:var(--gold-l);border-radius:var(--r-pill);font-size:11px;font-weight:600;color:#8A6510;}
+.sheet-categorising-dot{width:6px;height:6px;border-radius:50%;background:#B8860B;animation:pulse 1.4s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:0.4}50%{opacity:1}}
+
+/* Pending pick-a-category CTA — replaces Edit button */
+.sheet-btn.pick-cat{background:var(--green);color:#fff;flex:1.5;}
+
+/* Undo toast — sits above bottom nav after delete */
+.undo-toast{position:absolute;left:14px;right:14px;bottom:62px;background:var(--t1);color:#fff;border-radius:var(--r-md);padding:12px 14px;display:flex;align-items:center;gap:12px;z-index:55;box-shadow:0 4px 16px rgba(0,0,0,0.25);}
+.undo-toast-txt{flex:1;font-size:12px;font-weight:600;color:#fff;}
+.undo-toast-cta{font-size:12px;font-weight:700;color:#7AC99B;text-transform:uppercase;letter-spacing:0.05em;padding:0 4px;}
+.undo-timer{font-family:var(--f-mono);font-size:10px;color:rgba(255,255,255,0.55);}
 
 .sheet-actions{display:flex;gap:8px;padding:10px 14px 20px;background:#fff;flex-shrink:0;}
 .sheet-btn{flex:1;padding:12px;border-radius:var(--r-sm);font-size:13px;font-weight:700;text-align:center;}
@@ -380,9 +419,9 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
     <span class="doc-tag prototype">Prototype</span>
     <span class="doc-tag designer">Designer brief</span>
     <span class="doc-tag android">Android</span>
-    <span class="doc-tag wip">Draft v3</span>
+    <span class="doc-tag wip">Draft v5</span>
     <span class="doc-tag version">DB-010</span>
-    <span class="doc-tag rebuild">v3 · updated brief, centre plus nav, final copy</span>
+    <span class="doc-tag rebuild">v5 · Latest Spending rows aligned to Transactions prototype</span>
     <span class="doc-date">Home Tab revamp · summary with light directional nudges</span>
   </div>
 
@@ -402,16 +441,15 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
         <div class="flow-list-item active">Flow 1 — State A · hybrid anchor (default)</div>
         <div class="flow-list-item active">Flow 2 — State A-pure · ≤3 budgets + Manage budgets</div>
         <div class="flow-list-item active">Flow 3 — State A-pure · more than 3 budgets</div>
-        <div class="flow-list-item active">Flow 4 — State B · review prompt + recommendations</div>
-        <div class="flow-list-item active">Flow 5 — State C · categorisation in progress</div>
-        <div class="flow-list-item active">Flow 6 — State D · primed-and-ready</div>
-        <div class="flow-list-item active">Flow 7 — State E · manual-only</div>
-        <div class="flow-list-item active">Flow 8 — State F · offline</div>
-        <div class="flow-list-item active">Flow 9 — Budget bar · under / near / over</div>
-        <div class="flow-list-item active">Flow 10 — Centre plus action sheet</div>
-        <div class="flow-list-item active">Flow 11 — Transaction Detail sheet</div>
-        <div class="flow-list-item active">Flow 12 — Quick-create sheet</div>
-        <div class="flow-list-item active">Flow 13 — Push notifications</div>
+        <div class="flow-list-item active">Flow 4 — State C · categorisation in progress</div>
+        <div class="flow-list-item active">Flow 5 — State D · primed-and-ready</div>
+        <div class="flow-list-item active">Flow 6 — State E · manual-only</div>
+        <div class="flow-list-item active">Flow 7 — State F · offline</div>
+        <div class="flow-list-item active">Flow 8 — Budget bar · under / near / over</div>
+        <div class="flow-list-item active">Flow 9 — Centre plus action sheet</div>
+        <div class="flow-list-item active">Flow 10 — Transaction Detail · entry from Home Tab (sheet lives in Transactions prototype)</div>
+        <div class="flow-list-item active">Flow 11 — Quick-create sheet</div>
+        <div class="flow-list-item active">Flow 12 — Push notifications</div>
       </div>
     </div>
   </div>
@@ -525,18 +563,18 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
             <div class="row-stack">
               <div class="crow">
                 <div class="crow-ico">☕</div>
-                <div class="crow-body"><div class="crow-title">Starbucks</div><div class="crow-sub">Today, 9:12</div></div>
-                <div class="crow-amt spend">140 EGP</div>
+                <div class="crow-body"><div class="crow-title">Starbucks</div><div class="crow-sub">Food & Dining</div></div>
+                <div class="crow-right"><div class="crow-amt spend">140 EGP</div><div class="crow-time">9:12 AM</div></div>
               </div>
               <div class="crow">
                 <div class="crow-ico">⛽</div>
-                <div class="crow-body"><div class="crow-title">Shell</div><div class="crow-sub">Yesterday, 18:44</div></div>
-                <div class="crow-amt spend">380 EGP</div>
+                <div class="crow-body"><div class="crow-title">Shell</div><div class="crow-sub">Transport</div></div>
+                <div class="crow-right"><div class="crow-amt spend">380 EGP</div><div class="crow-time">6:44 PM</div></div>
               </div>
               <div class="crow">
                 <div class="crow-ico">🛍</div>
-                <div class="crow-body"><div class="crow-title">Carrefour</div><div class="crow-sub">Apr 22, 14:30</div></div>
-                <div class="crow-amt spend">520 EGP</div>
+                <div class="crow-body"><div class="crow-title">Carrefour</div><div class="crow-sub">Shopping</div></div>
+                <div class="crow-right"><div class="crow-amt spend">520 EGP</div><div class="crow-time">2:30 PM</div></div>
               </div>
             </div>
           </div>
@@ -644,13 +682,13 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
             <div class="row-stack">
               <div class="crow">
                 <div class="crow-ico">☕</div>
-                <div class="crow-body"><div class="crow-title">Starbucks</div><div class="crow-sub">Today, 9:12</div></div>
-                <div class="crow-amt spend">140 EGP</div>
+                <div class="crow-body"><div class="crow-title">Starbucks</div><div class="crow-sub">Food & Dining</div></div>
+                <div class="crow-right"><div class="crow-amt spend">140 EGP</div><div class="crow-time">9:12 AM</div></div>
               </div>
               <div class="crow">
                 <div class="crow-ico">⛽</div>
-                <div class="crow-body"><div class="crow-title">Shell</div><div class="crow-sub">Yesterday, 18:44</div></div>
-                <div class="crow-amt spend">380 EGP</div>
+                <div class="crow-body"><div class="crow-title">Shell</div><div class="crow-sub">Transport</div></div>
+                <div class="crow-right"><div class="crow-amt spend">380 EGP</div><div class="crow-time">6:44 PM</div></div>
               </div>
             </div>
           </div>
@@ -771,106 +809,13 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
 </div>
 
 
-<!-- FLOW 4 — STATE B -->
+<!-- FLOW 4 — STATE C -->
 <div class="flow-section">
   <div class="flow-section-header">
-    <div class="flow-section-title">Flow 4 — State B · First session, review prompt + Mode A</div>
+    <div class="flow-section-title">Flow 4 — State C · Categorisation in progress</div>
     <div class="flow-section-line"></div>
   </div>
-  <div class="flow-intro">First session, transactions parsed, low-confidence items flagged. Review prompt banner sits above the card stack. Smart Budget card shows 3 Mode A recommendations.</div>
-
-  <div class="phone-row">
-
-    <div class="screen-col">
-      <div class="screen-label">State B · review prompt + 3 Mode A cards</div>
-      <div class="state-badge interaction">first session</div>
-      <div class="phone">
-        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
-        <div class="screen">
-          <div class="hm-header">
-            <div class="hm-greet"><div class="hm-greet-en">Good morning, Ahmed.</div></div>
-            <div class="hm-bell">🔔</div>
-            <div class="hm-avatar">A</div>
-          </div>
-          <div class="review-slot">
-            <div class="review-ico">✎</div>
-            <div class="review-body">
-              <div class="review-text">Help us place a few transactions.</div>
-            </div>
-            <div class="review-cta">Review now →</div>
-          </div>
-
-          <div class="bcard">
-            <div class="bcard-head"><div><div class="bcard-label">Total spending this month</div></div></div>
-            <div class="te-amount-row"><div class="te-amount">1,240</div><div class="te-cur">EGP</div></div>
-            <div class="te-count">8 transactions</div>
-            <div class="row-stack">
-              <div class="crow">
-                <div class="crow-ico">🍕</div>
-                <div class="crow-body"><div class="crow-title">Food &amp; Dining</div><div class="crow-sub">4 transactions</div></div>
-                <div class="crow-amt">620 EGP</div>
-              </div>
-              <div class="crow">
-                <div class="crow-ico">🚗</div>
-                <div class="crow-body"><div class="crow-title">Transport</div><div class="crow-sub">2 transactions</div></div>
-                <div class="crow-amt">280 EGP</div>
-              </div>
-              <div class="crow">
-                <div class="crow-ico">🛍</div>
-                <div class="crow-body"><div class="crow-title">Shopping</div><div class="crow-sub">2 transactions</div></div>
-                <div class="crow-amt">340 EGP</div>
-              </div>
-            </div>
-            <div class="bcard-cta">See all categories</div>
-          </div>
-
-          <div class="bcard">
-            <div class="bcard-head"><div><div class="bcard-label">Suggested budgets</div></div></div>
-            <div class="sb-framing" style="padding-bottom:10px">
-              <div class="sb-framing-en">Based on your spending, here's where a budget might help.</div>
-            </div>
-            <div class="row-stack">
-              <div class="mode-a-crow">
-                <div class="mode-a-ico">🍕</div>
-                <div class="mode-a-body">
-                  <div class="mode-a-cat">Food &amp; Dining</div>
-                  <div class="mode-a-sugg">Try <strong>2,000 EGP</strong>/month</div>
-                </div>
-                <div class="mode-a-btn">Set</div>
-              </div>
-              <div class="mode-a-crow">
-                <div class="mode-a-ico">🚗</div>
-                <div class="mode-a-body">
-                  <div class="mode-a-cat">Transport</div>
-                  <div class="mode-a-sugg">Try <strong>800 EGP</strong>/month</div>
-                </div>
-                <div class="mode-a-btn">Set</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="a-nav">
-          <div class="a-nav-item on"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
-          <div class="a-nav-item"><div class="a-nav-icon">↕️</div><div class="a-nav-lbl">Transactions</div></div>
-          <div class="a-nav-plus"><span class="a-nav-plus-ico">+</span></div>
-          <div class="a-nav-item"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
-          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
-        </div>
-      </div>
-      <div class="flow-note decision">Smart Budget label reads "Suggested budgets" when only Mode A cards show. Swaps to "Your budgets" once the first budget is created.</div>
-    </div>
-
-  </div>
-</div>
-
-
-<!-- FLOW 5 — STATE C -->
-<div class="flow-section">
-  <div class="flow-section-header">
-    <div class="flow-section-title">Flow 5 — State C · Categorisation in progress</div>
-    <div class="flow-section-line"></div>
-  </div>
-  <div class="flow-intro">First session, categorisation still running. Total Expenses card shows the amount and count but the category rows are replaced with a pending notice. Smart Budget in Mode C. Latest Spending rows show "Sorting…" where a date would normally sit.</div>
+  <div class="flow-intro">First session, categorisation still running. Total Expenses card shows the amount and count but the category rows are replaced with a pending notice. Smart Budget in Mode C. Latest Spending rows show "Categorising…" where a category would normally sit.</div>
 
   <div class="phone-row">
 
@@ -892,7 +837,7 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
             <div class="te-count">8 transactions</div>
             <div class="takeover">
               <div class="takeover-ico">⟳</div>
-              <div class="takeover-ttl">Sorting your latest spending.</div>
+              <div class="takeover-ttl">Categorising your latest spending.</div>
               <div class="takeover-body">Breakdown shows up in a moment.</div>
             </div>
           </div>
@@ -909,20 +854,20 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
           <div class="bcard">
             <div class="bcard-head"><div><div class="bcard-label">Latest spending</div></div></div>
             <div class="row-stack">
-              <div class="crow">
+              <div class="crow pending">
                 <div class="crow-ico">☕</div>
-                <div class="crow-body"><div class="crow-title">Starbucks</div><div class="crow-sub pending">Sorting…</div></div>
-                <div class="crow-amt spend">140 EGP</div>
+                <div class="crow-body"><div class="crow-title">Starbucks</div><div class="crow-sub pending">Categorising…</div></div>
+                <div class="crow-right"><div class="crow-amt spend">140 EGP</div><div class="crow-time">9:12 AM</div></div>
               </div>
-              <div class="crow">
+              <div class="crow pending">
                 <div class="crow-ico">⛽</div>
-                <div class="crow-body"><div class="crow-title">Shell</div><div class="crow-sub pending">Sorting…</div></div>
-                <div class="crow-amt spend">380 EGP</div>
+                <div class="crow-body"><div class="crow-title">Shell</div><div class="crow-sub pending">Categorising…</div></div>
+                <div class="crow-right"><div class="crow-amt spend">380 EGP</div><div class="crow-time">6:44 PM</div></div>
               </div>
               <div class="crow">
                 <div class="crow-ico">🛍</div>
-                <div class="crow-body"><div class="crow-title">Carrefour</div><div class="crow-sub">Apr 22, 14:30</div></div>
-                <div class="crow-amt spend">520 EGP</div>
+                <div class="crow-body"><div class="crow-title">Carrefour</div><div class="crow-sub">Shopping</div></div>
+                <div class="crow-right"><div class="crow-amt spend">520 EGP</div><div class="crow-time">2:30 PM</div></div>
               </div>
             </div>
           </div>
@@ -944,10 +889,10 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
 </div>
 
 
-<!-- FLOW 6 — STATE D -->
+<!-- FLOW 5 — STATE D -->
 <div class="flow-section">
   <div class="flow-section-header">
-    <div class="flow-section-title">Flow 6 — State D · Primed-and-ready</div>
+    <div class="flow-section-title">Flow 5 — State D · Primed-and-ready</div>
     <div class="flow-section-line"></div>
   </div>
   <div class="flow-intro">First session, SMS granted, zero transactions yet. Total Expenses card shows an expectations takeover (no amount — nothing to total). Smart Budget in Mode C. Latest Spending card doesn't render.</div>
@@ -1001,10 +946,10 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
 </div>
 
 
-<!-- FLOW 7 — STATE E -->
+<!-- FLOW 6 — STATE E -->
 <div class="flow-section">
   <div class="flow-section-header">
-    <div class="flow-section-title">Flow 7 — State E · Manual-only first session</div>
+    <div class="flow-section-title">Flow 6 — State E · Manual-only first session</div>
     <div class="flow-section-line"></div>
   </div>
   <div class="flow-intro">User declined SMS. Manual entry is the primary action. The in-screen Add Transaction hero coexists with the centre plus in this state — the hero teaches the action during first manual-entry, the centre plus is the app-wide pattern. Secondary SMS link sits below.</div>
@@ -1064,10 +1009,10 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
 </div>
 
 
-<!-- FLOW 8 — STATE F -->
+<!-- FLOW 7 — STATE F -->
 <div class="flow-section">
   <div class="flow-section-header">
-    <div class="flow-section-title">Flow 8 — State F · Offline / cached</div>
+    <div class="flow-section-title">Flow 7 — State F · Offline / cached</div>
     <div class="flow-section-line"></div>
   </div>
   <div class="flow-intro">Backend unreachable. "Last updated" pill sits above the card stack. Cards render from cache. Smart Budget may not render if nothing useful is cached.</div>
@@ -1119,13 +1064,13 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
             <div class="row-stack">
               <div class="crow">
                 <div class="crow-ico">☕</div>
-                <div class="crow-body"><div class="crow-title">Starbucks</div><div class="crow-sub">Today, 9:12</div></div>
-                <div class="crow-amt spend">140 EGP</div>
+                <div class="crow-body"><div class="crow-title">Starbucks</div><div class="crow-sub">Food & Dining</div></div>
+                <div class="crow-right"><div class="crow-amt spend">140 EGP</div><div class="crow-time">9:12 AM</div></div>
               </div>
               <div class="crow">
                 <div class="crow-ico">⛽</div>
-                <div class="crow-body"><div class="crow-title">Shell</div><div class="crow-sub">Yesterday, 18:44</div></div>
-                <div class="crow-amt spend">380 EGP</div>
+                <div class="crow-body"><div class="crow-title">Shell</div><div class="crow-sub">Transport</div></div>
+                <div class="crow-right"><div class="crow-amt spend">380 EGP</div><div class="crow-time">6:44 PM</div></div>
               </div>
             </div>
           </div>
@@ -1138,17 +1083,17 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
           <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
         </div>
       </div>
-      <div class="flow-note new">Offline pill and review prompt never coexist — an offline user can't have a live parse review. Smart Budget card is absent here because Mode A needs live logic and there are no cached budgets to show in Mode B.</div>
+      <div class="flow-note new">Smart Budget card is absent here because Mode A needs live logic and there are no cached budgets to show in Mode B.</div>
     </div>
 
   </div>
 </div>
 
 
-<!-- FLOW 9 — MODE B BAR STATES -->
+<!-- FLOW 8 — MODE B BAR STATES -->
 <div class="flow-section">
   <div class="flow-section-header">
-    <div class="flow-section-title">Flow 9 — Mode B progress bar · 3 states isolated</div>
+    <div class="flow-section-title">Flow 8 — Mode B progress bar · 3 states isolated</div>
     <div class="flow-section-line"></div>
   </div>
   <div class="flow-intro">The three bar states side by side so the designer can pick the over-limit convention.</div>
@@ -1279,10 +1224,10 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
 </div>
 
 
-<!-- FLOW 10 — CENTRE PLUS ACTION SHEET -->
+<!-- FLOW 9 — CENTRE PLUS ACTION SHEET -->
 <div class="flow-section">
   <div class="flow-section-header">
-    <div class="flow-section-title">Flow 10 — Centre plus action sheet</div>
+    <div class="flow-section-title">Flow 9 — Centre plus action sheet</div>
     <div class="flow-section-line"></div>
   </div>
   <div class="flow-intro">Opens from the raised [+] in the bottom nav on any tab. Two options read as equal peers. "Add transaction" routes to the transaction creation modal. "Add budget" routes to the Budgets tab full creation flow (not the Quick-create sheet).</div>
@@ -1349,20 +1294,19 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
 </div>
 
 
-<!-- FLOW 11 — TRANSACTION DETAIL SHEET -->
+<!-- FLOW 10 — TRANSACTION DETAIL ENTRY POINT -->
 <div class="flow-section">
   <div class="flow-section-header">
-    <div class="flow-section-title">Flow 11 — Transaction Detail sheet · 4 modes + delete</div>
+    <div class="flow-section-title">Flow 10 — Transaction Detail · entry from Home Tab</div>
     <div class="flow-section-line"></div>
   </div>
-  <div class="flow-intro">Four modes of the Transaction Detail sheet plus the native delete dialog. Same component, different fields locked for SMS-parsed vs. manual.</div>
+  <div class="flow-intro">Tapping a Latest Spending row opens the Transaction Detail bottom sheet. The sheet itself is a shared component — full states (view, edit, internal transfer toggle, refund, pending categorisation, delete with 5-second undo) live in the Transactions feature prototype. This phone shows the entry point only.</div>
 
   <div class="phone-row">
 
-    <!-- 10.1 SMS view -->
     <div class="screen-col">
-      <div class="screen-label">SMS-parsed · view mode</div>
-      <div class="state-badge happy">view</div>
+      <div class="screen-label">Tap Latest Spending row · sheet opens</div>
+      <div class="state-badge interaction">entry point</div>
       <div class="phone">
         <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
         <div class="screen no-nav sheet-host">
@@ -1372,31 +1316,29 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
             <div class="sheet-hdr">
               <div class="sheet-close">✕</div>
               <div class="sheet-hdr-body">
+                <div class="sheet-mode-chip view">Details</div>
                 <div class="sheet-merch">Starbucks</div>
+                <div class="sheet-source">From SMS</div>
                 <div class="sheet-amt spend">140 EGP</div>
                 <div class="sheet-meta">Today, 9:12 AM</div>
               </div>
             </div>
             <div class="sheet-body">
               <div class="sheet-field">
+                <div class="sheet-flabel">Type</div>
+                <div class="sheet-fvalue">Spending</div>
+              </div>
+              <div class="sheet-field">
                 <div class="sheet-flabel">Category</div>
                 <div class="sheet-fvalue tappable">
                   <div class="sheet-chip sheet-chip-tap">🍕 Food &amp; Dining</div>
                   <div class="sheet-chev">›</div>
                 </div>
-              </div>
-              <div class="sheet-field">
-                <div class="sheet-flabel">Paid with</div>
-                <div class="sheet-fvalue disabled">CIB · card ending 4827</div>
               </div>
               <div class="sheet-field">
                 <div class="sheet-flabel">Notes</div>
                 <div class="sheet-fvalue ph">Add a note</div>
               </div>
-              <div class="sheet-toggle">
-                <div class="sheet-toggle-lbl">See original message</div>
-                <div style="color:var(--t3);font-size:12px">▾</div>
-              </div>
             </div>
             <div class="sheet-actions">
               <div class="sheet-btn danger">Delete</div>
@@ -1405,205 +1347,17 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
           </div>
         </div>
       </div>
-      <div class="flow-note decision">Category chip is tappable and opens a category picker on top of this sheet. Payment method is informational. Notes placeholder opens an inline editor on tap.</div>
-    </div>
-
-    <div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">Edit</div></div>
-
-    <!-- 10.2 SMS edit -->
-    <div class="screen-col">
-      <div class="screen-label">SMS-parsed · edit mode</div>
-      <div class="state-badge interaction">merchant/date locked</div>
-      <div class="phone">
-        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
-        <div class="screen no-nav sheet-host">
-          <div class="sheet-dim"></div>
-          <div class="sheet">
-            <div class="sheet-handle"></div>
-            <div class="sheet-hdr">
-              <div class="sheet-close">✕</div>
-              <div class="sheet-hdr-body">
-                <div class="sheet-merch" style="color:var(--t3)">Starbucks</div>
-                <div class="sheet-meta">Today, 9:12 AM · locked</div>
-              </div>
-            </div>
-            <div class="sheet-body">
-              <div class="sheet-field">
-                <div class="sheet-flabel">Amount (EGP)</div>
-                <div class="sheet-edit-input">140</div>
-              </div>
-              <div class="sheet-field">
-                <div class="sheet-flabel">Category</div>
-                <div class="sheet-fvalue tappable">
-                  <div class="sheet-chip sheet-chip-tap">🍕 Food &amp; Dining</div>
-                  <div class="sheet-chev">›</div>
-                </div>
-              </div>
-              <div class="sheet-field">
-                <div class="sheet-flabel">Merchant</div>
-                <div class="sheet-edit-input ro">Starbucks</div>
-                <div class="sheet-edit-hint">Locked — from bank SMS.</div>
-              </div>
-              <div class="sheet-field">
-                <div class="sheet-flabel">Date</div>
-                <div class="sheet-edit-input ro">Today, 9:12 AM</div>
-                <div class="sheet-edit-hint">Locked — from bank SMS.</div>
-              </div>
-              <div class="sheet-field">
-                <div class="sheet-flabel">Notes</div>
-                <div class="sheet-edit-input">Meeting with Omar</div>
-              </div>
-            </div>
-            <div class="sheet-actions">
-              <div class="sheet-btn cancel">Cancel</div>
-              <div class="sheet-btn save">Save</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="flow-note bug">Merchant and Date locked for SMS-parsed. Greyed input with a "Locked" hint. User who needs to change either deletes and re-adds manually.</div>
-    </div>
-
-    <!-- 10.3 Manual view -->
-    <div class="screen-col">
-      <div class="screen-label">Manual · view mode</div>
-      <div class="state-badge happy">view</div>
-      <div class="phone">
-        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
-        <div class="screen no-nav sheet-host">
-          <div class="sheet-dim"></div>
-          <div class="sheet">
-            <div class="sheet-handle"></div>
-            <div class="sheet-hdr">
-              <div class="sheet-close">✕</div>
-              <div class="sheet-hdr-body">
-                <div class="sheet-merch">Gym membership</div>
-                <div class="sheet-amt spend">450 EGP</div>
-                <div class="sheet-meta">Apr 20, 2026</div>
-              </div>
-            </div>
-            <div class="sheet-body">
-              <div class="sheet-field">
-                <div class="sheet-flabel">Category</div>
-                <div class="sheet-fvalue tappable">
-                  <div class="sheet-chip sheet-chip-tap">💪 Health</div>
-                  <div class="sheet-chev">›</div>
-                </div>
-              </div>
-              <div class="sheet-field">
-                <div class="sheet-flabel">Paid with</div>
-                <div class="sheet-fvalue disabled">Manual entry</div>
-              </div>
-              <div class="sheet-field">
-                <div class="sheet-flabel">Notes</div>
-                <div class="sheet-fvalue">Monthly fee for the downtown gym</div>
-              </div>
-            </div>
-            <div class="sheet-actions">
-              <div class="sheet-btn danger">Delete</div>
-              <div class="sheet-btn primary">Edit</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="flow-note decision">Manual transactions have no "See original message" toggle. Paid-with shows "Manual entry".</div>
-    </div>
-
-    <div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">Edit</div></div>
-
-    <!-- 10.4 Manual edit -->
-    <div class="screen-col">
-      <div class="screen-label">Manual · edit mode</div>
-      <div class="state-badge interaction">all editable</div>
-      <div class="phone">
-        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
-        <div class="screen no-nav sheet-host">
-          <div class="sheet-dim"></div>
-          <div class="sheet">
-            <div class="sheet-handle"></div>
-            <div class="sheet-hdr">
-              <div class="sheet-close">✕</div>
-              <div class="sheet-hdr-body">
-                <div class="sheet-merch" style="color:var(--t3);font-size:13px">Editing transaction</div>
-              </div>
-            </div>
-            <div class="sheet-body">
-              <div class="sheet-field">
-                <div class="sheet-flabel">Amount (EGP)</div>
-                <div class="sheet-edit-input">450</div>
-              </div>
-              <div class="sheet-field">
-                <div class="sheet-flabel">Merchant</div>
-                <div class="sheet-edit-input">Gym membership</div>
-              </div>
-              <div class="sheet-field">
-                <div class="sheet-flabel">Date</div>
-                <div class="sheet-edit-input">Apr 20, 2026</div>
-              </div>
-              <div class="sheet-field">
-                <div class="sheet-flabel">Category</div>
-                <div class="sheet-fvalue tappable">
-                  <div class="sheet-chip sheet-chip-tap">💪 Health</div>
-                  <div class="sheet-chev">›</div>
-                </div>
-              </div>
-              <div class="sheet-field">
-                <div class="sheet-flabel">Notes</div>
-                <div class="sheet-edit-input">Monthly fee for the downtown gym</div>
-              </div>
-            </div>
-            <div class="sheet-actions">
-              <div class="sheet-btn cancel">Cancel</div>
-              <div class="sheet-btn save">Save</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="flow-note decision">All five fields editable. No locks.</div>
-    </div>
-
-    <div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">Delete</div></div>
-
-    <!-- 10.5 Delete dialog -->
-    <div class="screen-col">
-      <div class="screen-label">Native delete confirmation</div>
-      <div class="state-badge error">destructive confirm</div>
-      <div class="phone">
-        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
-        <div class="screen no-nav sheet-host">
-          <div class="sheet-dim"></div>
-          <div class="sheet" style="opacity:0.5">
-            <div class="sheet-handle"></div>
-            <div class="sheet-hdr">
-              <div class="sheet-close">✕</div>
-              <div class="sheet-hdr-body">
-                <div class="sheet-merch">Starbucks</div>
-                <div class="sheet-amt spend">140 EGP</div>
-              </div>
-            </div>
-          </div>
-          <div class="dialog-ol">
-            <div class="dialog-box">
-              <div class="dialog-ttl">Delete 140 EGP at Starbucks?</div>
-              <div class="dialog-acts">
-                <div class="dialog-btn cancel">Cancel</div>
-                <div class="dialog-btn delete">Delete</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="flow-note bug">Native Android dialog. Title names the specific transaction. Cancel is the focus-first default.</div>
+      <div class="flow-note decision"><strong>Reference only.</strong> The Transaction Detail sheet is shared with the Transactions tab. Full state coverage — view modes, edit mode, internal transfer toggle, refund, pending categorisation, delete confirm dialog, undo toast — lives in the Transactions feature prototype. The designer references that prototype for sheet design; this phone establishes only that the sheet opens from a Home Tab row tap and dismisses back to Home.</div>
     </div>
 
   </div>
 </div>
 
 
-<!-- FLOW 12 — QUICK-CREATE SHEET -->
+<!-- FLOW 11 — QUICK-CREATE SHEET -->
 <div class="flow-section">
   <div class="flow-section-header">
-    <div class="flow-section-title">Flow 12 — Quick-create bottom sheet · 3 states</div>
+    <div class="flow-section-title">Flow 11 — Quick-create bottom sheet · 3 states</div>
     <div class="flow-section-line"></div>
   </div>
   <div class="flow-intro">Opens from "Set" on a Mode A card. Three states: happy path, cap-reached, network error.</div>
@@ -1724,10 +1478,10 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
 </div>
 
 
-<!-- FLOW 13 — PUSH NOTIFICATIONS -->
+<!-- FLOW 12 — PUSH NOTIFICATIONS -->
 <div class="flow-section">
   <div class="flow-section-header">
-    <div class="flow-section-title">Flow 13 — Push notifications</div>
+    <div class="flow-section-title">Flow 12 — Push notifications</div>
     <div class="flow-section-line"></div>
   </div>
   <div class="flow-intro">Two pushes from the Spending Intelligence programme. Both deep-link to the same Budget detail view a Mode B row tap would open.</div>
@@ -1813,13 +1567,6 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
         </tr>
 
         <tr class="group-start">
-          <td class="screen-name">5 · Review prompt slot</td>
-          <td class="element-name">Headline + CTA</td>
-          <td class="en">Help us place a few transactions. · <strong>CTA:</strong> Review now</td>
-          <td class="ar">ساعدنا نظبّط كام عملية. · <strong>CTA:</strong> راجع دلوقتي</td>
-        </tr>
-
-        <tr class="group-start">
           <td class="screen-name" rowspan="2">6–7 · Total Expenses</td>
           <td class="element-name">6 · Amount label</td>
           <td class="en">Total spending this month</td>
@@ -1837,7 +1584,7 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
           <td class="en">Where it's going</td>
           <td class="ar">فين بتروح</td>
         </tr>
-        <tr><td class="element-name">9 · Pending notice (State C)</td><td class="en">Sorting your latest spending. Breakdown shows up in a moment.</td><td class="ar">بنرتّب آخر صرفك. التفاصيل هتظهر بعد لحظات.</td></tr>
+        <tr><td class="element-name">9 · Pending notice (State C)</td><td class="en">Categorising your latest spending. Breakdown shows up in a moment.</td><td class="ar">بنحدد فئة آخر صرفك. التفاصيل هتظهر بعد لحظات.</td></tr>
         <tr><td class="element-name">10 · Expectations (State D)</td><td class="en">You're in. The next time you spend, we'll catch it and sort it here.</td><td class="ar">دخلت. أول ما تصرف، هنلقطها ونصنّفها هنا.</td></tr>
         <tr><td class="element-name">11 · Manual-only (State E)</td><td class="en">Add a transaction and you'll see where your money goes.</td><td class="ar">ضيف عملية وهتشوف فلوسك بتروح فين.</td></tr>
         <tr><td class="element-name">12 · Show all categories (button)</td><td class="en">See all categories</td><td class="ar">شوف كل الفئات</td></tr>
@@ -1889,7 +1636,7 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
           <td class="en">Latest spending</td>
           <td class="ar">آخر الحركات</td>
         </tr>
-        <tr><td class="element-name">30 · Pending indicator</td><td class="en">Sorting…</td><td class="ar">بنرتّب…</td></tr>
+        <tr><td class="element-name">30 · Pending indicator</td><td class="en">Categorising…</td><td class="ar">بنحدد الفئة…</td></tr>
         <tr><td class="element-name">31 · Show all button</td><td class="en">See all</td><td class="ar">شوف الكل</td></tr>
 
         <tr class="group-start">
@@ -1911,17 +1658,11 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
         <tr><td class="element-name">37 · [+] accessibility label</td><td class="en">Add — opens create menu</td><td class="ar">إضافة — يفتح قائمة الإنشاء</td></tr>
 
         <tr class="group-start">
-          <td class="screen-name" rowspan="7">38–43 · Transaction Detail</td>
-          <td class="element-name">38 · Category chip label</td>
-          <td class="en">Category</td>
-          <td class="ar">الفئة</td>
+          <td class="screen-name">38–43 · Transaction Detail</td>
+          <td class="element-name">All Detail sheet copy</td>
+          <td class="en" colspan="2"><em>Lives in the Transactions feature prototype copy table — view modes, edit mode, internal transfer toggle, refund, pending categorisation, delete confirm, undo toast. The Home Tab uses the same component; nothing duplicated here.</em></td>
         </tr>
-        <tr><td class="element-name">39 · Payment method (SMS)</td><td class="en">[bank] · card ending [last4]</td><td class="ar">[bank] · بطاقة تنتهي بـ [last4]</td></tr>
-        <tr><td class="element-name">39 · Payment method (manual)</td><td class="en">Manual entry</td><td class="ar">إدخال يدوي</td></tr>
-        <tr><td class="element-name">40 · Notes placeholder</td><td class="en">Add a note</td><td class="ar">ضيف ملاحظة</td></tr>
-        <tr><td class="element-name">41 · Original SMS toggle</td><td class="en">See original message / Hide original message</td><td class="ar">شوف الرسالة الأصلية / اخفي الرسالة الأصلية</td></tr>
-        <tr><td class="element-name">42 · Action buttons</td><td class="en">Edit · Delete · Save · Cancel</td><td class="ar">تعديل · حذف · حفظ · إلغاء</td></tr>
-        <tr><td class="element-name">43 · Delete confirmation dialog</td><td class="en">Delete [amount] EGP at [merchant]? · <strong>Buttons:</strong> Cancel · Delete</td><td class="ar">تحذف [amount] جنيه في [merchant]؟ · <strong>Buttons:</strong> إلغاء · احذف</td></tr>
+
 
         <tr class="group-start">
           <td class="screen-name">44 · Offline indicator</td>
