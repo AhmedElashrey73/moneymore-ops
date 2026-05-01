@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MoneyMore — Brand Voice & Tone Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400&family=JetBrains+Mono:wght@400;500;600&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0E0E0C;
+    --paper: #F4EFE6;
+    --paper-2: #ECE5D8;
+    --rule: #1A1A18;
+    --accent: #E8472C;     /* MoneyMore signal red */
+    --accent-2: #1F4A3A;   /* deep green for "money" cues */
+    --muted: #6B6A63;
+    --highlight: #F2C94C;  /* margin highlighter */
+    --soft: #DCD4C2;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Montserrat', system-ui, sans-serif;
+    font-size: 15.5px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(14,14,12,0.06) 1px, transparent 0);
+    background-size: 4px 4px;
+  }
+
+  /* ——— Layout ——— */
+  .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 48px 32px 96px;
+  }
+
+  /* ——— Top bar / masthead ——— */
+  .masthead {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-top: 2px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    padding: 14px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+  .masthead .left { display: flex; gap: 24px; }
+  .masthead .dot {
+    display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent); margin-right: 6px; transform: translateY(-1px);
+  }
+
+  /* ——— Hero ——— */
+  .hero {
+    padding: 80px 0 48px;
+    border-bottom: 1px solid var(--ink);
+    position: relative;
+  }
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: clamp(48px, 9vw, 132px);
+    line-height: 0.92;
+    letter-spacing: -0.03em;
+    margin-bottom: 32px;
+  }
+  .hero h1 em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--accent);
+  }
+  .hero .deck {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(20px, 2.4vw, 28px);
+    line-height: 1.35;
+    max-width: 720px;
+    color: var(--ink);
+    font-weight: 400;
+  }
+
+  /* ——— Section scaffolding ——— */
+  section.block {
+    padding: 72px 0;
+    border-bottom: 1px solid var(--ink);
+  }
+  .section-head {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 32px;
+    margin-bottom: 48px;
+    align-items: start;
+  }
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    padding-top: 14px;
+  }
+  .section-num::before {
+    content: '';
+    display: block;
+    width: 32px; height: 2px;
+    background: var(--accent);
+    margin-bottom: 12px;
+  }
+  .section-head h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: clamp(36px, 5.5vw, 64px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .section-head h2 em { font-style: italic; color: var(--accent); }
+  .section-head .lede {
+    font-family: 'Fraunces', serif;
+    font-size: 19px;
+    line-height: 1.5;
+    color: var(--ink);
+    margin-top: 18px;
+    max-width: 640px;
+  }
+
+  /* ——— What we are / aren't ——— */
+  .definition-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--ink);
+    background: var(--paper);
+  }
+  .definition-grid > div {
+    padding: 32px;
+  }
+  .definition-grid .is { background: var(--paper-2); border-right: 1px solid var(--ink); }
+  .definition-grid .isnt { background: var(--paper); }
+  .def-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .def-label.yes::before { content: '+'; color: var(--accent-2); font-weight: 700; }
+  .def-label.no::before { content: '–'; color: var(--accent); font-weight: 700; }
+  .definition-grid h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    font-weight: 400;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .definition-grid ul {
+    list-style: none;
+  }
+  .definition-grid li {
+    padding: 10px 0;
+    border-bottom: 1px dashed rgba(14,14,12,0.2);
+    font-size: 15px;
+  }
+  .definition-grid li:last-child { border-bottom: none; }
+
+  /* ——— Five characteristics ——— */
+  .traits {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+    border: 1px solid var(--ink);
+  }
+  .trait {
+    padding: 36px 32px;
+    border-right: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    background: var(--paper);
+    position: relative;
+    transition: background 0.2s ease;
+  }
+  .trait:hover { background: var(--paper-2); }
+  .trait:nth-child(2n) { border-right: none; }
+  .trait:nth-last-child(-n+2) { border-bottom: none; }
+  .trait.full {
+    grid-column: span 2;
+    border-right: none;
+  }
+  .trait .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+    margin-bottom: 12px;
+  }
+  .trait h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 36px;
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+  .trait p {
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--ink);
+    margin-bottom: 16px;
+  }
+  .trait .example {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 14px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.5;
+    border-radius: 2px;
+    position: relative;
+  }
+  .trait .example::before {
+    content: 'EXAMPLE';
+    position: absolute;
+    top: -8px; left: 12px;
+    background: var(--accent);
+    color: var(--paper);
+    font-size: 9px;
+    padding: 2px 6px;
+    letter-spacing: 0.15em;
+  }
+
+  /* ——— Never list ——— */
+  .never-list {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 48px;
+    border-radius: 4px;
+  }
+  .never-list h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 32px;
+    font-weight: 400;
+    margin-bottom: 8px;
+  }
+  .never-list h3 em { color: var(--accent); font-style: italic; }
+  .never-list .sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--soft);
+    margin-bottom: 32px;
+  }
+  .never-list ol {
+    list-style: none;
+    counter-reset: never;
+  }
+  .never-list li {
+    counter-increment: never;
+    padding: 18px 0;
+    border-bottom: 1px solid rgba(244,239,230,0.15);
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    align-items: baseline;
+    gap: 24px;
+  }
+  .never-list li::before {
+    content: counter(never, decimal-leading-zero);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+  }
+  .never-list li:last-child { border-bottom: none; }
+  .never-list li strong {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 18px;
+    display: block;
+    margin-bottom: 4px;
+    color: var(--paper);
+  }
+  .never-list li span {
+    font-size: 14px;
+    color: var(--soft);
+  }
+
+  /* ——— Voice in the wild (before/after) ——— */
+  .compare-stack {
+    display: grid;
+    gap: 16px;
+  }
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border: 1px solid var(--ink);
+    background: var(--paper);
+  }
+  .compare > div {
+    padding: 24px 28px;
+  }
+  .compare .bad {
+    background: var(--paper-2);
+    border-right: 1px solid var(--ink);
+    position: relative;
+  }
+  .compare .good {
+    background: var(--paper);
+    position: relative;
+  }
+  .compare .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 2px;
+  }
+  .compare .bad .tag { background: var(--accent); color: var(--paper); }
+  .compare .good .tag { background: var(--accent-2); color: var(--paper); }
+  .compare .copy {
+    font-family: 'Fraunces', serif;
+    font-size: 19px;
+    line-height: 1.4;
+    color: var(--ink);
+  }
+  .compare .bad .copy { color: var(--muted); text-decoration: line-through; text-decoration-color: rgba(232,71,44,0.4); text-decoration-thickness: 1px; }
+  .compare .why {
+    margin-top: 14px;
+    font-size: 13px;
+    color: var(--muted);
+    font-style: italic;
+  }
+  .compare .scenario {
+    grid-column: span 2;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 12px 28px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .compare .scenario span { color: var(--accent); margin-right: 8px; }
+
+  /* ——— Segments ——— */
+  .segments {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .segment {
+    border: 1px solid var(--ink);
+    background: var(--paper);
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .segment .head {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 20px 24px;
+    border-bottom: 4px solid var(--accent);
+  }
+  .segment.freelancer .head { border-bottom-color: var(--highlight); }
+  .segment.student .head { border-bottom-color: var(--accent-2); }
+  .segment .head .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--soft);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .segment .head h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 30px;
+    font-weight: 400;
+    line-height: 1;
+  }
+  .segment .body {
+    padding: 24px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .segment .row {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 12px;
+    font-size: 14px;
+    align-items: start;
+  }
+  .segment .row .k {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    padding-top: 3px;
+  }
+  .segment .row .v { line-height: 1.5; }
+  .segment .fear {
+    margin-top: auto;
+    background: var(--paper-2);
+    padding: 14px 16px;
+    border-left: 3px solid var(--accent);
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 15px;
+    line-height: 1.4;
+  }
+  .segment.freelancer .fear { border-left-color: var(--highlight); }
+  .segment.student .fear { border-left-color: var(--accent-2); }
+  .segment .fear .fk {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin-bottom: 6px;
+    font-style: normal;
+  }
+
+  /* ——— Arabic rules ——— */
+  .arabic-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+    border: 1px solid var(--ink);
+  }
+  .arabic-grid .item {
+    padding: 28px;
+    border-right: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    background: var(--paper);
+  }
+  .arabic-grid .item:nth-child(2n) { border-right: none; }
+  .arabic-grid .item:nth-last-child(-n+2) { border-bottom: none; }
+  .arabic-grid .item .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    margin-bottom: 8px;
+  }
+  .arabic-grid .item h4 {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 400;
+    margin-bottom: 10px;
+    line-height: 1.15;
+  }
+  .arabic-grid .item p {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--ink);
+  }
+  .arabic-grid .item .arabic {
+    direction: rtl;
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    margin-top: 12px;
+    padding: 12px 16px;
+    background: var(--paper-2);
+    border-radius: 2px;
+  }
+
+  /* ——— Channel cheat sheet ——— */
+  table.cheat {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--paper);
+    border: 1px solid var(--ink);
+    font-size: 14px;
+  }
+  table.cheat thead {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  table.cheat th, table.cheat td {
+    text-align: left;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--ink);
+    vertical-align: top;
+  }
+  table.cheat th {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 500;
+    border-bottom: 2px solid var(--accent);
+  }
+  table.cheat tbody tr:last-child td { border-bottom: none; }
+  table.cheat tbody tr:hover { background: var(--paper-2); }
+  table.cheat td:first-child {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    font-weight: 400;
+  }
+  table.cheat td code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 2px 6px;
+    border-radius: 2px;
+  }
+
+  /* ——— Pull quote ——— */
+  .pull {
+    text-align: center;
+    padding: 88px 24px;
+    border-top: 4px solid var(--ink);
+    border-bottom: 4px solid var(--ink);
+    margin: 40px 0;
+    background: var(--paper-2);
+  }
+  .pull blockquote {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(28px, 5vw, 56px);
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    max-width: 880px;
+    margin: 0 auto;
+  }
+  .pull blockquote em {
+    color: var(--accent);
+    font-style: italic;
+  }
+  .pull .attr {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 32px;
+  }
+
+  /* ——— Workflow ——— */
+  .workflow {
+    counter-reset: step;
+    display: grid;
+    gap: 0;
+  }
+  .step {
+    counter-increment: step;
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 32px;
+    padding: 28px 0;
+    border-bottom: 1px dashed var(--ink);
+    align-items: start;
+  }
+  .step:last-child { border-bottom: none; }
+  .step .step-num {
+    font-family: 'Fraunces', serif;
+    font-size: 56px;
+    font-weight: 300;
+    line-height: 0.9;
+    color: var(--accent);
+  }
+  .step .step-num::after {
+    content: counter(step, decimal-leading-zero);
+  }
+  .step h4 {
+    font-family: 'Fraunces', serif;
+    font-size: 26px;
+    font-weight: 400;
+    margin-bottom: 8px;
+    line-height: 1.15;
+  }
+  .step p {
+    font-size: 15px;
+    line-height: 1.55;
+    max-width: 720px;
+  }
+
+  /* ——— Footer ——— */
+  footer.foot {
+    padding: 64px 0 0;
+    border-top: 2px solid var(--ink);
+    margin-top: 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    display: flex;
+    justify-content: space-between;
+    color: var(--muted);
+  }
+  footer.foot strong { color: var(--ink); }
+
+  /* ——— Decorative bits ——— */
+  .marker {
+    background: linear-gradient(180deg, transparent 60%, var(--highlight) 60%);
+    padding: 0 2px;
+  }
+
+  /* ——— Responsive ——— */
+  @media (max-width: 860px) {
+    .wrap { padding: 24px 18px 64px; }
+    .hero { padding: 48px 0 32px; }
+    .section-head { grid-template-columns: 1fr; gap: 12px; }
+    .definition-grid, .traits, .arabic-grid {
+      grid-template-columns: 1fr;
+    }
+    .definition-grid .is, .traits .trait, .arabic-grid .item {
+      border-right: none !important;
+      border-bottom: 1px solid var(--ink) !important;
+    }
+    .traits .trait.full { grid-column: auto; }
+    .compare { grid-template-columns: 1fr; }
+    .compare .bad { border-right: none; border-bottom: 1px solid var(--ink); }
+    .segments { grid-template-columns: 1fr; }
+    .step { grid-template-columns: 1fr; gap: 8px; }
+    .step .step-num { font-size: 36px; }
+    table.cheat { font-size: 13px; }
+    table.cheat th, table.cheat td { padding: 10px 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- MASTHEAD -->
+  <div class="masthead">
+    <div class="left">
+      <span><span class="dot"></span>MoneyMore</span>
+      <span>Brand Voice Guide</span>
+      <span>v1.0</span>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <h1>Money is stressful.<br>We <em>aren't.</em></h1>
+    <p class="deck">This is how MoneyMore sounds, what it stands for, and the rules every screen, push, and button label is held to. Read it once, and the next thing you write should sound like us.</p>
+  </section>
+
+  <!-- SECTION 1: WHAT WE ARE / AREN'T -->
+  <section class="block">
+    <div class="section-head">
+      <div class="section-num">01 — Position</div>
+      <div>
+        <h2>What MoneyMore <em>is</em>, and what it isn't.</h2>
+        <p class="lede">Before voice, position. Every word we write defends the gap between us and the categories we're often mistaken for. If a sentence could appear in a bank app, a wellness app, or a spreadsheet — rewrite it.</p>
+      </div>
+    </div>
+
+    <div class="definition-grid">
+      <div class="is">
+        <div class="def-label yes">We are</div>
+        <h3>A sharp, warm friend who happens to understand money.</h3>
+        <ul>
+          <li>Specific. Numbers, categories, real context.</li>
+          <li>Honest about uncertainty, fast to a next step.</li>
+          <li>Confident — we know what we're doing.</li>
+          <li>Calm in moments money usually isn't.</li>
+          <li>Egyptian, fluent, not performing.</li>
+        </ul>
+      </div>
+      <div class="isnt">
+        <div class="def-label no">We are not</div>
+        <h3>A bank, an advisor, or a wellness app.</h3>
+        <ul>
+          <li>Not corporate. No "kindly" or "we regret to inform."</li>
+          <li>Not paternal. We don't lecture, judge, or moralise.</li>
+          <li>Not therapeutic. We don't dwell in the stress.</li>
+          <li>Not vague. "You spent a lot lately" is a failure state.</li>
+          <li>Not trying to be cool. Slang we don't own = no.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- PULL QUOTE -->
+  <div class="pull">
+    <blockquote>
+      "You spent <em>1,240 EGP</em> on food this month" beats<br>"you've been spending a lot lately."
+    </blockquote>
+    <div class="attr">— The specificity test, applied everywhere</div>
+  </div>
+
+  <!-- SECTION 2: FIVE TRAITS -->
+  <section class="block">
+    <div class="section-head">
+      <div class="section-num">02 — The Five</div>
+      <div>
+        <h2>Five traits that <em>define</em> the voice.</h2>
+        <p class="lede">Not adjectives on a slide. Operating instructions. If a piece of copy doesn't carry at least three of these, it isn't ours yet.</p>
+      </div>
+    </div>
+
+    <div class="traits">
+      <div class="trait">
+        <div class="num">— 01</div>
+        <h3>Direct.</h3>
+        <p>Say the thing. No hedging, no corporate softening. If the budget is nearly gone, say it. If the OTP failed, say it clearly and tell the user what to do next.</p>
+        <div class="example">"Code didn't work. Try again or get a new one."</div>
+      </div>
+
+      <div class="trait">
+        <div class="num">— 02</div>
+        <h3>Warm but not soft.</h3>
+        <p>Care about the user's financial life without being patronising. Acknowledge that money is stressful — then move toward a solution, not sympathy.</p>
+        <div class="example">"Slower month than last. Here's what you can still cover."</div>
+      </div>
+
+      <div class="trait">
+        <div class="num">— 03</div>
+        <h3>Confident, not arrogant.</h3>
+        <p>MoneyMore knows what it's doing. Don't apologise for asking for attention or for action. But never push, never sell.</p>
+        <div class="example">"Allow notifications and we'll catch overspending before you do."</div>
+      </div>
+
+      <div class="trait">
+        <div class="num">— 04</div>
+        <h3>Specific over vague.</h3>
+        <p>Numbers, categories, real context. Specificity makes copy feel like it knows the user — because it does. Vague copy reads like every other fintech.</p>
+        <div class="example">"You're 87% through Food this week. 3 days left."</div>
+      </div>
+
+      <div class="trait full">
+        <div class="num">— 05</div>
+        <h3>Gen Z fluent, not Gen Z performing.</h3>
+        <p>Natural and conversational. Short sentences. Active voice. The occasional sharp turn of phrase. We don't borrow slang we don't own, we don't try to be cool, and we don't reach for a buzzword when a real word exists. Fluency means sounding like a human who happens to be 24 in Cairo — not an app cosplaying as one.</p>
+        <div class="example">"Salary's in. Want to split it before it splits itself?"</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3: THE NEVERS -->
+  <section class="block">
+    <div class="section-head">
+      <div class="section-num">03 — Hard rules</div>
+      <div>
+        <h2>The <em>nevers</em>.</h2>
+        <p class="lede">No exceptions, no clever workarounds. If you find yourself wanting to break one of these "just this once," the copy is wrong, not the rule.</p>
+      </div>
+    </div>
+
+    <div class="never-list">
+      <h3>We <em>never</em> —</h3>
+      <div class="sub">Seven hard lines. Hold them.</div>
+      <ol>
+        <li>
+          <strong>Use legal-sounding boilerplate</strong>
+          <span>"By proceeding you acknowledge…" — never in user-facing copy. Push it to T&amp;Cs.</span>
+        </li>
+        <li>
+          <strong>Use more than one exclamation per message</strong>
+          <span>And only when the moment genuinely earns it. A salary landing earns it. A failed OTP does not.</span>
+        </li>
+        <li>
+          <strong>Use the word "journey"</strong>
+          <span>Not your savings journey, not your money journey, not any journey. Banned.</span>
+        </li>
+        <li>
+          <strong>Write in passive voice</strong>
+          <span>"Your transaction was declined" → "We couldn't run that. Try a different card."</span>
+        </li>
+        <li>
+          <strong>Judge the user's spending</strong>
+          <span>Observe, never moralise. "You spent 800 on takeout this week" — full stop. No "maybe try cooking."</span>
+        </li>
+        <li>
+          <strong>Use filler phrases</strong>
+          <span>"Just a reminder," "as you know," "don't forget to" — cut every one of these on sight.</span>
+        </li>
+        <li>
+          <strong>Auto-translate Arabic and ship</strong>
+          <span>Conversational Arabic always goes through native speaker review. Always.</span>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- SECTION 4: VOICE IN THE WILD -->
+  <section class="block">
+    <div class="section-head">
+      <div class="section-num">04 — In practice</div>
+      <div>
+        <h2>Voice in <em>the wild.</em></h2>
+        <p class="lede">Side-by-side rewrites from the kinds of moments you'll actually be designing for. The "before" is what most fintechs ship. The "after" is us.</p>
+      </div>
+    </div>
+
+    <div class="compare-stack">
+
+      <div class="compare">
+        <div class="scenario"><span>SCENARIO 01 —</span> OTP failed during sign-up</div>
+        <div class="bad">
+          <span class="tag">Not us</span>
+          <p class="copy">An error has occurred. Please try again or contact support.</p>
+          <p class="why">Vague, passive, dead-end. User has no idea what to do.</p>
+        </div>
+        <div class="good">
+          <span class="tag">MoneyMore</span>
+          <p class="copy">Code didn't work. Try again, or get a new one.</p>
+          <p class="why">Plain language, two clear paths forward.</p>
+        </div>
+      </div>
+
+      <div class="compare">
+        <div class="scenario"><span>SCENARIO 02 —</span> Empty budgets state, salary worker</div>
+        <div class="bad">
+          <span class="tag">Not us</span>
+          <p class="copy">You haven't created any budgets yet. Start your savings journey today!</p>
+          <p class="why">"Journey" is banned. Two exclamations would be worse. Tells the user nothing.</p>
+        </div>
+        <div class="good">
+          <span class="tag">MoneyMore</span>
+          <p class="copy">No budgets yet. Set one for the category you spend on most — usually food or transport.</p>
+          <p class="why">Specific next step. Names the likely category. Treats the user as capable.</p>
+        </div>
+      </div>
+
+      <div class="compare">
+        <div class="scenario"><span>SCENARIO 03 —</span> Push — overspending alert</div>
+        <div class="bad">
+          <span class="tag">Not us</span>
+          <p class="copy">Hey there! Just a friendly reminder that you might want to slow down on spending this week 😊</p>
+          <p class="why">Filler phrase, hedging, judgmental, performing warmth. Every Gen Z fintech sounds like this.</p>
+        </div>
+        <div class="good">
+          <span class="tag">MoneyMore</span>
+          <p class="copy">Food budget: 87% gone, 3 days left in the week.</p>
+          <p class="why">Numbers do the work. No moralising. User decides what to do.</p>
+        </div>
+      </div>
+
+      <div class="compare">
+        <div class="scenario"><span>SCENARIO 03 —</span> SMS permission prompt</div>
+        <div class="bad">
+          <span class="tag">Not us</span>
+          <p class="copy">MoneyMore would like to access your SMS messages to provide you with the best possible experience.</p>
+          <p class="why">Reads like a privacy policy. A suspicious user taps Deny.</p>
+        </div>
+        <div class="good">
+          <span class="tag">MoneyMore</span>
+          <p class="copy">We read your bank SMS so your transactions show up automatically. No typing, no missed expenses. We never read anything else.</p>
+          <p class="why">Concrete value. Honest about scope. The reassurance lives in the specificity.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 5: SEGMENTS -->
+  <section class="block">
+    <div class="section-head">
+      <div class="section-num">05 — Audience</div>
+      <div>
+        <h2>Three users. Three <em>emotional moments.</em></h2>
+        <p class="lede">Before writing a single word, name what's happening in this user's life right now. Same screen, different segment, different copy. Always.</p>
+      </div>
+    </div>
+
+    <div class="segments">
+
+      <div class="segment salary">
+        <div class="head">
+          <div class="label">Segment 01</div>
+          <h3>Salary workers</h3>
+        </div>
+        <div class="body">
+          <div class="row"><span class="k">Income</span><span class="v">Fixed monthly</span></div>
+          <div class="row"><span class="k">Want</span><span class="v">To feel in control of where it goes</span></div>
+          <div class="row"><span class="k">Respond to</span><span class="v">Clarity, progress, being told they're on track</span></div>
+          <div class="row"><span class="k">Tone</span><span class="v">Confident, observational, calm</span></div>
+          <div class="fear">
+            <span class="fk">Fear</span>
+            Losing track and overspending without realising.
+          </div>
+        </div>
+      </div>
+
+      <div class="segment freelancer">
+        <div class="head">
+          <div class="label">Segment 02</div>
+          <h3>Freelancers</h3>
+        </div>
+        <div class="body">
+          <div class="row"><span class="k">Income</span><span class="v">Irregular</span></div>
+          <div class="row"><span class="k">Want</span><span class="v">Reassurance and pattern recognition</span></div>
+          <div class="row"><span class="k">Respond to</span><span class="v">Honesty about uncertainty, practical next steps</span></div>
+          <div class="row"><span class="k">Tone</span><span class="v">Steady, specific, never falsely upbeat</span></div>
+          <div class="fear">
+            <span class="fk">Fear</span>
+            Not knowing if there's enough.
+          </div>
+        </div>
+      </div>
+
+      <div class="segment student">
+        <div class="head">
+          <div class="label">Segment 03</div>
+          <h3>Students</h3>
+        </div>
+        <div class="body">
+          <div class="row"><span class="k">Income</span><span class="v">Allowance / part-time</span></div>
+          <div class="row"><span class="k">Want</span><span class="v">Small wins. To make it to the end of the month.</span></div>
+          <div class="row"><span class="k">Respond to</span><span class="v">Streaks, gamification, micro-progress</span></div>
+          <div class="row"><span class="k">Tone</span><span class="v">Lighter, sharper, slightly playful</span></div>
+          <div class="fear">
+            <span class="fk">Fear</span>
+            Running out before the month ends.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 6: ARABIC -->
+  <section class="block">
+    <div class="section-head">
+      <div class="section-num">06 — Arabic</div>
+      <div>
+        <h2>Arabic isn't a <em>translation.</em> It's a rewrite.</h2>
+        <p class="lede">Egyptian users don't think in Modern Standard Arabic. They text in Egyptian dialect. Our copy follows them — not the other way around.</p>
+      </div>
+    </div>
+
+    <div class="arabic-grid">
+      <div class="item">
+        <div class="num">— Rule 01</div>
+        <h4>Egyptian dialect for conversational copy</h4>
+        <p>Push notifications, surveys, in-app messages, empty states. Anywhere we'd sound like a friend in English, we sound like a friend in Egyptian Arabic.</p>
+        <div class="arabic">المرتب نزل. تحب نقسمه قبل ما يقسم نفسه؟</div>
+      </div>
+      <div class="item">
+        <div class="num">— Rule 02</div>
+        <h4>MSA only for formal copy</h4>
+        <p>Terms &amp; Conditions, legal notices, App Store listing where required. Nowhere else. Formal Arabic in a push notification reads like a government letter.</p>
+      </div>
+      <div class="item">
+        <div class="num">— Rule 03</div>
+        <h4>Native speaker review, always</h4>
+        <p>If the copy is conversational or uses any colloquial phrasing, it goes through native review before it ships. No exceptions, no "I checked it with a friend."</p>
+      </div>
+      <div class="item">
+        <div class="num">— Rule 04</div>
+        <h4>RTL confirmed in Figma first</h4>
+        <p>Arabic copy is never finalised until the layout is confirmed RTL in the prototype. Punctuation, numerals, and line breaks behave differently — design and copy lock together.</p>
+      </div>
+      <div class="item">
+        <div class="num">— Rule 05</div>
+        <h4>Western Arabic numerals</h4>
+        <p>1, 2, 3 — not ١, ٢, ٣. This is the confirmed convention for Egyptian fintech. Mixing systems looks careless and breaks scanning.</p>
+      </div>
+      <div class="item">
+        <div class="num">— Rule 06</div>
+        <h4>Never auto-translate</h4>
+        <p>Machine translation flattens dialect, breaks gender agreement, and produces copy that sounds technically correct and emotionally wrong. Translate by ear, not by tool.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 7: CHANNEL CHEAT SHEET -->
+  <section class="block">
+    <div class="section-head">
+      <div class="section-num">07 — Channels</div>
+      <div>
+        <h2>The <em>cheat sheet.</em></h2>
+        <p class="lede">Pin this. Every channel has a character ceiling, a structural rule, and a non-negotiable. If a piece of copy doesn't have all three accounted for, it isn't done.</p>
+      </div>
+    </div>
+
+    <table class="cheat">
+      <thead>
+        <tr>
+          <th>Channel</th>
+          <th>Limit</th>
+          <th>Structural rule</th>
+          <th>Non-negotiable</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Push title</td>
+          <td><code>≤ 50 chars</code></td>
+          <td>Lead with the number, the name, or the question</td>
+          <td>One clear action. Always a deep link.</td>
+        </tr>
+        <tr>
+          <td>Push body</td>
+          <td><code>≤ 100 chars</code></td>
+          <td>Resolve what the title started. Don't restate it.</td>
+          <td>Tagged to one of 8 notification programmes.</td>
+        </tr>
+        <tr>
+          <td>Button label</td>
+          <td><code>1–3 words</code></td>
+          <td>Verb + object. "Set budget" not "Continue."</td>
+          <td>Match the next screen's promise exactly.</td>
+        </tr>
+        <tr>
+          <td>Empty state</td>
+          <td><code>≤ 2 lines</code></td>
+          <td>Tell the user what to do — never just describe absence.</td>
+          <td>Always has a CTA or a clear next step.</td>
+        </tr>
+        <tr>
+          <td>Error message</td>
+          <td><code>≤ 2 lines</code></td>
+          <td>What happened → why (if useful) → what to do next.</td>
+          <td>Never "something went wrong."</td>
+        </tr>
+        <tr>
+          <td>Onboarding screen</td>
+          <td><code>title + 1–2 lines</code></td>
+          <td>One idea per screen. The title carries the value.</td>
+          <td>SMS permission screen earns extra care.</td>
+        </tr>
+        <tr>
+          <td>Survey question</td>
+          <td><code>readable in 3s</code></td>
+          <td>Closed answers. No "I don't know" loopholes.</td>
+          <td>Every answer must produce useful signal.</td>
+        </tr>
+        <tr>
+          <td>App Store subtitle</td>
+          <td><code>≤ 30 chars</code></td>
+          <td>Value proposition, not a tagline.</td>
+          <td>Lead the description with the same value in line 1.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- SECTION 8: WORKFLOW -->
+  <section class="block">
+    <div class="section-head">
+      <div class="section-num">08 — Workflow</div>
+      <div>
+        <h2>How a piece of copy gets <em>made.</em></h2>
+        <p class="lede">Designers and writers run this loop together. Skipping a step is how vague, off-brand copy ends up in the build.</p>
+      </div>
+    </div>
+
+    <div class="workflow">
+      <div class="step">
+        <div class="step-num"></div>
+        <div>
+          <h4>Identify the moment.</h4>
+          <p>Channel, segment, and emotional moment. Name what's happening in this user's life right now that makes this message relevant. If you can't name it, the copy isn't ready to be written.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num"></div>
+        <div>
+          <h4>Get the brief or the screen.</h4>
+          <p>Microcopy without screen context is wrong copy. If the request touches a specific surface, the Design Brief or prototype comes first. No exceptions.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num"></div>
+        <div>
+          <h4>Write three variants. Minimum.</h4>
+          <p>Meaningfully different approaches — not the same sentence with different words. One leads with the number. One with the consequence. One with the question. Label them.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num"></div>
+        <div>
+          <h4>Run the checklist.</h4>
+          <p>Character counts. CleverTap event &amp; Mixpanel live status. Segment. Deep link. Notification programme. Arabic native review flag. Anything missing = not shipped.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num"></div>
+        <div>
+          <h4>Surface open questions.</h4>
+          <p>Unresolved threads — RTL confirmation, character limits, conditional logic, missing analytics events — get listed at the end of the deliverable. Never buried inline.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLOSING PULL -->
+  <div class="pull">
+    <blockquote>
+      If a sentence could appear in any other fintech app, it isn't <em>ours</em> yet.
+    </blockquote>
+    <div class="attr">— The final test, every time</div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="foot">
+    <div><strong>MoneyMore</strong> · Brand Voice Guide · v1.0</div>
+  </footer>
+
+</div>
+
+</body>
+</html>
