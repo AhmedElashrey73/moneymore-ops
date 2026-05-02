@@ -419,9 +419,9 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
     <span class="doc-tag prototype">Prototype</span>
     <span class="doc-tag designer">Designer brief</span>
     <span class="doc-tag android">Android</span>
-    <span class="doc-tag wip">Draft v5</span>
+    <span class="doc-tag wip">Draft v6</span>
     <span class="doc-tag version">DB-010</span>
-    <span class="doc-tag rebuild">v5 · Latest Spending rows aligned to Transactions prototype</span>
+    <span class="doc-tag rebuild">v6 · pure Mode A added as Flow 1</span>
     <span class="doc-date">Home Tab revamp · summary with light directional nudges</span>
   </div>
 
@@ -438,28 +438,146 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
     <div class="doc-info-cell">
       <div class="info-label">Flows in this document</div>
       <div class="flow-list">
-        <div class="flow-list-item active">Flow 1 — State A · hybrid anchor (default)</div>
-        <div class="flow-list-item active">Flow 2 — State A-pure · ≤3 budgets + Manage budgets</div>
-        <div class="flow-list-item active">Flow 3 — State A-pure · more than 3 budgets</div>
-        <div class="flow-list-item active">Flow 4 — State C · categorisation in progress</div>
-        <div class="flow-list-item active">Flow 5 — State D · primed-and-ready</div>
-        <div class="flow-list-item active">Flow 6 — State E · manual-only</div>
-        <div class="flow-list-item active">Flow 7 — State F · offline</div>
-        <div class="flow-list-item active">Flow 8 — Budget bar · under / near / over</div>
-        <div class="flow-list-item active">Flow 9 — Centre plus action sheet</div>
-        <div class="flow-list-item active">Flow 10 — Transaction Detail · entry from Home Tab (sheet lives in Transactions prototype)</div>
-        <div class="flow-list-item active">Flow 11 — Quick-create sheet</div>
-        <div class="flow-list-item active">Flow 12 — Push notifications</div>
+        <div class="flow-list-item active">Flow 1 — Pure Mode A · 3 budget recommendations</div>
+        <div class="flow-list-item active">Flow 2 — State A · hybrid anchor (default)</div>
+        <div class="flow-list-item active">Flow 3 — State A-pure · ≤3 budgets + Manage budgets</div>
+        <div class="flow-list-item active">Flow 4 — State A-pure · more than 3 budgets</div>
+        <div class="flow-list-item active">Flow 5 — State C · categorisation in progress</div>
+        <div class="flow-list-item active">Flow 6 — State D · primed-and-ready</div>
+        <div class="flow-list-item active">Flow 7 — State E · manual-only</div>
+        <div class="flow-list-item active">Flow 8 — State F · offline</div>
+        <div class="flow-list-item active">Flow 9 — Budget bar · under / near / over</div>
+        <div class="flow-list-item active">Flow 10 — Centre plus action sheet</div>
+        <div class="flow-list-item active">Flow 11 — Transaction Detail · entry from Home Tab (sheet lives in Transactions prototype)</div>
+        <div class="flow-list-item active">Flow 12 — Quick-create sheet</div>
+        <div class="flow-list-item active">Flow 13 — Push notifications</div>
       </div>
     </div>
   </div>
 </div>
 
 
-<!-- FLOW 1 — STATE A · CANONICAL -->
+<!-- FLOW 1 — PURE MODE A · 3 RECOMMENDATIONS -->
 <div class="flow-section">
   <div class="flow-section-header">
-    <div class="flow-section-title">Flow 1 — State A · Canonical anchor</div>
+    <div class="flow-section-title">Flow 1 — Pure Mode A · 3 budget recommendations</div>
+    <div class="flow-section-line"></div>
+  </div>
+  <div class="flow-intro">First session after categorisation completes. User has SMS connected and transactions parsed but no budgets set. Smart Budget card shows 3 Mode A recommendation cards based on their actual spending. The framing line introduces them as a starting point. Tapping "Set" on any card opens the Quick-create sheet (Flow 12).</div>
+
+  <div class="phone-row">
+
+    <div class="screen-col">
+      <div class="screen-label">Pure Mode A · 3 recommendation cards</div>
+      <div class="state-badge happy">first time</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="hm-header">
+            <div class="hm-greet"><div class="hm-greet-en">Good morning, Ahmed.</div></div>
+            <div class="hm-bell">🔔<div class="hm-bell-badge">2</div></div>
+            <div class="hm-avatar">A</div>
+          </div>
+
+          <div class="bcard">
+            <div class="bcard-head"><div><div class="bcard-label">Total spending this month</div></div></div>
+            <div class="te-amount-row"><div class="te-amount">3,240</div><div class="te-cur">EGP</div></div>
+            <div class="te-count">18 transactions</div>
+            <div class="row-stack">
+              <div class="crow">
+                <div class="crow-ico">🍕</div>
+                <div class="crow-body"><div class="crow-title">Food &amp; Dining</div><div class="crow-sub">9 transactions</div></div>
+                <div class="crow-amt">1,640 EGP</div>
+              </div>
+              <div class="crow">
+                <div class="crow-ico">🚗</div>
+                <div class="crow-body"><div class="crow-title">Transport</div><div class="crow-sub">5 transactions</div></div>
+                <div class="crow-amt">680 EGP</div>
+              </div>
+              <div class="crow">
+                <div class="crow-ico">🛍</div>
+                <div class="crow-body"><div class="crow-title">Shopping</div><div class="crow-sub">4 transactions</div></div>
+                <div class="crow-amt">920 EGP</div>
+              </div>
+            </div>
+            <div class="bcard-cta">See all categories</div>
+          </div>
+
+          <!-- Smart budget pure Mode A -->
+          <div class="bcard">
+            <div class="bcard-head"><div><div class="bcard-label">Suggested budgets</div></div></div>
+            <div class="sb-framing" style="padding-bottom:10px">
+              <div class="sb-framing-en">Based on your spending, here's where a budget might help.</div>
+            </div>
+            <div class="row-stack">
+              <div class="mode-a-crow">
+                <div class="mode-a-ico">🍕</div>
+                <div class="mode-a-body">
+                  <div class="mode-a-cat">Food &amp; Dining</div>
+                  <div class="mode-a-sugg">Try <strong>2,000 EGP</strong>/month</div>
+                </div>
+                <div class="mode-a-btn">Set</div>
+              </div>
+              <div class="mode-a-crow">
+                <div class="mode-a-ico">🚗</div>
+                <div class="mode-a-body">
+                  <div class="mode-a-cat">Transport</div>
+                  <div class="mode-a-sugg">Try <strong>800 EGP</strong>/month</div>
+                </div>
+                <div class="mode-a-btn">Set</div>
+              </div>
+              <div class="mode-a-crow">
+                <div class="mode-a-ico">🛍</div>
+                <div class="mode-a-body">
+                  <div class="mode-a-cat">Shopping</div>
+                  <div class="mode-a-sugg">Try <strong>1,200 EGP</strong>/month</div>
+                </div>
+                <div class="mode-a-btn">Set</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bcard">
+            <div class="bcard-head"><div><div class="bcard-label">Latest spending</div></div></div>
+            <div class="row-stack">
+              <div class="crow">
+                <div class="crow-ico">☕</div>
+                <div class="crow-body"><div class="crow-title">Starbucks</div><div class="crow-sub">Food &amp; Dining</div></div>
+                <div class="crow-right"><div class="crow-amt spend">140 EGP</div><div class="crow-time">9:12 AM</div></div>
+              </div>
+              <div class="crow">
+                <div class="crow-ico">⛽</div>
+                <div class="crow-body"><div class="crow-title">Shell</div><div class="crow-sub">Transport</div></div>
+                <div class="crow-right"><div class="crow-amt spend">380 EGP</div><div class="crow-time">6:44 PM</div></div>
+              </div>
+              <div class="crow">
+                <div class="crow-ico">🛍</div>
+                <div class="crow-body"><div class="crow-title">Carrefour</div><div class="crow-sub">Shopping</div></div>
+                <div class="crow-right"><div class="crow-amt spend">520 EGP</div><div class="crow-time">2:30 PM</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item on"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕️</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-plus"><span class="a-nav-plus-ico">+</span></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Smart Budget label reads "Suggested budgets" in pure Mode A — swaps to "Your budgets" once the first budget is created. No footer CTA on the card while recommendations are present; the Mode A "Set" buttons are the action.</div>
+      <div class="flow-note bug">Tapping "Set" on a card opens the Quick-create sheet (Flow 12). On save, the card converts to a Mode B row in-place. The remaining 2 cards stay; no replacement rotates in. Cards shrink 3 → 2 → 1 → 0 as the user actions them.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- FLOW 2 — STATE A · CANONICAL -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 2 — State A · Canonical anchor</div>
     <div class="flow-section-line"></div>
   </div>
   <div class="flow-intro">Returning user. SMS connected, transactions parsed, 2 of the original 3 recommended budgets set. The third recommendation remains as a Mode A card below the Mode B rows. No footer CTA on the Smart Budget card while recommendations are still showing — the "Set" buttons are the action.</div>
@@ -596,13 +714,13 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
 </div>
 
 
-<!-- FLOW 2 — STATE A-PURE · ≤3 BUDGETS -->
+<!-- FLOW 3 — STATE A-PURE · ≤3 BUDGETS -->
 <div class="flow-section">
   <div class="flow-section-header">
-    <div class="flow-section-title">Flow 2 — State A-pure · ≤3 budgets + Manage budgets footer</div>
+    <div class="flow-section-title">Flow 3 — State A-pure · ≤3 budgets + Manage budgets footer</div>
     <div class="flow-section-line"></div>
   </div>
-  <div class="flow-intro">All qualifying categories already have budgets. Pure Mode B, no recommendation cards. Footer CTA reads "Manage budgets" and routes to the Budgets tab. Edge case for most users — A-hybrid (Flow 1) is the common shape.</div>
+  <div class="flow-intro">All qualifying categories already have budgets. Pure Mode B, no recommendation cards. Footer CTA reads "Manage budgets" and routes to the Budgets tab. Edge case for most users — A-hybrid (Flow 2) is the common shape.</div>
 
   <div class="phone-row">
 
@@ -708,10 +826,10 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
 </div>
 
 
-<!-- FLOW 3 — STATE A · >3 BUDGETS -->
+<!-- FLOW 4 — STATE A · >3 BUDGETS -->
 <div class="flow-section">
   <div class="flow-section-header">
-    <div class="flow-section-title">Flow 3 — State A · Mode B with &gt;3 budgets</div>
+    <div class="flow-section-title">Flow 4 — State A · Mode B with &gt;3 budgets</div>
     <div class="flow-section-line"></div>
   </div>
   <div class="flow-intro">User has 5 budgets, all in Mode B. 3 rows show by attention-weighted sort (over → near → under by % spent). "View all 5 budgets" sits inside the card below the rows.</div>
@@ -802,17 +920,18 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
           <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
         </div>
       </div>
-      <div class="flow-note bug">Over-limit bar: fills to 100% red with a vertical marker where the user crossed the limit (~83%). Copy shows "410 over". One option of three — alternatives in Flow 9.</div>
+      <div class="flow-note decision">Sort order when the user has more than 3 budgets: over-limit first, then near-limit, then under-limit by % spent descending. Ties broken by most recently created. The 3 visible rows are always the ones that need attention; "View all" gives access to the rest.</div>
+      <div class="flow-note bug">Over-limit bar: fills to 100% red with a vertical marker where the user crossed the limit (~83%). Copy shows "410 over". One option of three — alternatives in Flow 10.</div>
     </div>
 
   </div>
 </div>
 
 
-<!-- FLOW 4 — STATE C -->
+<!-- FLOW 5 — STATE C -->
 <div class="flow-section">
   <div class="flow-section-header">
-    <div class="flow-section-title">Flow 4 — State C · Categorisation in progress</div>
+    <div class="flow-section-title">Flow 5 — State C · Categorisation in progress</div>
     <div class="flow-section-line"></div>
   </div>
   <div class="flow-intro">First session, categorisation still running. Total Expenses card shows the amount and count but the category rows are replaced with a pending notice. Smart Budget in Mode C. Latest Spending rows show "Categorising…" where a category would normally sit.</div>
@@ -889,10 +1008,10 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
 </div>
 
 
-<!-- FLOW 5 — STATE D -->
+<!-- FLOW 6 — STATE D -->
 <div class="flow-section">
   <div class="flow-section-header">
-    <div class="flow-section-title">Flow 5 — State D · Primed-and-ready</div>
+    <div class="flow-section-title">Flow 6 — State D · Primed-and-ready</div>
     <div class="flow-section-line"></div>
   </div>
   <div class="flow-intro">First session, SMS granted, zero transactions yet. Total Expenses card shows an expectations takeover (no amount — nothing to total). Smart Budget in Mode C. Latest Spending card doesn't render.</div>
@@ -946,10 +1065,10 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
 </div>
 
 
-<!-- FLOW 6 — STATE E -->
+<!-- FLOW 7 — STATE E -->
 <div class="flow-section">
   <div class="flow-section-header">
-    <div class="flow-section-title">Flow 6 — State E · Manual-only first session</div>
+    <div class="flow-section-title">Flow 7 — State E · Manual-only first session</div>
     <div class="flow-section-line"></div>
   </div>
   <div class="flow-intro">User declined SMS. Manual entry is the primary action. The in-screen Add Transaction hero coexists with the centre plus in this state — the hero teaches the action during first manual-entry, the centre plus is the app-wide pattern. Secondary SMS link sits below.</div>
@@ -1009,10 +1128,10 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
 </div>
 
 
-<!-- FLOW 7 — STATE F -->
+<!-- FLOW 8 — STATE F -->
 <div class="flow-section">
   <div class="flow-section-header">
-    <div class="flow-section-title">Flow 7 — State F · Offline / cached</div>
+    <div class="flow-section-title">Flow 8 — State F · Offline / cached</div>
     <div class="flow-section-line"></div>
   </div>
   <div class="flow-intro">Backend unreachable. "Last updated" pill sits above the card stack. Cards render from cache. Smart Budget may not render if nothing useful is cached.</div>
@@ -1083,17 +1202,17 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
           <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
         </div>
       </div>
-      <div class="flow-note new">Smart Budget card is absent here because Mode A needs live logic and there are no cached budgets to show in Mode B.</div>
+      <div class="flow-note new">Cache covers the whole Home Tab — Total Expenses, category breakdown, and Latest Spending all render from cache. The Smart Budget card is the only exception: it collapses entirely because Mode A needs live logic and Mode B from stale cache could mislead.</div>
     </div>
 
   </div>
 </div>
 
 
-<!-- FLOW 8 — MODE B BAR STATES -->
+<!-- FLOW 9 — MODE B BAR STATES -->
 <div class="flow-section">
   <div class="flow-section-header">
-    <div class="flow-section-title">Flow 8 — Mode B progress bar · 3 states isolated</div>
+    <div class="flow-section-title">Flow 9 — Mode B progress bar · 3 states isolated</div>
     <div class="flow-section-line"></div>
   </div>
   <div class="flow-intro">The three bar states side by side so the designer can pick the over-limit convention.</div>
@@ -1224,10 +1343,10 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
 </div>
 
 
-<!-- FLOW 9 — CENTRE PLUS ACTION SHEET -->
+<!-- FLOW 10 — CENTRE PLUS ACTION SHEET -->
 <div class="flow-section">
   <div class="flow-section-header">
-    <div class="flow-section-title">Flow 9 — Centre plus action sheet</div>
+    <div class="flow-section-title">Flow 10 — Centre plus action sheet</div>
     <div class="flow-section-line"></div>
   </div>
   <div class="flow-intro">Opens from the raised [+] in the bottom nav on any tab. Two options read as equal peers. "Add transaction" routes to the transaction creation modal. "Add budget" routes to the Budgets tab full creation flow (not the Quick-create sheet).</div>
@@ -1294,10 +1413,10 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
 </div>
 
 
-<!-- FLOW 10 — TRANSACTION DETAIL ENTRY POINT -->
+<!-- FLOW 11 — TRANSACTION DETAIL ENTRY POINT -->
 <div class="flow-section">
   <div class="flow-section-header">
-    <div class="flow-section-title">Flow 10 — Transaction Detail · entry from Home Tab</div>
+    <div class="flow-section-title">Flow 11 — Transaction Detail · entry from Home Tab</div>
     <div class="flow-section-line"></div>
   </div>
   <div class="flow-intro">Tapping a Latest Spending row opens the Transaction Detail bottom sheet. The sheet itself is a shared component — full states (view, edit, internal transfer toggle, refund, pending categorisation, delete with 5-second undo) live in the Transactions feature prototype. This phone shows the entry point only.</div>
@@ -1354,10 +1473,10 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
 </div>
 
 
-<!-- FLOW 11 — QUICK-CREATE SHEET -->
+<!-- FLOW 12 — QUICK-CREATE SHEET -->
 <div class="flow-section">
   <div class="flow-section-header">
-    <div class="flow-section-title">Flow 11 — Quick-create bottom sheet · 3 states</div>
+    <div class="flow-section-title">Flow 12 — Quick-create bottom sheet · 3 states</div>
     <div class="flow-section-line"></div>
   </div>
   <div class="flow-intro">Opens from "Set" on a Mode A card. Three states: happy path, cap-reached, network error.</div>
@@ -1478,10 +1597,10 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
 </div>
 
 
-<!-- FLOW 12 — PUSH NOTIFICATIONS -->
+<!-- FLOW 13 — PUSH NOTIFICATIONS -->
 <div class="flow-section">
   <div class="flow-section-header">
-    <div class="flow-section-title">Flow 12 — Push notifications</div>
+    <div class="flow-section-title">Flow 13 — Push notifications</div>
     <div class="flow-section-line"></div>
   </div>
   <div class="flow-intro">Two pushes from the Spending Intelligence programme. Both deep-link to the same Budget detail view a Mode B row tap would open.</div>
