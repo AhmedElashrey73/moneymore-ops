@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoneyMore — Elgameya Flow v2</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+:root{
+  --navy:#0A1F33;--navy-l:#E0EAF4;
+  --green:#166038;--green-l:#D4EDE1;--green-m:#1D7A48;
+  --amber:#7A4F00;--amber-l:#F5E6C0;
+  --red:#8C1A0E;--red-l:#FAD9D4;
+  --page:#F5F3EE;--white:#FFFFFF;
+  --s2:#ECEAE4;--s3:#DEDBD3;
+  --t1:#0A0906;--t2:#1A1714;--t3:#48443E;--t4:#787068;
+  --b1:#D8D4CC;--b2:#C0BDB4;
+  --sans:'Plus Jakarta Sans',sans-serif;
+  --mono:'DM Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--page);color:var(--t1);font-family:var(--sans);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased}
+.hero{background:var(--navy);padding:48px 40px 40px}
+.hero-label{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:rgba(255,255,255,0.35);text-transform:uppercase;margin-bottom:12px}
+.hero-title{font-size:28px;font-weight:800;color:white;line-height:1.1;letter-spacing:-.02em;margin-bottom:12px}
+.hero-title em{font-style:normal;color:#6ECFAA}
+.hero-sub{font-size:13px;color:rgba(255,255,255,0.55);max-width:600px;line-height:1.75}
+.page{max-width:1100px;margin:0 auto;padding:44px 40px 80px}
+.sec-label{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--t4);margin-bottom:20px;display:flex;align-items:center;gap:12px}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--b1)}
+.sec-title{font-size:20px;font-weight:800;color:var(--t1);margin-bottom:6px;letter-spacing:-.01em}
+.sec-desc{font-size:13px;color:var(--t3);line-height:1.75;max-width:700px;margin-bottom:32px}
+.page-divider{height:1px;background:var(--b1);margin:48px 0}
+
+/* FLOW */
+.flow{display:flex;align-items:flex-start;gap:0;overflow-x:auto;padding-bottom:8px}
+.phone-col{display:flex;flex-direction:column;align-items:center;gap:10px;flex-shrink:0}
+.phone-badge{font-family:var(--mono);font-size:9px;font-weight:700;padding:3px 10px;border-radius:4px;text-transform:uppercase;letter-spacing:.06em}
+.phone-badge.entry{background:var(--s2);color:var(--t3)}
+.phone-badge.q{background:var(--navy-l);color:var(--navy)}
+.phone-badge.consent{background:var(--amber-l);color:var(--amber)}
+.phone-badge.promo{background:var(--green-l);color:var(--green)}
+.phone-badge.redirect{background:var(--green-l);color:var(--green)}
+.phone-label{font-family:var(--mono);font-size:10px;color:var(--t4);text-align:center;max-width:168px;line-height:1.4}
+
+/* PHONE FRAME */
+.phone{width:168px;background:var(--white);border:1.5px solid var(--b1);border-radius:24px;overflow:hidden;flex-shrink:0;box-shadow:0 2px 12px rgba(0,0,0,0.06);display:flex;flex-direction:column}
+.phone-status{height:22px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;background:var(--white);border-bottom:0.5px solid var(--s2);flex-shrink:0}
+.phone-time{font-family:var(--mono);font-size:9px;color:var(--t4)}
+.phone-icons{font-size:8px;color:var(--t4)}
+.phone-screen{padding:14px 13px 8px;display:flex;flex-direction:column;gap:8px;flex:1}
+.bottom-tabs{display:flex;border-top:0.5px solid var(--s2);padding:6px 0 4px;flex-shrink:0;background:var(--white)}
+.btab{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px}
+.btab-icon{width:16px;height:16px;border-radius:3px;background:var(--s2)}
+.btab-icon.active{background:var(--navy)}
+.btab-icon.home{border-radius:50%}
+.btab-label{font-size:7px;color:var(--t4)}
+.btab-label.active{color:var(--navy);font-weight:700}
+
+/* SCREEN ELEMENTS */
+.screen-q{font-size:12px;font-weight:700;color:var(--t1);line-height:1.35}
+.screen-sub{font-size:9px;color:var(--t3);line-height:1.5}
+.divider{height:0.5px;background:var(--s2);margin:2px 0}
+.benefit-list{display:flex;flex-direction:column;gap:5px}
+.benefit-item{display:flex;align-items:flex-start;gap:5px;font-size:9px;color:var(--t2);line-height:1.4}
+.benefit-tick{color:var(--green);font-weight:700;flex-shrink:0}
+.opt-list{display:flex;flex-direction:column;gap:4px}
+.opt{border:0.5px solid var(--b1);border-radius:5px;padding:6px 8px;font-size:9px;color:var(--t2);line-height:1.3}
+.opt.sel{border-color:var(--navy);background:var(--navy-l);color:var(--navy);font-weight:700}
+.checkbox-row{display:flex;align-items:flex-start;gap:7px;padding:8px 9px;border-radius:6px;border:0.5px solid var(--b1);background:var(--s2)}
+.checkbox-box{width:13px;height:13px;border-radius:3px;border:1px solid var(--b2);flex-shrink:0;margin-top:1px;background:var(--white)}
+.checkbox-text{font-size:9px;color:var(--t2);line-height:1.45}
+.cta-primary{background:var(--navy);color:var(--white);border-radius:6px;padding:8px;text-align:center;font-size:10px;font-weight:700;margin-top:auto}
+.cta-ghost{border:0.5px solid var(--b1);border-radius:6px;padding:8px;text-align:center;font-size:10px;font-weight:600;color:var(--t3);margin-top:4px}
+.privacy-note{font-size:8px;color:var(--t4);text-align:center;line-height:1.4}
+.warning-box{background:var(--amber-l);border:0.5px solid rgba(122,79,0,0.2);border-radius:5px;padding:7px 8px;font-size:8px;color:var(--amber);line-height:1.5}
+.promo-box{background:var(--green-l);border:0.5px solid rgba(22,96,56,0.2);border-radius:7px;padding:10px;text-align:center}
+.promo-val{font-family:var(--mono);font-size:15px;font-weight:700;color:var(--green);letter-spacing:.08em}
+.promo-lbl{font-size:8px;color:var(--green-m);margin-top:2px}
+.redirect-inner{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;flex:1;padding:16px 0}
+.redirect-logo{width:40px;height:40px;border-radius:10px;background:var(--green-l);display:flex;align-items:center;justify-content:center}
+.redirect-icon{width:22px;height:22px;border-radius:4px;background:var(--green)}
+.redirect-text{font-size:11px;font-weight:700;color:var(--t1);text-align:center;line-height:1.3}
+.redirect-sub{font-size:9px;color:var(--t4);text-align:center;line-height:1.4}
+.redirect-note{font-size:8px;color:var(--t4);text-align:center;line-height:1.5;padding:0 2px}
+.gate-center{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;flex:1;padding:8px 0}
+.gate-icon{width:40px;height:40px;border-radius:50%;background:var(--s2);border:0.5px solid var(--b1);display:flex;align-items:center;justify-content:center}
+.gate-icon-inner{width:18px;height:18px;border-radius:4px;background:var(--b1)}
+.gate-title{font-size:12px;font-weight:700;color:var(--t1);text-align:center;line-height:1.3}
+.gate-sub{font-size:9px;color:var(--t3);text-align:center;line-height:1.5}
+.offer-card{background:var(--s2);border-radius:6px;padding:8px 9px}
+.offer-tag{font-family:var(--mono);font-size:7px;font-weight:700;color:var(--green);letter-spacing:.06em;margin-bottom:3px}
+.offer-title{font-size:10px;font-weight:700;color:var(--t1)}
+.offer-sub{font-size:8px;color:var(--t3);margin-top:1px}
+
+/* ARROW */
+.arr{display:flex;align-items:center;flex-shrink:0;padding:0 6px;margin-top:140px}
+.arr-line{width:18px;height:1px;background:var(--b2)}
+.arr-head{width:0;height:0;border-top:4px solid transparent;border-bottom:4px solid transparent;border-left:6px solid var(--b2)}
+
+/* TARGETING */
+.targeting{background:var(--white);border:1px solid var(--b1);border-radius:10px;padding:24px;margin-bottom:32px}
+.targeting-title{font-size:16px;font-weight:800;color:var(--t1);margin-bottom:16px}
+.targeting-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.target-card{border-radius:8px;padding:16px}
+.target-card.primary{background:var(--navy);border:1px solid var(--navy)}
+.target-card.secondary{background:var(--s2);border:1px solid var(--b1)}
+.target-card-label{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.target-card.primary .target-card-label{color:rgba(255,255,255,0.5)}
+.target-card.secondary .target-card-label{color:var(--t4)}
+.target-card-title{font-size:13px;font-weight:700;margin-bottom:6px}
+.target-card.primary .target-card-title{color:white}
+.target-card.secondary .target-card-title{color:var(--t1)}
+.target-card-body{font-size:12px;line-height:1.6}
+.target-card.primary .target-card-body{color:rgba(255,255,255,0.6)}
+.target-card.secondary .target-card-body{color:var(--t3)}
+
+/* PROMO CODE */
+.promo-section{background:var(--white);border:1px solid var(--b1);border-radius:10px;padding:24px;margin-bottom:32px}
+.promo-title{font-size:16px;font-weight:800;color:var(--t1);margin-bottom:16px}
+.promo-options{display:flex;flex-direction:column;gap:12px}
+.promo-option{display:flex;gap:14px;align-items:flex-start;padding:14px;border-radius:8px;border:1px solid var(--b1)}
+.promo-option.recommended{border-color:rgba(22,96,56,0.3);background:var(--green-l)}
+.promo-option-num{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--t4);flex-shrink:0;padding-top:2px}
+.promo-option.recommended .promo-option-num{color:var(--green)}
+.promo-option-title{font-size:13px;font-weight:700;color:var(--t1);margin-bottom:4px}
+.promo-option-body{font-size:12px;color:var(--t3);line-height:1.6}
+.promo-badge{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:700;padding:2px 8px;border-radius:3px;margin-top:6px}
+.promo-badge.rec{background:var(--green);color:white}
+.promo-badge.future{background:var(--navy-l);color:var(--navy)}
+
+/* DATA LEGEND */
+.data-legend{background:var(--white);border:1px solid var(--b1);border-radius:8px;padding:16px 20px;margin-top:20px}
+.data-legend-label{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t4);margin-bottom:10px}
+.data-tags{display:flex;gap:6px;flex-wrap:wrap}
+.data-tag{font-family:var(--mono);font-size:10px;padding:3px 10px;border-radius:3px}
+.data-tag.travels{background:var(--amber-l);color:var(--amber);border:1px solid rgba(122,79,0,0.2)}
+.data-tag.stays{background:var(--red-l);color:var(--red);border:1px solid rgba(140,26,14,0.2)}
+
+footer{background:var(--navy);padding:22px 40px}
+.footer-inner{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.footer-text{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,0.25);letter-spacing:.06em}
+@media(max-width:700px){.hero,.page,footer{padding-left:20px;padding-right:20px}.targeting-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-label">MoneyMore · Elgameya Integration · Updated Flow · May 2026</div>
+  <h1 class="hero-title">Elgameya — <em>simplified flow</em></h1>
+  <p class="hero-sub">Updated flow following alignment with Elgameya's product team. One intent question, consent, promo code reveal, redirect. Plus targeting logic and unique promo code proposal.</p>
+</section>
+
+<div class="page">
+
+  <!-- FLOW -->
+  <div class="sec-label">Updated user flow — 5 screens</div>
+  <h2 class="sec-title">One question. One consent. One promo code.</h2>
+  <p class="sec-desc">Removing the three additional intent questions significantly reduces friction. The one remaining question — what is your goal — gives MoneyMore the intent signal it needs without creating unnecessary steps before the redirect.</p>
+
+  <div class="flow">
+
+    <!-- 1. OFFERS TAB -->
+    <div class="phone-col">
+      <div class="phone-badge entry">entry</div>
+      <div class="phone">
+        <div class="phone-status"><span class="phone-time">9:41</span><span class="phone-icons">▲▲ ▮</span></div>
+        <div class="phone-screen">
+          <div class="screen-q">Offers</div>
+          <div class="offer-card">
+            <div class="offer-tag">FEATURED PARTNER</div>
+            <div class="offer-title">Join an Elgameya</div>
+            <div class="offer-sub">Exclusive promo for MoneyMore users</div>
+          </div>
+          <div style="border:0.5px solid var(--b1);border-radius:5px;padding:7px;opacity:.3;margin-top:4px">
+            <div style="font-size:9px;color:var(--t4)">More offers...</div>
+          </div>
+        </div>
+        <div class="bottom-tabs">
+          <div class="btab"><div class="btab-icon home"></div><div class="btab-label">Home</div></div>
+          <div class="btab"><div class="btab-icon"></div><div class="btab-label">Transactions</div></div>
+          <div class="btab"><div class="btab-icon active"></div><div class="btab-label active">Offers</div></div>
+          <div class="btab"><div class="btab-icon"></div><div class="btab-label">Budgets</div></div>
+          <div class="btab"><div class="btab-icon"></div><div class="btab-label">Profile</div></div>
+        </div>
+      </div>
+      <div class="phone-label">Offers tab — Elgameya card</div>
+    </div>
+
+    <div class="arr"><div class="arr-line"></div><div class="arr-head"></div></div>
+
+    <!-- 2. GOAL QUESTION -->
+    <div class="phone-col">
+      <div class="phone-badge q">1 question</div>
+      <div class="phone">
+        <div class="phone-status"><span class="phone-time">9:41</span><span class="phone-icons">▲▲ ▮</span></div>
+        <div class="phone-screen">
+          <div class="screen-q">What's your goal?</div>
+          <div class="screen-sub">Help us find the right Elgameya plan for you</div>
+          <div class="opt-list">
+            <div class="opt sel">Saving for something specific</div>
+            <div class="opt">Building an emergency fund</div>
+            <div class="opt">Covering a big upcoming expense</div>
+            <div class="opt">Managing monthly cash flow</div>
+            <div class="opt">Just exploring</div>
+          </div>
+          <div class="cta-primary">Continue</div>
+        </div>
+        <div class="bottom-tabs">
+          <div class="btab"><div class="btab-icon home"></div><div class="btab-label">Home</div></div>
+          <div class="btab"><div class="btab-icon"></div><div class="btab-label">Transactions</div></div>
+          <div class="btab"><div class="btab-icon active"></div><div class="btab-label active">Offers</div></div>
+          <div class="btab"><div class="btab-icon"></div><div class="btab-label">Budgets</div></div>
+          <div class="btab"><div class="btab-icon"></div><div class="btab-label">Profile</div></div>
+        </div>
+      </div>
+      <div class="phone-label">One intent question</div>
+    </div>
+
+    <div class="arr"><div class="arr-line"></div><div class="arr-head"></div></div>
+
+    <!-- 3. CONSENT -->
+    <div class="phone-col">
+      <div class="phone-badge consent">consent</div>
+      <div class="phone">
+        <div class="phone-status"><span class="phone-time">9:42</span><span class="phone-icons">▲▲ ▮</span></div>
+        <div class="phone-screen">
+          <div class="screen-q">Find your Elgameya match</div>
+          <div class="screen-sub">We'll share your goal with Elgameya to find the right plan:</div>
+          <div class="benefit-list">
+            <div class="benefit-item"><span class="benefit-tick">✓</span>Your savings goal</div>
+            <div class="benefit-item"><span class="benefit-tick">✓</span>MoneyMore may keep your answer to improve future offers</div>
+          </div>
+          <div class="warning-box">MoneyMore will not share your transaction history or spending data. For more information, see our Privacy Policy.</div>
+          <div class="checkbox-row">
+            <div class="checkbox-box"></div>
+            <div class="checkbox-text">Share my goal with Elgameya to find my match</div>
+          </div>
+          <div class="cta-primary">Get my promo code</div>
+          <div class="cta-ghost">Cancel</div>
+        </div>
+        <div class="bottom-tabs">
+          <div class="btab"><div class="btab-icon home"></div><div class="btab-label">Home</div></div>
+          <div class="btab"><div class="btab-icon"></div><div class="btab-label">Transactions</div></div>
+          <div class="btab"><div class="btab-icon active"></div><div class="btab-label active">Offers</div></div>
+          <div class="btab"><div class="btab-icon"></div><div class="btab-label">Budgets</div></div>
+          <div class="btab"><div class="btab-icon"></div><div class="btab-label">Profile</div></div>
+        </div>
+      </div>
+      <div class="phone-label">Consent screen</div>
+    </div>
+
+    <div class="arr"><div class="arr-line"></div><div class="arr-head"></div></div>
+
+    <!-- 4. PROMO CODE -->
+    <div class="phone-col">
+      <div class="phone-badge promo">promo revealed</div>
+      <div class="phone">
+        <div class="phone-status"><span class="phone-time">9:42</span><span class="phone-icons">▲▲ ▮</span></div>
+        <div class="phone-screen">
+          <div class="screen-q">Your Elgameya offer is ready</div>
+          <div class="screen-sub">Use this code when you sign up with Elgameya.</div>
+          <div class="promo-box">
+            <div class="promo-val">MM-ELG-XXXX</div>
+            <div class="promo-lbl">Your unique promo code</div>
+          </div>
+          <div class="divider"></div>
+          <div class="cta-primary">Open Elgameya</div>
+          <div class="redirect-note">You are leaving MoneyMore. Elgameya will process your personal data as an independent data controller. Their Privacy Policy and Terms will apply.</div>
+          <div class="divider"></div>
+          <div class="cta-ghost">Done, I'll go later</div>
+        </div>
+        <div class="bottom-tabs">
+          <div class="btab"><div class="btab-icon home"></div><div class="btab-label">Home</div></div>
+          <div class="btab"><div class="btab-icon"></div><div class="btab-label">Transactions</div></div>
+          <div class="btab"><div class="btab-icon active"></div><div class="btab-label active">Offers</div></div>
+          <div class="btab"><div class="btab-icon"></div><div class="btab-label">Budgets</div></div>
+          <div class="btab"><div class="btab-icon"></div><div class="btab-label">Profile</div></div>
+        </div>
+      </div>
+      <div class="phone-label">Unique promo code revealed</div>
+    </div>
+
+    <div class="arr"><div class="arr-line"></div><div class="arr-head"></div></div>
+
+    <!-- 5. REDIRECT -->
+    <div class="phone-col">
+      <div class="phone-badge redirect">redirect</div>
+      <div class="phone">
+        <div class="phone-status"><span class="phone-time">9:43</span><span class="phone-icons">▲▲ ▮</span></div>
+        <div class="phone-screen">
+          <div class="redirect-inner">
+            <div class="redirect-logo"><div class="redirect-icon"></div></div>
+            <div class="redirect-text">Taking you to Elgameya</div>
+            <div class="promo-val" style="font-size:12px">MM-ELG-XXXX</div>
+            <div class="redirect-sub">Your goal is ready. Elgameya will complete your sign-up.</div>
+          </div>
+        </div>
+        <div class="bottom-tabs">
+          <div class="btab"><div class="btab-icon home"></div><div class="btab-label">Home</div></div>
+          <div class="btab"><div class="btab-icon"></div><div class="btab-label">Transactions</div></div>
+          <div class="btab"><div class="btab-icon active"></div><div class="btab-label active">Offers</div></div>
+          <div class="btab"><div class="btab-icon"></div><div class="btab-label">Budgets</div></div>
+          <div class="btab"><div class="btab-icon"></div><div class="btab-label">Profile</div></div>
+        </div>
+      </div>
+      <div class="phone-label">Redirect to Elgameya</div>
+    </div>
+
+  </div>
+
+  <div class="data-legend">
+    <div class="data-legend-label">What travels to Elgameya on redirect</div>
+    <div class="data-tags">
+      <span class="data-tag travels">User's savings goal</span>
+      <span class="data-tag travels">Unique promo code</span>
+      <span class="data-tag stays">Transaction history — never shared</span>
+      <span class="data-tag stays">Spending data — never shared</span>
+      <span class="data-tag stays">Financial profile — never shared</span>
+    </div>
+  </div>
+
+  <div class="page-divider"></div>
+
+  <!-- TARGETING -->
+  <div class="sec-label">Targeting logic</div>
+  <h2 class="sec-title">Who sees the Elgameya offer</h2>
+  <p class="sec-desc">Not all MoneyMore users are equally relevant for Elgameya. The ideal audience is users who have already demonstrated savings intent through the product — they are the most likely to convert and the most valuable leads for Elgameya.</p>
+
+  <div class="targeting">
+    <div class="targeting-title">Primary and secondary target segments</div>
+    <div class="targeting-grid">
+      <div class="target-card primary">
+        <div class="target-card-label">Primary segment</div>
+        <div class="target-card-title">Users who have set a goal or created a budget</div>
+        <div class="target-card-body">These users have already demonstrated financial intentionality inside MoneyMore. They have a savings purpose — which is exactly what a gameya serves. They are the highest-intent audience and the strongest leads for Elgameya. Target this segment first via push notification and in-app card placement.</div>
+      </div>
+      <div class="target-card secondary">
+        <div class="target-card-label">Secondary segment</div>
+        <div class="target-card-title">Active users with regular transaction tracking</div>
+        <div class="target-card-body">Users who are actively engaged with their transactions but have not yet set a goal or budget. They are financially aware and open to savings tools. Surface the Elgameya card in the Offers tab for this segment — let curiosity drive the entry rather than a direct push.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-divider"></div>
+
+  <!-- PROMO CODE -->
+  <div class="sec-label">Promo code proposal</div>
+  <h2 class="sec-title">Unique codes to prevent abuse</h2>
+  <p class="sec-desc">A single shared promo code for all MoneyMore users is an abuse risk — it leaks, gets shared outside the platform, and makes performance tracking impossible. We propose unique per-user codes. Three options below — we would like to align on the preferred approach.</p>
+
+  <div class="promo-section">
+    <div class="promo-title">Three approaches to unique promo codes</div>
+    <div class="promo-options">
+
+      <div class="promo-option recommended">
+        <div class="promo-option-num">01</div>
+        <div>
+          <div class="promo-option-title">Pre-generated code pool — recommended starting point</div>
+          <div class="promo-option-body">Elgameya provides MoneyMore with a batch of unique single-use codes. MoneyMore assigns one per user at the moment they tap "Get my promo code". Each code is used once and marked as redeemed. No API integration needed. Elgameya replenishes the pool as needed. Simple, fast to implement, zero technical dependency between the two systems.</div>
+          <div class="promo-badge rec">Recommended — lowest technical lift</div>
+        </div>
+      </div>
+
+      <div class="promo-option">
+        <div class="promo-option-num">02</div>
+        <div>
+          <div class="promo-option-title">Real-time API code generation</div>
+          <div class="promo-option-body">When the user taps to get their code, MoneyMore calls Elgameya's API in real time and a unique code is generated and returned instantly. Fully automated, no pool management, scales infinitely. Requires API integration between MoneyMore and Elgameya before launch.</div>
+          <div class="promo-badge future">Recommended long-term</div>
+        </div>
+      </div>
+
+      <div class="promo-option">
+        <div class="promo-option-num">03</div>
+        <div>
+          <div class="promo-option-title">Structured code with embedded identifier</div>
+          <div class="promo-option-body">A code format such as MM-[UserID]-ELG that encodes the MoneyMore user reference. Elgameya validates on their side that the code maps to a legitimate MoneyMore referral. Simple but exposes a user identifier in the code itself — minor privacy consideration to confirm with DPO.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-text">MoneyMore · Elgameya Flow v2 · May 2026 · Internal</div>
+    <div class="footer-text">Head of Growth & Product</div>
+  </div>
+</footer>
+
+</body>
+</html>
