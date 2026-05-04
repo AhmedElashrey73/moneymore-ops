@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MoneyMore — Budgets Tab · Designer Prototype v6</title>
+<title>MoneyMore — Budgets Tab · Designer Prototype v7</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
@@ -329,11 +329,49 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
 .input{height:42px;border:1.5px solid var(--b2);border-radius:var(--r-sm);background:white;padding:0 10px;font-size:var(--s-sm);color:var(--t1);display:flex;align-items:center;justify-content:space-between;}
 .input.focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(26,60,94,0.07);}
 .input.err{border-color:var(--red);}
+.input.editable{cursor:pointer;}
 .input-ph{color:var(--t4);}
 .input-suffix{font-size:var(--s-xs);color:var(--t3);font-weight:600;}
 .input-err{font-size:var(--s-xs);color:var(--red);display:flex;align-items:center;gap:4px;}
 .input-err a{color:var(--red);text-decoration:underline;font-weight:700;}
 .input-hint{font-size:var(--s-xs);color:var(--t3);}
+.edit-pencil{font-size:13px;color:var(--navy);opacity:0.7;}
+
+/* Caret blink */
+.caret{
+  display:inline-block;
+  margin-left:1px;
+  font-weight:300;
+  color:var(--navy);
+  animation:caret-blink 1s steps(2, start) infinite;
+}
+@keyframes caret-blink {
+  to { visibility:hidden; }
+}
+
+/* Numeric keyboard (Android-ish) */
+.num-keyboard{
+  background:#D1D5DB;
+  margin:10px -14px -8px;
+  padding:6px 4px 8px;
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+}
+.num-keyboard .kb-row{display:flex;gap:5px;}
+.num-keyboard .kb-key{
+  flex:1;
+  height:32px;
+  background:white;
+  border-radius:5px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;
+  font-weight:500;
+  color:var(--t1);
+  box-shadow:0 1px 0 rgba(0,0,0,0.12);
+}
+.num-keyboard .kb-key.dark{background:#A8AEB6;color:white;font-size:14px;}
+.num-keyboard .kb-key.blank{background:transparent;box-shadow:none;}
 
 /* Buttons */
 .btn{height:42px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;font-family:var(--f-body);font-size:var(--s-sm);font-weight:700;border:none;width:100%;cursor:default;}
@@ -505,7 +543,7 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
     <span class="doc-tag prototype">Prototype</span>
     <span class="doc-tag designer">Designer brief</span>
     <span class="doc-tag android">Android</span>
-    <span class="doc-tag wip">Draft v6</span>
+    <span class="doc-tag wip">Draft v7</span>
     <span class="doc-tag version">DB-040</span>
     <span class="doc-tag parked">iOS parked</span>
     <span class="doc-date">29 April 2026</span>
@@ -527,7 +565,7 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
         <div class="flow-list-item active">Flow 1 — Tab states (empty, recommendation, hybrid, list, offline, error)</div>
         <div class="flow-list-item active">Flow 2 — Create budget · full path (from centre plus or empty state)</div>
         <div class="flow-list-item active">Flow 3 — Create budget · Quick-create (from recommendation card)</div>
-        <div class="flow-list-item active">Flow 4 — Detail, edit limit, edit category, delete</div>
+        <div class="flow-list-item active">Flow 4 — Detail, edit limit, delete</div>
         <div class="flow-list-item active">Flow 5 — Centre plus disabled states</div>
         <div class="flow-list-item parked">iOS variants (parked)</div>
       </div>
@@ -1498,20 +1536,72 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
 
 
 <!-- ═══════════════════════════════════════════════════════
-     FLOW 4 — DETAIL, EDIT LIMIT, EDIT CATEGORY, DELETE
+     FLOW 4 — DETAIL, EDIT LIMIT, DELETE
 ═══════════════════════════════════════════════════════════ -->
 <div class="flow-section">
   <div class="flow-section-header">
-    <div class="flow-section-title">Flow 4 — Detail, edit limit, edit category, delete</div>
+    <div class="flow-section-title">Flow 4 — Detail, edit limit, delete</div>
     <div class="flow-section-line"></div>
   </div>
-  <div class="flow-section-intro">User taps any budget card on the Budgets tab to open the detail sheet. From there: edit the limit inline, change the category, or delete.</div>
+  <div class="flow-section-intro">User taps any budget card on the Budgets tab to open the detail sheet. From there: edit the limit inline or delete the budget. To switch a budget to a different category, the user deletes the existing budget and creates a new one — historical spending stays tagged to its original category.</div>
 
   <div class="phone-row">
 
-    <!-- 4a: Detail sheet -->
+    <!-- 4a: Budget card tapped -->
     <div class="screen-col">
-      <div class="screen-label">Budget card tapped · detail sheet opens</div>
+      <div class="screen-label">Budgets tab · user taps Food &amp; Dining card</div>
+      <div class="state-badge entry">card tap</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="app-bar-title">Budgets</div>
+          </div>
+          <div class="sc-area">
+            <div class="sc-pad">
+              <div class="summary-banner alert">
+                <div class="summary-dot"></div>
+                <div class="summary-txt">2 budgets over, 1 close to the limit.</div>
+              </div>
+              <div class="group-hdr alert"><span>Over limit · 2</span><div class="group-hdr-line"></div></div>
+              <div class="budget-card active tap-ring">
+                <div class="bc-top">
+                  <div class="bc-emoji">🍕</div>
+                  <div class="bc-cat">Food &amp; Dining</div>
+                </div>
+                <div class="bc-amount-hero over"><span class="num">340</span><span class="lbl">EGP over</span></div>
+                <div class="bc-bar-wrap"><div class="bc-bar over" style="width:100%"></div></div>
+              </div>
+              <div class="budget-card active">
+                <div class="bc-top">
+                  <div class="bc-emoji">🛍</div>
+                  <div class="bc-cat">Shopping</div>
+                </div>
+                <div class="bc-amount-hero over"><span class="num">220</span><span class="lbl">EGP over</span></div>
+                <div class="bc-bar-wrap"><div class="bc-bar over" style="width:100%"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-item plus-slot"><div class="a-nav-icon"></div><div class="a-nav-lbl"></div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item on"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">tap card</div>
+    </div>
+
+    <!-- 4b: Detail sheet — read-only -->
+    <div class="screen-col">
+      <div class="screen-label">Detail sheet opens · read-only</div>
       <div class="state-badge interaction">bottom sheet</div>
       <div class="phone">
         <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
@@ -1521,10 +1611,6 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
           </div>
           <div class="sc-area" style="opacity:0.4">
             <div class="sc-pad">
-              <div class="summary-banner alert">
-                <div class="summary-dot"></div>
-                <div class="summary-txt">2 budgets over, 1 close to the limit.</div>
-              </div>
               <div class="budget-card active">
                 <div class="bc-top">
                   <div class="bc-emoji">🍕</div>
@@ -1544,9 +1630,9 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
               </div>
               <div class="form-grp">
                 <div class="form-label">MONTHLY LIMIT</div>
-                <div class="input">
+                <div class="input editable">
                   <span style="font-weight:700;color:var(--t1)">2,000</span>
-                  <span class="input-suffix">EGP</span>
+                  <span style="display:flex;align-items:center;gap:6px"><span class="input-suffix">EGP</span><span class="edit-pencil">✎</span></span>
                 </div>
               </div>
               <div class="bs-stats-grid">
@@ -1563,10 +1649,6 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
                   <div class="bs-stat-val over">117%</div>
                 </div>
               </div>
-              <div class="bs-action-row">
-                <div class="bs-action-lbl">Change category</div>
-                <div class="bs-action-chev">›</div>
-              </div>
               <div class="bs-action-row danger">
                 <div class="bs-action-lbl">Delete budget</div>
                 <div class="bs-action-chev">›</div>
@@ -1575,18 +1657,76 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
           </div>
         </div>
       </div>
-      <div class="flow-note decision">Limit field is editable in place. Stats grid is read-only. "View transactions in [Category]" CTA hidden until Transactions tab ships.</div>
+      <div class="flow-note decision">Limit field shows a pencil affordance — tappable to edit. Stats grid is read-only. To switch this budget to a different category, the user deletes it and creates a new one — historical food spending stays tagged as food.</div>
     </div>
 
     <div class="flow-arrow">
       <div class="arrow-line"></div>
-      <div class="arrow-label">tap limit · edit · save</div>
+      <div class="arrow-label">tap limit field</div>
     </div>
 
-    <!-- 4b: Edit limit — input focused -->
+    <!-- 4c: Edit limit · input focused + keyboard -->
     <div class="screen-col">
-      <div class="screen-label">Edit limit · input focused with new value</div>
-      <div class="state-badge interaction">input focused</div>
+      <div class="screen-label">Limit field tapped · input focused · keyboard up</div>
+      <div class="state-badge interaction">editing</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar" style="opacity:0.4">
+            <div class="app-bar-title">Budgets</div>
+          </div>
+          <div class="sc-area" style="opacity:0.25">
+            <div class="sc-pad">
+              <div class="budget-card active">
+                <div class="bc-top">
+                  <div class="bc-emoji">🍕</div>
+                  <div class="bc-cat">Food &amp; Dining</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="overlay" style="background:rgba(0,0,0,0.5)">
+            <div class="bottom-sheet" style="padding-bottom:8px">
+              <div class="bs-handle"></div>
+              <div class="bs-cat-row">
+                <div class="bs-cat-icon">🍕</div>
+                <div class="bs-cat-name">Food &amp; Dining</div>
+              </div>
+              <div class="form-grp">
+                <div class="form-label">MONTHLY LIMIT</div>
+                <div class="input focus">
+                  <span style="font-weight:700;color:var(--t1);font-size:18px">2,500<span class="caret">|</span></span>
+                  <span class="input-suffix">EGP</span>
+                </div>
+                <div class="input-hint">We'll alert you as you get close.</div>
+              </div>
+              <div style="display:flex;gap:8px;margin-top:4px">
+                <div class="btn btn-ghost" style="flex:1">Cancel</div>
+                <div class="btn btn-primary" style="flex:1.4">Save changes</div>
+              </div>
+              <!-- Numeric keyboard -->
+              <div class="num-keyboard">
+                <div class="kb-row"><div class="kb-key">1</div><div class="kb-key">2</div><div class="kb-key">3</div></div>
+                <div class="kb-row"><div class="kb-key">4</div><div class="kb-key">5</div><div class="kb-key">6</div></div>
+                <div class="kb-row"><div class="kb-key">7</div><div class="kb-key">8</div><div class="kb-key">9</div></div>
+                <div class="kb-row"><div class="kb-key blank"></div><div class="kb-key">0</div><div class="kb-key dark">⌫</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note decision">Stats grid and Delete row hide while editing — replaced by Save / Cancel. Numeric keyboard appears. Save disabled until value &gt; 0 and different from the saved value. Cancel reverts to the previous limit.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">tap Save changes</div>
+    </div>
+
+    <!-- 4d: Saved — sheet refreshed -->
+    <div class="screen-col">
+      <div class="screen-label">Saved · sheet returns to read-only with new limit</div>
+      <div class="state-badge success">saved</div>
       <div class="phone">
         <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
         <div class="screen">
@@ -1595,9 +1735,13 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
           </div>
           <div class="sc-area" style="opacity:0.4">
             <div class="sc-pad">
-              <div class="budget-card calm">
-                <div class="bc-emoji">🍕</div>
-                <div class="bc-cat">Food &amp; Dining</div>
+              <div class="budget-card active">
+                <div class="bc-top">
+                  <div class="bc-emoji">🍕</div>
+                  <div class="bc-cat">Food &amp; Dining</div>
+                </div>
+                <div class="bc-amount-hero warn"><span class="num">160</span><span class="lbl">EGP left</span></div>
+                <div class="bc-bar-wrap"><div class="bc-bar warn" style="width:94%"></div></div>
               </div>
             </div>
           </div>
@@ -1610,87 +1754,42 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
               </div>
               <div class="form-grp">
                 <div class="form-label">MONTHLY LIMIT</div>
-                <div class="input focus">
+                <div class="input editable">
                   <span style="font-weight:700;color:var(--t1)">2,500</span>
-                  <span class="input-suffix">EGP</span>
+                  <span style="display:flex;align-items:center;gap:6px"><span class="input-suffix">EGP</span><span class="edit-pencil">✎</span></span>
                 </div>
               </div>
-              <div class="btn btn-primary">Save changes</div>
-              <div class="btn btn-ghost">Cancel</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="flow-note decision">Stats grid hides while editing — replaced by Save / Cancel. Stats reappear after save with the new limit.</div>
-    </div>
-
-    <div class="flow-arrow">
-      <div class="arrow-line"></div>
-      <div class="arrow-label">back · tap Change category</div>
-    </div>
-
-    <!-- 4c: Edit category picker -->
-    <div class="screen-col">
-      <div class="screen-label">Pick a new category</div>
-      <div class="state-badge happy">edit category</div>
-      <div class="phone">
-        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
-        <div class="screen">
-          <div class="app-bar">
-            <div class="back-btn">‹</div>
-            <div class="app-bar-title">Pick new category</div>
-          </div>
-          <div class="sc-area">
-            <div class="sc-pad-sm">
-              <div class="inline-note">Past spending in this category won't move over.</div>
-              <div class="cat-row">
-                <div class="cat-icon">🚗</div>
-                <div class="cat-info">
-                  <div class="cat-name">Transport</div>
-                  <div class="cat-sub">800 EGP / month avg</div>
+              <div class="bs-stats-grid">
+                <div class="bs-stat">
+                  <div class="bs-stat-lbl">Spent</div>
+                  <div class="bs-stat-val">2,340</div>
                 </div>
-                <div class="cat-chev">›</div>
-              </div>
-              <div class="cat-row">
-                <div class="cat-icon">🛍</div>
-                <div class="cat-info">
-                  <div class="cat-name">Shopping</div>
-                  <div class="cat-sub">1,200 EGP / month avg</div>
+                <div class="bs-stat">
+                  <div class="bs-stat-lbl">Remaining</div>
+                  <div class="bs-stat-val">160</div>
                 </div>
-                <div class="cat-chev">›</div>
-              </div>
-              <div class="cat-row">
-                <div class="cat-icon">💊</div>
-                <div class="cat-info">
-                  <div class="cat-name">Health</div>
-                  <div class="cat-sub">No spending yet</div>
+                <div class="bs-stat">
+                  <div class="bs-stat-lbl">% Used</div>
+                  <div class="bs-stat-val">94%</div>
                 </div>
-                <div class="cat-chev">›</div>
               </div>
-              <div class="cat-row">
-                <div class="cat-icon">📱</div>
-                <div class="cat-info">
-                  <div class="cat-name">Bills &amp; Utilities</div>
-                  <div class="cat-sub">450 EGP / month avg</div>
-                </div>
-                <div class="cat-chev">›</div>
-              </div>
-              <div style="margin-top:10px">
-                <div class="btn btn-primary">Confirm change</div>
+              <div class="bs-action-row danger">
+                <div class="bs-action-lbl">Delete budget</div>
+                <div class="bs-action-chev">›</div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="flow-note new">Inline note added per push-back on the brief. Change is silent and irreversible (historical spend doesn't transfer), so the user should know before tapping. Not a dialog — one line above the picker.</div>
+      <div class="flow-note decision">Stats refresh in place with the new limit applied. The card behind the sheet also updates — note Food &amp; Dining moved from "Over limit" to "Close to limit" because the higher limit changed its status. No toast on edit — the visible refresh is enough.</div>
     </div>
 
     <div class="flow-arrow">
       <div class="arrow-line"></div>
-      <div class="arrow-label">back · tap Delete</div>
+      <div class="arrow-label">tap Delete budget</div>
     </div>
 
-    <!-- 4d: Delete confirmation -->
+    <!-- 4e: Delete confirmation -->
     <div class="screen-col">
       <div class="screen-label">Delete confirmation · native dialog</div>
       <div class="state-badge os">OS-rendered</div>
@@ -1721,6 +1820,54 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
         </div>
       </div>
       <div class="flow-note new">Native Android dialog — not designed by MoneyMore. Only the title and body strings are MoneyMore-authored.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">tap Delete</div>
+    </div>
+
+    <!-- 4f: After delete -->
+    <div class="screen-col">
+      <div class="screen-label">After delete · card removed · toast confirms</div>
+      <div class="state-badge success">deleted</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="app-bar-title">Budgets</div>
+          </div>
+          <div class="sc-area">
+            <div class="sc-pad">
+              <div class="summary-banner alert">
+                <div class="summary-dot"></div>
+                <div class="summary-txt">1 budget over the limit.</div>
+              </div>
+              <div class="budget-card active">
+                <div class="bc-top">
+                  <div class="bc-emoji">🛍</div>
+                  <div class="bc-cat">Shopping</div>
+                </div>
+                <div class="bc-amount-hero over"><span class="num">220</span><span class="lbl">EGP over</span></div>
+                <div class="bc-bar-wrap"><div class="bc-bar over" style="width:100%"></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="toast">
+            <div class="toast-ico">✓</div>
+            <div>Budget deleted</div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-item plus-slot"><div class="a-nav-icon"></div><div class="a-nav-lbl"></div></div>
+          <div class="a-nav-plus">+</div>
+          <div class="a-nav-item on"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">User lands back on the Budgets tab. Sheet dismisses, deleted card disappears, summary banner recalculates. Toast confirms the action — same pattern as create.</div>
     </div>
 
   </div>
@@ -2059,7 +2206,7 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
 
         <!-- Detail sheet -->
         <tr class="group-start">
-          <td class="screen-name" rowspan="8">Detail sheet</td>
+          <td class="screen-name" rowspan="7">Detail sheet</td>
           <td class="element-name">Limit field label</td>
           <td class="en">Monthly limit</td>
           <td class="ar">الحد الشهري</td>
@@ -2090,32 +2237,17 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
           <td class="ar">إلغاء</td>
         </tr>
         <tr>
-          <td class="element-name">Change category action</td>
-          <td class="en">Change category</td>
-          <td class="ar">غيّر التصنيف</td>
-        </tr>
-        <tr>
           <td class="element-name">Delete action</td>
           <td class="en">Delete budget</td>
           <td class="ar">احذف الميزانية</td>
         </tr>
 
-        <!-- Edit category picker -->
+        <!-- Success toast after delete -->
         <tr class="group-start">
-          <td class="screen-name" rowspan="3">Edit category picker</td>
-          <td class="element-name">Header</td>
-          <td class="en">Pick new category</td>
-          <td class="ar">اختار تصنيف جديد</td>
-        </tr>
-        <tr>
-          <td class="element-name">Inline disclosure</td>
-          <td class="en">Past spending in this category won't move over.</td>
-          <td class="ar">المصاريف القديمة في التصنيف ده مش هتتنقل.</td>
-        </tr>
-        <tr>
-          <td class="element-name">Confirm CTA</td>
-          <td class="en">Confirm change</td>
-          <td class="ar">أكّد التغيير</td>
+          <td class="screen-name">Success after delete</td>
+          <td class="element-name">Toast</td>
+          <td class="en">Budget deleted</td>
+          <td class="ar">تمام، الميزانية اتحذفت</td>
         </tr>
 
         <!-- Delete dialog -->
@@ -2168,7 +2300,7 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
       <li><strong>Touch targets — 44×44px minimum</strong> on every interactive element. Includes the recommendation card "Set budget" CTA, dismiss link, status badges (if tappable), category picker rows, detail sheet action rows, and the centre plus button.</li>
       <li><strong>Contrast — 4.5:1 minimum for text</strong>, 7:1 for financial figures (limits, spent amounts, remaining values). Verify across white card surface and the cream recommendation surface.</li>
       <li><strong>Never colour-only for state.</strong> Budget status badges combine colour with text label. Progress bars combine colour with badge text. Disabled action sheet rows combine reduced opacity with the explanatory sub-line.</li>
-      <li><strong>Focus order — banner → recommendations → budget list → bottom nav.</strong> Logical top-to-bottom on the tab. On Arabic the visual flips to RTL but focus order stays top-to-bottom. Inside the detail sheet: limit field → stats → change category → delete.</li>
+      <li><strong>Focus order — banner → recommendations → budget list → bottom nav.</strong> Logical top-to-bottom on the tab. On Arabic the visual flips to RTL but focus order stays top-to-bottom. Inside the detail sheet: limit field → stats → delete.</li>
       <li><strong>Status badge width</strong> must accommodate "Close to limit" (14 chars) at standard density. If badge truncation occurs, fall back to "Close" / "قرب" before going single-letter or icon-only.</li>
     </ul>
   </div>
