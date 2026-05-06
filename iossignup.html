@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MoneyMore — Sign-up & Onboarding (iOS) · Designer Prototype v5</title>
+<title>MoneyMore — Sign-up & Onboarding (iOS) · Designer Prototype v6</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 :root{--navy:#1A3C5E;--green:#2E8B57;--green-l:#E8F5EE;--gold:#B8860B;--gold-l:#FBF4DC;--red:#C0392B;--red-l:#FDECEA;--whatsapp:#25D366;--whatsapp-l:#DFF7E6;--page-bg:#F9F8F5;--screen-bg:#FAFAF8;--screen-bg2:#F2F0EB;--screen-bg3:#E8E5DE;--t1:#1A1714;--t2:#3D3A35;--t3:#7A7670;--t4:#ABA7A0;--b1:#E8E5DF;--b2:#D4D0C8;--b3:#BCBAB2;--frame-bg:#2A2724;--frame-border:#1A1614;--f-body:'Plus Jakarta Sans',sans-serif;--f-mono:'DM Mono',monospace;--s-xs:10px;--s-sm:12px;--s-base:14px;--s-md:16px;--s-lg:18px;--s-xl:22px;--r-sm:6px;--r-md:12px;--r-lg:16px;--r-pill:999px;--shadow-phone:0 8px 32px rgba(0,0,0,0.14),0 2px 8px rgba(0,0,0,0.08);--shadow-card:0 1px 3px rgba(0,0,0,0.04),0 1px 2px rgba(0,0,0,0.03);--ph-w:300px;--ph-r:38px;}
@@ -294,7 +294,7 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
 <div class="page">
 
 <div class="doc-header">
-<div class="doc-meta"><span class="doc-tag prototype">Prototype</span><span class="doc-tag designer">Designer brief</span><span class="doc-tag ios">iOS</span><span class="doc-tag wip">Draft v5</span><span class="doc-tag version">DB-031</span><span class="doc-date">Sign-up & Onboarding · iOS Shortcut tutorial</span></div>
+<div class="doc-meta"><span class="doc-tag prototype">Prototype</span><span class="doc-tag designer">Designer brief</span><span class="doc-tag ios">iOS</span><span class="doc-tag wip">Draft v6</span><span class="doc-tag version">DB-031</span><span class="doc-date">Sign-up & Onboarding · iOS Shortcut tutorial</span></div>
 <div class="doc-title">Sign-up & Onboarding (iOS)</div>
 <div class="doc-subtitle">A new iOS user signs up via Apple, Google, or phone, sets up automatic transaction tracking through the iOS Shortcuts app, and lands on Home — either in empty-but-armed state (Shortcut on, waiting for first transaction) or manual-only state (Shortcut skipped). A non-blocking re-prompt nudges users who skipped.</div>
 <div class="doc-info">
@@ -303,7 +303,7 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
 <div class="flow-list-item">Flow 1 — Welcome → Entry → AutoFill phone → OTP with QuickType code → Name capture</div>
 <div class="flow-list-item">Flow 2 — Shortcut tutorial · 10 steps</div>
 <div class="flow-list-item">Flow 3 — Skip Shortcut path → manual-only Home</div>
-<div class="flow-list-item">Flow 4 — Returning user · same device + new device</div>
+<div class="flow-list-item">Flow 4 — Returning user · new device</div>
 <div class="flow-list-item">Flow 5 — Shortcut re-prompt · 3 triggers</div>
 <div class="flow-list-item">Edges — error states and variants</div>
 </div></div></div>
@@ -794,70 +794,13 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
 
 </div></div>
 
+
 <!-- FLOW 4 -->
 <div class="flow-section">
-<div class="flow-section-header"><div class="flow-section-title">Flow 4 — Returning user · same device + new device</div><div class="flow-section-line"></div></div>
-<div class="flow-intro">Same-device returning users open straight to Home — the greeting lives inside the Home header, no extra welcome screen. Two Home variants for the post-Shortcut user: empty-but-armed (Shortcut on, no transactions yet) and populated (Shortcut on, data accumulated). New-device returning users land on a "Welcome back" screen — Shortcut setup is device-local, so they need to redo it.</div>
+<div class="flow-section-header"><div class="flow-section-title">Flow 4 — Returning user · new device</div><div class="flow-section-line"></div></div>
+<div class="flow-intro">Shortcut setup is device-local on iOS — it doesn't follow the user's account to a new phone. New-device returning users skip the welcome carousel and Entry screen since they've already authenticated, and land on a "Welcome back" screen with a re-setup prompt. Same-device returning users go directly from auth to Home — that surface is owned by DB-010 (Home Tab Revamp) and is not specified here.</div>
 
 <div class="phone-row">
-
-<div class="screen-col"><div class="screen-label">Same device · Home empty-but-armed</div><div class="state-badge happy">Shortcut on, no tx yet</div>
-<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
-<div class="screen">
-<div class="hm-header"><div class="hm-greet"><div class="hm-greet-en">Good morning, Ahmed.</div></div><div class="hm-bell">🔔</div><div class="hm-avatar">A</div></div>
-<div class="bcard">
-<div class="bcard-head"><div class="bcard-label">Total spending this month</div></div>
-<div class="te-amount-row"><div class="te-amount">0</div><div class="te-cur">EGP</div></div>
-<div class="te-count">No transactions yet</div>
-</div>
-<div class="armed-inline"><div class="armed-ico">⚡</div><div class="armed-ttl">You're set up.</div><div class="armed-body">Transactions will appear here when your bank texts you next.</div></div>
-</div>
-<div class="b-nav">
-<div class="b-nav-item on"><div class="b-nav-icon">🏠</div><div class="b-nav-lbl">Home</div></div>
-<div class="b-nav-item"><div class="b-nav-icon">↕️</div><div class="b-nav-lbl">Transactions</div></div>
-<div class="b-nav-plus">+</div>
-<div class="b-nav-item"><div class="b-nav-icon">🎯</div><div class="b-nav-lbl">Budgets</div></div>
-<div class="b-nav-item"><div class="b-nav-icon">🎁</div><div class="b-nav-lbl">Offers</div></div>
-</div>
-<div class="ios-home"></div></div>
-<div class="flow-note decision">Empty-but-armed state: Shortcut tutorial just completed, no bank SMS has fired yet. The green block reassures the user that tracking is on and they're waiting on the bank, not on a broken setup. Distinct from the manual-only empty state in Flow 3 — different copy, different colour, different next-action implication.</div></div>
-
-<div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">over time →</div></div>
-
-<div class="screen-col"><div class="screen-label">Same device · Home populated</div><div class="state-badge happy">data accumulated</div>
-<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
-<div class="screen">
-<div class="hm-header"><div class="hm-greet"><div class="hm-greet-en">Good morning, Ahmed.</div></div><div class="hm-bell">🔔<div class="hm-bell-badge">2</div></div><div class="hm-avatar">A</div></div>
-<div class="bcard">
-<div class="bcard-head"><div class="bcard-label">Total spending this month</div></div>
-<div class="te-amount-row"><div class="te-amount">2,610</div><div class="te-cur">EGP</div></div>
-<div class="te-count">14 transactions</div>
-<div class="row-stack">
-<div class="crow"><div class="crow-ico">🍕</div><div class="crow-body"><div class="crow-title">Food &amp; Dining</div><div class="crow-sub">8 transactions</div></div><div class="crow-amt">1,240 EGP</div></div>
-<div class="crow"><div class="crow-ico">🚗</div><div class="crow-body"><div class="crow-title">Transport</div><div class="crow-sub">4 transactions</div></div><div class="crow-amt">480 EGP</div></div>
-<div class="crow"><div class="crow-ico">🛍</div><div class="crow-body"><div class="crow-title">Shopping</div><div class="crow-sub">2 transactions</div></div><div class="crow-amt">890 EGP</div></div>
-</div>
-<div class="bcard-cta">See all categories</div>
-</div>
-<div class="bcard">
-<div class="bcard-head"><div class="bcard-label">Latest spending</div></div>
-<div class="row-stack">
-<div class="crow"><div class="crow-ico">☕</div><div class="crow-body"><div class="crow-title">Starbucks</div><div class="crow-sub">Food &amp; Dining</div></div><div class="crow-right"><div class="crow-amt spend">140 EGP</div><div class="crow-time">9:12 AM</div></div></div>
-<div class="crow"><div class="crow-ico">⛽</div><div class="crow-body"><div class="crow-title">Shell</div><div class="crow-sub">Transport</div></div><div class="crow-right"><div class="crow-amt spend">380 EGP</div><div class="crow-time">6:44 PM</div></div></div>
-</div>
-</div>
-</div>
-<div class="b-nav">
-<div class="b-nav-item on"><div class="b-nav-icon">🏠</div><div class="b-nav-lbl">Home</div></div>
-<div class="b-nav-item"><div class="b-nav-icon">↕️</div><div class="b-nav-lbl">Transactions</div></div>
-<div class="b-nav-plus">+</div>
-<div class="b-nav-item"><div class="b-nav-icon">🎯</div><div class="b-nav-lbl">Budgets</div></div>
-<div class="b-nav-item"><div class="b-nav-icon">🎁</div><div class="b-nav-lbl">Offers</div></div>
-</div>
-<div class="ios-home"></div></div>
-<div class="flow-note info">Home content (Total card with category rows, Latest spending card, header pattern, bottom nav with centre plus) is owned by DB-010 — Home Tab Revamp. Shown here in simplified form for context. No Smart Budget card visible until the user creates a budget — see Flow 3 note on iOS Smart Budget logic.</div></div>
-
-<div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">— or —</div></div>
 
 <div class="screen-col"><div class="screen-label">New device · welcome back</div><div class="state-badge happy">re-setup needed</div>
 <div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
@@ -865,7 +808,7 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
 <div class="outcome-state"><div class="hero-icon">👋</div><div class="outcome-ttl">Welcome back, Ahmed.</div><div class="outcome-desc">New device means we need to turn automatic tracking back on. Takes 60 seconds.</div></div>
 <div class="sc-pad"><div class="cta-stack"><div class="btn btn-accent btn-lg">Set up Shortcut</div><div class="btn-link center navy">Skip</div></div></div>
 </div><div class="ios-home"></div></div>
-<div class="flow-note decision">Shortcut setup is device-local on iOS — it doesn't follow the user's account to a new phone. New-device returning users skip the welcome carousel and Entry screen, since they've already authenticated, and land here. Set up Shortcut routes to the tutorial intro in Flow 2. Skip routes to the skip-confirmation screen in Flow 3.</div></div>
+<div class="flow-note decision">Set up Shortcut routes to the tutorial intro in Flow 2. Skip routes to the skip-confirmation screen in Flow 3.</div></div>
 
 </div></div>
 
