@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MoneyMore — Sign-up & Onboarding (iOS) · Designer Prototype v4</title>
+<title>MoneyMore — Sign-up & Onboarding (iOS) · Designer Prototype v5</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 :root{--navy:#1A3C5E;--green:#2E8B57;--green-l:#E8F5EE;--gold:#B8860B;--gold-l:#FBF4DC;--red:#C0392B;--red-l:#FDECEA;--whatsapp:#25D366;--whatsapp-l:#DFF7E6;--page-bg:#F9F8F5;--screen-bg:#FAFAF8;--screen-bg2:#F2F0EB;--screen-bg3:#E8E5DE;--t1:#1A1714;--t2:#3D3A35;--t3:#7A7670;--t4:#ABA7A0;--b1:#E8E5DF;--b2:#D4D0C8;--b3:#BCBAB2;--frame-bg:#2A2724;--frame-border:#1A1614;--f-body:'Plus Jakarta Sans',sans-serif;--f-mono:'DM Mono',monospace;--s-xs:10px;--s-sm:12px;--s-base:14px;--s-md:16px;--s-lg:18px;--s-xl:22px;--r-sm:6px;--r-md:12px;--r-lg:16px;--r-pill:999px;--shadow-phone:0 8px 32px rgba(0,0,0,0.14),0 2px 8px rgba(0,0,0,0.08);--shadow-card:0 1px 3px rgba(0,0,0,0.04),0 1px 2px rgba(0,0,0,0.03);--ph-w:300px;--ph-r:38px;}
@@ -294,7 +294,7 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
 <div class="page">
 
 <div class="doc-header">
-<div class="doc-meta"><span class="doc-tag prototype">Prototype</span><span class="doc-tag designer">Designer brief</span><span class="doc-tag ios">iOS</span><span class="doc-tag wip">Draft v4</span><span class="doc-tag version">DB-031</span><span class="doc-date">Sign-up & Onboarding · iOS Shortcut tutorial</span></div>
+<div class="doc-meta"><span class="doc-tag prototype">Prototype</span><span class="doc-tag designer">Designer brief</span><span class="doc-tag ios">iOS</span><span class="doc-tag wip">Draft v5</span><span class="doc-tag version">DB-031</span><span class="doc-date">Sign-up & Onboarding · iOS Shortcut tutorial</span></div>
 <div class="doc-title">Sign-up & Onboarding (iOS)</div>
 <div class="doc-subtitle">A new iOS user signs up via Apple, Google, or phone, sets up automatic transaction tracking through the iOS Shortcuts app, and lands on Home — either in empty-but-armed state (Shortcut on, waiting for first transaction) or manual-only state (Shortcut skipped). A non-blocking re-prompt nudges users who skipped.</div>
 <div class="doc-info">
@@ -303,9 +303,8 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
 <div class="flow-list-item">Flow 1 — Welcome → Entry → AutoFill phone → OTP with QuickType code → Name capture</div>
 <div class="flow-list-item">Flow 2 — Shortcut tutorial · 10 steps</div>
 <div class="flow-list-item">Flow 3 — Skip Shortcut path → manual-only Home</div>
-<div class="flow-list-item">Flow 4 — Push permission · 2 entry points</div>
-<div class="flow-list-item">Flow 5 — Returning user · same device + new device</div>
-<div class="flow-list-item">Flow 6 — Shortcut re-prompt · 3 triggers</div>
+<div class="flow-list-item">Flow 4 — Returning user · same device + new device</div>
+<div class="flow-list-item">Flow 5 — Shortcut re-prompt · 3 triggers</div>
 <div class="flow-list-item">Edges — error states and variants</div>
 </div></div></div>
 </div>
@@ -748,7 +747,7 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
 <div class="step-indicator"><div class="step-pip done"></div><div class="step-pip done"></div><div class="step-pip done"></div><div class="step-pip done"></div><div class="step-pip done"></div><div class="step-pip done"></div><div class="step-pip done"></div><div class="step-pip done"></div><div class="step-pip done"></div><div class="step-pip on"></div></div>
 <div class="btn btn-accent btn-lg">Start Tracking</div></div>
 </div><div class="ios-home"></div></div>
-<div class="flow-note decision">No "I'll do this later" on step 10 — setup is complete. Start Tracking routes to the push pre-prompt in Flow 4, then to the empty-but-armed Home in Flow 5.</div></div>
+<div class="flow-note decision">No "I'll do this later" on step 10 — setup is complete. Start Tracking routes to the empty-but-armed Home in Flow 4.</div></div>
 
 </div></div>
 
@@ -797,56 +796,7 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
 
 <!-- FLOW 4 -->
 <div class="flow-section">
-<div class="flow-section-header"><div class="flow-section-title">Flow 4 — Push permission · 2 entry points → pre-prompt → OS dialog</div><div class="flow-section-line"></div></div>
-<div class="flow-intro">Push pre-prompt fires once per user lifetime. Two entry points: (A) tutorial step 10 → Start Tracking, OR (B) the user's third manual transaction is saved. Whichever fires first wins — the second never fires for that user. Both routes hit the same pre-prompt screen, then the OS dialog.</div>
-
-<div class="phone-row">
-
-<div class="screen-col"><div class="screen-label">Entry A · Step 10 → Start Tracking</div><div class="state-badge happy">post-tutorial</div>
-<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
-<div class="screen no-nav">
-<div class="outcome-state"><div class="hero-icon">✓</div><div class="outcome-ttl">Automatic tracking is on.</div><div class="outcome-desc">From now on, every bank SMS becomes a transaction in MoneyMore.</div></div>
-<div class="sc-pad"><div class="btn btn-accent btn-lg">Start Tracking</div></div>
-</div><div class="ios-home"></div></div></div>
-
-<div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">— or —</div></div>
-
-<div class="screen-col"><div class="screen-label">Entry B · 3rd manual transaction saved</div><div class="state-badge happy">manual flow trigger</div>
-<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
-<div class="screen no-nav">
-<div class="outcome-state"><div class="hero-icon">✓</div><div class="outcome-ttl">Transaction saved.</div><div class="outcome-desc">Carrefour · 890 EGP · Shopping</div></div>
-<div class="sc-pad"><div class="btn btn-primary btn-lg">Done</div></div>
-</div><div class="ios-home"></div></div>
-<div class="flow-note info">Both paths funnel into the same pre-prompt below. Whichever fires first wins.</div></div>
-
-<div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">→ pre-prompt</div></div>
-
-<div class="screen-col"><div class="screen-label">Pre-prompt · MoneyMore-designed</div><div class="state-badge happy">default</div>
-<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
-<div class="screen no-nav">
-<div class="outcome-state"><div class="hero-icon navy">🔔</div><div class="outcome-ttl">Stay one step ahead of your money.</div><div class="outcome-desc">Get a heads-up before you hit a budget limit, and a quick confirm when transactions land.</div></div>
-<div class="sc-pad"><div class="cta-stack"><div class="btn btn-primary btn-lg">Turn on alerts</div><div class="btn-link center navy">Not now</div></div></div>
-</div><div class="ios-home"></div></div>
-<div class="flow-note decision">Turn on alerts triggers the OS dialog directly. Not now routes the user to whichever Home state applies — empty-but-armed for entry A, populated for entry B since they have manual transactions.</div></div>
-
-<div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">Turn on alerts</div></div>
-
-<div class="screen-col"><div class="screen-label">OS permission dialog · iOS-rendered</div><div class="state-badge os">iOS-rendered</div>
-<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
-<div class="screen no-nav">
-<div class="outcome-state" style="opacity:0.3"><div class="hero-icon navy">🔔</div><div class="outcome-ttl">Stay one step ahead of your money.</div></div>
-<div class="perm-overlay"><div class="perm-box-i">
-<div class="perm-head-i"><div class="perm-title-i">"MoneyMore" Would Like to Send You Notifications</div><div class="perm-desc-i">Notifications may include alerts, sounds, and icon badges. These can be configured in Settings.</div></div>
-<div class="perm-acts-i"><div class="perm-btn-i">Don't Allow</div><div class="perm-btn-i bold divider">Allow</div></div>
-</div></div>
-</div><div class="ios-home"></div></div>
-<div class="flow-note decision">Reference only — iOS renders this dialog and controls the text exactly. The pre-prompt above is the only surface where MoneyMore makes the value case. The OS dialog can only be triggered from the pre-prompt's primary CTA — never silently, never on screen load.</div></div>
-
-</div></div>
-
-<!-- FLOW 5 -->
-<div class="flow-section">
-<div class="flow-section-header"><div class="flow-section-title">Flow 5 — Returning user · same device + new device</div><div class="flow-section-line"></div></div>
+<div class="flow-section-header"><div class="flow-section-title">Flow 4 — Returning user · same device + new device</div><div class="flow-section-line"></div></div>
 <div class="flow-intro">Same-device returning users open straight to Home — the greeting lives inside the Home header, no extra welcome screen. Two Home variants for the post-Shortcut user: empty-but-armed (Shortcut on, no transactions yet) and populated (Shortcut on, data accumulated). New-device returning users land on a "Welcome back" screen — Shortcut setup is device-local, so they need to redo it.</div>
 
 <div class="phone-row">
@@ -919,9 +869,9 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
 
 </div></div>
 
-<!-- FLOW 6 -->
+<!-- FLOW 5 -->
 <div class="flow-section">
-<div class="flow-section-header"><div class="flow-section-title">Flow 6 — Shortcut re-prompt · 3 triggers</div><div class="flow-section-line"></div></div>
+<div class="flow-section-header"><div class="flow-section-title">Flow 5 — Shortcut re-prompt · 3 triggers</div><div class="flow-section-line"></div></div>
 <div class="flow-intro">All three re-prompts use the same bottom-sheet pattern — non-blocking, dismissible. "Not now" returns the user to whatever they were doing. Frequency cap: max 1 per 7 days, max 3 lifetime. Different headlines acknowledge the different trigger; the supporting body and CTAs are identical across all three.</div>
 
 <div class="phone-row">
@@ -1279,11 +1229,6 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
 <tr class="group-start"><td class="screen-name" rowspan="2">Home greeting</td><td class="element-name">Morning (5am–4:59pm)</td><td class="en">Good morning, [name].</td><td class="ar">صباح الخير يا [name].</td></tr>
 <tr><td class="element-name">Evening (5pm–4:59am)</td><td class="en">Good evening, [name].</td><td class="ar">مساء الخير يا [name].</td></tr>
 
-<tr class="group-start"><td class="screen-name" rowspan="4">Push pre-prompt</td><td class="element-name">Headline</td><td class="en">Stay one step ahead of your money.</td><td class="ar">اعرف فلوسك بتتحرك.</td></tr>
-<tr><td class="element-name">Sub</td><td class="en">Get a heads-up before you hit a budget limit, and a quick confirm when transactions land.</td><td class="ar">تنبيه قبل ما توصل لحد الميزانية، وتأكيد سريع لما المعاملات تتسجل.</td></tr>
-<tr><td class="element-name">Primary CTA</td><td class="en">Turn on alerts</td><td class="ar">شغّل التنبيهات</td></tr>
-<tr><td class="element-name">Dismiss link</td><td class="en">Not now</td><td class="ar">مش دلوقتي</td></tr>
-
 <tr class="group-start"><td class="screen-name" rowspan="4">Welcome back · new device</td><td class="element-name">Headline</td><td class="en">Welcome back, [name].</td><td class="ar">حمد لله ع السلامة يا [name].</td></tr>
 <tr><td class="element-name">Sub</td><td class="en">New device means we need to turn automatic tracking back on. Takes 60 seconds.</td><td class="ar">جهاز جديد يعني محتاجين نشغّل التتبع التلقائي تاني. دقيقة واحدة.</td></tr>
 <tr><td class="element-name">Primary CTA</td><td class="en">Set up Shortcut</td><td class="ar">شغّل Shortcut</td></tr>
@@ -1300,7 +1245,7 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
 </tbody></table>
 
 <div class="callout warn" style="margin-top:18px">
-<strong>Open copy threads:</strong> OTP rate-limit timer assumes engineering-confirmed wait — copy may revise. Currency code variants (EGP, USD, جم, ج.م, L.E.) need ingestion-team confirmation. Push pre-prompt promises both budget alerts and transaction confirmations — both must be live at launch or copy revises. All Egyptian Arabic strings need native-speaker review before publishing. RTL layout to be verified in Figma before any Arabic ships.
+<strong>Open copy threads:</strong> OTP rate-limit timer assumes engineering-confirmed wait — copy may revise. Currency code variants (EGP, USD, جم, ج.م, L.E.) need ingestion-team confirmation. All Egyptian Arabic strings need native-speaker review before publishing. RTL layout to be verified in Figma before any Arabic ships.
 </div>
 </div>
 
