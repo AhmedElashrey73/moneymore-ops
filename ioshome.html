@@ -1,0 +1,2164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoneyMore — Home Tab (iOS) · Designer Prototype v3</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --navy:#1A3C5E; --green:#2E8B57; --green-l:#E8F5EE;
+  --gold:#B8860B; --gold-l:#FBF4DC; --red:#C0392B; --red-l:#FDECEA;
+  --page-bg:#F9F8F5; --page-border:#E2DFD8;
+  --screen-bg:#FAFAF8; --screen-bg2:#F2F0EB; --screen-bg3:#E8E5DE;
+  --t1:#1A1714; --t2:#3D3A35; --t3:#7A7670; --t4:#ABA7A0;
+  --t-pos:#1A6E3C; --t-neg:#A82419;
+  --b1:#E8E5DF; --b2:#D4D0C8; --b3:#BCBAB2;
+  --frame-bg:#2A2724; --frame-border:#1A1614;
+  --f-body:'Plus Jakarta Sans',sans-serif; --f-mono:'DM Mono',monospace;
+  --s-xs:10px; --s-sm:12px; --s-base:14px; --s-md:16px;
+  --s-lg:18px; --s-xl:22px; --s-2xl:28px;
+  --r-sm:6px; --r-md:12px; --r-lg:16px; --r-xl:24px; --r-pill:999px;
+  --shadow-phone:0 8px 32px rgba(0,0,0,0.14),0 2px 8px rgba(0,0,0,0.08);
+  --shadow-card:0 1px 4px rgba(0,0,0,0.06);
+  --ph-w:300px; --ph-r:38px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-size:var(--s-base);line-height:1.6;-webkit-font-smoothing:antialiased;}
+.page{max-width:1500px;margin:0 auto;padding:48px 40px 96px;}
+
+/* DOC HEADER */
+.doc-header{padding-bottom:32px;margin-bottom:40px;border-bottom:2px solid var(--b1);}
+.doc-meta{display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap;}
+.doc-tag{font-family:var(--f-mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;padding:4px 11px;border-radius:3px;font-weight:600;}
+.doc-tag.prototype{background:var(--green-l);color:#0F5830;}
+.doc-tag.designer{background:#EAE8FF;color:#3A3288;}
+.doc-tag.ios{background:#E8F0FA;color:#103868;}
+.doc-tag.wip{background:var(--gold-l);color:#6B5210;}
+.doc-tag.version{background:var(--navy);color:#fff;}
+.doc-date{font-family:var(--f-mono);font-size:11px;color:var(--t2);margin-left:auto;font-weight:500;}
+.doc-title{font-size:34px;font-weight:700;color:var(--t1);letter-spacing:-0.02em;line-height:1.15;margin-bottom:10px;}
+.doc-subtitle{font-size:15px;color:var(--t1);font-weight:400;margin-bottom:30px;line-height:1.5;max-width:920px;}
+
+.doc-info{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--b1);border-radius:var(--r-md);overflow:hidden;background:white;}
+.doc-info-cell{padding:16px 20px;border-right:1px solid var(--b1);}
+.doc-info-cell:last-child{border-right:none;}
+.info-label{font-family:var(--f-mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--t2);margin-bottom:8px;font-weight:600;}
+.info-body{font-size:13px;color:var(--t1);line-height:1.55;}
+.info-body strong{color:var(--t1);font-weight:700;}
+
+.flow-list{display:flex;flex-direction:column;gap:4px;}
+.flow-list-item{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--t1);line-height:1.45;}
+.flow-list-item::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0;}
+
+/* FLOW SECTION */
+.flow-section{margin-bottom:64px;}
+.flow-section-header{display:flex;align-items:center;gap:16px;margin-bottom:16px;}
+.flow-section-line{flex:1;height:1px;background:var(--b2);}
+.flow-section-title{font-family:var(--f-body);font-size:16px;font-weight:700;letter-spacing:-0.01em;color:#fff;background:var(--navy);padding:6px 14px;border-radius:4px;white-space:nowrap;}
+.flow-section-intro{font-size:13px;color:var(--t2);margin-bottom:24px;max-width:780px;line-height:1.55;}
+
+.phone-row{display:flex;align-items:flex-start;gap:0;overflow-x:auto;padding-bottom:12px;}
+.phone-row::-webkit-scrollbar{height:4px;}
+.phone-row::-webkit-scrollbar-track{background:var(--b1);border-radius:2px;}
+.phone-row::-webkit-scrollbar-thumb{background:var(--b3);border-radius:2px;}
+
+.screen-col{display:flex;flex-direction:column;align-items:center;gap:10px;flex-shrink:0;width:var(--ph-w);}
+.screen-label{font-family:var(--f-body);font-size:11px;font-weight:600;color:var(--t2);text-align:center;max-width:var(--ph-w);line-height:1.4;}
+
+.state-badge{font-family:var(--f-mono);font-size:10px;font-weight:500;padding:3px 9px;border-radius:3px;letter-spacing:0.04em;}
+.state-badge.happy{background:#EBF7F1;color:#1A6E3C;}
+.state-badge.empty{background:var(--gold-l);color:#8A6510;}
+.state-badge.error{background:var(--red-l);color:var(--red);}
+.state-badge.success{background:var(--green-l);color:#0F5830;}
+.state-badge.os{background:#ECECEC;color:#555;}
+.state-badge.interaction{background:#EAE8FF;color:#3A3288;}
+.state-badge.warn{background:var(--gold-l);color:#8A6510;}
+
+/* Auto-height arrow */
+.flow-arrow{display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;align-self:stretch;padding:0 8px;min-height:200px;}
+.arrow-line{width:32px;height:1px;background:var(--b2);position:relative;}
+.arrow-line::after{content:'';position:absolute;right:-1px;top:-3px;border-left:5px solid var(--b2);border-top:3px solid transparent;border-bottom:3px solid transparent;}
+.arrow-label{font-family:var(--f-body);font-size:10px;font-weight:600;color:var(--t2);text-align:center;max-width:74px;line-height:1.35;margin-top:6px;}
+.arrow-label.interaction{color:#3A3288;}
+
+/* iOS PHONE FRAME — auto height */
+.phone{width:var(--ph-w);border-radius:var(--ph-r);background:var(--frame-bg);box-shadow:var(--shadow-phone);position:relative;overflow:hidden;border:2px solid var(--frame-border);flex-shrink:0;padding-top:6px;padding-bottom:6px;}
+
+.ios-island{position:absolute;top:8px;left:50%;transform:translateX(-50%);width:88px;height:24px;background:#0A0A0A;border-radius:18px;z-index:20;}
+.ios-status{height:42px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 22px 6px;font-family:var(--f-mono);font-size:9px;font-weight:600;color:var(--t1);background:var(--screen-bg);}
+.ios-home{height:18px;background:var(--screen-bg);position:relative;}
+.ios-home::after{content:'';position:absolute;bottom:6px;left:50%;transform:translateX(-50%);width:108px;height:4px;background:rgba(0,0,0,0.28);border-radius:2px;}
+
+.screen{background:var(--screen-bg);overflow:hidden;display:flex;flex-direction:column;min-height:560px;}
+
+/* iOS Tab bar (5 slots, raised centre +) */
+.ios-tabbar{height:54px;background:var(--screen-bg);border-top:1px solid var(--b1);display:flex;align-items:flex-start;padding-top:6px;position:relative;}
+.tab-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;}
+.tab-icon{width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--t4);}
+.tab-item.on .tab-icon{color:var(--navy);}
+.tab-lbl{font-size:9px;color:var(--t4);font-weight:500;}
+.tab-item.on .tab-lbl{color:var(--navy);font-weight:700;}
+.tab-plus{flex:1;display:flex;align-items:center;justify-content:center;}
+.plus-btn{width:46px;height:46px;border-radius:50%;background:var(--navy);color:white;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:300;margin-top:-18px;box-shadow:0 4px 12px rgba(26,60,94,0.32);}
+
+/* SCREEN INNER */
+.app-bar{padding:14px 18px 6px;display:flex;align-items:center;justify-content:space-between;background:var(--screen-bg);}
+.app-bar-title{font-size:24px;font-weight:700;color:var(--t1);letter-spacing:-0.02em;}
+.app-bar-greet{font-size:11px;color:var(--t3);font-weight:500;margin-bottom:2px;}
+.app-bar-actions{display:flex;gap:10px;}
+.bell{position:relative;width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--t2);}
+.bell-dot{position:absolute;top:4px;right:4px;width:7px;height:7px;background:var(--red);border-radius:50%;border:1.5px solid var(--screen-bg);}
+
+.sc-area{flex:1;display:flex;flex-direction:column;padding:12px 14px 16px;gap:10px;}
+
+/* CARDS */
+.card{background:white;border:1px solid var(--b1);border-radius:var(--r-md);box-shadow:var(--shadow-card);overflow:hidden;}
+.card-pad{padding:14px;}
+.card-section-label{font-family:var(--f-mono);font-size:9px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--t3);margin-bottom:10px;}
+
+/* Total Expenses */
+.te-period{font-size:11px;color:var(--t3);font-weight:500;margin-bottom:4px;}
+.te-amount{font-size:30px;font-weight:700;color:var(--t1);letter-spacing:-0.02em;line-height:1.1;}
+.te-cur{font-size:13px;color:var(--t3);font-weight:500;margin-left:4px;}
+.te-tx-count{font-size:11px;color:var(--t3);font-weight:500;margin-top:4px;}
+
+/* Top categories under Total Expenses */
+.te-cats{margin-top:14px;display:flex;flex-direction:column;gap:7px;}
+.te-cat-row{display:flex;align-items:center;gap:10px;padding:9px 11px;background:var(--screen-bg);border:1px solid var(--b1);border-radius:var(--r-sm);}
+.te-cat-icon{width:28px;height:28px;border-radius:6px;background:var(--screen-bg2);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.te-cat-info{flex:1;min-width:0;}
+.te-cat-name{font-size:12px;font-weight:600;color:var(--t1);}
+.te-cat-tx{font-size:10px;color:var(--t3);margin-top:1px;}
+.te-cat-amt{font-size:12px;font-weight:700;color:var(--t1);text-align:right;flex-shrink:0;}
+
+.te-footer{margin-top:10px;padding-top:8px;border-top:1px solid var(--b1);text-align:center;font-size:12px;font-weight:700;color:var(--navy);}
+
+/* Smart Budget */
+.sb-bud-row{padding:10px 12px;background:var(--screen-bg);border:1px solid var(--b1);border-radius:var(--r-sm);margin-top:8px;}
+.sb-bud-row:first-of-type{margin-top:4px;}
+.sb-bud-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;gap:8px;}
+.sb-bud-cat{display:flex;align-items:center;gap:7px;flex:1;min-width:0;}
+.sb-bud-icon{width:22px;height:22px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:12px;background:var(--screen-bg2);flex-shrink:0;}
+.sb-bud-name{font-size:13px;font-weight:600;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+/* Status pills inside budget rows */
+.sb-pill{font-size:9px;font-weight:700;padding:2px 7px;border-radius:var(--r-pill);letter-spacing:0.02em;flex-shrink:0;text-transform:uppercase;}
+.sb-pill.warn{background:var(--gold-l);color:#8A6510;}
+.sb-pill.over{background:var(--red-l);color:var(--red);}
+
+.sb-bud-amt{font-size:11px;color:var(--t3);font-weight:500;margin-top:6px;display:flex;justify-content:space-between;}
+.prog-wrap{height:5px;background:var(--screen-bg2);border-radius:var(--r-pill);overflow:hidden;margin-top:6px;}
+.prog-bar{height:100%;border-radius:var(--r-pill);background:var(--green);}
+.prog-bar.warn{background:var(--gold);}
+.prog-bar.danger{background:var(--red);}
+.sb-bud-foot{display:flex;justify-content:space-between;margin-top:5px;}
+.sb-bud-pct{font-size:10px;color:var(--t3);}
+.sb-bud-left{font-size:10px;font-weight:600;color:var(--t2);}
+.sb-bud-left.over{color:var(--red);}
+
+/* Mode A — recommendation rows with ✓ / × */
+.sb-rec-row{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--screen-bg);border:1px dashed var(--b2);border-radius:var(--r-sm);margin-top:8px;}
+.sb-rec-row:first-of-type{margin-top:4px;}
+.sb-rec-icon{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;background:var(--screen-bg2);}
+.sb-rec-info{flex:1;min-width:0;}
+.sb-rec-cat{font-size:13px;font-weight:600;color:var(--t1);}
+.sb-rec-amt{font-size:11px;color:var(--t3);margin-top:1px;}
+.sb-rec-actions{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.sb-rec-accept{width:30px;height:30px;border-radius:50%;background:var(--green);color:white;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;}
+.sb-rec-dismiss{width:30px;height:30px;border-radius:50%;background:var(--screen-bg2);color:var(--t3);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:500;}
+
+.sb-mode-a-header{font-size:13px;font-weight:600;color:var(--t1);margin-bottom:2px;}
+.sb-mode-a-sub{font-size:11px;color:var(--t3);margin-bottom:6px;line-height:1.45;}
+
+.sb-footer-cta{margin-top:12px;padding-top:10px;border-top:1px solid var(--b1);text-align:center;font-size:12px;font-weight:700;color:var(--navy);}
+
+.sb-empty{padding:8px 0 4px;}
+.sb-empty-icon{width:40px;height:40px;border-radius:50%;background:var(--green-l);display:flex;align-items:center;justify-content:center;font-size:20px;margin:0 auto 8px;}
+.sb-empty-title{font-size:14px;font-weight:700;color:var(--t1);text-align:center;line-height:1.3;margin-bottom:10px;}
+.sb-empty-cta{height:38px;border-radius:var(--r-sm);background:var(--green);color:white;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;}
+
+/* Latest Spending — horizontal carousel */
+.ls-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.ls-title{font-size:15px;font-weight:700;color:var(--t1);}
+.ls-see-all{font-size:12px;font-weight:700;color:var(--navy);}
+
+.ls-carousel{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;margin:0 -14px;padding-left:14px;padding-right:14px;}
+.ls-carousel::-webkit-scrollbar{height:0;}
+.ls-tx-card{flex:0 0 158px;scroll-snap-align:start;background:white;border:1px solid var(--b1);border-radius:var(--r-md);padding:11px;display:flex;flex-direction:column;gap:6px;}
+.ls-tx-icon-row{display:flex;align-items:center;gap:8px;}
+.ls-tx-icon{width:30px;height:30px;border-radius:7px;background:var(--screen-bg2);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.ls-tx-name{font-size:12px;font-weight:700;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0;}
+.ls-tx-cat{font-size:10px;color:var(--t3);}
+.ls-tx-cat.uncat{color:var(--navy);font-weight:600;}
+.ls-tx-amt{font-size:15px;font-weight:700;color:var(--t1);margin-top:auto;}
+.ls-tx-amt::before{content:'−';}
+.ls-tx-date{font-size:10px;color:var(--t4);}
+
+.ls-empty{padding:24px 16px;text-align:center;}
+.ls-empty-title{font-size:14px;font-weight:700;color:var(--t1);margin-bottom:6px;}
+.ls-empty-cta{height:38px;border-radius:var(--r-sm);background:var(--navy);color:white;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;margin-top:14px;}
+
+/* Shortcuts setup card */
+.sc-card{background:linear-gradient(135deg,#1A3C5E 0%,#264F7A 100%);border-radius:var(--r-md);padding:16px;color:white;position:relative;overflow:hidden;}
+.sc-card::after{content:'';position:absolute;top:-30px;right:-30px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,0.06);}
+.sc-tag{display:inline-block;font-family:var(--f-mono);font-size:9px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;background:rgba(255,255,255,0.16);color:white;padding:3px 8px;border-radius:3px;margin-bottom:10px;}
+.sc-headline{font-size:17px;font-weight:700;line-height:1.25;margin-bottom:6px;letter-spacing:-0.01em;position:relative;z-index:2;}
+.sc-body{font-size:12px;line-height:1.5;color:rgba(255,255,255,0.82);margin-bottom:14px;position:relative;z-index:2;}
+.sc-actions{display:flex;align-items:center;gap:14px;position:relative;z-index:2;}
+.sc-cta-primary{background:white;color:var(--navy);font-size:13px;font-weight:700;padding:9px 16px;border-radius:var(--r-sm);}
+.sc-cta-secondary{font-size:12px;font-weight:600;color:rgba(255,255,255,0.78);}
+
+.sc-card.success{background:linear-gradient(135deg,#1A6E3C 0%,#2E8B57 100%);}
+.sc-success-row{display:flex;align-items:center;gap:10px;}
+.sc-success-icon{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+
+/* Offline pill */
+.offline-pill{display:flex;align-items:center;justify-content:center;gap:6px;background:#3D3A35;color:white;font-size:11px;font-weight:600;padding:6px 12px;border-radius:var(--r-pill);margin:0 auto;width:fit-content;letter-spacing:0.02em;}
+.offline-dot{width:6px;height:6px;border-radius:50%;background:#FFB347;}
+
+/* Action sheet (native iOS) */
+.as-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.4);display:flex;align-items:flex-end;padding:8px;z-index:40;}
+.as-stack{width:100%;display:flex;flex-direction:column;gap:8px;}
+.as-group{background:rgba(245,245,245,0.96);backdrop-filter:blur(20px);border-radius:14px;overflow:hidden;}
+.as-item{padding:14px 16px;font-size:16px;color:#007AFF;text-align:center;border-bottom:0.5px solid rgba(60,60,67,0.18);font-weight:400;}
+.as-item:last-child{border-bottom:none;}
+.as-item.cancel{font-weight:600;}
+
+/* Partial sheet — MoneyMore-styled (not iOS form rows) */
+.ps-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.42);display:flex;align-items:flex-end;z-index:40;}
+.ps-sheet{background:var(--screen-bg);width:100%;border-radius:18px 18px 0 0;padding:8px 16px 22px;box-shadow:0 -4px 24px rgba(0,0,0,0.14);}
+.ps-grabber{width:36px;height:5px;background:#C7C5BE;border-radius:3px;margin:6px auto 14px;}
+.ps-title{font-size:18px;font-weight:700;color:var(--t1);letter-spacing:-0.01em;line-height:1.2;}
+.ps-sub{font-size:12px;color:var(--t3);margin-top:3px;line-height:1.5;}
+.ps-divider{height:1px;background:var(--b1);margin:14px 0;}
+
+.ps-amount-row{display:flex;align-items:baseline;gap:8px;padding:12px 14px;background:white;border:1px solid var(--b1);border-radius:var(--r-md);margin-bottom:12px;}
+.ps-amount-label{font-size:11px;color:var(--t3);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;flex-shrink:0;}
+.ps-amount-val{font-size:24px;font-weight:700;color:var(--navy);letter-spacing:-0.02em;flex:1;text-align:right;}
+.ps-amount-cur{font-size:13px;color:var(--t3);font-weight:600;}
+
+.ps-field{margin-bottom:10px;}
+.ps-field-label{font-size:11px;color:var(--t2);font-weight:700;letter-spacing:0.03em;margin-bottom:5px;}
+.ps-field-input{height:42px;background:white;border:1px solid var(--b1);border-radius:var(--r-sm);padding:0 12px;display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--t1);}
+.ps-field-input.placeholder{color:var(--t4);}
+.ps-field-input.focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(26,60,94,0.07);}
+.ps-field-input.muted{color:var(--t3);font-style:italic;}
+.ps-field-input.value{font-weight:600;}
+.ps-field-icon{font-size:14px;color:var(--t4);}
+
+.ps-suggestion{padding:10px 12px;background:var(--green-l);border:1px solid rgba(46,139,87,0.2);border-radius:var(--r-sm);margin-bottom:14px;display:flex;align-items:flex-start;gap:8px;}
+.ps-sug-icon{font-size:14px;color:var(--green);flex-shrink:0;}
+.ps-sug-text{font-size:11px;color:#0F5830;line-height:1.45;}
+.ps-sug-text strong{font-weight:700;}
+
+.ps-cta-row{display:flex;gap:8px;margin-top:6px;}
+.ps-cta-cancel{flex:1;height:46px;border-radius:var(--r-sm);background:var(--screen-bg2);color:var(--t1);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;}
+.ps-cta-confirm{flex:2;height:46px;border-radius:var(--r-sm);background:var(--green);color:white;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;}
+.ps-cta-confirm.dis{background:var(--screen-bg3);color:var(--t4);}
+
+/* Toast */
+.toast{position:absolute;bottom:74px;left:14px;right:14px;background:var(--t1);color:white;border-radius:var(--r-sm);padding:11px 14px;font-size:12px;font-weight:500;box-shadow:0 4px 16px rgba(0,0,0,0.22);z-index:50;line-height:1.4;}
+
+/* Needs-category badge inside transaction carousel cards */
+.ls-tx-card.needs-cat{border-color:var(--gold);background:linear-gradient(180deg,#FBF4DC 0%,white 35%);}
+.ls-needs-cat-pill{display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:700;color:#6B5210;background:var(--gold-l);border:1px solid rgba(184,134,11,0.3);padding:2px 7px;border-radius:var(--r-pill);text-transform:uppercase;letter-spacing:0.04em;width:fit-content;}
+.ls-needs-cat-pill::before{content:'!';display:flex;align-items:center;justify-content:center;width:11px;height:11px;background:var(--gold);color:white;border-radius:50%;font-size:8px;font-weight:700;}
+
+/* Field card (used in Add/Review Transaction sheet) — matches reference */
+.ps-field-card{background:white;border:1px solid var(--b1);border-radius:var(--r-md);padding:10px 12px;margin-bottom:8px;}
+.ps-field-card.req-empty{border-color:var(--b2);}
+.ps-field-card.focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(26,60,94,0.07);}
+.ps-field-card.flag{border-color:var(--gold);background:#FDF8E8;}
+.ps-field-card-label{font-size:11px;font-weight:700;color:var(--t2);letter-spacing:0.02em;margin-bottom:6px;display:flex;align-items:center;gap:4px;}
+.ps-field-card-label .req{color:var(--red);font-weight:700;}
+.ps-field-card-label .opt{color:var(--t4);font-weight:500;font-size:10px;text-transform:none;letter-spacing:0;}
+.ps-field-card-value{font-size:14px;color:var(--t1);font-weight:600;display:flex;justify-content:space-between;align-items:center;}
+.ps-field-card-value.placeholder{color:var(--t4);font-weight:400;}
+.ps-field-card-value.amount{font-size:18px;font-weight:700;letter-spacing:-0.01em;}
+.ps-field-card-value.amount .cur{font-size:12px;color:var(--t3);font-weight:600;}
+
+/* Segmented control (Type) */
+.seg-control{display:flex;background:var(--screen-bg2);border-radius:var(--r-pill);padding:3px;gap:2px;margin-top:4px;}
+.seg-item{flex:1;padding:7px 8px;font-size:12px;font-weight:600;color:var(--t3);text-align:center;border-radius:var(--r-pill);}
+.seg-item.on{background:var(--green);color:white;font-weight:700;}
+
+/* Sheet has scrollable body when fields exceed detent */
+.ps-body-scroll{max-height:380px;overflow-y:auto;margin:0 -2px;padding:0 2px;}
+
+/* Push notification (lock screen) */
+.lock-screen{background:linear-gradient(180deg,#1a1614 0%,#2a2724 100%);min-height:560px;padding:16px 14px;display:flex;flex-direction:column;}
+.lock-time{font-size:42px;font-weight:300;color:white;text-align:center;margin-top:48px;letter-spacing:-0.02em;}
+.lock-date{font-size:13px;color:rgba(255,255,255,0.7);text-align:center;margin-top:2px;font-weight:500;}
+.lock-push{margin-top:36px;background:rgba(255,255,255,0.12);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);border-radius:14px;padding:12px;display:flex;gap:10px;}
+.lock-push-icon{width:36px;height:36px;border-radius:8px;background:var(--navy);display:flex;align-items:center;justify-content:center;font-size:16px;color:white;flex-shrink:0;}
+.lock-push-body{flex:1;min-width:0;}
+.lock-push-row{display:flex;justify-content:space-between;align-items:baseline;}
+.lock-push-app{font-size:11px;font-weight:600;color:rgba(255,255,255,0.85);text-transform:uppercase;letter-spacing:0.04em;}
+.lock-push-time{font-size:11px;color:rgba(255,255,255,0.65);}
+.lock-push-title{font-size:14px;font-weight:600;color:white;margin-top:3px;line-height:1.3;}
+.lock-push-subtitle{font-size:13px;font-weight:400;color:rgba(255,255,255,0.85);margin-top:1px;}
+.lock-push-text{font-size:13px;color:rgba(255,255,255,0.85);margin-top:3px;line-height:1.35;}
+
+/* Flow notes */
+.flow-note{max-width:var(--ph-w);padding:9px 12px;border-radius:4px;font-family:var(--f-body);font-size:11px;font-weight:500;line-height:1.5;}
+.flow-note.decision{background:#FBF4DC;color:#6B5210;border-left:3px solid var(--gold);}
+.flow-note.new{background:var(--green-l);color:#0F5830;border-left:3px solid var(--green);}
+
+/* HANDOFF */
+.handoff{margin-top:64px;padding:36px;background:white;border:1px solid var(--b1);border-radius:var(--r-md);}
+.handoff-title{font-size:26px;font-weight:700;color:var(--t1);margin-bottom:8px;letter-spacing:-0.01em;}
+.handoff-sub{font-size:14px;color:var(--t2);margin-bottom:28px;line-height:1.5;}
+.handoff-sec{margin-top:28px;padding-top:24px;border-top:1px solid var(--b1);}
+.handoff-sec:first-of-type{border-top:none;padding-top:0;margin-top:0;}
+.handoff-h{font-size:18px;font-weight:700;color:var(--t1);margin-bottom:12px;}
+.handoff-p{font-size:14px;color:var(--t1);line-height:1.6;margin-bottom:8px;}
+.handoff-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.handoff-list li{font-size:14px;color:var(--t1);line-height:1.6;padding-left:16px;position:relative;}
+.handoff-list li::before{content:'—';position:absolute;left:0;color:var(--t3);font-weight:700;}
+
+.copy-table{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed;}
+.copy-table col.col-screen{width:20%;}
+.copy-table col.col-element{width:22%;}
+.copy-table col.col-en{width:29%;}
+.copy-table col.col-ar{width:29%;}
+.copy-table th{text-align:left;padding:10px 12px;border-bottom:2px solid var(--b2);font-size:11px;color:var(--t2);text-transform:uppercase;letter-spacing:0.06em;font-weight:700;background:var(--screen-bg);}
+.copy-table td{padding:10px 12px;border-bottom:1px solid var(--b1);vertical-align:top;color:var(--t1);line-height:1.55;word-wrap:break-word;overflow-wrap:break-word;}
+.copy-table td.screen-name{font-weight:700;color:var(--t1);background:var(--screen-bg);}
+.copy-table td.element-name{color:var(--t2);font-weight:500;}
+.copy-table td.en{font-size:12px;color:var(--t1);}
+.copy-table td.ar{font-size:12px;color:var(--t1);direction:rtl;text-align:right;font-family:var(--f-body);}
+.copy-table tr.group-start td{border-top:2px solid var(--b2);}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ── DOC HEADER ─────────────────────────────────────────── -->
+<div class="doc-header">
+  <div class="doc-meta">
+    <span class="doc-tag prototype">Prototype</span>
+    <span class="doc-tag designer">Designer brief</span>
+    <span class="doc-tag ios">iOS</span>
+    <span class="doc-tag wip">Draft v3</span>
+    <span class="doc-tag version">DB-011</span>
+    <span class="doc-date">Home Tab — iOS</span>
+  </div>
+
+  <div class="doc-title">Home Tab (iOS)</div>
+  <div class="doc-subtitle">The most-used surface in the app. Three cards stacked — Total Expenses (with top categories), Smart Budget (four behaviour modes), Latest Spending (horizontal carousel). A Shortcuts setup card earns its place at the top until tracking is on. Universal across salary workers, freelancers, and students.</div>
+
+  <div class="doc-info">
+    <div class="doc-info-cell">
+      <div class="info-label">The problem</div>
+      <div class="info-body">
+        Users open the Home Tab to answer one question fast — am I doing okay this month? The surface has to give that answer in under two seconds for a returning user, while still earning the first tap from a new user who has nothing on it yet. Smart Budget shifts behaviour across four modes (recommendations, active tracking, hybrid, generic) without ever changing its slot or title. The Shortcuts setup card is the gateway to passive tracking; if it doesn't get tapped, nothing else on this screen has data to work with.
+      </div>
+    </div>
+    <div class="doc-info-cell">
+      <div class="info-label">Flows in this document</div>
+      <div class="flow-list">
+        <div class="flow-list-item">First-session Home — empty + Shortcuts setup</div>
+        <div class="flow-list-item">Tracking-on confirmation — first capture</div>
+        <div class="flow-list-item">Daily Home — Smart Budget across all four modes</div>
+        <div class="flow-list-item">Mode A → accept recommendation flow</div>
+        <div class="flow-list-item">Centre [+] action sheet → Add Transaction / Set Budget</div>
+        <div class="flow-list-item">Review uncategorised auto-fetched transaction</div>
+        <div class="flow-list-item">Offline state — pill + blocked-write toast</div>
+        <div class="flow-list-item">80% threshold push — lock screen</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 1 — FIRST-SESSION HOME
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 1 — First-session Home</div>
+    <div class="flow-section-line"></div>
+  </div>
+  <div class="flow-section-intro">User has just installed. Zero transactions, zero budgets, Shortcuts not yet configured. Three cards render in their empty forms. The Shortcuts card sits above all three at full prominence.</div>
+
+  <div class="phone-row">
+
+    <div class="screen-col">
+      <div class="screen-label">Home · first session · empty</div>
+      <div class="state-badge empty">empty state</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div>
+              <div class="app-bar-greet">Good morning</div>
+              <div class="app-bar-title">Home</div>
+            </div>
+            <div class="app-bar-actions">
+              <div class="bell">🔔<span class="bell-dot"></span></div>
+            </div>
+          </div>
+
+          <div class="sc-area">
+            <div class="sc-card">
+              <div class="sc-tag">Setup</div>
+              <div class="sc-headline">Track spending without typing</div>
+              <div class="sc-body">Set up an iOS Shortcut once. Every transaction lands here automatically.</div>
+              <div class="sc-actions">
+                <div class="sc-cta-primary">Set it up</div>
+                <div class="sc-cta-secondary">Not now</div>
+              </div>
+            </div>
+
+            <div class="card card-pad">
+              <div class="card-section-label">Total Expenses</div>
+              <div class="te-period">This month so far</div>
+              <div class="te-amount">0<span class="te-cur"> EGP</span></div>
+              <div class="te-tx-count">No transactions yet</div>
+            </div>
+
+            <div class="card card-pad">
+              <div class="card-section-label">Smart Budget</div>
+              <div class="sb-empty">
+                <div class="sb-empty-icon">🎯</div>
+                <div class="sb-empty-title">Set a budget, see where your money goes</div>
+                <div class="sb-empty-cta">Set your first budget</div>
+              </div>
+            </div>
+
+            <div class="card card-pad">
+              <div class="card-section-label">Latest Spending</div>
+              <div class="ls-empty">
+                <div class="ls-empty-title">No transactions yet.</div>
+                <div class="ls-empty-cta">Add your first transaction</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ios-tabbar">
+            <div class="tab-item on"><div class="tab-icon">⌂</div><div class="tab-lbl">Home</div></div>
+            <div class="tab-item"><div class="tab-icon">⇆</div><div class="tab-lbl">Transactions</div></div>
+            <div class="tab-plus"><div class="plus-btn">+</div></div>
+            <div class="tab-item"><div class="tab-icon">🎁</div><div class="tab-lbl">Offers</div></div>
+            <div class="tab-item"><div class="tab-icon">👤</div><div class="tab-lbl">Profile</div></div>
+          </div>
+          <div class="ios-home"></div>
+        </div>
+      </div>
+      <div class="flow-note decision">All three card empty states render simultaneously. The Shortcuts card sits above the stack — not inside it — to signal it's the first thing to do, not part of the daily reading. Top-categories list under Total Expenses hides when there are no transactions.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 2 — TRACKING-ON CONFIRMATION
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 2 — Tracking-on confirmation</div>
+    <div class="flow-section-line"></div>
+  </div>
+  <div class="flow-section-intro">User has set up Shortcuts. First captured transaction lands. Setup card transitions to its success state for one viewing, then animates out.</div>
+
+  <div class="phone-row">
+
+    <div class="screen-col">
+      <div class="screen-label">Home · setup card · success</div>
+      <div class="state-badge success">first capture landed</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:42</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div>
+              <div class="app-bar-greet">Good morning</div>
+              <div class="app-bar-title">Home</div>
+            </div>
+            <div class="app-bar-actions"><div class="bell">🔔<span class="bell-dot"></span></div></div>
+          </div>
+
+          <div class="sc-area">
+            <div class="sc-card success">
+              <div class="sc-success-row">
+                <div class="sc-success-icon">✓</div>
+                <div>
+                  <div class="sc-headline" style="margin-bottom:3px">First transaction logged</div>
+                  <div class="sc-body" style="margin-bottom:0">The rest will show up here as they happen.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card card-pad">
+              <div class="card-section-label">Total Expenses</div>
+              <div class="te-period">This month so far</div>
+              <div class="te-amount">85<span class="te-cur"> EGP</span></div>
+              <div class="te-tx-count">1 transaction</div>
+              <div class="te-cats">
+                <div class="te-cat-row">
+                  <div class="te-cat-icon">☕</div>
+                  <div class="te-cat-info">
+                    <div class="te-cat-name">Food & Dining</div>
+                    <div class="te-cat-tx">1 transaction</div>
+                  </div>
+                  <div class="te-cat-amt">85 EGP</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card card-pad">
+              <div class="card-section-label">Smart Budget</div>
+              <div class="sb-empty">
+                <div class="sb-empty-icon">🎯</div>
+                <div class="sb-empty-title">Set a budget, see where your money goes</div>
+                <div class="sb-empty-cta">Set your first budget</div>
+              </div>
+            </div>
+
+            <div class="card card-pad">
+              <div class="ls-title-row">
+                <div class="ls-title">Latest Spending</div>
+              </div>
+              <div class="ls-carousel">
+                <div class="ls-tx-card needs-cat">
+                  <div class="ls-tx-icon-row">
+                    <div class="ls-tx-icon">☕</div>
+                    <div class="ls-tx-name">Costa Coffee</div>
+                  </div>
+                  <div class="ls-needs-cat-pill">Needs category</div>
+                  <div class="ls-tx-amt">85 EGP</div>
+                  <div class="ls-tx-date">Today, 9:38 AM</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ios-tabbar">
+            <div class="tab-item on"><div class="tab-icon">⌂</div><div class="tab-lbl">Home</div></div>
+            <div class="tab-item"><div class="tab-icon">⇆</div><div class="tab-lbl">Transactions</div></div>
+            <div class="tab-plus"><div class="plus-btn">+</div></div>
+            <div class="tab-item"><div class="tab-icon">🎁</div><div class="tab-lbl">Offers</div></div>
+            <div class="tab-item"><div class="tab-icon">👤</div><div class="tab-lbl">Profile</div></div>
+          </div>
+          <div class="ios-home"></div>
+        </div>
+      </div>
+      <div class="flow-note new">Setup card shifts to green success treatment. Renders for one session viewing, then animates out — does not return on subsequent opens.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 3 — DAILY HOME · SMART BUDGET MODES
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 3 — Daily Home · Smart Budget across all four modes</div>
+    <div class="flow-section-line"></div>
+  </div>
+  <div class="flow-section-intro">Same surface, four behaviours. The Smart Budget card holds the same slot and title across all modes — only its content shifts. Mode C is the empty/insufficient-data state; Mode A surfaces recommendations; Mode B shows active tracking with status pills inside each row; Hybrid mixes B rows with one A recommendation.</div>
+
+  <div class="phone-row">
+
+    <!-- Mode C -->
+    <div class="screen-col">
+      <div class="screen-label">Mode C · generic / no data</div>
+      <div class="state-badge empty">no budgets · low data</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div><div class="app-bar-greet">Good morning</div><div class="app-bar-title">Home</div></div>
+            <div class="app-bar-actions"><div class="bell">🔔<span class="bell-dot"></span></div></div>
+          </div>
+          <div class="sc-area">
+            <div class="card card-pad">
+              <div class="card-section-label">Total Expenses</div>
+              <div class="te-period">This month so far</div>
+              <div class="te-amount">1,240<span class="te-cur"> EGP</span></div>
+              <div class="te-tx-count">8 transactions</div>
+              <div class="te-cats">
+                <div class="te-cat-row">
+                  <div class="te-cat-icon">🍕</div>
+                  <div class="te-cat-info"><div class="te-cat-name">Food & Dining</div><div class="te-cat-tx">5 transactions</div></div>
+                  <div class="te-cat-amt">680 EGP</div>
+                </div>
+                <div class="te-cat-row">
+                  <div class="te-cat-icon">🛒</div>
+                  <div class="te-cat-info"><div class="te-cat-name">Shopping</div><div class="te-cat-tx">2 transactions</div></div>
+                  <div class="te-cat-amt">432 EGP</div>
+                </div>
+                <div class="te-cat-row">
+                  <div class="te-cat-icon">🚗</div>
+                  <div class="te-cat-info"><div class="te-cat-name">Transport</div><div class="te-cat-tx">1 transaction</div></div>
+                  <div class="te-cat-amt">128 EGP</div>
+                </div>
+              </div>
+              <div class="te-footer">See all categories</div>
+            </div>
+
+            <div class="card card-pad">
+              <div class="card-section-label">Smart Budget</div>
+              <div class="sb-empty">
+                <div class="sb-empty-icon">🎯</div>
+                <div class="sb-empty-title">Set a budget, see where your money goes</div>
+                <div class="sb-empty-cta">Set your first budget</div>
+              </div>
+            </div>
+
+            <div class="card card-pad">
+              <div class="ls-title-row"><div class="ls-title">Latest Spending</div></div>
+              <div class="ls-carousel">
+                <div class="ls-tx-card">
+                  <div class="ls-tx-icon-row"><div class="ls-tx-icon">🍕</div><div class="ls-tx-name">Buffalo Burger</div></div>
+                  <div class="ls-tx-cat">Food & Dining</div>
+                  <div class="ls-tx-amt">240 EGP</div>
+                  <div class="ls-tx-date">Today, 1:24 PM</div>
+                </div>
+                <div class="ls-tx-card">
+                  <div class="ls-tx-icon-row"><div class="ls-tx-icon">🚗</div><div class="ls-tx-name">Uber</div></div>
+                  <div class="ls-tx-cat">Transport</div>
+                  <div class="ls-tx-amt">68 EGP</div>
+                  <div class="ls-tx-date">Today, 11:02 AM</div>
+                </div>
+                <div class="ls-tx-card">
+                  <div class="ls-tx-icon-row"><div class="ls-tx-icon">🛒</div><div class="ls-tx-name">Carrefour</div></div>
+                  <div class="ls-tx-cat">Shopping</div>
+                  <div class="ls-tx-amt">432 EGP</div>
+                  <div class="ls-tx-date">Yesterday</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ios-tabbar">
+            <div class="tab-item on"><div class="tab-icon">⌂</div><div class="tab-lbl">Home</div></div>
+            <div class="tab-item"><div class="tab-icon">⇆</div><div class="tab-lbl">Transactions</div></div>
+            <div class="tab-plus"><div class="plus-btn">+</div></div>
+            <div class="tab-item"><div class="tab-icon">🎁</div><div class="tab-lbl">Offers</div></div>
+            <div class="tab-item"><div class="tab-icon">👤</div><div class="tab-lbl">Profile</div></div>
+          </div>
+          <div class="ios-home"></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Mode C fires when user has zero budgets AND has not met data sufficiency (10 transactions across 3 categories in 30 days). Top categories surface anyway — they answer a different question (where money goes) and don't depend on having budgets.</div>
+    </div>
+
+    <!-- Mode A -->
+    <div class="screen-col">
+      <div class="screen-label">Mode A · recommendations</div>
+      <div class="state-badge happy">no budgets · data sufficient</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div><div class="app-bar-greet">Good morning</div><div class="app-bar-title">Home</div></div>
+            <div class="app-bar-actions"><div class="bell">🔔<span class="bell-dot"></span></div></div>
+          </div>
+          <div class="sc-area">
+            <div class="card card-pad">
+              <div class="card-section-label">Total Expenses</div>
+              <div class="te-period">This month so far</div>
+              <div class="te-amount">3,840<span class="te-cur"> EGP</span></div>
+              <div class="te-tx-count">22 transactions</div>
+              <div class="te-cats">
+                <div class="te-cat-row">
+                  <div class="te-cat-icon">🍕</div>
+                  <div class="te-cat-info"><div class="te-cat-name">Food & Dining</div><div class="te-cat-tx">12 transactions</div></div>
+                  <div class="te-cat-amt">1,820 EGP</div>
+                </div>
+                <div class="te-cat-row">
+                  <div class="te-cat-icon">🛒</div>
+                  <div class="te-cat-info"><div class="te-cat-name">Shopping</div><div class="te-cat-tx">4 transactions</div></div>
+                  <div class="te-cat-amt">980 EGP</div>
+                </div>
+                <div class="te-cat-row">
+                  <div class="te-cat-icon">🚗</div>
+                  <div class="te-cat-info"><div class="te-cat-name">Transport</div><div class="te-cat-tx">6 transactions</div></div>
+                  <div class="te-cat-amt">540 EGP</div>
+                </div>
+              </div>
+              <div class="te-footer">See all categories</div>
+            </div>
+
+            <div class="card card-pad">
+              <div class="card-section-label">Smart Budget</div>
+              <div class="sb-mode-a-header">Suggested budgets</div>
+              <div class="sb-mode-a-sub">Based on your habits, here's where to start.</div>
+              <div class="sb-rec-row">
+                <div class="sb-rec-icon">🍕</div>
+                <div class="sb-rec-info">
+                  <div class="sb-rec-cat">Food & Dining</div>
+                  <div class="sb-rec-amt">1,800 EGP / month</div>
+                </div>
+                <div class="sb-rec-actions">
+                  <div class="sb-rec-accept">✓</div>
+                  <div class="sb-rec-dismiss">✕</div>
+                </div>
+              </div>
+              <div class="sb-rec-row">
+                <div class="sb-rec-icon">🛒</div>
+                <div class="sb-rec-info">
+                  <div class="sb-rec-cat">Shopping</div>
+                  <div class="sb-rec-amt">920 EGP / month</div>
+                </div>
+                <div class="sb-rec-actions">
+                  <div class="sb-rec-accept">✓</div>
+                  <div class="sb-rec-dismiss">✕</div>
+                </div>
+              </div>
+              <div class="sb-rec-row">
+                <div class="sb-rec-icon">🚗</div>
+                <div class="sb-rec-info">
+                  <div class="sb-rec-cat">Transport</div>
+                  <div class="sb-rec-amt">650 EGP / month</div>
+                </div>
+                <div class="sb-rec-actions">
+                  <div class="sb-rec-accept">✓</div>
+                  <div class="sb-rec-dismiss">✕</div>
+                </div>
+              </div>
+              <div class="sb-footer-cta">See all categories</div>
+            </div>
+
+            <div class="card card-pad">
+              <div class="ls-title-row"><div class="ls-title">Latest Spending</div></div>
+              <div class="ls-carousel">
+                <div class="ls-tx-card">
+                  <div class="ls-tx-icon-row"><div class="ls-tx-icon">🍕</div><div class="ls-tx-name">Pizza Hut</div></div>
+                  <div class="ls-tx-cat">Food & Dining</div>
+                  <div class="ls-tx-amt">320 EGP</div>
+                  <div class="ls-tx-date">Today</div>
+                </div>
+                <div class="ls-tx-card needs-cat">
+                  <div class="ls-tx-icon-row"><div class="ls-tx-icon">⛽</div><div class="ls-tx-name">Mobil Station</div></div>
+                  <div class="ls-needs-cat-pill">Needs category</div>
+                  <div class="ls-tx-amt">200 EGP</div>
+                  <div class="ls-tx-date">Today</div>
+                </div>
+                <div class="ls-tx-card">
+                  <div class="ls-tx-icon-row"><div class="ls-tx-icon">🛒</div><div class="ls-tx-name">Spinneys</div></div>
+                  <div class="ls-tx-cat">Shopping</div>
+                  <div class="ls-tx-amt">480 EGP</div>
+                  <div class="ls-tx-date">Yesterday</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ios-tabbar">
+            <div class="tab-item on"><div class="tab-icon">⌂</div><div class="tab-lbl">Home</div></div>
+            <div class="tab-item"><div class="tab-icon">⇆</div><div class="tab-lbl">Transactions</div></div>
+            <div class="tab-plus"><div class="plus-btn">+</div></div>
+            <div class="tab-item"><div class="tab-icon">🎁</div><div class="tab-lbl">Offers</div></div>
+            <div class="tab-item"><div class="tab-icon">👤</div><div class="tab-lbl">Profile</div></div>
+          </div>
+          <div class="ios-home"></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Up to 3 recommendation rows ranked by 3-month average. Dashed border distinguishes "suggested" from "active". Tap ✓ → opens Quick-create Budget partial sheet pre-filled. Tap ✕ → row collapses, dismissed for the session (returns next month or next data refresh). Remaining rows do not back-fill from a 4th recommendation.</div>
+    </div>
+
+    <!-- Mode B -->
+    <div class="screen-col">
+      <div class="screen-label">Mode B · active tracking</div>
+      <div class="state-badge warn">3 budgets · one over</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div><div class="app-bar-greet">Good morning</div><div class="app-bar-title">Home</div></div>
+            <div class="app-bar-actions"><div class="bell">🔔<span class="bell-dot"></span></div></div>
+          </div>
+          <div class="sc-area">
+            <div class="card card-pad">
+              <div class="card-section-label">Total Expenses</div>
+              <div class="te-period">This month so far</div>
+              <div class="te-amount">2,960<span class="te-cur"> EGP</span></div>
+              <div class="te-tx-count">18 transactions</div>
+              <div class="te-cats">
+                <div class="te-cat-row">
+                  <div class="te-cat-icon">🍕</div>
+                  <div class="te-cat-info"><div class="te-cat-name">Food & Dining</div><div class="te-cat-tx">10 transactions</div></div>
+                  <div class="te-cat-amt">2,140 EGP</div>
+                </div>
+                <div class="te-cat-row">
+                  <div class="te-cat-icon">🚗</div>
+                  <div class="te-cat-info"><div class="te-cat-name">Transport</div><div class="te-cat-tx">5 transactions</div></div>
+                  <div class="te-cat-amt">540 EGP</div>
+                </div>
+                <div class="te-cat-row">
+                  <div class="te-cat-icon">🛒</div>
+                  <div class="te-cat-info"><div class="te-cat-name">Shopping</div><div class="te-cat-tx">3 transactions</div></div>
+                  <div class="te-cat-amt">280 EGP</div>
+                </div>
+              </div>
+              <div class="te-footer">See all categories</div>
+            </div>
+
+            <div class="card card-pad">
+              <div class="card-section-label">Smart Budget</div>
+              <div class="sb-bud-row">
+                <div class="sb-bud-head">
+                  <div class="sb-bud-cat">
+                    <div class="sb-bud-icon">🍕</div>
+                    <div class="sb-bud-name">Food & Dining</div>
+                  </div>
+                  <div class="sb-pill over">Over limit</div>
+                </div>
+                <div class="prog-wrap"><div class="prog-bar danger" style="width:100%"></div></div>
+                <div class="sb-bud-foot"><div class="sb-bud-pct">2,140 / 1,800 EGP</div><div class="sb-bud-left over">340 over</div></div>
+              </div>
+              <div class="sb-bud-row">
+                <div class="sb-bud-head">
+                  <div class="sb-bud-cat">
+                    <div class="sb-bud-icon">🚗</div>
+                    <div class="sb-bud-name">Transport</div>
+                  </div>
+                  <div class="sb-pill warn">Near limit</div>
+                </div>
+                <div class="prog-wrap"><div class="prog-bar warn" style="width:83%"></div></div>
+                <div class="sb-bud-foot"><div class="sb-bud-pct">540 / 650 EGP</div><div class="sb-bud-left">110 EGP left</div></div>
+              </div>
+              <div class="sb-bud-row">
+                <div class="sb-bud-head">
+                  <div class="sb-bud-cat">
+                    <div class="sb-bud-icon">🛒</div>
+                    <div class="sb-bud-name">Shopping</div>
+                  </div>
+                </div>
+                <div class="prog-wrap"><div class="prog-bar" style="width:30%"></div></div>
+                <div class="sb-bud-foot"><div class="sb-bud-pct">280 / 920 EGP</div><div class="sb-bud-left">640 EGP left</div></div>
+              </div>
+              <div class="sb-footer-cta">See all budgets</div>
+            </div>
+
+            <div class="card card-pad">
+              <div class="ls-title-row"><div class="ls-title">Latest Spending</div></div>
+              <div class="ls-carousel">
+                <div class="ls-tx-card">
+                  <div class="ls-tx-icon-row"><div class="ls-tx-icon">🍕</div><div class="ls-tx-name">Buffalo Burger</div></div>
+                  <div class="ls-tx-cat">Food & Dining</div>
+                  <div class="ls-tx-amt">240 EGP</div>
+                  <div class="ls-tx-date">Today</div>
+                </div>
+                <div class="ls-tx-card">
+                  <div class="ls-tx-icon-row"><div class="ls-tx-icon">☕</div><div class="ls-tx-name">Costa Coffee</div></div>
+                  <div class="ls-tx-cat">Food & Dining</div>
+                  <div class="ls-tx-amt">95 EGP</div>
+                  <div class="ls-tx-date">Today</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ios-tabbar">
+            <div class="tab-item on"><div class="tab-icon">⌂</div><div class="tab-lbl">Home</div></div>
+            <div class="tab-item"><div class="tab-icon">⇆</div><div class="tab-lbl">Transactions</div></div>
+            <div class="tab-plus"><div class="plus-btn">+</div></div>
+            <div class="tab-item"><div class="tab-icon">🎁</div><div class="tab-lbl">Offers</div></div>
+            <div class="tab-item"><div class="tab-icon">👤</div><div class="tab-lbl">Profile</div></div>
+          </div>
+          <div class="ios-home"></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Rows sorted attention-weighted: over → near → on track. Status pills inside each row carry the state — colour is reinforcement, not the only signal. On-track rows ship no pill (clean baseline).</div>
+    </div>
+
+    <!-- Hybrid -->
+    <div class="screen-col">
+      <div class="screen-label">Hybrid · B rows + A recommendation</div>
+      <div class="state-badge happy">2 budgets + 1 rec</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div><div class="app-bar-greet">Good morning</div><div class="app-bar-title">Home</div></div>
+            <div class="app-bar-actions"><div class="bell">🔔<span class="bell-dot"></span></div></div>
+          </div>
+          <div class="sc-area">
+            <div class="card card-pad">
+              <div class="card-section-label">Total Expenses</div>
+              <div class="te-period">This month so far</div>
+              <div class="te-amount">1,860<span class="te-cur"> EGP</span></div>
+              <div class="te-tx-count">14 transactions</div>
+              <div class="te-cats">
+                <div class="te-cat-row">
+                  <div class="te-cat-icon">🍕</div>
+                  <div class="te-cat-info"><div class="te-cat-name">Food & Dining</div><div class="te-cat-tx">7 transactions</div></div>
+                  <div class="te-cat-amt">980 EGP</div>
+                </div>
+                <div class="te-cat-row">
+                  <div class="te-cat-icon">🛒</div>
+                  <div class="te-cat-info"><div class="te-cat-name">Shopping</div><div class="te-cat-tx">3 transactions</div></div>
+                  <div class="te-cat-amt">660 EGP</div>
+                </div>
+                <div class="te-cat-row">
+                  <div class="te-cat-icon">🚗</div>
+                  <div class="te-cat-info"><div class="te-cat-name">Transport</div><div class="te-cat-tx">4 transactions</div></div>
+                  <div class="te-cat-amt">220 EGP</div>
+                </div>
+              </div>
+              <div class="te-footer">See all categories</div>
+            </div>
+
+            <div class="card card-pad">
+              <div class="card-section-label">Smart Budget</div>
+              <div class="sb-bud-row">
+                <div class="sb-bud-head">
+                  <div class="sb-bud-cat">
+                    <div class="sb-bud-icon">🍕</div>
+                    <div class="sb-bud-name">Food & Dining</div>
+                  </div>
+                </div>
+                <div class="prog-wrap"><div class="prog-bar" style="width:54%"></div></div>
+                <div class="sb-bud-foot"><div class="sb-bud-pct">980 / 1,800 EGP</div><div class="sb-bud-left">820 EGP left</div></div>
+              </div>
+              <div class="sb-bud-row">
+                <div class="sb-bud-head">
+                  <div class="sb-bud-cat">
+                    <div class="sb-bud-icon">🚗</div>
+                    <div class="sb-bud-name">Transport</div>
+                  </div>
+                </div>
+                <div class="prog-wrap"><div class="prog-bar" style="width:34%"></div></div>
+                <div class="sb-bud-foot"><div class="sb-bud-pct">220 / 650 EGP</div><div class="sb-bud-left">430 EGP left</div></div>
+              </div>
+              <div class="sb-rec-row">
+                <div class="sb-rec-icon">🛒</div>
+                <div class="sb-rec-info">
+                  <div class="sb-rec-cat">Shopping</div>
+                  <div class="sb-rec-amt">920 EGP / month</div>
+                </div>
+                <div class="sb-rec-actions">
+                  <div class="sb-rec-accept">✓</div>
+                  <div class="sb-rec-dismiss">✕</div>
+                </div>
+              </div>
+              <div class="sb-footer-cta">See all budgets</div>
+            </div>
+
+            <div class="card card-pad">
+              <div class="ls-title-row"><div class="ls-title">Latest Spending</div></div>
+              <div class="ls-carousel">
+                <div class="ls-tx-card">
+                  <div class="ls-tx-icon-row"><div class="ls-tx-icon">🍕</div><div class="ls-tx-name">Cilantro</div></div>
+                  <div class="ls-tx-cat">Food & Dining</div>
+                  <div class="ls-tx-amt">95 EGP</div>
+                  <div class="ls-tx-date">Today</div>
+                </div>
+                <div class="ls-tx-card">
+                  <div class="ls-tx-icon-row"><div class="ls-tx-icon">🚗</div><div class="ls-tx-name">Uber</div></div>
+                  <div class="ls-tx-cat">Transport</div>
+                  <div class="ls-tx-amt">42 EGP</div>
+                  <div class="ls-tx-date">Today</div>
+                </div>
+                <div class="ls-tx-card">
+                  <div class="ls-tx-icon-row"><div class="ls-tx-icon">🛒</div><div class="ls-tx-name">Spinneys</div></div>
+                  <div class="ls-tx-cat">Shopping</div>
+                  <div class="ls-tx-amt">220 EGP</div>
+                  <div class="ls-tx-date">Yesterday</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ios-tabbar">
+            <div class="tab-item on"><div class="tab-icon">⌂</div><div class="tab-lbl">Home</div></div>
+            <div class="tab-item"><div class="tab-icon">⇆</div><div class="tab-lbl">Transactions</div></div>
+            <div class="tab-plus"><div class="plus-btn">+</div></div>
+            <div class="tab-item"><div class="tab-icon">🎁</div><div class="tab-lbl">Offers</div></div>
+            <div class="tab-item"><div class="tab-icon">👤</div><div class="tab-lbl">Profile</div></div>
+          </div>
+          <div class="ios-home"></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Hybrid renders user's existing budgets first (solid border), then up to one recommendation row (dashed border) to fill the slot. Cap of 3 rows total. Footer CTA stays "See all budgets" — same as Mode B — to avoid label flicker as the user crosses the data threshold.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 4 — MODE A · ACCEPT RECOMMENDATION
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 4 — Mode A · Accept a recommendation</div>
+    <div class="flow-section-line"></div>
+  </div>
+  <div class="flow-section-intro">User taps the green ✓ on a recommendation row. Partial sheet opens at .medium detent with the suggested amount pre-filled. User can confirm or edit before saving. On save, the recommendation row transforms into a Mode B budget row in place.</div>
+
+  <div class="phone-row">
+
+    <!-- Mode A start -->
+    <div class="screen-col">
+      <div class="screen-label">Mode A · tap ✓ on Food & Dining</div>
+      <div class="state-badge interaction">tap green check</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div><div class="app-bar-greet">Good morning</div><div class="app-bar-title">Home</div></div>
+            <div class="app-bar-actions"><div class="bell">🔔<span class="bell-dot"></span></div></div>
+          </div>
+          <div class="sc-area">
+            <div class="card card-pad" style="padding-top:8px">
+              <div class="card-section-label">Smart Budget</div>
+              <div class="sb-mode-a-header">Suggested budgets</div>
+              <div class="sb-mode-a-sub">Based on your habits, here's where to start.</div>
+              <div class="sb-rec-row" style="border-color:var(--green);box-shadow:0 0 0 3px rgba(46,139,87,0.12)">
+                <div class="sb-rec-icon">🍕</div>
+                <div class="sb-rec-info">
+                  <div class="sb-rec-cat">Food & Dining</div>
+                  <div class="sb-rec-amt">1,800 EGP / month</div>
+                </div>
+                <div class="sb-rec-actions">
+                  <div class="sb-rec-accept" style="transform:scale(1.08)">✓</div>
+                  <div class="sb-rec-dismiss">✕</div>
+                </div>
+              </div>
+              <div class="sb-rec-row">
+                <div class="sb-rec-icon">🛒</div>
+                <div class="sb-rec-info">
+                  <div class="sb-rec-cat">Shopping</div>
+                  <div class="sb-rec-amt">920 EGP / month</div>
+                </div>
+                <div class="sb-rec-actions">
+                  <div class="sb-rec-accept">✓</div>
+                  <div class="sb-rec-dismiss">✕</div>
+                </div>
+              </div>
+              <div class="sb-rec-row">
+                <div class="sb-rec-icon">🚗</div>
+                <div class="sb-rec-info">
+                  <div class="sb-rec-cat">Transport</div>
+                  <div class="sb-rec-amt">650 EGP / month</div>
+                </div>
+                <div class="sb-rec-actions">
+                  <div class="sb-rec-accept">✓</div>
+                  <div class="sb-rec-dismiss">✕</div>
+                </div>
+              </div>
+              <div class="sb-footer-cta">See all categories</div>
+            </div>
+          </div>
+          <div class="ios-tabbar">
+            <div class="tab-item on"><div class="tab-icon">⌂</div><div class="tab-lbl">Home</div></div>
+            <div class="tab-item"><div class="tab-icon">⇆</div><div class="tab-lbl">Transactions</div></div>
+            <div class="tab-plus"><div class="plus-btn">+</div></div>
+            <div class="tab-item"><div class="tab-icon">🎁</div><div class="tab-lbl">Offers</div></div>
+            <div class="tab-item"><div class="tab-icon">👤</div><div class="tab-lbl">Profile</div></div>
+          </div>
+          <div class="ios-home"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label interaction">tap ✓</div>
+    </div>
+
+    <!-- Partial sheet pre-filled -->
+    <div class="screen-col">
+      <div class="screen-label">Quick-create · pre-filled · suggested amount</div>
+      <div class="state-badge interaction">.medium detent · pre-filled</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar" style="opacity:0.35"><div><div class="app-bar-greet">Good morning</div><div class="app-bar-title">Home</div></div></div>
+          <div class="sc-area" style="opacity:0.35"><div class="card card-pad" style="height:80px"></div></div>
+
+          <div class="ps-overlay">
+            <div class="ps-sheet">
+              <div class="ps-grabber"></div>
+              <div class="ps-title">Set a budget for Food & Dining</div>
+              <div class="ps-sub">Based on a 3-month average. You can adjust before saving.</div>
+              <div class="ps-divider"></div>
+
+              <div class="ps-amount-row">
+                <div class="ps-amount-label">Monthly limit</div>
+                <div class="ps-amount-val">1,800 <span class="ps-amount-cur">EGP</span></div>
+              </div>
+
+              <div class="ps-suggestion">
+                <div class="ps-sug-icon">💡</div>
+                <div class="ps-sug-text">You spent <strong>1,820 EGP</strong> last month and <strong>1,640 EGP</strong> the month before in this category.</div>
+              </div>
+
+              <div class="ps-cta-row">
+                <div class="ps-cta-cancel">Cancel</div>
+                <div class="ps-cta-confirm">Set budget</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ios-tabbar" style="opacity:0.3">
+            <div class="tab-item on"><div class="tab-icon">⌂</div><div class="tab-lbl">Home</div></div>
+            <div class="tab-item"><div class="tab-icon">⇆</div><div class="tab-lbl">Transactions</div></div>
+            <div class="tab-plus"><div class="plus-btn">+</div></div>
+            <div class="tab-item"><div class="tab-icon">🎁</div><div class="tab-lbl">Offers</div></div>
+            <div class="tab-item"><div class="tab-icon">👤</div><div class="tab-lbl">Profile</div></div>
+          </div>
+          <div class="ios-home"></div>
+        </div>
+      </div>
+      <div class="flow-note new">Sheet uses MoneyMore styling — not iOS form rows. Amount is the hero (large, navy, tappable to edit). Suggestion banner shows historical context so the number isn't a black box. Tap the amount to edit; keypad pushes the sheet up to a larger detent.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label interaction">tap Set budget</div>
+    </div>
+
+    <!-- Result: row transformed to Mode B -->
+    <div class="screen-col">
+      <div class="screen-label">After save · row → Mode B · others remain Mode A</div>
+      <div class="state-badge success">budget set · hybrid</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div><div class="app-bar-greet">Good morning</div><div class="app-bar-title">Home</div></div>
+            <div class="app-bar-actions"><div class="bell">🔔<span class="bell-dot"></span></div></div>
+          </div>
+          <div class="sc-area">
+            <div class="card card-pad" style="padding-top:8px">
+              <div class="card-section-label">Smart Budget</div>
+              <div class="sb-bud-row">
+                <div class="sb-bud-head">
+                  <div class="sb-bud-cat">
+                    <div class="sb-bud-icon">🍕</div>
+                    <div class="sb-bud-name">Food & Dining</div>
+                  </div>
+                </div>
+                <div class="prog-wrap"><div class="prog-bar" style="width:18%"></div></div>
+                <div class="sb-bud-foot"><div class="sb-bud-pct">320 / 1,800 EGP</div><div class="sb-bud-left">1,480 EGP left</div></div>
+              </div>
+              <div class="sb-rec-row">
+                <div class="sb-rec-icon">🛒</div>
+                <div class="sb-rec-info">
+                  <div class="sb-rec-cat">Shopping</div>
+                  <div class="sb-rec-amt">920 EGP / month</div>
+                </div>
+                <div class="sb-rec-actions">
+                  <div class="sb-rec-accept">✓</div>
+                  <div class="sb-rec-dismiss">✕</div>
+                </div>
+              </div>
+              <div class="sb-rec-row">
+                <div class="sb-rec-icon">🚗</div>
+                <div class="sb-rec-info">
+                  <div class="sb-rec-cat">Transport</div>
+                  <div class="sb-rec-amt">650 EGP / month</div>
+                </div>
+                <div class="sb-rec-actions">
+                  <div class="sb-rec-accept">✓</div>
+                  <div class="sb-rec-dismiss">✕</div>
+                </div>
+              </div>
+              <div class="sb-footer-cta">See all budgets</div>
+            </div>
+          </div>
+          <div class="ios-tabbar">
+            <div class="tab-item on"><div class="tab-icon">⌂</div><div class="tab-lbl">Home</div></div>
+            <div class="tab-item"><div class="tab-icon">⇆</div><div class="tab-lbl">Transactions</div></div>
+            <div class="tab-plus"><div class="plus-btn">+</div></div>
+            <div class="tab-item"><div class="tab-icon">🎁</div><div class="tab-lbl">Offers</div></div>
+            <div class="tab-item"><div class="tab-icon">👤</div><div class="tab-lbl">Profile</div></div>
+          </div>
+          <div class="ios-home"></div>
+        </div>
+      </div>
+      <div class="flow-note decision">The accepted recommendation transforms in place into a Mode B budget row (solid border, progress bar, spend/cap). Card automatically becomes Hybrid — remaining recommendations stay below the new active budget. Footer CTA flips to "See all budgets".</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 5 — CENTRE [+] ACTION SHEET
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 5 — Centre [+] action sheet → partial sheets</div>
+    <div class="flow-section-line"></div>
+  </div>
+  <div class="flow-section-intro">Tapping the raised centre [+] in the tab bar opens an iOS action sheet. Two equal options. Each leads to its own MoneyMore-styled partial sheet at .medium detent.</div>
+
+  <div class="phone-row">
+
+    <!-- Action sheet -->
+    <div class="screen-col">
+      <div class="screen-label">Centre [+] · action sheet</div>
+      <div class="state-badge interaction">action sheet</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar" style="opacity:0.45">
+            <div><div class="app-bar-greet">Good morning</div><div class="app-bar-title">Home</div></div>
+          </div>
+          <div class="sc-area" style="opacity:0.45">
+            <div class="card card-pad">
+              <div class="card-section-label">Total Expenses</div>
+              <div class="te-period">This month so far</div>
+              <div class="te-amount">1,860<span class="te-cur"> EGP</span></div>
+            </div>
+          </div>
+
+          <div class="as-overlay">
+            <div class="as-stack">
+              <div class="as-group">
+                <div class="as-item">Add transaction</div>
+                <div class="as-item">Set a budget</div>
+              </div>
+              <div class="as-group">
+                <div class="as-item cancel">Cancel</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ios-tabbar" style="opacity:0.45">
+            <div class="tab-item on"><div class="tab-icon">⌂</div><div class="tab-lbl">Home</div></div>
+            <div class="tab-item"><div class="tab-icon">⇆</div><div class="tab-lbl">Transactions</div></div>
+            <div class="tab-plus"><div class="plus-btn">+</div></div>
+            <div class="tab-item"><div class="tab-icon">🎁</div><div class="tab-lbl">Offers</div></div>
+            <div class="tab-item"><div class="tab-icon">👤</div><div class="tab-lbl">Profile</div></div>
+          </div>
+          <div class="ios-home"></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Native iOS UIAlertController .actionSheet style. Two actions presented as equal peers — neither is destructive, neither is default. Cancel sits in its own group per iOS HIG.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label interaction">Add transaction</div>
+    </div>
+
+    <!-- Add transaction partial sheet (MoneyMore-styled) -->
+    <div class="screen-col">
+      <div class="screen-label">Add Transaction · MoneyMore-styled sheet</div>
+      <div class="state-badge interaction">.medium detent</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar" style="opacity:0.35"><div><div class="app-bar-greet">Good morning</div><div class="app-bar-title">Home</div></div></div>
+          <div class="sc-area" style="opacity:0.35"><div class="card card-pad" style="height:80px"></div></div>
+
+          <div class="ps-overlay">
+            <div class="ps-sheet">
+              <div class="ps-grabber"></div>
+              <div class="ps-title">New transaction</div>
+              <div class="ps-divider"></div>
+
+              <div class="ps-body-scroll">
+                <div class="ps-field-card">
+                  <div class="ps-field-card-label">Amount <span class="req">*</span></div>
+                  <div class="ps-field-card-value amount placeholder">0 <span class="cur">EGP</span></div>
+                </div>
+
+                <div class="ps-field-card">
+                  <div class="ps-field-card-label">Type <span class="req">*</span></div>
+                  <div class="seg-control">
+                    <div class="seg-item on">Expense</div>
+                    <div class="seg-item">Income</div>
+                    <div class="seg-item">Transfer</div>
+                  </div>
+                </div>
+
+                <div class="ps-field-card">
+                  <div class="ps-field-card-label">Category <span class="req">*</span></div>
+                  <div class="ps-field-card-value placeholder">Choose a category<span class="ps-field-icon">›</span></div>
+                </div>
+
+                <div class="ps-field-card">
+                  <div class="ps-field-card-label">Date <span class="req">*</span></div>
+                  <div class="ps-field-card-value">Today<span class="ps-field-icon">›</span></div>
+                </div>
+
+                <div class="ps-field-card">
+                  <div class="ps-field-card-label">Merchant <span class="opt">(Optional)</span></div>
+                  <div class="ps-field-card-value placeholder">e.g. Buffalo Burger</div>
+                </div>
+
+                <div class="ps-field-card">
+                  <div class="ps-field-card-label">Note <span class="opt">(Optional)</span></div>
+                  <div class="ps-field-card-value placeholder">Add a note</div>
+                </div>
+              </div>
+
+              <div class="ps-cta-row" style="margin-top:12px">
+                <div class="ps-cta-cancel">Cancel</div>
+                <div class="ps-cta-confirm dis">Save</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ios-tabbar" style="opacity:0.3">
+            <div class="tab-item on"><div class="tab-icon">⌂</div><div class="tab-lbl">Home</div></div>
+            <div class="tab-item"><div class="tab-icon">⇆</div><div class="tab-lbl">Transactions</div></div>
+            <div class="tab-plus"><div class="plus-btn">+</div></div>
+            <div class="tab-item"><div class="tab-icon">🎁</div><div class="tab-lbl">Offers</div></div>
+            <div class="tab-item"><div class="tab-icon">👤</div><div class="tab-lbl">Profile</div></div>
+          </div>
+          <div class="ios-home"></div>
+        </div>
+      </div>
+      <div class="flow-note new">Manual entries: user picks category themselves — no auto-categorisation. Required fields (Amount, Type, Category, Date) marked with red asterisk; Merchant and Note optional. Save disabled until all required fields are filled. Type defaults to Expense (most common case). Sheet body scrolls vertically when fields exceed the .medium detent.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label interaction">Set a budget</div>
+    </div>
+
+    <!-- Quick-create budget — from centre [+], blank -->
+    <div class="screen-col">
+      <div class="screen-label">Quick-create Budget · from [+] · blank</div>
+      <div class="state-badge interaction">.medium detent · blank</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar" style="opacity:0.35"><div><div class="app-bar-greet">Good morning</div><div class="app-bar-title">Home</div></div></div>
+          <div class="sc-area" style="opacity:0.35"><div class="card card-pad" style="height:80px"></div></div>
+
+          <div class="ps-overlay">
+            <div class="ps-sheet">
+              <div class="ps-grabber"></div>
+              <div class="ps-title">Set a budget</div>
+              <div class="ps-sub">Pick a category and set a monthly limit.</div>
+              <div class="ps-divider"></div>
+
+              <div class="ps-field">
+                <div class="ps-field-label">CATEGORY</div>
+                <div class="ps-field-input placeholder">Choose a category<span class="ps-field-icon">›</span></div>
+              </div>
+
+              <div class="ps-amount-row">
+                <div class="ps-amount-label">Monthly limit</div>
+                <div class="ps-amount-val" style="color:var(--t4)">0 <span class="ps-amount-cur">EGP</span></div>
+              </div>
+
+              <div class="ps-cta-row">
+                <div class="ps-cta-cancel">Cancel</div>
+                <div class="ps-cta-confirm dis">Set budget</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ios-tabbar" style="opacity:0.3">
+            <div class="tab-item on"><div class="tab-icon">⌂</div><div class="tab-lbl">Home</div></div>
+            <div class="tab-item"><div class="tab-icon">⇆</div><div class="tab-lbl">Transactions</div></div>
+            <div class="tab-plus"><div class="plus-btn">+</div></div>
+            <div class="tab-item"><div class="tab-icon">🎁</div><div class="tab-lbl">Offers</div></div>
+            <div class="tab-item"><div class="tab-icon">👤</div><div class="tab-lbl">Profile</div></div>
+          </div>
+          <div class="ios-home"></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Same sheet as Flow 4's accept-recommendation, but blank. Once user picks a category, the suggestion banner appears with the 3-month average (same component as Flow 4). Set budget CTA stays disabled until both fields have values.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 6 — REVIEW UNCATEGORISED AUTO-FETCHED TRANSACTION
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 6 — Review uncategorised auto-fetched transaction</div>
+    <div class="flow-section-line"></div>
+  </div>
+  <div class="flow-section-intro">When the SMS-based auto-fetch lands a transaction without a confident category match, the carousel card surfaces a "Needs category" pill and gold tint. Tapping the card opens the same sheet as Add Transaction — pre-filled with the auto-fetched data — but titled "Review transaction" to signal the moment is to check & complete, not create.</div>
+
+  <div class="phone-row">
+
+    <!-- Card with needs-category pill in carousel -->
+    <div class="screen-col">
+      <div class="screen-label">Carousel · uncategorised card highlighted</div>
+      <div class="state-badge warn">needs category</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div><div class="app-bar-greet">Good morning</div><div class="app-bar-title">Home</div></div>
+            <div class="app-bar-actions"><div class="bell">🔔<span class="bell-dot"></span></div></div>
+          </div>
+          <div class="sc-area">
+            <div class="card card-pad">
+              <div class="card-section-label">Total Expenses</div>
+              <div class="te-period">This month so far</div>
+              <div class="te-amount">2,180<span class="te-cur"> EGP</span></div>
+              <div class="te-tx-count">15 transactions</div>
+            </div>
+
+            <div class="card card-pad">
+              <div class="ls-title-row"><div class="ls-title">Latest Spending</div></div>
+              <div class="ls-carousel">
+                <div class="ls-tx-card needs-cat">
+                  <div class="ls-tx-icon-row">
+                    <div class="ls-tx-icon">⛽</div>
+                    <div class="ls-tx-name">Mobil Station</div>
+                  </div>
+                  <div class="ls-needs-cat-pill">Needs category</div>
+                  <div class="ls-tx-amt">200 EGP</div>
+                  <div class="ls-tx-date">Today, 11:24 AM</div>
+                </div>
+                <div class="ls-tx-card needs-cat">
+                  <div class="ls-tx-icon-row">
+                    <div class="ls-tx-icon">🏪</div>
+                    <div class="ls-tx-name">Abou Tarek</div>
+                  </div>
+                  <div class="ls-needs-cat-pill">Needs category</div>
+                  <div class="ls-tx-amt">800 EGP</div>
+                  <div class="ls-tx-date">Today, 9:12 AM</div>
+                </div>
+                <div class="ls-tx-card">
+                  <div class="ls-tx-icon-row"><div class="ls-tx-icon">🍕</div><div class="ls-tx-name">Pizza Hut</div></div>
+                  <div class="ls-tx-cat">Food & Dining</div>
+                  <div class="ls-tx-amt">320 EGP</div>
+                  <div class="ls-tx-date">Yesterday</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ios-tabbar">
+            <div class="tab-item on"><div class="tab-icon">⌂</div><div class="tab-lbl">Home</div></div>
+            <div class="tab-item"><div class="tab-icon">⇆</div><div class="tab-lbl">Transactions</div></div>
+            <div class="tab-plus"><div class="plus-btn">+</div></div>
+            <div class="tab-item"><div class="tab-icon">🎁</div><div class="tab-lbl">Offers</div></div>
+            <div class="tab-item"><div class="tab-icon">👤</div><div class="tab-lbl">Profile</div></div>
+          </div>
+          <div class="ios-home"></div>
+        </div>
+      </div>
+      <div class="flow-note decision">"Needs category" pill + gold tint distinguishes uncategorised auto-fetched transactions from confidently-categorised ones. Pill sits below the merchant name so it's the second thing the user reads. Card stays interactive — whole surface tappable.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label interaction">tap card</div>
+    </div>
+
+    <!-- Review transaction sheet -->
+    <div class="screen-col">
+      <div class="screen-label">Review transaction · pre-filled · category empty</div>
+      <div class="state-badge interaction">.medium detent · review</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar" style="opacity:0.35"><div><div class="app-bar-greet">Good morning</div><div class="app-bar-title">Home</div></div></div>
+          <div class="sc-area" style="opacity:0.35"><div class="card card-pad" style="height:80px"></div></div>
+
+          <div class="ps-overlay">
+            <div class="ps-sheet">
+              <div class="ps-grabber"></div>
+              <div class="ps-title">Review transaction</div>
+              <div class="ps-sub">We picked this up from your SMS. Add a category to keep your spending tracked.</div>
+              <div class="ps-divider"></div>
+
+              <div class="ps-body-scroll">
+                <div class="ps-field-card">
+                  <div class="ps-field-card-label">Amount <span class="req">*</span></div>
+                  <div class="ps-field-card-value amount">200 <span class="cur">EGP</span></div>
+                </div>
+
+                <div class="ps-field-card">
+                  <div class="ps-field-card-label">Type <span class="req">*</span></div>
+                  <div class="seg-control">
+                    <div class="seg-item on">Expense</div>
+                    <div class="seg-item">Income</div>
+                    <div class="seg-item">Transfer</div>
+                  </div>
+                </div>
+
+                <div class="ps-field-card flag">
+                  <div class="ps-field-card-label">Category <span class="req">*</span></div>
+                  <div class="ps-field-card-value placeholder">Choose a category<span class="ps-field-icon">›</span></div>
+                </div>
+
+                <div class="ps-field-card">
+                  <div class="ps-field-card-label">Date <span class="req">*</span></div>
+                  <div class="ps-field-card-value">Today<span class="ps-field-icon">›</span></div>
+                </div>
+
+                <div class="ps-field-card">
+                  <div class="ps-field-card-label">Merchant <span class="opt">(Optional)</span></div>
+                  <div class="ps-field-card-value">Mobil Station</div>
+                </div>
+
+                <div class="ps-field-card">
+                  <div class="ps-field-card-label">Note <span class="opt">(Optional)</span></div>
+                  <div class="ps-field-card-value placeholder">Add a note</div>
+                </div>
+              </div>
+
+              <div class="ps-cta-row" style="margin-top:12px">
+                <div class="ps-cta-cancel">Cancel</div>
+                <div class="ps-cta-confirm dis">Save</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ios-tabbar" style="opacity:0.3">
+            <div class="tab-item on"><div class="tab-icon">⌂</div><div class="tab-lbl">Home</div></div>
+            <div class="tab-item"><div class="tab-icon">⇆</div><div class="tab-lbl">Transactions</div></div>
+            <div class="tab-plus"><div class="plus-btn">+</div></div>
+            <div class="tab-item"><div class="tab-icon">🎁</div><div class="tab-lbl">Offers</div></div>
+            <div class="tab-item"><div class="tab-icon">👤</div><div class="tab-lbl">Profile</div></div>
+          </div>
+          <div class="ios-home"></div>
+        </div>
+      </div>
+      <div class="flow-note new">Same sheet as Add Transaction — every field editable. Title shifts to "Review transaction" + subline naming the SMS source. Category field gets gold tint to draw the eye to the missing piece. All other fields pre-filled from the SMS parse. Save stays disabled until Category is picked.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label interaction">pick category, save</div>
+    </div>
+
+    <!-- After save: card category resolved, pill cleared -->
+    <div class="screen-col">
+      <div class="screen-label">After save · card resolved</div>
+      <div class="state-badge success">category set · pill cleared</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:42</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div><div class="app-bar-greet">Good morning</div><div class="app-bar-title">Home</div></div>
+            <div class="app-bar-actions"><div class="bell">🔔<span class="bell-dot"></span></div></div>
+          </div>
+          <div class="sc-area">
+            <div class="card card-pad">
+              <div class="card-section-label">Total Expenses</div>
+              <div class="te-period">This month so far</div>
+              <div class="te-amount">2,180<span class="te-cur"> EGP</span></div>
+              <div class="te-tx-count">15 transactions</div>
+            </div>
+
+            <div class="card card-pad">
+              <div class="ls-title-row"><div class="ls-title">Latest Spending</div></div>
+              <div class="ls-carousel">
+                <div class="ls-tx-card">
+                  <div class="ls-tx-icon-row">
+                    <div class="ls-tx-icon">⛽</div>
+                    <div class="ls-tx-name">Mobil Station</div>
+                  </div>
+                  <div class="ls-tx-cat">Transport</div>
+                  <div class="ls-tx-amt">200 EGP</div>
+                  <div class="ls-tx-date">Today, 11:24 AM</div>
+                </div>
+                <div class="ls-tx-card needs-cat">
+                  <div class="ls-tx-icon-row">
+                    <div class="ls-tx-icon">🏪</div>
+                    <div class="ls-tx-name">Abou Tarek</div>
+                  </div>
+                  <div class="ls-needs-cat-pill">Needs category</div>
+                  <div class="ls-tx-amt">800 EGP</div>
+                  <div class="ls-tx-date">Today, 9:12 AM</div>
+                </div>
+                <div class="ls-tx-card">
+                  <div class="ls-tx-icon-row"><div class="ls-tx-icon">🍕</div><div class="ls-tx-name">Pizza Hut</div></div>
+                  <div class="ls-tx-cat">Food & Dining</div>
+                  <div class="ls-tx-amt">320 EGP</div>
+                  <div class="ls-tx-date">Yesterday</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ios-tabbar">
+            <div class="tab-item on"><div class="tab-icon">⌂</div><div class="tab-lbl">Home</div></div>
+            <div class="tab-item"><div class="tab-icon">⇆</div><div class="tab-lbl">Transactions</div></div>
+            <div class="tab-plus"><div class="plus-btn">+</div></div>
+            <div class="tab-item"><div class="tab-icon">🎁</div><div class="tab-lbl">Offers</div></div>
+            <div class="tab-item"><div class="tab-icon">👤</div><div class="tab-lbl">Profile</div></div>
+          </div>
+          <div class="ios-home"></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Card returns to default styling once category is set: white background, standard border, category name replaces the pill. Sort order in carousel does not change — the card stays in its temporal position. Remaining uncategorised cards keep their gold treatment until each is reviewed.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 7 — OFFLINE
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 7 — Offline state</div>
+    <div class="flow-section-line"></div>
+  </div>
+  <div class="flow-section-intro">Device loses connectivity. Cached cards still render. A slim pill sits above the card stack. Write attempts surface a toast.</div>
+
+  <div class="phone-row">
+
+    <div class="screen-col">
+      <div class="screen-label">Home · offline · pill above stack</div>
+      <div class="state-badge warn">offline · reads cached</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>✕ ●●● 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div><div class="app-bar-greet">Good morning</div><div class="app-bar-title">Home</div></div>
+            <div class="app-bar-actions"><div class="bell">🔔<span class="bell-dot"></span></div></div>
+          </div>
+          <div class="sc-area">
+            <div class="offline-pill"><span class="offline-dot"></span>Offline</div>
+
+            <div class="card card-pad">
+              <div class="card-section-label">Total Expenses</div>
+              <div class="te-period">This month so far</div>
+              <div class="te-amount">1,860<span class="te-cur"> EGP</span></div>
+              <div class="te-tx-count">14 transactions</div>
+              <div class="te-cats">
+                <div class="te-cat-row">
+                  <div class="te-cat-icon">🍕</div>
+                  <div class="te-cat-info"><div class="te-cat-name">Food & Dining</div><div class="te-cat-tx">7 transactions</div></div>
+                  <div class="te-cat-amt">980 EGP</div>
+                </div>
+                <div class="te-cat-row">
+                  <div class="te-cat-icon">🛒</div>
+                  <div class="te-cat-info"><div class="te-cat-name">Shopping</div><div class="te-cat-tx">3 transactions</div></div>
+                  <div class="te-cat-amt">660 EGP</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card card-pad">
+              <div class="card-section-label">Smart Budget</div>
+              <div class="sb-bud-row">
+                <div class="sb-bud-head">
+                  <div class="sb-bud-cat">
+                    <div class="sb-bud-icon">🍕</div>
+                    <div class="sb-bud-name">Food & Dining</div>
+                  </div>
+                </div>
+                <div class="prog-wrap"><div class="prog-bar" style="width:54%"></div></div>
+                <div class="sb-bud-foot"><div class="sb-bud-pct">980 / 1,800 EGP</div><div class="sb-bud-left">820 EGP left</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="ios-tabbar">
+            <div class="tab-item on"><div class="tab-icon">⌂</div><div class="tab-lbl">Home</div></div>
+            <div class="tab-item"><div class="tab-icon">⇆</div><div class="tab-lbl">Transactions</div></div>
+            <div class="tab-plus"><div class="plus-btn">+</div></div>
+            <div class="tab-item"><div class="tab-icon">🎁</div><div class="tab-lbl">Offers</div></div>
+            <div class="tab-item"><div class="tab-icon">👤</div><div class="tab-lbl">Profile</div></div>
+          </div>
+          <div class="ios-home"></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Pill is a visual-only signal. Cards render their last cached state — no stale-data warnings. Pill width is the constraint; copy stays one word.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">tap [+]</div>
+    </div>
+
+    <div class="screen-col">
+      <div class="screen-label">Offline · blocked write toast</div>
+      <div class="state-badge error">write blocked</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>✕ ●●● 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div><div class="app-bar-greet">Good morning</div><div class="app-bar-title">Home</div></div>
+            <div class="app-bar-actions"><div class="bell">🔔<span class="bell-dot"></span></div></div>
+          </div>
+          <div class="sc-area">
+            <div class="offline-pill"><span class="offline-dot"></span>Offline</div>
+
+            <div class="card card-pad">
+              <div class="card-section-label">Total Expenses</div>
+              <div class="te-period">This month so far</div>
+              <div class="te-amount">1,860<span class="te-cur"> EGP</span></div>
+              <div class="te-tx-count">14 transactions</div>
+            </div>
+
+            <div class="card card-pad">
+              <div class="card-section-label">Smart Budget</div>
+              <div class="sb-bud-row">
+                <div class="sb-bud-head">
+                  <div class="sb-bud-cat">
+                    <div class="sb-bud-icon">🍕</div>
+                    <div class="sb-bud-name">Food & Dining</div>
+                  </div>
+                </div>
+                <div class="prog-wrap"><div class="prog-bar" style="width:54%"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="toast">Can't save while offline. Try again when you're back online.</div>
+
+          <div class="ios-tabbar">
+            <div class="tab-item on"><div class="tab-icon">⌂</div><div class="tab-lbl">Home</div></div>
+            <div class="tab-item"><div class="tab-icon">⇆</div><div class="tab-lbl">Transactions</div></div>
+            <div class="tab-plus"><div class="plus-btn">+</div></div>
+            <div class="tab-item"><div class="tab-icon">🎁</div><div class="tab-lbl">Offers</div></div>
+            <div class="tab-item"><div class="tab-icon">👤</div><div class="tab-lbl">Profile</div></div>
+          </div>
+          <div class="ios-home"></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Toast fires when user taps any write action while offline (centre [+], any ✓ on a recommendation row, or any partial-sheet save). Auto-dismisses after 3 seconds. The action sheet itself does not open — the toast pre-empts it.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 8 — 80% PUSH
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 8 — 80% threshold push · lock screen</div>
+    <div class="flow-section-line"></div>
+  </div>
+  <div class="flow-section-intro">User is mid-day, mid-task. Spend in a budgeted category has crossed 80%. Push lands on the lock screen with title, subtitle (iOS-only), and body. Tapping deep-links into the budget detail.</div>
+
+  <div class="phone-row">
+
+    <div class="screen-col">
+      <div class="screen-label">Lock screen · 80% push</div>
+      <div class="state-badge warn">notification · spending intelligence</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status" style="background:transparent;color:white"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen" style="background:transparent;padding:0;min-height:560px">
+          <div class="lock-screen">
+            <div class="lock-time">9:41</div>
+            <div class="lock-date">Wednesday, 6 May</div>
+
+            <div class="lock-push">
+              <div class="lock-push-icon">M</div>
+              <div class="lock-push-body">
+                <div class="lock-push-row">
+                  <div class="lock-push-app">MoneyMore</div>
+                  <div class="lock-push-time">now</div>
+                </div>
+                <div class="lock-push-title">You're at 80% of your Food & Dining budget</div>
+                <div class="lock-push-subtitle">Food & Dining • this month</div>
+                <div class="lock-push-text">360 EGP left in Food & Dining this month. Tap to see the breakdown.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note decision">Title leads with the number — that's the news. Subtitle (iOS-only field) carries category + period. Body names what's left, not what's spent — runway is more actionable than retrospect at the 80% threshold. Tap deep-links to the budget detail screen.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     HANDOFF
+═══════════════════════════════════════════════════════════ -->
+<div class="handoff">
+  <div class="handoff-title">Handoff</div>
+  <div class="handoff-sub">Designer reference for this prototype. Every user-facing string in English and Egyptian Arabic, plus the accessibility rules that change what you draw.</div>
+
+  <div class="handoff-sec">
+    <div class="handoff-h">Copy · English + Egyptian Arabic</div>
+    <div class="handoff-p">Arabic strings pending native-speaker review (OQ-H in copy deck). Variables in {curly braces} resolve at runtime.</div>
+
+    <table class="copy-table" style="margin-top:12px">
+      <colgroup>
+        <col class="col-screen">
+        <col class="col-element">
+        <col class="col-en">
+        <col class="col-ar">
+      </colgroup>
+      <thead>
+        <tr><th>Screen</th><th>Element</th><th>English</th><th>Arabic</th></tr>
+      </thead>
+      <tbody>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="2">Home · global</td>
+          <td class="element-name">Greeting</td>
+          <td class="en">Good morning</td>
+          <td class="ar">صباح الخير</td>
+        </tr>
+        <tr>
+          <td class="element-name">Pull-to-refresh (a11y)</td>
+          <td class="en">Refresh your spending and budgets</td>
+          <td class="ar">حدّث مصاريفك وميزانياتك</td>
+        </tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="5">Shortcuts setup card · not configured</td>
+          <td class="element-name">Tag</td>
+          <td class="en">Setup</td>
+          <td class="ar">إعداد</td>
+        </tr>
+        <tr>
+          <td class="element-name">Headline</td>
+          <td class="en">Track spending without typing</td>
+          <td class="ar">سجّل مصاريفك من غير ما تكتب</td>
+        </tr>
+        <tr>
+          <td class="element-name">Body</td>
+          <td class="en">Set up an iOS Shortcut once. Every transaction lands here automatically.</td>
+          <td class="ar">إعداد واحد بس على iOS Shortcuts، وكل معاملة هتظهر هنا أوتوماتيك.</td>
+        </tr>
+        <tr>
+          <td class="element-name">Primary CTA</td>
+          <td class="en">Set it up</td>
+          <td class="ar">ابدأ الإعداد</td>
+        </tr>
+        <tr>
+          <td class="element-name">Dismiss</td>
+          <td class="en">Not now</td>
+          <td class="ar">مش دلوقتي</td>
+        </tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="2">Shortcuts setup card · success</td>
+          <td class="element-name">Headline</td>
+          <td class="en">First transaction logged</td>
+          <td class="ar">اتسجّلت أول معاملة</td>
+        </tr>
+        <tr>
+          <td class="element-name">Body</td>
+          <td class="en">The rest will show up here as they happen.</td>
+          <td class="ar">الباقي هيظهر هنا أول ما تعمله.</td>
+        </tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="6">Total Expenses card</td>
+          <td class="element-name">Section label</td>
+          <td class="en">Total Expenses</td>
+          <td class="ar">إجمالي المصاريف</td>
+        </tr>
+        <tr>
+          <td class="element-name">Period label</td>
+          <td class="en">This month so far</td>
+          <td class="ar">الشهر ده لحد دلوقتي</td>
+        </tr>
+        <tr>
+          <td class="element-name">Transaction count</td>
+          <td class="en">{n} transactions</td>
+          <td class="ar">{n} معاملة</td>
+        </tr>
+        <tr>
+          <td class="element-name">Empty count</td>
+          <td class="en">No transactions yet</td>
+          <td class="ar">لسه مفيش معاملات</td>
+        </tr>
+        <tr>
+          <td class="element-name">Category row · count</td>
+          <td class="en">{n} transactions / 1 transaction</td>
+          <td class="ar">{n} معاملة</td>
+        </tr>
+        <tr>
+          <td class="element-name">Footer link</td>
+          <td class="en">See all categories</td>
+          <td class="ar">شوف كل الفئات</td>
+        </tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="6">Smart Budget card · all modes</td>
+          <td class="element-name">Section label (all modes)</td>
+          <td class="en">Smart Budget</td>
+          <td class="ar">الميزانية الذكية</td>
+        </tr>
+        <tr>
+          <td class="element-name">Mode A · header</td>
+          <td class="en">Suggested budgets</td>
+          <td class="ar">ميزانيات مقترحة</td>
+        </tr>
+        <tr>
+          <td class="element-name">Mode A · subline</td>
+          <td class="en">Based on your habits, here's where to start.</td>
+          <td class="ar">على أساس عاداتك، ده مكان كويس تبدأ منه.</td>
+        </tr>
+        <tr>
+          <td class="element-name">Mode A · row subline</td>
+          <td class="en">{amount} EGP / month</td>
+          <td class="ar">{amount} جنيه شهريًا</td>
+        </tr>
+        <tr>
+          <td class="element-name">Mode A · footer CTA</td>
+          <td class="en">See all categories</td>
+          <td class="ar">شوف كل الفئات</td>
+        </tr>
+        <tr>
+          <td class="element-name">Mode B / Hybrid · footer CTA</td>
+          <td class="en">See all budgets</td>
+          <td class="ar">كل الميزانيات</td>
+        </tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="5">Smart Budget · row data (Mode B / Hybrid)</td>
+          <td class="element-name">Pill — over limit</td>
+          <td class="en">Over limit</td>
+          <td class="ar">فات الحد</td>
+        </tr>
+        <tr>
+          <td class="element-name">Pill — near limit</td>
+          <td class="en">Near limit</td>
+          <td class="ar">قرّب من الحد</td>
+        </tr>
+        <tr>
+          <td class="element-name">Spend / cap</td>
+          <td class="en">{spent} / {cap} EGP</td>
+          <td class="ar">{spent} / {cap} جنيه</td>
+        </tr>
+        <tr>
+          <td class="element-name">Left</td>
+          <td class="en">{amount} EGP left</td>
+          <td class="ar">فاضل {amount} جنيه</td>
+        </tr>
+        <tr>
+          <td class="element-name">Over</td>
+          <td class="en">{amount} over</td>
+          <td class="ar">زيادة {amount}</td>
+        </tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="2">Smart Budget · Mode C empty</td>
+          <td class="element-name">Headline</td>
+          <td class="en">Set a budget, see where your money goes</td>
+          <td class="ar">حدّد ميزانية وشوف فلوسك بتروح فين</td>
+        </tr>
+        <tr>
+          <td class="element-name">CTA</td>
+          <td class="en">Set your first budget</td>
+          <td class="ar">حدّد أول ميزانية</td>
+        </tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="6">Latest Spending card · carousel</td>
+          <td class="element-name">Section label / title</td>
+          <td class="en">Latest Spending</td>
+          <td class="ar">آخر المصاريف</td>
+        </tr>
+        <tr>
+          <td class="element-name">Card · needs-category pill</td>
+          <td class="en">Needs category</td>
+          <td class="ar">محتاجة فئة</td>
+        </tr>
+        <tr>
+          <td class="element-name">Card · date — today</td>
+          <td class="en">Today, {time}</td>
+          <td class="ar">النهارده، {time}</td>
+        </tr>
+        <tr>
+          <td class="element-name">Card · date — yesterday</td>
+          <td class="en">Yesterday</td>
+          <td class="ar">امبارح</td>
+        </tr>
+        <tr>
+          <td class="element-name">Empty · headline</td>
+          <td class="en">No transactions yet.</td>
+          <td class="ar">لسه مفيش معاملات.</td>
+        </tr>
+        <tr>
+          <td class="element-name">Empty · CTA</td>
+          <td class="en">Add your first transaction</td>
+          <td class="ar">ضيف أول معاملة</td>
+        </tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="3">Centre [+] action sheet</td>
+          <td class="element-name">Option 1</td>
+          <td class="en">Add transaction</td>
+          <td class="ar">ضيف معاملة</td>
+        </tr>
+        <tr>
+          <td class="element-name">Option 2</td>
+          <td class="en">Set a budget</td>
+          <td class="ar">حدّد ميزانية</td>
+        </tr>
+        <tr>
+          <td class="element-name">Cancel</td>
+          <td class="en">Cancel</td>
+          <td class="ar">إلغاء</td>
+        </tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="14">Add / Review Transaction · partial sheet</td>
+          <td class="element-name">Title — manual add</td>
+          <td class="en">New transaction</td>
+          <td class="ar">معاملة جديدة</td>
+        </tr>
+        <tr>
+          <td class="element-name">Title — review uncategorised</td>
+          <td class="en">Review transaction</td>
+          <td class="ar">راجع المعاملة</td>
+        </tr>
+        <tr>
+          <td class="element-name">Subline — review only</td>
+          <td class="en">We picked this up from your SMS. Add a category to keep your spending tracked.</td>
+          <td class="ar">جابناها من رسايل البنك. ضيف فئة عشان نقدر نتابع مصاريفك صح.</td>
+        </tr>
+        <tr>
+          <td class="element-name">Required indicator</td>
+          <td class="en">* (red asterisk)</td>
+          <td class="ar">* (نجمة حمرا)</td>
+        </tr>
+        <tr>
+          <td class="element-name">Optional indicator</td>
+          <td class="en">(Optional)</td>
+          <td class="ar">(اختياري)</td>
+        </tr>
+        <tr>
+          <td class="element-name">Field — Amount</td>
+          <td class="en">Amount</td>
+          <td class="ar">المبلغ</td>
+        </tr>
+        <tr>
+          <td class="element-name">Field — Type</td>
+          <td class="en">Type</td>
+          <td class="ar">النوع</td>
+        </tr>
+        <tr>
+          <td class="element-name">Type segments</td>
+          <td class="en">Expense · Income · Transfer</td>
+          <td class="ar">مصروف · دخل · تحويل</td>
+        </tr>
+        <tr>
+          <td class="element-name">Field — Category</td>
+          <td class="en">Category</td>
+          <td class="ar">الفئة</td>
+        </tr>
+        <tr>
+          <td class="element-name">Category placeholder</td>
+          <td class="en">Choose a category</td>
+          <td class="ar">اختار فئة</td>
+        </tr>
+        <tr>
+          <td class="element-name">Field — Date</td>
+          <td class="en">Date</td>
+          <td class="ar">التاريخ</td>
+        </tr>
+        <tr>
+          <td class="element-name">Field — Merchant</td>
+          <td class="en">Merchant</td>
+          <td class="ar">المتجر</td>
+        </tr>
+        <tr>
+          <td class="element-name">Field — Note · placeholder</td>
+          <td class="en">Note · Add a note</td>
+          <td class="ar">ملاحظة · ضيف ملاحظة</td>
+        </tr>
+        <tr>
+          <td class="element-name">Save · Cancel</td>
+          <td class="en">Save · Cancel</td>
+          <td class="ar">احفظ · إلغاء</td>
+        </tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="6">Quick-create Budget · partial sheet</td>
+          <td class="element-name">Title — from Mode A</td>
+          <td class="en">Set a budget for {category}</td>
+          <td class="ar">حدّد ميزانية لـ {category}</td>
+        </tr>
+        <tr>
+          <td class="element-name">Title — from [+]</td>
+          <td class="en">Set a budget</td>
+          <td class="ar">حدّد ميزانية</td>
+        </tr>
+        <tr>
+          <td class="element-name">Subline — from Mode A</td>
+          <td class="en">Based on a 3-month average. You can adjust before saving.</td>
+          <td class="ar">على أساس متوسط 3 شهور. تقدر تعدّل قبل ما تحفظ.</td>
+        </tr>
+        <tr>
+          <td class="element-name">Suggestion banner</td>
+          <td class="en">You spent {prev} EGP last month and {prev2} EGP the month before in this category.</td>
+          <td class="ar">صرفت {prev} جنيه الشهر اللي فات و{prev2} جنيه اللي قبله في الفئة دي.</td>
+        </tr>
+        <tr>
+          <td class="element-name">Monthly limit label</td>
+          <td class="en">Monthly limit</td>
+          <td class="ar">الحد الشهري</td>
+        </tr>
+        <tr>
+          <td class="element-name">Confirm CTA / Cancel</td>
+          <td class="en">Set budget · Cancel</td>
+          <td class="ar">حدّد الميزانية · إلغاء</td>
+        </tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="2">Offline state</td>
+          <td class="element-name">Pill</td>
+          <td class="en">Offline</td>
+          <td class="ar">أوفلاين</td>
+        </tr>
+        <tr>
+          <td class="element-name">Blocked-write toast</td>
+          <td class="en">Can't save while offline. Try again when you're back online.</td>
+          <td class="ar">مش هتقدر تحفظ وإنت أوفلاين. جرّب تاني لما تتصل بالنت.</td>
+        </tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="3">Push · 80% threshold</td>
+          <td class="element-name">Title</td>
+          <td class="en">You're at 80% of your {category} budget</td>
+          <td class="ar">عدّيت 80% من ميزانية {category}</td>
+        </tr>
+        <tr>
+          <td class="element-name">Subtitle (iOS-only)</td>
+          <td class="en">{category} • this month</td>
+          <td class="ar">{category} • الشهر ده</td>
+        </tr>
+        <tr>
+          <td class="element-name">Body</td>
+          <td class="en">{remaining} EGP left in {category} this month. Tap to see the breakdown.</td>
+          <td class="ar">فاضل {remaining} جنيه في {category} الشهر ده. اضغط تشوف التفاصيل.</td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <div class="handoff-sec">
+    <div class="handoff-h">Accessibility — what changes what you draw</div>
+    <ul class="handoff-list">
+      <li><strong>Touch targets — 44×44pt minimum</strong> on every interactive element. Includes the Mode A ✓ and ✕ buttons (currently 30pt visual — pad the tap target outward), the Mode B row (whole row tappable, not just the icon), the centre [+] button, partial-sheet field rows, and dismiss links.</li>
+      <li><strong>Contrast — 4.5:1 minimum for text, 7:1 for financial figures.</strong> Total Expenses amount, budget spend/cap numbers, transaction card amounts, and "EGP left / over" all need the higher ratio. Check the Shortcuts setup card body copy on its navy gradient — the rgba(255,255,255,0.82) lands close to the floor.</li>
+      <li><strong>Never colour-only for state.</strong> Smart Budget rows ship the status pill (text + colour) before the bar colour. On-track rows use no pill — clean baseline. Recommendation rows use the dashed border in addition to the green ✓ to signal "suggested, not active".</li>
+      <li><strong>Focus order — vertical top-to-bottom, card by card.</strong> Inside Smart Budget, focus walks each row's whole touch zone, then the row's ✓ and ✕ if present, before moving to the footer CTA. On Arabic layouts the visual direction flips to RTL but focus order stays top-to-bottom.</li>
+      <li><strong>Latest Spending carousel — horizontal scroll needs both swipe and a "See all transactions" path.</strong> Carousel should announce its position to VoiceOver ("transaction 1 of 5"). Keyboard / switch-control users get to "See all" via the section header link.</li>
+      <li><strong>Dynamic Type up to XXL.</strong> Smart Budget rows and Total Expenses category rows must reflow without truncating the spend/cap fraction; icon + name can stack above the amount on the largest sizes rather than ellipsing. Carousel cards grow vertically; horizontal width fixed.</li>
+    </ul>
+  </div>
+
+</div>
+
+</div>
+</body>
+</html>
