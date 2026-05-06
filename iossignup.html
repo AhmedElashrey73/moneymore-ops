@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoneyMore — Sign-up & Onboarding (iOS) · Designer Prototype v4</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+:root{--navy:#1A3C5E;--green:#2E8B57;--green-l:#E8F5EE;--gold:#B8860B;--gold-l:#FBF4DC;--red:#C0392B;--red-l:#FDECEA;--whatsapp:#25D366;--whatsapp-l:#DFF7E6;--page-bg:#F9F8F5;--screen-bg:#FAFAF8;--screen-bg2:#F2F0EB;--screen-bg3:#E8E5DE;--t1:#1A1714;--t2:#3D3A35;--t3:#7A7670;--t4:#ABA7A0;--b1:#E8E5DF;--b2:#D4D0C8;--b3:#BCBAB2;--frame-bg:#2A2724;--frame-border:#1A1614;--f-body:'Plus Jakarta Sans',sans-serif;--f-mono:'DM Mono',monospace;--s-xs:10px;--s-sm:12px;--s-base:14px;--s-md:16px;--s-lg:18px;--s-xl:22px;--r-sm:6px;--r-md:12px;--r-lg:16px;--r-pill:999px;--shadow-phone:0 8px 32px rgba(0,0,0,0.14),0 2px 8px rgba(0,0,0,0.08);--shadow-card:0 1px 3px rgba(0,0,0,0.04),0 1px 2px rgba(0,0,0,0.03);--ph-w:300px;--ph-r:38px;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-size:var(--s-base);line-height:1.6;-webkit-font-smoothing:antialiased;}
+.page{max-width:1500px;margin:0 auto;padding:48px 40px 96px;}
+.doc-header{padding-bottom:32px;margin-bottom:40px;border-bottom:2px solid var(--b1);}
+.doc-meta{display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap;}
+.doc-tag{font-family:var(--f-mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;padding:4px 11px;border-radius:3px;font-weight:600;}
+.doc-tag.prototype{background:var(--green-l);color:#0F5830;}
+.doc-tag.designer{background:#EAE8FF;color:#3A3288;}
+.doc-tag.ios{background:#E8F0FA;color:#103868;}
+.doc-tag.wip{background:var(--gold-l);color:#6B5210;}
+.doc-tag.version{background:var(--navy);color:#fff;}
+.doc-date{font-family:var(--f-mono);font-size:11px;color:var(--t2);margin-left:auto;font-weight:500;}
+.doc-title{font-size:34px;font-weight:700;color:var(--t1);letter-spacing:-0.02em;line-height:1.15;margin-bottom:10px;}
+.doc-subtitle{font-size:15px;color:var(--t1);font-weight:400;margin-bottom:30px;line-height:1.5;max-width:920px;}
+.doc-info{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--b1);border-radius:var(--r-md);overflow:hidden;background:white;}
+.doc-info-cell{padding:16px 20px;border-right:1px solid var(--b1);}
+.doc-info-cell:last-child{border-right:none;}
+.info-label{font-family:var(--f-mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--t2);margin-bottom:8px;font-weight:600;}
+.info-body{font-size:13px;color:var(--t1);line-height:1.55;}
+.flow-list{display:flex;flex-direction:column;gap:4px;}
+.flow-list-item{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--t1);line-height:1.45;}
+.flow-list-item::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0;}
+.flow-section{margin-bottom:64px;}
+.flow-section-header{display:flex;align-items:center;gap:16px;margin-bottom:20px;}
+.flow-section-line{flex:1;height:1px;background:var(--b2);}
+.flow-section-title{font-size:16px;font-weight:700;color:#fff;background:var(--navy);padding:6px 14px;border-radius:4px;white-space:nowrap;}
+.flow-intro{max-width:920px;font-size:13px;color:var(--t2);line-height:1.55;margin-bottom:20px;}
+.phone-row{display:flex;align-items:flex-start;gap:0;overflow-x:auto;padding-bottom:16px;}
+.phone-row::-webkit-scrollbar{height:6px;}
+.phone-row::-webkit-scrollbar-track{background:var(--b1);border-radius:3px;}
+.phone-row::-webkit-scrollbar-thumb{background:var(--b3);border-radius:3px;}
+.screen-col{display:flex;flex-direction:column;align-items:center;gap:10px;flex-shrink:0;width:var(--ph-w);}
+.screen-label{font-size:11px;font-weight:600;color:var(--t2);text-align:center;line-height:1.4;}
+.state-badge{font-family:var(--f-mono);font-size:10px;font-weight:500;padding:3px 9px;border-radius:3px;letter-spacing:0.04em;}
+.state-badge.happy{background:#EBF7F1;color:#1A6E3C;}
+.state-badge.empty{background:var(--gold-l);color:#8A6510;}
+.state-badge.error{background:var(--red-l);color:var(--red);}
+.state-badge.success{background:var(--green-l);color:#0F5830;}
+.state-badge.os{background:#ECECEC;color:#555;}
+.state-badge.interaction{background:#EAE8FF;color:#3A3288;}
+.flow-arrow{display:flex;flex-direction:column;align-items:center;flex-shrink:0;padding-top:300px;padding-left:10px;padding-right:10px;}
+.arrow-line{width:32px;height:1px;background:var(--b2);position:relative;}
+.arrow-line::after{content:'';position:absolute;right:-1px;top:-3px;border-left:5px solid var(--b2);border-top:3px solid transparent;border-bottom:3px solid transparent;}
+.arrow-label{font-size:10px;font-weight:600;color:var(--t2);text-align:center;max-width:80px;line-height:1.35;margin-top:6px;}
+.phone{width:var(--ph-w);border-radius:var(--ph-r);background:var(--frame-bg);box-shadow:var(--shadow-phone);position:relative;overflow:hidden;border:2px solid var(--frame-border);flex-shrink:0;display:flex;flex-direction:column;}
+.ios-island{position:absolute;top:9px;left:50%;transform:translateX(-50%);width:88px;height:24px;background:#0A0A0A;border-radius:20px;z-index:20;}
+.ios-status{position:relative;height:42px;background:var(--screen-bg);display:flex;align-items:flex-end;justify-content:space-between;padding:0 22px 6px;font-family:var(--f-mono);font-size:10px;font-weight:700;color:var(--t1);flex-shrink:0;}
+.screen{background:var(--screen-bg);display:flex;flex-direction:column;flex:1;padding-bottom:10px;}
+.screen.no-nav{padding-bottom:14px;}
+.ios-home{height:24px;background:var(--screen-bg);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ios-home::after{content:'';width:104px;height:4px;background:rgba(0,0,0,0.85);border-radius:2px;}
+.b-nav{height:56px;background:var(--screen-bg);border-top:1px solid var(--b1);display:flex;align-items:center;flex-shrink:0;}
+.b-nav-plus{flex:0 0 auto;width:46px;height:46px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:300;margin:-16px 2px 0;box-shadow:0 4px 12px rgba(46,139,87,0.32);line-height:1;}
+.b-nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:8px 0;}
+.b-nav-icon{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;}
+.b-nav-item.on .b-nav-icon{background:var(--green-l);}
+.b-nav-lbl{font-size:9px;color:var(--t4);font-weight:500;}
+.b-nav-item.on .b-nav-lbl{color:var(--green);}
+.hm-header{display:flex;align-items:center;padding:14px 16px 12px;gap:10px;flex-shrink:0;}
+.hm-greet{flex:1;min-width:0;}
+.hm-greet-en{font-size:19px;font-weight:700;color:var(--t1);letter-spacing:-0.01em;line-height:1.2;}
+.hm-bell{position:relative;width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:var(--t2);font-size:16px;flex-shrink:0;border-radius:50%;background:var(--screen-bg);border:1px solid var(--b1);}
+.hm-bell-badge{position:absolute;top:-2px;right:-2px;min-width:16px;height:16px;border-radius:var(--r-pill);background:var(--red);color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 4px;border:2px solid var(--screen-bg);font-family:var(--f-mono);}
+.hm-avatar{width:36px;height:36px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;}
+.bcard{margin:0 14px 14px;background:#fff;border:1px solid var(--b1);border-radius:var(--r-lg);box-shadow:var(--shadow-card);overflow:hidden;}
+.bcard-head{display:flex;align-items:center;padding:14px 14px 10px;}
+.bcard-label{font-size:11px;font-weight:700;color:var(--t3);letter-spacing:0.04em;text-transform:uppercase;}
+.te-amount-row{padding:2px 14px 4px;display:flex;align-items:baseline;gap:6px;}
+.te-amount{font-size:32px;font-weight:700;letter-spacing:-0.02em;line-height:1;color:var(--t1);font-variant-numeric:tabular-nums;}
+.te-cur{font-size:14px;font-weight:600;color:var(--t3);}
+.te-count{padding:0 14px 14px;font-size:11px;color:var(--t3);font-weight:500;}
+.row-stack{padding:0 10px 10px;display:flex;flex-direction:column;gap:6px;}
+.crow{background:var(--screen-bg);border:1px solid var(--b1);border-radius:var(--r-md);padding:10px 12px;display:flex;align-items:center;gap:10px;}
+.crow-ico{width:34px;height:34px;border-radius:var(--r-sm);background:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;border:1px solid var(--b1);}
+.crow-body{flex:1;min-width:0;overflow:hidden;}
+.crow-title{font-size:12px;font-weight:700;color:var(--t1);line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.crow-sub{font-size:10px;color:var(--t3);margin-top:1px;}
+.crow-amt{font-size:13px;font-weight:700;color:var(--t1);font-variant-numeric:tabular-nums;flex-shrink:0;}
+.crow-amt.spend::before{content:'−';color:var(--t3);margin-right:1px;}
+.crow-right{display:flex;flex-direction:column;align-items:flex-end;gap:2px;flex-shrink:0;}
+.crow-time{font-size:9px;color:var(--t4);font-weight:500;}
+.bcard-cta{margin:4px 10px 12px;padding:11px;background:var(--screen-bg2);border-radius:var(--r-md);text-align:center;font-size:12px;font-weight:700;color:var(--navy);}
+.armed-inline{margin:0 14px 14px;padding:24px 18px;background:var(--green-l);border-radius:var(--r-lg);display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;}
+.armed-ico{width:44px;height:44px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--green);}
+.armed-ttl{font-size:14px;font-weight:700;color:var(--t1);}
+.armed-body{font-size:12px;color:var(--t2);line-height:1.5;max-width:220px;}
+.addtx-hero{margin:0 14px 8px;padding:18px;background:var(--green);border-radius:var(--r-lg);text-align:center;font-size:14px;font-weight:700;color:#fff;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 2px 6px rgba(46,139,87,0.2);}
+.recovery-link{padding:0 14px 14px;text-align:center;}
+.recovery-en{font-size:11px;color:var(--t3);font-weight:500;text-decoration:underline;}
+.bcard-empty-rows{padding:0 10px 12px;}
+.empty-row{background:var(--screen-bg);border:1px dashed var(--b2);border-radius:var(--r-md);padding:14px;text-align:center;font-size:11px;color:var(--t3);font-style:italic;}
+.lang-trigger{position:absolute;top:14px;right:16px;display:flex;align-items:center;gap:3px;background:white;border:1px solid var(--b1);border-radius:8px;padding:5px 9px;font-size:11px;font-weight:700;color:var(--t1);z-index:5;font-family:var(--f-mono);}
+.lang-dropdown{position:absolute;top:50px;right:14px;background:white;border:1px solid var(--b1);border-radius:var(--r-sm);box-shadow:0 4px 16px rgba(0,0,0,0.1);min-width:140px;z-index:15;overflow:hidden;}
+.lang-opt{padding:11px 14px;font-size:13px;color:var(--t1);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--b1);font-weight:500;}
+.lang-opt:last-child{border-bottom:none;}
+.lang-opt.selected{background:var(--green-l);color:#0F5830;}
+.lang-opt-check{color:var(--green);font-weight:700;}
+.app-bar{height:46px;display:flex;align-items:center;padding:0 14px;background:var(--screen-bg);border-bottom:1px solid var(--b1);flex-shrink:0;gap:10px;}
+.app-bar-title{font-size:var(--s-md);font-weight:700;color:var(--t1);flex:1;text-align:center;}
+.back-btn{font-size:22px;color:var(--navy);line-height:1;width:24px;}
+.sc-pad{padding:18px;display:flex;flex-direction:column;gap:14px;flex:1;min-height:0;}
+.sc-pad-lg{padding:24px 20px;display:flex;flex-direction:column;gap:14px;flex:1;min-height:0;}
+.t-title{font-size:var(--s-xl);font-weight:700;color:var(--t1);letter-spacing:-0.01em;line-height:1.2;}
+.t-body{font-size:var(--s-base);color:var(--t2);line-height:1.5;}
+.t-caption{font-size:var(--s-sm);color:var(--t3);line-height:1.5;}
+.prog-dots{display:flex;justify-content:center;gap:6px;padding:8px 0;}
+.prog-dot{width:6px;height:6px;border-radius:50%;background:var(--b2);}
+.prog-dot.on{background:var(--navy);width:18px;border-radius:var(--r-pill);}
+.welcome-art{flex:1;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#F4F1EA 0%,#E8E5DE 100%);position:relative;overflow:hidden;min-height:240px;padding:30px 16px;}
+.tx-stack{display:flex;flex-direction:column;gap:6px;width:80%;max-width:200px;}
+.tx-tile{background:white;border:1px solid var(--b1);border-radius:8px;padding:7px 9px;display:flex;align-items:center;gap:8px;box-shadow:0 1px 3px rgba(0,0,0,0.04);}
+.tx-tile.fade-1{opacity:0.45;}
+.tx-tile.fade-2{opacity:0.7;}
+.tx-tile-ico{width:22px;height:22px;border-radius:5px;background:var(--green-l);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;}
+.tx-tile-body{flex:1;min-width:0;}
+.tx-tile-name{font-size:9px;font-weight:600;color:var(--t1);line-height:1.2;}
+.tx-tile-cat{font-size:8px;color:var(--t3);line-height:1.2;}
+.tx-tile-amt{font-size:9px;font-weight:700;color:var(--t1);}
+.tx-checkmark{position:absolute;top:50%;right:14%;transform:translateY(-50%);width:24px;height:24px;border-radius:50%;background:var(--green);color:white;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;box-shadow:0 2px 8px rgba(46,139,87,0.35);}
+.budget-art-card{background:white;border:1px solid var(--b1);border-radius:10px;padding:12px;width:80%;max-width:200px;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
+.budget-art-cat{font-size:11px;font-weight:700;color:var(--t1);margin-bottom:4px;}
+.budget-art-amts{font-size:9px;color:var(--t3);margin-bottom:7px;}
+.prog-wrap{height:5px;background:var(--screen-bg2);border-radius:var(--r-pill);overflow:hidden;}
+.prog-bar{height:100%;border-radius:var(--r-pill);background:var(--green);}
+.prog-bar.warn{background:var(--gold);}
+.privacy-art{width:84px;height:84px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;font-size:36px;color:white;box-shadow:0 4px 16px rgba(26,60,94,0.25);}
+.ready-art{position:relative;width:120px;height:120px;display:flex;align-items:center;justify-content:center;}
+.ready-ring{position:absolute;inset:0;border-radius:50%;background:conic-gradient(var(--green) 0deg 60deg,#E8E5DE 60deg 360deg);box-shadow:0 4px 16px rgba(46,139,87,0.18);}
+.ready-inner{position:relative;width:96px;height:96px;border-radius:50%;background:white;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;}
+.ready-num{font-size:28px;font-weight:700;color:var(--navy);letter-spacing:-0.02em;line-height:1;font-variant-numeric:tabular-nums;}
+.ready-unit{font-size:10px;font-weight:700;color:var(--t3);letter-spacing:0.08em;text-transform:uppercase;margin-top:3px;}
+.form-grp{display:flex;flex-direction:column;gap:6px;}
+.form-label{font-size:var(--s-xs);font-weight:700;color:var(--t2);letter-spacing:0.03em;text-transform:uppercase;}
+.input{height:48px;border:1.5px solid var(--b2);border-radius:10px;background:white;padding:0 12px;font-size:var(--s-base);color:var(--t1);display:flex;align-items:center;gap:8px;}
+.input.focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(26,60,94,0.07);}
+.input.err{border-color:var(--red);}
+.input-prefix{font-size:var(--s-sm);font-weight:600;color:var(--t2);padding-right:8px;border-right:1px solid var(--b1);}
+.input-flag{font-size:14px;}
+.input-value{color:var(--t1);font-weight:500;}
+.input-err{font-size:var(--s-xs);color:var(--red);display:flex;align-items:center;gap:4px;line-height:1.4;}
+.divider-or{display:flex;align-items:center;gap:8px;margin:6px 0;color:var(--t3);font-size:var(--s-xs);font-weight:600;}
+.divider-or::before,.divider-or::after{content:'';flex:1;height:1px;background:var(--b1);}
+.ios-keyboard{margin-top:auto;background:#D1D5DB;display:flex;flex-direction:column;flex-shrink:0;}
+.ios-quicktype{height:38px;background:#D1D5DB;border-bottom:0.5px solid #B8BCC4;display:flex;align-items:center;justify-content:center;padding:0 8px;gap:6px;}
+.ios-quicktype-chip{background:#fff;border-radius:6px;padding:4px 10px;display:flex;align-items:center;gap:6px;box-shadow:0 1px 2px rgba(0,0,0,0.08);max-width:90%;}
+.ios-quicktype-icon{width:14px;height:14px;border-radius:3px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;}
+.ios-quicktype-icon.green{background:var(--whatsapp);}
+.ios-quicktype-icon.gray{background:#666;}
+.ios-quicktype-text{font-size:11px;font-weight:600;color:var(--t1);font-family:var(--f-mono);}
+.ios-quicktype-source{font-size:9px;color:var(--t3);}
+.ios-kb-keys{height:200px;background:#D1D5DB;display:flex;flex-direction:column;justify-content:center;padding:6px 4px;gap:5px;}
+.ios-kb-row{display:flex;justify-content:center;gap:4px;}
+.ios-kb-key{flex:1;max-width:26px;height:32px;background:#fff;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:400;color:#000;box-shadow:0 1px 0 rgba(0,0,0,0.15);}
+.ios-kb-key.num{font-weight:500;}
+.ios-kb-key.wide{max-width:none;flex:2;}
+.ios-kb-key.dim{background:#A4ABB7;color:#000;}
+.ios-numpad{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;padding:8px;background:#D1D5DB;}
+.ios-numpad-key{height:34px;background:#fff;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:400;color:#000;box-shadow:0 1px 0 rgba(0,0,0,0.15);}
+.ios-numpad-key.empty{background:transparent;box-shadow:none;}
+.otp-row{display:flex;gap:6px;justify-content:center;}
+.otp-box{width:38px;height:48px;border:1.5px solid var(--b2);border-radius:8px;background:white;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:var(--t1);}
+.otp-box.filled{border-color:var(--navy);}
+.otp-box.active{border-color:var(--navy);box-shadow:0 0 0 3px rgba(26,60,94,0.07);}
+.otp-box.err{border-color:var(--red);background:var(--red-l);}
+.btn{height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:var(--s-base);font-weight:700;border:none;width:100%;}
+.btn-primary{background:var(--navy);color:white;}
+.btn-accent{background:var(--green);color:white;}
+.btn-outline{background:white;border:1.5px solid var(--b2);color:var(--t1);}
+.btn-disabled{background:var(--screen-bg3);color:var(--t4);}
+.btn-disabled .btn-icon{opacity:0.7;}
+.btn-lg{height:52px;}
+.btn-link{background:transparent;color:var(--t3);font-weight:600;font-size:var(--s-sm);height:auto;padding:6px 0;}
+.btn-link.center{text-align:center;display:block;}
+.btn-link.navy{color:var(--navy);}
+.btn-icon{font-size:18px;}
+.method-btn-apple{background:#000;color:white;}
+.method-btn-google{background:white;color:var(--t1);border:1.5px solid var(--b2);}
+.channel-card{display:flex;gap:10px;align-items:flex-start;padding:14px;background:white;border:1.5px solid var(--b2);border-radius:var(--r-md);}
+.channel-card.selected{border-color:var(--navy);background:#F0F4F9;}
+.channel-ico{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.channel-ico.wa{background:var(--whatsapp-l);color:var(--whatsapp);}
+.channel-ico.sms{background:#E8F0FA;color:var(--navy);}
+.channel-body{flex:1;min-width:0;}
+.channel-name{font-size:13px;font-weight:700;color:var(--t1);line-height:1.25;}
+.channel-sub{font-size:11px;color:var(--t3);line-height:1.4;margin-top:2px;}
+.channel-radio{width:18px;height:18px;border-radius:50%;border:2px solid var(--b2);flex-shrink:0;margin-top:6px;}
+.channel-radio.on{border-color:var(--navy);background:radial-gradient(circle,var(--navy) 38%,white 42%);}
+.tutorial-vis{flex:1;background:linear-gradient(180deg,#F4F1EA 0%,#E8E5DE 100%);display:flex;align-items:center;justify-content:center;padding:20px;min-height:260px;position:relative;}
+.tutorial-mock{background:white;border:1px solid var(--b2);border-radius:14px;padding:14px 12px;width:100%;max-width:230px;box-shadow:0 4px 12px rgba(0,0,0,0.08);display:flex;flex-direction:column;gap:8px;}
+.mock-bar{display:flex;align-items:center;justify-content:space-between;padding-bottom:8px;border-bottom:1px solid var(--b1);}
+.mock-bar-title{font-size:11px;font-weight:700;color:var(--t1);}
+.mock-tab-row{display:flex;gap:0;border-bottom:1px solid var(--b1);margin:0 -12px 4px;padding:0 12px 8px;}
+.mock-tab{font-size:9px;font-weight:600;color:var(--t3);padding:0 8px 4px;flex:1;text-align:center;}
+.mock-tab.on{color:var(--navy);border-bottom:2px solid var(--navy);padding-bottom:2px;}
+.mock-row{display:flex;align-items:center;gap:8px;padding:6px 0;}
+.mock-row.highlight{background:#FFF7DC;border:1.5px dashed var(--gold);border-radius:6px;padding:6px 8px;margin:0 -4px;}
+.mock-ico{width:22px;height:22px;border-radius:5px;background:var(--screen-bg2);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;}
+.mock-ico.green{background:var(--green-l);}
+.mock-ico.navy{background:#E0E8F2;}
+.mock-label{font-size:10px;font-weight:500;color:var(--t1);flex:1;}
+.mock-toggle{width:30px;height:18px;background:var(--screen-bg3);border-radius:var(--r-pill);position:relative;flex-shrink:0;}
+.mock-toggle::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:white;}
+.mock-search{background:var(--screen-bg2);border-radius:6px;padding:6px 8px;font-size:10px;color:var(--t2);display:flex;align-items:center;gap:5px;}
+.mock-input{background:var(--screen-bg2);border-radius:5px;padding:6px 8px;font-size:9px;color:var(--t3);font-family:var(--f-mono);}
+.mock-input.focus{background:white;border:1.5px solid var(--navy);}
+.mock-chip{display:inline-block;background:var(--green-l);color:#0F5830;font-size:9px;font-weight:600;padding:2px 6px;border-radius:3px;}
+.mock-btn-done{background:var(--navy);color:white;font-size:10px;font-weight:700;padding:5px 12px;border-radius:5px;align-self:flex-end;}
+.mock-section-label{font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:0.05em;margin-top:4px;}
+.step-indicator{display:flex;align-items:center;justify-content:center;gap:5px;padding:8px 0;}
+.step-pip{width:5px;height:5px;border-radius:50%;background:var(--b2);}
+.step-pip.on{background:var(--navy);width:14px;border-radius:var(--r-pill);}
+.step-pip.done{background:var(--green);}
+.hero-icon{width:80px;height:80px;border-radius:50%;background:var(--green-l);display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto;}
+.hero-icon.navy{background:#E0E8F2;color:var(--navy);}
+.hero-icon.gold{background:var(--gold-l);}
+.hero-icon.red{background:var(--red-l);color:var(--red);}
+.outcome-state{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 20px;text-align:center;gap:14px;}
+.outcome-ttl{font-size:var(--s-xl);font-weight:700;color:var(--t1);line-height:1.2;letter-spacing:-0.01em;}
+.outcome-desc{font-size:var(--s-sm);color:var(--t2);line-height:1.5;max-width:240px;}
+.overlay{position:absolute;inset:0;background:rgba(0,0,0,0.45);display:flex;align-items:flex-end;z-index:40;}
+.bottom-sheet{background:var(--screen-bg);border-radius:20px 20px 0 0;width:100%;padding:14px 18px 22px;box-shadow:0 -4px 24px rgba(0,0,0,0.1);display:flex;flex-direction:column;gap:12px;}
+.bs-handle{width:36px;height:4px;background:var(--b2);border-radius:2px;margin:0 auto 6px;}
+.bs-icon{width:48px;height:48px;border-radius:50%;background:var(--green-l);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:2px;}
+.bs-icon.navy{background:#E0E8F2;}
+.bs-icon.gold{background:var(--gold-l);}
+.bs-title{font-size:var(--s-md);font-weight:700;color:var(--t1);line-height:1.25;}
+.bs-body{font-size:var(--s-sm);color:var(--t2);line-height:1.5;}
+.hint-sheet{background:white;border-radius:14px 14px 0 0;width:100%;padding:18px 16px 28px;box-shadow:0 -4px 24px rgba(0,0,0,0.18);}
+.hint-handle{width:40px;height:5px;background:#D0D0D0;border-radius:3px;margin:0 auto 14px;}
+.hint-title{font-size:15px;font-weight:600;color:#000;text-align:center;margin-bottom:2px;}
+.hint-sub{font-size:11px;color:#666;text-align:center;margin-bottom:14px;}
+.hint-num{display:flex;align-items:center;gap:10px;padding:11px 4px;border-bottom:1px solid #EEE;}
+.hint-num:last-child{border-bottom:none;}
+.hint-num-ico{width:32px;height:32px;border-radius:50%;background:#E5E5EA;color:#666;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;flex-shrink:0;}
+.hint-num-body{flex:1;}
+.hint-num-val{font-size:13px;font-weight:600;color:#000;font-family:var(--f-mono);}
+.hint-num-tag{font-size:10px;color:#666;margin-top:1px;}
+.hint-none{padding:14px 4px 4px;text-align:center;font-size:13px;font-weight:600;color:#007AFF;}
+.perm-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.55);display:flex;align-items:center;justify-content:center;padding:24px;z-index:50;}
+.perm-box-i{background:rgba(245,245,245,0.96);backdrop-filter:blur(10px);border-radius:14px;overflow:hidden;width:100%;box-shadow:0 8px 32px rgba(0,0,0,0.25);}
+.perm-head-i{padding:18px 16px 14px;text-align:center;}
+.perm-title-i{font-size:13px;font-weight:700;color:#000;margin-bottom:5px;line-height:1.3;}
+.perm-desc-i{font-size:11px;color:#000;line-height:1.4;}
+.perm-acts-i{display:flex;border-top:1px solid rgba(0,0,0,0.18);}
+.perm-btn-i{flex:1;padding:11px;text-align:center;font-size:13px;color:#007AFF;}
+.perm-btn-i.bold{font-weight:700;}
+.perm-btn-i.divider{border-left:1px solid rgba(0,0,0,0.18);}
+.cta-stack{display:flex;flex-direction:column;gap:8px;margin-top:auto;padding-top:12px;}
+.legal{font-size:10px;color:var(--t3);line-height:1.5;text-align:center;padding:0 4px;}
+.legal a{color:var(--t2);text-decoration:underline;}
+.inline-confirm{padding:8px 12px;background:var(--green-l);border:1px solid rgba(46,139,87,0.2);border-radius:8px;display:flex;align-items:center;gap:7px;font-size:var(--s-xs);color:#0F5830;font-weight:600;}
+.flow-note{max-width:var(--ph-w);padding:10px 12px;border-radius:4px;font-size:11px;font-weight:500;line-height:1.5;}
+.flow-note.decision{background:#FBF4DC;color:#6B5210;border-left:3px solid var(--gold);}
+.flow-note.bug{background:var(--red-l);color:#7A1810;border-left:3px solid var(--red);}
+.flow-note.new{background:var(--green-l);color:#0F5830;border-left:3px solid var(--green);}
+.flow-note.info{background:#EAF0FE;color:#103868;border-left:3px solid #4A80C0;}
+.handoff{margin-top:64px;padding:36px;background:white;border:1px solid var(--b1);border-radius:var(--r-md);}
+.handoff-title{font-size:26px;font-weight:700;color:var(--t1);margin-bottom:8px;letter-spacing:-0.01em;}
+.handoff-sub{font-size:14px;color:var(--t2);margin-bottom:28px;line-height:1.5;}
+.handoff-sec{margin-top:32px;padding-top:28px;border-top:1px solid var(--b1);}
+.handoff-sec:first-of-type{border-top:none;padding-top:0;margin-top:0;}
+.handoff-h{font-size:18px;font-weight:700;color:var(--t1);margin-bottom:12px;}
+.handoff-p{font-size:14px;color:var(--t1);line-height:1.6;margin-bottom:8px;}
+.handoff-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.handoff-list li{font-size:14px;color:var(--t1);line-height:1.6;padding-left:16px;position:relative;}
+.handoff-list li::before{content:'—';position:absolute;left:0;color:var(--t3);font-weight:700;}
+.copy-table{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed;}
+.copy-table col.col-screen{width:20%;}
+.copy-table col.col-element{width:18%;}
+.copy-table col.col-en{width:31%;}
+.copy-table col.col-ar{width:31%;}
+.copy-table th{text-align:left;padding:10px 12px;border-bottom:2px solid var(--b2);font-size:11px;color:var(--t2);text-transform:uppercase;letter-spacing:0.06em;font-weight:700;background:var(--screen-bg);}
+.copy-table td{padding:10px 12px;border-bottom:1px solid var(--b1);vertical-align:top;color:var(--t1);line-height:1.55;word-wrap:break-word;}
+.copy-table td.screen-name{font-weight:700;color:var(--t1);background:var(--screen-bg);}
+.copy-table td.element-name{color:var(--t2);font-weight:500;}
+.copy-table td.en{font-size:12px;color:var(--t1);}
+.copy-table td.ar{font-size:12px;color:var(--t1);direction:rtl;text-align:right;}
+.copy-table tr.group-start td{border-top:2px solid var(--b2);}
+.callout{padding:12px 14px;border-radius:0 8px 8px 0;font-size:13px;line-height:1.55;margin-top:12px;}
+.callout.warn{background:var(--gold-l);border-left:3px solid var(--gold);color:#6B5210;}
+.callout.new{background:var(--green-l);border-left:3px solid var(--green);color:#0F5830;}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="doc-header">
+<div class="doc-meta"><span class="doc-tag prototype">Prototype</span><span class="doc-tag designer">Designer brief</span><span class="doc-tag ios">iOS</span><span class="doc-tag wip">Draft v4</span><span class="doc-tag version">DB-031</span><span class="doc-date">Sign-up & Onboarding · iOS Shortcut tutorial</span></div>
+<div class="doc-title">Sign-up & Onboarding (iOS)</div>
+<div class="doc-subtitle">A new iOS user signs up via Apple, Google, or phone, sets up automatic transaction tracking through the iOS Shortcuts app, and lands on Home — either in empty-but-armed state (Shortcut on, waiting for first transaction) or manual-only state (Shortcut skipped). A non-blocking re-prompt nudges users who skipped.</div>
+<div class="doc-info">
+<div class="doc-info-cell"><div class="info-label">The problem</div><div class="info-body">iOS doesn't allow background SMS reading. Automatic tracking on iOS depends on a 9-step setup inside Apple's Shortcuts app, which we don't control. The onboarding has to make that setup feel like 60 seconds of progress. Every Skip path needs to feel safe to take. The Shortcut tutorial is the most important moment of the whole iOS app.</div></div>
+<div class="doc-info-cell"><div class="info-label">Flows in this document</div><div class="flow-list">
+<div class="flow-list-item">Flow 1 — Welcome → Entry → AutoFill phone → OTP with QuickType code → Name capture</div>
+<div class="flow-list-item">Flow 2 — Shortcut tutorial · 10 steps</div>
+<div class="flow-list-item">Flow 3 — Skip Shortcut path → manual-only Home</div>
+<div class="flow-list-item">Flow 4 — Push permission · 2 entry points</div>
+<div class="flow-list-item">Flow 5 — Returning user · same device + new device</div>
+<div class="flow-list-item">Flow 6 — Shortcut re-prompt · 3 triggers</div>
+<div class="flow-list-item">Edges — error states and variants</div>
+</div></div></div>
+</div>
+
+<!-- FLOW 1 -->
+<div class="flow-section">
+<div class="flow-section-header"><div class="flow-section-title">Flow 1 — Welcome → Entry → AutoFill phone → OTP with QuickType code → Name capture</div><div class="flow-section-line"></div></div>
+<div class="flow-intro">Three welcome screens with a language toggle in the top-right. Then the Entry screen carries three equal-weight auth options: Apple, Google, and phone. When the phone field is focused, iOS may surface the user's own number as an AutoFill suggestion in the QuickType bar above the keyboard — pulled from the user's "My Card" contact. Then a WhatsApp/SMS OTP channel choice with no default, then OTP entry where the incoming code surfaces in the QuickType bar for one-tap fill. Name capture only fires on the phone path — Apple and Google return the user's name from their account.</div>
+
+<div class="phone-row">
+
+<div class="screen-col"><div class="screen-label">Welcome 1 of 3 · Automatic tracking</div><div class="state-badge happy">page 1 of 3</div>
+<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
+<div class="screen no-nav">
+<div class="lang-trigger">EN <span style="font-size:8px">▾</span></div>
+<div class="welcome-art">
+<div class="tx-stack">
+<div class="tx-tile fade-1"><div class="tx-tile-ico">🍕</div><div class="tx-tile-body"><div class="tx-tile-name">Talabat</div><div class="tx-tile-cat">Food</div></div><div class="tx-tile-amt">−145</div></div>
+<div class="tx-tile fade-2"><div class="tx-tile-ico">🚗</div><div class="tx-tile-body"><div class="tx-tile-name">Uber</div><div class="tx-tile-cat">Transport</div></div><div class="tx-tile-amt">−62</div></div>
+<div class="tx-tile"><div class="tx-tile-ico">🛒</div><div class="tx-tile-body"><div class="tx-tile-name">Carrefour</div><div class="tx-tile-cat">Groceries</div></div><div class="tx-tile-amt">−890</div></div>
+</div><div class="tx-checkmark">✓</div></div>
+<div class="sc-pad-lg">
+<div class="t-title">Your money, tracked automatically.</div>
+<div class="t-caption">Every bank SMS becomes a transaction. You don't lift a finger.</div>
+<div style="flex:1"></div>
+<div class="prog-dots"><div class="prog-dot on"></div><div class="prog-dot"></div><div class="prog-dot"></div></div>
+<div class="btn btn-primary btn-lg">Next</div>
+</div>
+</div><div class="ios-home"></div></div>
+<div class="flow-note decision">Language toggle sits top-right on every welcome screen. Square pill, white background, EN / ع label. Tapping opens a dropdown of two options (English / العربية) — see next phone for the open state. The toggle disappears once the user reaches the Entry screen — locale is locked at that point.</div></div>
+
+<div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">tap EN</div></div>
+
+<div class="screen-col"><div class="screen-label">Welcome 1 · language menu open</div><div class="state-badge interaction">menu open</div>
+<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
+<div class="screen no-nav">
+<div class="lang-trigger">EN <span style="font-size:8px">▾</span></div>
+<div class="lang-dropdown">
+<div class="lang-opt selected">English <span class="lang-opt-check">✓</span></div>
+<div class="lang-opt">العربية</div>
+</div>
+<div class="welcome-art" style="opacity:0.5">
+<div class="tx-stack">
+<div class="tx-tile fade-1"><div class="tx-tile-ico">🍕</div><div class="tx-tile-body"><div class="tx-tile-name">Talabat</div><div class="tx-tile-cat">Food</div></div><div class="tx-tile-amt">−145</div></div>
+<div class="tx-tile"><div class="tx-tile-ico">🛒</div><div class="tx-tile-body"><div class="tx-tile-name">Carrefour</div><div class="tx-tile-cat">Groceries</div></div><div class="tx-tile-amt">−890</div></div>
+</div></div>
+<div class="sc-pad-lg" style="opacity:0.5">
+<div class="t-title">Your money, tracked automatically.</div>
+<div class="t-caption">Every bank SMS becomes a transaction.</div>
+<div style="flex:1"></div>
+<div class="btn btn-primary btn-lg">Show me how</div>
+</div>
+</div><div class="ios-home"></div></div>
+<div class="flow-note decision">Each option is shown in its own language regardless of the active locale — never "Arabic" in English. Selected state uses a green checkmark plus bold weight, not colour alone. Tapping العربية instantly flips the entire flow to RTL with no loading state, no confirmation modal. Designer must produce every screen in both locales.</div></div>
+
+<div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">Next</div></div>
+
+<div class="screen-col"><div class="screen-label">Welcome 2 of 3 · Budgets</div><div class="state-badge happy">page 2 of 3</div>
+<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
+<div class="screen no-nav">
+<div class="lang-trigger">EN <span style="font-size:8px">▾</span></div>
+<div class="welcome-art">
+<div class="budget-art-card"><div class="budget-art-cat">🍕 Food & Dining</div><div class="budget-art-amts">1,240 / 2,000 EGP</div><div class="prog-wrap"><div class="prog-bar warn" style="width:62%"></div></div></div>
+<div class="budget-art-card" style="margin-top:8px"><div class="budget-art-cat">🚗 Transport</div><div class="budget-art-amts">480 / 800 EGP</div><div class="prog-wrap"><div class="prog-bar" style="width:60%"></div></div></div>
+</div>
+<div class="sc-pad-lg">
+<div class="t-title">No more end-of-month surprises.</div>
+<div class="t-caption">Watch your spending move in real time. Know exactly what's left before payday.</div>
+<div style="flex:1"></div>
+<div class="prog-dots"><div class="prog-dot"></div><div class="prog-dot on"></div><div class="prog-dot"></div></div>
+<div class="btn btn-primary btn-lg">Next</div>
+</div>
+</div><div class="ios-home"></div></div></div>
+
+<div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">Next</div></div>
+
+<div class="screen-col"><div class="screen-label">Welcome 3 of 3 · Privacy</div><div class="state-badge happy">page 3 of 3</div>
+<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
+<div class="screen no-nav">
+<div class="lang-trigger">EN <span style="font-size:8px">▾</span></div>
+<div class="welcome-art"><div class="ready-art"><div class="ready-ring"></div><div class="ready-inner"><div class="ready-num">60</div><div class="ready-unit">seconds</div></div></div></div>
+<div class="sc-pad-lg">
+<div class="t-title">Ready when you are.</div>
+<div class="t-caption">60 seconds to set up. After that, your money tracks itself.</div>
+<div style="flex:1"></div>
+<div class="prog-dots"><div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot on"></div></div>
+<div class="btn btn-primary btn-lg">Let's get started</div>
+</div>
+</div><div class="ios-home"></div></div></div>
+
+<div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">Let's get started</div></div>
+
+<div class="screen-col"><div class="screen-label">Entry · 3 equal-weight auth options</div><div class="state-badge happy">default</div>
+<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
+<div class="screen no-nav">
+<div class="sc-pad-lg" style="padding-top:48px">
+<div class="t-title" style="text-align:center;margin-bottom:6px">Continue to MoneyMore</div>
+<div style="flex:0 0 12px"></div>
+<div class="btn method-btn-apple btn-lg"><span class="btn-icon"></span>Continue with Apple</div>
+<div class="btn method-btn-google btn-lg"><span class="btn-icon">G</span>Continue with Google</div>
+<div class="divider-or">or</div>
+<div class="form-grp"><div class="form-label">Phone number</div>
+<div class="input"><span class="input-flag">🇪🇬</span><span class="input-prefix">+20</span><span class="input-value" style="color:var(--t4)">10X XXX XXXX</span></div>
+</div>
+<div class="btn btn-primary btn-lg">Send code</div>
+<div style="flex:1"></div>
+<div class="legal">By continuing, you agree to our <a>Terms</a> and <a>Privacy</a>.</div>
+</div>
+</div><div class="ios-home"></div></div>
+<div class="flow-note decision">Three equal-weight options: Apple at top (iOS convention puts Apple first when offered), Google second, phone field below the "or" divider. No "recommended" tag, no default selection, no size hierarchy between the three. The phone field has no helper text — adding one would visually demote it relative to Apple and Google, breaking equal weight.</div>
+<div class="flow-note decision">Send code stays enabled even when the phone field is empty so the disabled state isn't the dominant visual on first render. Validation runs on tap — if empty or invalid, the field shows the inline error and the button stays put for retry. See Edges for the error state.</div></div>
+
+<div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">tap phone field</div></div>
+
+<div class="screen-col"><div class="screen-label">Entry · phone field focused · keyboard + QuickType</div><div class="state-badge interaction">field focused</div>
+<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
+<div class="screen no-nav">
+<div class="sc-pad-lg" style="padding-top:48px;flex:0 0 auto;padding-bottom:10px">
+<div class="t-title" style="text-align:center;margin-bottom:6px">Continue to MoneyMore</div>
+<div style="flex:0 0 8px"></div>
+<div class="btn method-btn-apple btn-lg"><span class="btn-icon"></span>Continue with Apple</div>
+<div class="btn method-btn-google btn-lg"><span class="btn-icon">G</span>Continue with Google</div>
+<div class="divider-or">or</div>
+<div class="form-grp"><div class="form-label">Phone number</div>
+<div class="input focus"><span class="input-flag">🇪🇬</span><span class="input-prefix">+20</span><span class="input-value" style="color:var(--t4)">|</span></div>
+</div>
+</div>
+<div class="ios-keyboard">
+<div class="ios-quicktype">
+<div class="ios-quicktype-chip">
+<div class="ios-quicktype-icon gray">A</div>
+<div><div class="ios-quicktype-text">10 1234 5678</div></div>
+</div>
+</div>
+<div class="ios-numpad">
+<div class="ios-numpad-key">1</div><div class="ios-numpad-key">2</div><div class="ios-numpad-key">3</div>
+<div class="ios-numpad-key">4</div><div class="ios-numpad-key">5</div><div class="ios-numpad-key">6</div>
+<div class="ios-numpad-key">7</div><div class="ios-numpad-key">8</div><div class="ios-numpad-key">9</div>
+<div class="ios-numpad-key empty"></div><div class="ios-numpad-key">0</div><div class="ios-numpad-key">⌫</div>
+</div>
+</div>
+</div><div class="ios-home"></div></div>
+<div class="flow-note decision">When the phone field is focused, iOS opens its number-pad keyboard. If the user has a phone number on file in their "My Card" contact, iOS surfaces it as an AutoFill chip in the QuickType bar above the keyboard. Tapping the chip fills the field. The QuickType bar and keyboard are iOS-rendered — designer doesn't draw them. This prototype shows them for reference so you can see what the user will experience.</div>
+<div class="flow-note decision">If the user has no number on file, or AutoFill is unavailable, the QuickType bar simply doesn't show the chip — the keyboard appears as normal and the user types. Silent fallback. Never show a "no number found" message. The manual path must feel first-class.</div></div>
+
+<div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">tap chip</div></div>
+
+<div class="screen-col"><div class="screen-label">Entry · phone populated via AutoFill</div><div class="state-badge happy">post-AutoFill</div>
+<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
+<div class="screen no-nav">
+<div class="sc-pad-lg" style="padding-top:48px">
+<div class="t-title" style="text-align:center;margin-bottom:6px">Continue to MoneyMore</div>
+<div style="flex:0 0 12px"></div>
+<div class="btn method-btn-apple btn-lg"><span class="btn-icon"></span>Continue with Apple</div>
+<div class="btn method-btn-google btn-lg"><span class="btn-icon">G</span>Continue with Google</div>
+<div class="divider-or">or</div>
+<div class="form-grp"><div class="form-label">Phone number</div>
+<div class="input focus"><span class="input-flag">🇪🇬</span><span class="input-prefix">+20</span><span class="input-value">10 1234 5678</span></div>
+</div>
+<div class="btn btn-primary btn-lg">Send code</div>
+<div style="flex:1"></div>
+<div class="legal">By continuing, you agree to our <a>Terms</a> and <a>Privacy</a>.</div>
+</div>
+</div><div class="ios-home"></div></div>
+<div class="flow-note decision">Tapping the QuickType chip fills the field and dismisses the keyboard. Must not auto-send the OTP — the user explicitly taps Send code. Auto-send is a defect.</div></div>
+
+<div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">Send code</div></div>
+
+<div class="screen-col"><div class="screen-label">OTP channel choice · bottom sheet</div><div class="state-badge interaction">no default</div>
+<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
+<div class="screen no-nav">
+<div class="sc-pad-lg" style="padding-top:48px;opacity:0.4">
+<div class="t-title" style="text-align:center;margin-bottom:6px">Continue to MoneyMore</div>
+<div class="btn method-btn-apple btn-lg"><span class="btn-icon"></span>Continue with Apple</div>
+</div>
+<div class="overlay">
+<div class="bottom-sheet">
+<div class="bs-handle"></div>
+<div class="bs-title" style="text-align:center">Where should we send the code?</div>
+<div class="bs-body" style="text-align:center;margin-top:-4px">Sending to <strong>+20 10 1234 5678</strong>.</div>
+<div class="channel-card">
+<div class="channel-ico wa">💬</div>
+<div class="channel-body"><div class="channel-name">WhatsApp</div><div class="channel-sub">Fastest — usually instant.</div></div>
+<div class="channel-radio"></div>
+</div>
+<div class="channel-card">
+<div class="channel-ico sms">✉</div>
+<div class="channel-body"><div class="channel-name">SMS</div><div class="channel-sub">Standard text message.</div></div>
+<div class="channel-radio"></div>
+</div>
+<div class="btn btn-disabled" style="margin-top:4px"><span class="btn-icon">🔒</span>Send code</div>
+</div>
+</div>
+</div><div class="ios-home"></div></div>
+<div class="flow-note decision">No default pre-selection. The Send code button stays disabled — with a lock icon and reduced opacity, not colour alone — until the user picks a channel. Both options carry equal visual weight; the WhatsApp subline describes reality without demoting SMS.</div></div>
+
+<div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">tap WhatsApp → Send</div></div>
+
+<div class="screen-col"><div class="screen-label">OTP entry · code arrives in QuickType bar</div><div class="state-badge interaction">code in QuickType</div>
+<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
+<div class="screen no-nav">
+<div class="app-bar"><div class="back-btn">‹</div><div class="app-bar-title">Verify phone</div><div style="width:24px"></div></div>
+<div class="sc-pad" style="flex:0 0 auto;padding-bottom:10px">
+<div class="t-title">Check WhatsApp for your code</div>
+<div class="t-caption" style="margin-top:-4px">Sent to <strong>+20 10 1234 5678</strong>.</div>
+<div class="otp-row" style="margin-top:14px">
+<div class="otp-box active">|</div><div class="otp-box"></div><div class="otp-box"></div>
+<div class="otp-box"></div><div class="otp-box"></div><div class="otp-box"></div>
+</div>
+<div style="display:flex;justify-content:space-between;padding-top:6px">
+<div style="font-size:var(--s-sm);color:var(--t3);font-weight:500">Resend in <strong>58s</strong></div>
+<div style="font-size:var(--s-sm);color:var(--navy);font-weight:600">Use SMS instead</div>
+</div>
+</div>
+<div class="ios-keyboard">
+<div class="ios-quicktype">
+<div class="ios-quicktype-chip">
+<div class="ios-quicktype-icon green">W</div>
+<div><div class="ios-quicktype-text">428193</div><div class="ios-quicktype-source">From WhatsApp</div></div>
+</div>
+</div>
+<div class="ios-numpad">
+<div class="ios-numpad-key">1</div><div class="ios-numpad-key">2</div><div class="ios-numpad-key">3</div>
+<div class="ios-numpad-key">4</div><div class="ios-numpad-key">5</div><div class="ios-numpad-key">6</div>
+<div class="ios-numpad-key">7</div><div class="ios-numpad-key">8</div><div class="ios-numpad-key">9</div>
+<div class="ios-numpad-key empty"></div><div class="ios-numpad-key">0</div><div class="ios-numpad-key">⌫</div>
+</div>
+</div>
+</div><div class="ios-home"></div></div>
+<div class="flow-note decision">When the OTP code arrives, iOS detects it and surfaces it as a chip in the QuickType bar above the keyboard. Source label reads "From WhatsApp" or "From Messages" depending on which channel delivered it. iOS-rendered — designer doesn't draw the QuickType bar, this prototype shows it for reference. The OTP boxes must be marked with the correct iOS content type (oneTimeCode) for this to work — engineering responsibility.</div>
+<div class="flow-note decision">If the user prefers, they can ignore the chip and type the code manually using the same keyboard. Both paths feel equal — the chip is convenience, not requirement.</div></div>
+
+<div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">tap chip</div></div>
+
+<div class="screen-col"><div class="screen-label">OTP · filled · auto-submitting</div><div class="state-badge happy">code in, verifying</div>
+<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
+<div class="screen no-nav">
+<div class="app-bar"><div class="back-btn">‹</div><div class="app-bar-title">Verify phone</div><div style="width:24px"></div></div>
+<div class="sc-pad">
+<div class="t-title">Check WhatsApp for your code</div>
+<div class="t-caption" style="margin-top:-4px">Sent to <strong>+20 10 1234 5678</strong>.</div>
+<div class="otp-row" style="margin-top:14px">
+<div class="otp-box filled">4</div><div class="otp-box filled">2</div><div class="otp-box filled">8</div>
+<div class="otp-box filled">1</div><div class="otp-box filled">9</div><div class="otp-box filled">3</div>
+</div>
+<div style="display:flex;justify-content:space-between;padding-top:6px">
+<div style="font-size:var(--s-sm);color:var(--t3);font-weight:500">Resend in <strong>57s</strong></div>
+<div style="font-size:var(--s-sm);color:var(--navy);font-weight:600;opacity:0.4">Use SMS instead</div>
+</div>
+<div style="flex:1"></div>
+</div>
+</div><div class="ios-home"></div></div>
+<div class="flow-note decision">Tapping the chip fills all six boxes at once and dismisses the keyboard. Code auto-submits when the 6th digit lands — no Verify CTA. Switch-channel link dims briefly during verification but does not disappear. Back chevron returns to the Entry screen with the phone number preserved.</div></div>
+
+<div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">code valid</div></div>
+
+<div class="screen-col"><div class="screen-label">Name capture · phone path only</div><div class="state-badge happy">input focused</div>
+<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
+<div class="screen no-nav">
+<div class="app-bar"><div class="back-btn">‹</div><div class="app-bar-title">Just one thing</div><div style="width:24px"></div></div>
+<div class="sc-pad">
+<div class="t-title">What should we call you?</div>
+<div class="t-caption" style="margin-top:-4px">First name is fine.</div>
+<div class="form-grp" style="margin-top:14px"><div class="form-label">Your name</div>
+<div class="input focus"><span class="input-value">Ahmed</span></div></div>
+<div style="flex:1"></div>
+<div class="btn btn-primary btn-lg">Continue</div>
+</div>
+</div><div class="ios-home"></div></div>
+<div class="flow-note decision">Phone path only. Apple and Google return the user's name from their account, so this screen never shows for those paths. Validation rejects empty input and whitespace-only input — see Edges for the error state.</div></div>
+
+</div></div>
+
+<!-- FLOW 2 -->
+<div class="flow-section">
+<div class="flow-section-header"><div class="flow-section-title">Flow 2 — Shortcut tutorial · 10 steps</div><div class="flow-section-line"></div></div>
+<div class="flow-intro">This is the iOS-specific replacement for SMS permission. iOS doesn't allow apps to read SMS in the background — the only way to track bank transactions automatically is to set up an iOS Shortcuts Automation that fires a "Log from SMS" action every time a bank message arrives. The 9 steps walk the user through setting that Automation up inside Apple's Shortcuts app. Step 10 confirms it's done. The whole thing has to feel like 60 seconds of progress, not a 9-step tutorial.</div>
+
+<div class="phone-row">
+
+<div class="screen-col"><div class="screen-label">Tutorial intro</div><div class="state-badge happy">entry</div>
+<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
+<div class="screen no-nav">
+<div class="tutorial-vis"><div class="tx-stack">
+<div class="tx-tile fade-1"><div class="tx-tile-ico">📱</div><div class="tx-tile-body"><div class="tx-tile-name">SMS from CIB</div><div class="tx-tile-cat">−250 EGP</div></div></div>
+<div style="text-align:center;font-size:18px;color:var(--green);font-weight:700">↓</div>
+<div class="tx-tile"><div class="tx-tile-ico">🛒</div><div class="tx-tile-body"><div class="tx-tile-name">Carrefour</div><div class="tx-tile-cat">Groceries</div></div><div class="tx-tile-amt">−250</div></div>
+</div></div>
+<div class="sc-pad-lg"><div class="t-title">Turn on automatic tracking.</div><div class="t-caption">A 60-second setup that lets MoneyMore log transactions for you, every time your bank texts you.</div><div style="flex:1"></div>
+<div class="cta-stack">
+<div class="btn btn-accent btn-lg">Open Shortcuts</div>
+<div class="btn btn-outline btn-lg">Show me how</div>
+<div class="btn-link center">Skip</div>
+</div></div>
+</div><div class="ios-home"></div></div>
+<div class="flow-note decision">Three CTAs in priority order. Open Shortcuts launches the iOS Shortcuts app directly — for users who already know the setup. Show me how triggers the 10-step walkthrough. Skip is a text link, lower priority but still tappable, routing to the skip-confirmation screen in Flow 3.</div></div>
+
+<div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">Show me how</div></div>
+
+<div class="screen-col"><div class="screen-label">Step 1 · Tap New Automation</div><div class="state-badge happy">1 of 10</div>
+<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
+<div class="screen no-nav"><div class="app-bar"><div class="back-btn">‹</div><div class="app-bar-title">Setup</div><div style="font-size:var(--s-sm);color:var(--navy);font-weight:600">I'll do this later</div></div>
+<div class="tutorial-vis"><div class="tutorial-mock">
+<div class="mock-tab-row"><div class="mock-tab">Shortcuts</div><div class="mock-tab on">Automation</div><div class="mock-tab">Gallery</div></div>
+<div class="mock-row highlight"><div class="mock-ico navy">+</div><div class="mock-label">New Automation</div></div>
+</div></div>
+<div class="sc-pad" style="padding-top:10px"><div class="t-body" style="font-weight:600;color:var(--t1)">Tap Automation, then New Automation.</div>
+<div class="step-indicator"><div class="step-pip on"></div><div class="step-pip"></div><div class="step-pip"></div><div class="step-pip"></div><div class="step-pip"></div><div class="step-pip"></div><div class="step-pip"></div><div class="step-pip"></div><div class="step-pip"></div><div class="step-pip"></div></div>
+<div class="btn btn-primary btn-lg">Next</div></div>
+</div><div class="ios-home"></div></div>
+<div class="flow-note decision">"I'll do this later" sits as the app-bar action on every step from 1 to 9. Softer than Skip — mid-tutorial intent reads as "defer," not "abandon." Both routes land on the skip-confirmation screen in Flow 3.</div>
+<div class="flow-note info">The mock screenshot inside the tutorial visual is a stylised representation of the real iOS Shortcuts UI. Designer to redraw at higher fidelity for production — these are placeholders showing layout intent and which element to highlight.</div></div>
+
+<div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">Next</div></div>
+
+<div class="screen-col"><div class="screen-label">Step 2 · Choose Message</div><div class="state-badge happy">2 of 10</div>
+<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
+<div class="screen no-nav"><div class="app-bar"><div class="back-btn">‹</div><div class="app-bar-title">Setup</div><div style="font-size:var(--s-sm);color:var(--navy);font-weight:600">I'll do this later</div></div>
+<div class="tutorial-vis"><div class="tutorial-mock">
+<div class="mock-bar"><div class="mock-bar-title">New Automation</div></div>
+<div class="mock-row"><div class="mock-ico">⏰</div><div class="mock-label">Time of Day</div></div>
+<div class="mock-row"><div class="mock-ico">📍</div><div class="mock-label">Arrive</div></div>
+<div class="mock-row highlight"><div class="mock-ico green">💬</div><div class="mock-label">Message</div></div>
+<div class="mock-row"><div class="mock-ico">📧</div><div class="mock-label">Email</div></div>
+</div></div>
+<div class="sc-pad" style="padding-top:10px"><div class="t-body" style="font-weight:600;color:var(--t1)">Choose Message.</div>
+<div class="step-indicator"><div class="step-pip done"></div><div class="step-pip on"></div><div class="step-pip"></div><div class="step-pip"></div><div class="step-pip"></div><div class="step-pip"></div><div class="step-pip"></div><div class="step-pip"></div><div class="step-pip"></div><div class="step-pip"></div></div>
+<div class="btn btn-primary btn-lg">Next</div></div>
+</div><div class="ios-home"></div></div></div>
+
+<div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">Next</div></div>
+
+<div class="screen-col"><div class="screen-label">Step 3 · Tap Choose</div><div class="state-badge happy">3 of 10</div>
+<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
+<div class="screen no-nav"><div class="app-bar"><div class="back-btn">‹</div><div class="app-bar-title">Setup</div><div style="font-size:var(--s-sm);color:var(--navy);font-weight:600">I'll do this later</div></div>
+<div class="tutorial-vis"><div class="tutorial-mock">
+<div class="mock-section-label">Message</div>
+<div class="mock-row" style="border:1px solid var(--b1);border-radius:6px;padding:8px;background:var(--screen-bg)"><div class="mock-label" style="color:var(--t3)">Message contains</div><span class="mock-chip" style="background:#FFF7DC;color:#6B5210">Choose</span></div>
+</div></div>
+<div class="sc-pad" style="padding-top:10px"><div class="t-body" style="font-weight:600;color:var(--t1)">Tap Choose in the text field.</div>
+<div class="step-indicator"><div class="step-pip done"></div><div class="step-pip done"></div><div class="step-pip on"></div><div class="step-pip"></div><div class="step-pip"></div><div class="step-pip"></div><div class="step-pip"></div><div class="step-pip"></div><div class="step-pip"></div><div class="step-pip"></div></div>
+<div class="btn btn-primary btn-lg">Next</div></div>
+</div><div class="ios-home"></div></div></div>
+
+<div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">Next</div></div>
+
+<div class="screen-col"><div class="screen-label">Step 4 · Type currency code</div><div class="state-badge happy">4 of 10</div>
+<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
+<div class="screen no-nav"><div class="app-bar"><div class="back-btn">‹</div><div class="app-bar-title">Setup</div><div style="font-size:var(--s-sm);color:var(--navy);font-weight:600">I'll do this later</div></div>
+<div class="tutorial-vis"><div class="tutorial-mock">
+<div class="mock-section-label">Text contains</div>
+<div class="mock-input focus">EGP|</div>
+<div style="display:flex;gap:4px;margin-top:4px"><span class="mock-chip">EGP</span><span class="mock-chip">USD</span><span class="mock-chip">جم</span></div>
+</div></div>
+<div class="sc-pad" style="padding-top:10px"><div class="t-body" style="font-weight:600;color:var(--t1)">Type your bank's currency code — EGP, USD, or جم.</div>
+<div class="step-indicator"><div class="step-pip done"></div><div class="step-pip done"></div><div class="step-pip done"></div><div class="step-pip on"></div><div class="step-pip"></div><div class="step-pip"></div><div class="step-pip"></div><div class="step-pip"></div><div class="step-pip"></div><div class="step-pip"></div></div>
+<div class="btn btn-primary btn-lg">Next</div></div>
+</div><div class="ios-home"></div></div>
+<div class="flow-note bug">Currency code variants need confirming with the ingestion team — Egyptian bank SMS use EGP, جم, ج.م, and L.E. interchangeably. Copy on this step may need to widen if more than three are supported.</div></div>
+
+<div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">Next</div></div>
+
+<div class="screen-col"><div class="screen-label">Step 5 · Run Immediately</div><div class="state-badge happy">5 of 10</div>
+<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
+<div class="screen no-nav"><div class="app-bar"><div class="back-btn">‹</div><div class="app-bar-title">Setup</div><div style="font-size:var(--s-sm);color:var(--navy);font-weight:600">I'll do this later</div></div>
+<div class="tutorial-vis"><div class="tutorial-mock">
+<div class="mock-section-label">Run</div>
+<div class="mock-row highlight"><div class="mock-ico green">⚡</div><div class="mock-label">Run Immediately</div></div>
+<div class="mock-row"><div class="mock-ico">▶︎</div><div class="mock-label">Run After Confirmation</div></div>
+</div></div>
+<div class="sc-pad" style="padding-top:10px"><div class="t-body" style="font-weight:600;color:var(--t1)">Choose Run Immediately.</div>
+<div class="step-indicator"><div class="step-pip done"></div><div class="step-pip done"></div><div class="step-pip done"></div><div class="step-pip done"></div><div class="step-pip on"></div><div class="step-pip"></div><div class="step-pip"></div><div class="step-pip"></div><div class="step-pip"></div><div class="step-pip"></div></div>
+<div class="btn btn-primary btn-lg">Next</div></div>
+</div><div class="ios-home"></div></div></div>
+
+<div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">Next</div></div>
+
+<div class="screen-col"><div class="screen-label">Step 6 · Create New Shortcut</div><div class="state-badge happy">6 of 10</div>
+<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
+<div class="screen no-nav"><div class="app-bar"><div class="back-btn">‹</div><div class="app-bar-title">Setup</div><div style="font-size:var(--s-sm);color:var(--navy);font-weight:600">I'll do this later</div></div>
+<div class="tutorial-vis"><div class="tutorial-mock">
+<div class="mock-bar"><div class="mock-bar-title">Do</div></div>
+<div class="mock-row highlight" style="justify-content:center"><div class="mock-label" style="text-align:center;font-weight:700;color:var(--navy)">Create New Shortcut</div></div>
+</div></div>
+<div class="sc-pad" style="padding-top:10px"><div class="t-body" style="font-weight:600;color:var(--t1)">Tap Create New Shortcut.</div>
+<div class="step-indicator"><div class="step-pip done"></div><div class="step-pip done"></div><div class="step-pip done"></div><div class="step-pip done"></div><div class="step-pip done"></div><div class="step-pip on"></div><div class="step-pip"></div><div class="step-pip"></div><div class="step-pip"></div><div class="step-pip"></div></div>
+<div class="btn btn-primary btn-lg">Next</div></div>
+</div><div class="ios-home"></div></div></div>
+
+<div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">Next</div></div>
+
+<div class="screen-col"><div class="screen-label">Step 7 · Search Log from SMS</div><div class="state-badge happy">7 of 10</div>
+<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
+<div class="screen no-nav"><div class="app-bar"><div class="back-btn">‹</div><div class="app-bar-title">Setup</div><div style="font-size:var(--s-sm);color:var(--navy);font-weight:600">I'll do this later</div></div>
+<div class="tutorial-vis"><div class="tutorial-mock">
+<div class="mock-search">🔍 Log from SMS</div>
+<div class="mock-section-label">MoneyMore</div>
+<div class="mock-row highlight"><div class="mock-ico green">$</div><div class="mock-label">Log from SMS</div></div>
+</div></div>
+<div class="sc-pad" style="padding-top:10px"><div class="t-body" style="font-weight:600;color:var(--t1)">Search "Log from SMS" and tap it under MoneyMore.</div>
+<div class="step-indicator"><div class="step-pip done"></div><div class="step-pip done"></div><div class="step-pip done"></div><div class="step-pip done"></div><div class="step-pip done"></div><div class="step-pip done"></div><div class="step-pip on"></div><div class="step-pip"></div><div class="step-pip"></div><div class="step-pip"></div></div>
+<div class="btn btn-primary btn-lg">Next</div></div>
+</div><div class="ios-home"></div></div></div>
+
+<div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">Next</div></div>
+
+<div class="screen-col"><div class="screen-label">Step 8 · Shortcut Input</div><div class="state-badge happy">8 of 10</div>
+<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
+<div class="screen no-nav"><div class="app-bar"><div class="back-btn">‹</div><div class="app-bar-title">Setup</div><div style="font-size:var(--s-sm);color:var(--navy);font-weight:600">I'll do this later</div></div>
+<div class="tutorial-vis"><div class="tutorial-mock">
+<div class="mock-section-label">Log from SMS</div>
+<div class="mock-row" style="background:var(--screen-bg);border-radius:6px;padding:8px"><div class="mock-label" style="color:var(--t3);font-size:9px">Message</div><span class="mock-chip" style="background:var(--green);color:white">Shortcut Input</span></div>
+</div></div>
+<div class="sc-pad" style="padding-top:10px"><div class="t-body" style="font-weight:600;color:var(--t1)">In the message field, tap Shortcut Input.</div>
+<div class="step-indicator"><div class="step-pip done"></div><div class="step-pip done"></div><div class="step-pip done"></div><div class="step-pip done"></div><div class="step-pip done"></div><div class="step-pip done"></div><div class="step-pip done"></div><div class="step-pip on"></div><div class="step-pip"></div><div class="step-pip"></div></div>
+<div class="btn btn-primary btn-lg">Next</div></div>
+</div><div class="ios-home"></div></div></div>
+
+<div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">Next</div></div>
+
+<div class="screen-col"><div class="screen-label">Step 9 · Show When Run off + Done</div><div class="state-badge happy">9 of 10</div>
+<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
+<div class="screen no-nav"><div class="app-bar"><div class="back-btn">‹</div><div class="app-bar-title">Setup</div><div style="font-size:var(--s-sm);color:var(--navy);font-weight:600">I'll do this later</div></div>
+<div class="tutorial-vis"><div class="tutorial-mock">
+<div class="mock-row highlight"><div class="mock-label">Show When Run</div><div class="mock-toggle"></div></div>
+<div class="mock-btn-done">Done</div>
+</div></div>
+<div class="sc-pad" style="padding-top:10px"><div class="t-body" style="font-weight:600;color:var(--t1)">Turn off Show When Run, then tap Done.</div>
+<div class="step-indicator"><div class="step-pip done"></div><div class="step-pip done"></div><div class="step-pip done"></div><div class="step-pip done"></div><div class="step-pip done"></div><div class="step-pip done"></div><div class="step-pip done"></div><div class="step-pip done"></div><div class="step-pip on"></div><div class="step-pip"></div></div>
+<div class="btn btn-primary btn-lg">Next</div></div>
+</div><div class="ios-home"></div></div></div>
+
+<div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">Next</div></div>
+
+<div class="screen-col"><div class="screen-label">Step 10 · All set</div><div class="state-badge success">10 of 10</div>
+<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
+<div class="screen no-nav">
+<div class="outcome-state"><div class="hero-icon">✓</div><div class="outcome-ttl">Automatic tracking is on.</div><div class="outcome-desc">From now on, every bank SMS becomes a transaction in MoneyMore.</div></div>
+<div class="sc-pad">
+<div class="step-indicator"><div class="step-pip done"></div><div class="step-pip done"></div><div class="step-pip done"></div><div class="step-pip done"></div><div class="step-pip done"></div><div class="step-pip done"></div><div class="step-pip done"></div><div class="step-pip done"></div><div class="step-pip done"></div><div class="step-pip on"></div></div>
+<div class="btn btn-accent btn-lg">Start Tracking</div></div>
+</div><div class="ios-home"></div></div>
+<div class="flow-note decision">No "I'll do this later" on step 10 — setup is complete. Start Tracking routes to the push pre-prompt in Flow 4, then to the empty-but-armed Home in Flow 5.</div></div>
+
+</div></div>
+
+<!-- FLOW 3 -->
+<div class="flow-section">
+<div class="flow-section-header"><div class="flow-section-title">Flow 3 — Skip Shortcut path · Confirmation → Manual-only Home</div><div class="flow-section-line"></div></div>
+<div class="flow-intro">User taps Skip on the tutorial intro, or "I'll do this later" inside the steps. Both routes land here. A confirmation screen acknowledges the choice and surfaces the recovery path. Then Home in manual-only state — patterned on the manual-only Home variant in DB-010 (Home Tab Revamp), adapted for iOS.</div>
+
+<div class="phone-row">
+
+<div class="screen-col"><div class="screen-label">Skip confirmation</div><div class="state-badge happy">reassurance</div>
+<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
+<div class="screen no-nav">
+<div class="outcome-state"><div class="hero-icon gold">✏️</div><div class="outcome-ttl">Got it — you'll add transactions yourself.</div><div class="outcome-desc">Changed your mind? You can turn on automatic tracking anytime from Profile.</div></div>
+<div class="sc-pad"><div class="btn btn-primary btn-lg">Continue to Home</div></div>
+</div><div class="ios-home"></div></div>
+<div class="flow-note decision">Sits between any tutorial Skip / "I'll do this later" tap and Home. Acknowledges the user's decision rather than dropping them silently into an empty Home, and names the recovery path explicitly. Hand-icon tone is acknowledgement, not warning — gold rather than red.</div></div>
+
+<div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">Continue</div></div>
+
+<div class="screen-col"><div class="screen-label">Home · manual-only state</div><div class="state-badge empty">empty · manual mode</div>
+<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
+<div class="screen">
+<div class="hm-header"><div class="hm-greet"><div class="hm-greet-en">Good morning, Ahmed.</div></div><div class="hm-bell">🔔</div><div class="hm-avatar">A</div></div>
+<div class="bcard">
+<div class="bcard-head"><div class="bcard-label">Total spending this month</div></div>
+<div class="te-amount-row"><div class="te-amount">0</div><div class="te-cur">EGP</div></div>
+<div class="te-count">No transactions yet</div>
+<div class="bcard-empty-rows"><div class="empty-row">Add your first transaction to see your spending here.</div></div>
+</div>
+<div class="addtx-hero"><span style="font-size:18px;font-weight:700">+</span><span>Add transaction</span></div>
+<div class="recovery-link"><div class="recovery-en">Want automatic tracking? Turn it on from Profile.</div></div>
+</div>
+<div class="b-nav">
+<div class="b-nav-item on"><div class="b-nav-icon">🏠</div><div class="b-nav-lbl">Home</div></div>
+<div class="b-nav-item"><div class="b-nav-icon">↕️</div><div class="b-nav-lbl">Transactions</div></div>
+<div class="b-nav-plus">+</div>
+<div class="b-nav-item"><div class="b-nav-icon">🎯</div><div class="b-nav-lbl">Budgets</div></div>
+<div class="b-nav-item"><div class="b-nav-icon">🎁</div><div class="b-nav-lbl">Offers</div></div>
+</div>
+<div class="ios-home"></div></div>
+<div class="flow-note decision">Manual-only Home mirrors DB-010 (Home Tab) State E. The big green Add transaction hero sits below the Total card to teach the primary action during first manual-entry session. Recovery link below it is a smaller text link — visible but not pushy.</div>
+<div class="flow-note decision">No Smart Budget card on iOS Home pre-Shortcut. DB-010's Mode A budget recommendations require parsed transaction history, which iOS has none of until the Shortcut is on. Smart Budget surfaces on iOS only once the Shortcut is on AND the user has created at least one budget (Mode B only).</div></div>
+
+</div></div>
+
+<!-- FLOW 4 -->
+<div class="flow-section">
+<div class="flow-section-header"><div class="flow-section-title">Flow 4 — Push permission · 2 entry points → pre-prompt → OS dialog</div><div class="flow-section-line"></div></div>
+<div class="flow-intro">Push pre-prompt fires once per user lifetime. Two entry points: (A) tutorial step 10 → Start Tracking, OR (B) the user's third manual transaction is saved. Whichever fires first wins — the second never fires for that user. Both routes hit the same pre-prompt screen, then the OS dialog.</div>
+
+<div class="phone-row">
+
+<div class="screen-col"><div class="screen-label">Entry A · Step 10 → Start Tracking</div><div class="state-badge happy">post-tutorial</div>
+<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
+<div class="screen no-nav">
+<div class="outcome-state"><div class="hero-icon">✓</div><div class="outcome-ttl">Automatic tracking is on.</div><div class="outcome-desc">From now on, every bank SMS becomes a transaction in MoneyMore.</div></div>
+<div class="sc-pad"><div class="btn btn-accent btn-lg">Start Tracking</div></div>
+</div><div class="ios-home"></div></div></div>
+
+<div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">— or —</div></div>
+
+<div class="screen-col"><div class="screen-label">Entry B · 3rd manual transaction saved</div><div class="state-badge happy">manual flow trigger</div>
+<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
+<div class="screen no-nav">
+<div class="outcome-state"><div class="hero-icon">✓</div><div class="outcome-ttl">Transaction saved.</div><div class="outcome-desc">Carrefour · 890 EGP · Shopping</div></div>
+<div class="sc-pad"><div class="btn btn-primary btn-lg">Done</div></div>
+</div><div class="ios-home"></div></div>
+<div class="flow-note info">Both paths funnel into the same pre-prompt below. Whichever fires first wins.</div></div>
+
+<div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">→ pre-prompt</div></div>
+
+<div class="screen-col"><div class="screen-label">Pre-prompt · MoneyMore-designed</div><div class="state-badge happy">default</div>
+<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
+<div class="screen no-nav">
+<div class="outcome-state"><div class="hero-icon navy">🔔</div><div class="outcome-ttl">Stay one step ahead of your money.</div><div class="outcome-desc">Get a heads-up before you hit a budget limit, and a quick confirm when transactions land.</div></div>
+<div class="sc-pad"><div class="cta-stack"><div class="btn btn-primary btn-lg">Turn on alerts</div><div class="btn-link center navy">Not now</div></div></div>
+</div><div class="ios-home"></div></div>
+<div class="flow-note decision">Turn on alerts triggers the OS dialog directly. Not now routes the user to whichever Home state applies — empty-but-armed for entry A, populated for entry B since they have manual transactions.</div></div>
+
+<div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">Turn on alerts</div></div>
+
+<div class="screen-col"><div class="screen-label">OS permission dialog · iOS-rendered</div><div class="state-badge os">iOS-rendered</div>
+<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
+<div class="screen no-nav">
+<div class="outcome-state" style="opacity:0.3"><div class="hero-icon navy">🔔</div><div class="outcome-ttl">Stay one step ahead of your money.</div></div>
+<div class="perm-overlay"><div class="perm-box-i">
+<div class="perm-head-i"><div class="perm-title-i">"MoneyMore" Would Like to Send You Notifications</div><div class="perm-desc-i">Notifications may include alerts, sounds, and icon badges. These can be configured in Settings.</div></div>
+<div class="perm-acts-i"><div class="perm-btn-i">Don't Allow</div><div class="perm-btn-i bold divider">Allow</div></div>
+</div></div>
+</div><div class="ios-home"></div></div>
+<div class="flow-note decision">Reference only — iOS renders this dialog and controls the text exactly. The pre-prompt above is the only surface where MoneyMore makes the value case. The OS dialog can only be triggered from the pre-prompt's primary CTA — never silently, never on screen load.</div></div>
+
+</div></div>
+
+<!-- FLOW 5 -->
+<div class="flow-section">
+<div class="flow-section-header"><div class="flow-section-title">Flow 5 — Returning user · same device + new device</div><div class="flow-section-line"></div></div>
+<div class="flow-intro">Same-device returning users open straight to Home — the greeting lives inside the Home header, no extra welcome screen. Two Home variants for the post-Shortcut user: empty-but-armed (Shortcut on, no transactions yet) and populated (Shortcut on, data accumulated). New-device returning users land on a "Welcome back" screen — Shortcut setup is device-local, so they need to redo it.</div>
+
+<div class="phone-row">
+
+<div class="screen-col"><div class="screen-label">Same device · Home empty-but-armed</div><div class="state-badge happy">Shortcut on, no tx yet</div>
+<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
+<div class="screen">
+<div class="hm-header"><div class="hm-greet"><div class="hm-greet-en">Good morning, Ahmed.</div></div><div class="hm-bell">🔔</div><div class="hm-avatar">A</div></div>
+<div class="bcard">
+<div class="bcard-head"><div class="bcard-label">Total spending this month</div></div>
+<div class="te-amount-row"><div class="te-amount">0</div><div class="te-cur">EGP</div></div>
+<div class="te-count">No transactions yet</div>
+</div>
+<div class="armed-inline"><div class="armed-ico">⚡</div><div class="armed-ttl">You're set up.</div><div class="armed-body">Transactions will appear here when your bank texts you next.</div></div>
+</div>
+<div class="b-nav">
+<div class="b-nav-item on"><div class="b-nav-icon">🏠</div><div class="b-nav-lbl">Home</div></div>
+<div class="b-nav-item"><div class="b-nav-icon">↕️</div><div class="b-nav-lbl">Transactions</div></div>
+<div class="b-nav-plus">+</div>
+<div class="b-nav-item"><div class="b-nav-icon">🎯</div><div class="b-nav-lbl">Budgets</div></div>
+<div class="b-nav-item"><div class="b-nav-icon">🎁</div><div class="b-nav-lbl">Offers</div></div>
+</div>
+<div class="ios-home"></div></div>
+<div class="flow-note decision">Empty-but-armed state: Shortcut tutorial just completed, no bank SMS has fired yet. The green block reassures the user that tracking is on and they're waiting on the bank, not on a broken setup. Distinct from the manual-only empty state in Flow 3 — different copy, different colour, different next-action implication.</div></div>
+
+<div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">over time →</div></div>
+
+<div class="screen-col"><div class="screen-label">Same device · Home populated</div><div class="state-badge happy">data accumulated</div>
+<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
+<div class="screen">
+<div class="hm-header"><div class="hm-greet"><div class="hm-greet-en">Good morning, Ahmed.</div></div><div class="hm-bell">🔔<div class="hm-bell-badge">2</div></div><div class="hm-avatar">A</div></div>
+<div class="bcard">
+<div class="bcard-head"><div class="bcard-label">Total spending this month</div></div>
+<div class="te-amount-row"><div class="te-amount">2,610</div><div class="te-cur">EGP</div></div>
+<div class="te-count">14 transactions</div>
+<div class="row-stack">
+<div class="crow"><div class="crow-ico">🍕</div><div class="crow-body"><div class="crow-title">Food &amp; Dining</div><div class="crow-sub">8 transactions</div></div><div class="crow-amt">1,240 EGP</div></div>
+<div class="crow"><div class="crow-ico">🚗</div><div class="crow-body"><div class="crow-title">Transport</div><div class="crow-sub">4 transactions</div></div><div class="crow-amt">480 EGP</div></div>
+<div class="crow"><div class="crow-ico">🛍</div><div class="crow-body"><div class="crow-title">Shopping</div><div class="crow-sub">2 transactions</div></div><div class="crow-amt">890 EGP</div></div>
+</div>
+<div class="bcard-cta">See all categories</div>
+</div>
+<div class="bcard">
+<div class="bcard-head"><div class="bcard-label">Latest spending</div></div>
+<div class="row-stack">
+<div class="crow"><div class="crow-ico">☕</div><div class="crow-body"><div class="crow-title">Starbucks</div><div class="crow-sub">Food &amp; Dining</div></div><div class="crow-right"><div class="crow-amt spend">140 EGP</div><div class="crow-time">9:12 AM</div></div></div>
+<div class="crow"><div class="crow-ico">⛽</div><div class="crow-body"><div class="crow-title">Shell</div><div class="crow-sub">Transport</div></div><div class="crow-right"><div class="crow-amt spend">380 EGP</div><div class="crow-time">6:44 PM</div></div></div>
+</div>
+</div>
+</div>
+<div class="b-nav">
+<div class="b-nav-item on"><div class="b-nav-icon">🏠</div><div class="b-nav-lbl">Home</div></div>
+<div class="b-nav-item"><div class="b-nav-icon">↕️</div><div class="b-nav-lbl">Transactions</div></div>
+<div class="b-nav-plus">+</div>
+<div class="b-nav-item"><div class="b-nav-icon">🎯</div><div class="b-nav-lbl">Budgets</div></div>
+<div class="b-nav-item"><div class="b-nav-icon">🎁</div><div class="b-nav-lbl">Offers</div></div>
+</div>
+<div class="ios-home"></div></div>
+<div class="flow-note info">Home content (Total card with category rows, Latest spending card, header pattern, bottom nav with centre plus) is owned by DB-010 — Home Tab Revamp. Shown here in simplified form for context. No Smart Budget card visible until the user creates a budget — see Flow 3 note on iOS Smart Budget logic.</div></div>
+
+<div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">— or —</div></div>
+
+<div class="screen-col"><div class="screen-label">New device · welcome back</div><div class="state-badge happy">re-setup needed</div>
+<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
+<div class="screen no-nav">
+<div class="outcome-state"><div class="hero-icon">👋</div><div class="outcome-ttl">Welcome back, Ahmed.</div><div class="outcome-desc">New device means we need to turn automatic tracking back on. Takes 60 seconds.</div></div>
+<div class="sc-pad"><div class="cta-stack"><div class="btn btn-accent btn-lg">Set up Shortcut</div><div class="btn-link center navy">Skip</div></div></div>
+</div><div class="ios-home"></div></div>
+<div class="flow-note decision">Shortcut setup is device-local on iOS — it doesn't follow the user's account to a new phone. New-device returning users skip the welcome carousel and Entry screen, since they've already authenticated, and land here. Set up Shortcut routes to the tutorial intro in Flow 2. Skip routes to the skip-confirmation screen in Flow 3.</div></div>
+
+</div></div>
+
+<!-- FLOW 6 -->
+<div class="flow-section">
+<div class="flow-section-header"><div class="flow-section-title">Flow 6 — Shortcut re-prompt · 3 triggers</div><div class="flow-section-line"></div></div>
+<div class="flow-intro">All three re-prompts use the same bottom-sheet pattern — non-blocking, dismissible. "Not now" returns the user to whatever they were doing. Frequency cap: max 1 per 7 days, max 3 lifetime. Different headlines acknowledge the different trigger; the supporting body and CTAs are identical across all three.</div>
+
+<div class="phone-row">
+
+<div class="screen-col"><div class="screen-label">Trigger · 3rd manual transaction</div><div class="state-badge interaction">bottom sheet</div>
+<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
+<div class="screen">
+<div class="hm-header" style="opacity:0.4"><div class="hm-greet"><div class="hm-greet-en">Good morning, Ahmed.</div></div><div class="hm-bell">🔔</div><div class="hm-avatar">A</div></div>
+<div class="bcard" style="opacity:0.4"><div class="bcard-head"><div class="bcard-label">Latest transaction</div></div>
+<div style="padding:8px 14px 14px;display:flex;justify-content:space-between"><div style="font-size:12px;font-weight:600">Carrefour</div><div style="font-size:13px;font-weight:700">−890 EGP</div></div></div>
+<div class="overlay"><div class="bottom-sheet">
+<div class="bs-handle"></div>
+<div class="bs-icon gold">✋</div>
+<div class="bs-title">That's 3 transactions logged by hand.</div>
+<div class="bs-body">One-time setup. After that, every bank SMS becomes a transaction automatically.</div>
+<div class="btn btn-accent">Set up now</div>
+<div class="btn-link center navy">Not now</div>
+</div></div>
+</div>
+<div class="b-nav" style="opacity:0.4">
+<div class="b-nav-item on"><div class="b-nav-icon">🏠</div><div class="b-nav-lbl">Home</div></div>
+<div class="b-nav-item"><div class="b-nav-icon">↕️</div><div class="b-nav-lbl">Transactions</div></div>
+<div class="b-nav-plus">+</div>
+<div class="b-nav-item"><div class="b-nav-icon">🎯</div><div class="b-nav-lbl">Budgets</div></div>
+<div class="b-nav-item"><div class="b-nav-icon">🎁</div><div class="b-nav-lbl">Offers</div></div>
+</div>
+<div class="ios-home"></div></div>
+<div class="flow-note decision">Fires after the 3rd manual transaction save confirmation. Set up now routes to the tutorial intro in Flow 2. Not now dismisses the sheet, returning the user to the manual transaction success state.</div></div>
+
+<div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">— or —</div></div>
+
+<div class="screen-col"><div class="screen-label">Trigger · 4th app open</div><div class="state-badge interaction">bottom sheet</div>
+<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
+<div class="screen">
+<div class="hm-header" style="opacity:0.4"><div class="hm-greet"><div class="hm-greet-en">Good morning, Ahmed.</div></div><div class="hm-bell">🔔</div><div class="hm-avatar">A</div></div>
+<div class="bcard" style="opacity:0.4"><div class="bcard-head"><div class="bcard-label">Total spending this month</div></div>
+<div class="te-amount-row"><div class="te-amount">0</div><div class="te-cur">EGP</div></div></div>
+<div class="overlay"><div class="bottom-sheet">
+<div class="bs-handle"></div>
+<div class="bs-icon">✨</div>
+<div class="bs-title">You're missing the best part.</div>
+<div class="bs-body">One-time setup. After that, every bank SMS becomes a transaction automatically.</div>
+<div class="btn btn-accent">Set up now</div>
+<div class="btn-link center navy">Not now</div>
+</div></div>
+</div>
+<div class="b-nav" style="opacity:0.4">
+<div class="b-nav-item on"><div class="b-nav-icon">🏠</div><div class="b-nav-lbl">Home</div></div>
+<div class="b-nav-item"><div class="b-nav-icon">↕️</div><div class="b-nav-lbl">Transactions</div></div>
+<div class="b-nav-plus">+</div>
+<div class="b-nav-item"><div class="b-nav-icon">🎯</div><div class="b-nav-lbl">Budgets</div></div>
+<div class="b-nav-item"><div class="b-nav-icon">🎁</div><div class="b-nav-lbl">Offers</div></div>
+</div>
+<div class="ios-home"></div></div>
+<div class="flow-note decision">Fires on the 4th app open if the Shortcut still isn't set up. Not now dismisses the sheet and reveals Home in whatever state it would otherwise be in — typically manual-only.</div></div>
+
+<div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">— or —</div></div>
+
+<div class="screen-col"><div class="screen-label">Trigger · budget creation attempt</div><div class="state-badge interaction">bottom sheet</div>
+<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
+<div class="screen">
+<div class="app-bar" style="opacity:0.4"><div class="back-btn">‹</div><div class="app-bar-title">New budget</div><div style="width:24px"></div></div>
+<div class="sc-pad" style="opacity:0.4"><div class="t-title" style="font-size:18px">Pick a category</div>
+<div style="background:white;border:1px solid var(--b1);border-radius:10px;height:60px"></div></div>
+<div class="overlay"><div class="bottom-sheet">
+<div class="bs-handle"></div>
+<div class="bs-icon navy">🎯</div>
+<div class="bs-title">Budgets work better with auto-tracking.</div>
+<div class="bs-body">One-time setup. After that, every bank SMS becomes a transaction automatically.</div>
+<div class="btn btn-accent">Set up now</div>
+<div class="btn-link center navy">Not now</div>
+</div></div>
+</div>
+<div class="b-nav" style="opacity:0.4">
+<div class="b-nav-item on"><div class="b-nav-icon">🏠</div><div class="b-nav-lbl">Home</div></div>
+<div class="b-nav-item"><div class="b-nav-icon">↕️</div><div class="b-nav-lbl">Transactions</div></div>
+<div class="b-nav-plus">+</div>
+<div class="b-nav-item"><div class="b-nav-icon">🎯</div><div class="b-nav-lbl">Budgets</div></div>
+<div class="b-nav-item"><div class="b-nav-icon">🎁</div><div class="b-nav-lbl">Offers</div></div>
+</div>
+<div class="ios-home"></div></div>
+<div class="flow-note decision">Fires when the user taps Create Budget without having set up the Shortcut. Not now dismisses, the user continues into budget creation. The headline acknowledges the trigger ("budgets work better with…") rather than restating the generic value prop.</div></div>
+
+</div></div>
+
+<!-- EDGES -->
+<div class="flow-section">
+<div class="flow-section-header"><div class="flow-section-title">Edges — error states and variants</div><div class="flow-section-line"></div></div>
+<div class="flow-intro">States that don't sit cleanly inside Flow 1 but still need to ship: validation errors, channel failures, rate-limits, network problems, and the channel-switch confirmation. Errors fold into the surface that fired them — no separate error pages, no full-screen takeovers.</div>
+
+<div class="phone-row">
+
+<div class="screen-col"><div class="screen-label">Entry · invalid phone format</div><div class="state-badge error">validation error</div>
+<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
+<div class="screen no-nav">
+<div class="sc-pad-lg" style="padding-top:48px">
+<div class="t-title" style="text-align:center;margin-bottom:6px">Continue to MoneyMore</div>
+<div style="flex:0 0 12px"></div>
+<div class="btn method-btn-apple btn-lg"><span class="btn-icon"></span>Continue with Apple</div>
+<div class="btn method-btn-google btn-lg"><span class="btn-icon">G</span>Continue with Google</div>
+<div class="divider-or">or</div>
+<div class="form-grp"><div class="form-label">Phone number</div>
+<div class="input err"><span class="input-flag">🇪🇬</span><span class="input-prefix">+20</span><span class="input-value">10 1234</span></div>
+<div class="input-err">⚠ Check the number — looks like it's missing digits.</div>
+</div>
+<div class="btn btn-primary btn-lg">Send code</div>
+<div style="flex:1"></div>
+<div class="legal">By continuing, you agree to our <a>Terms</a> and <a>Privacy</a>.</div>
+</div>
+</div><div class="ios-home"></div></div>
+<div class="flow-note decision">Validation runs on Send code tap, not on every keystroke — premature errors feel punitive. Inline error sits below the field with a warning icon plus text, never colour alone. Apple and Google paths remain available throughout.</div></div>
+
+<div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">— or —</div></div>
+
+<div class="screen-col"><div class="screen-label">Entry · Apple/Google sign-in failed</div><div class="state-badge error">SSO failure</div>
+<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
+<div class="screen no-nav">
+<div class="sc-pad-lg" style="padding-top:48px">
+<div class="t-title" style="text-align:center;margin-bottom:6px">Continue to MoneyMore</div>
+<div style="margin-top:8px;padding:10px 12px;background:var(--red-l);border:1px solid rgba(192,57,43,0.18);border-radius:8px;display:flex;align-items:flex-start;gap:7px">
+<div style="color:var(--red);font-size:13px;margin-top:1px">⚠</div>
+<div style="font-size:var(--s-xs);color:var(--red);line-height:1.5">Apple sign-in didn't work. Try again, or use your phone number instead.</div>
+</div>
+<div class="btn method-btn-apple btn-lg"><span class="btn-icon"></span>Continue with Apple</div>
+<div class="btn method-btn-google btn-lg"><span class="btn-icon">G</span>Continue with Google</div>
+<div class="divider-or">or</div>
+<div class="form-grp"><div class="form-label">Phone number</div>
+<div class="input"><span class="input-flag">🇪🇬</span><span class="input-prefix">+20</span><span class="input-value" style="color:var(--t4)">10X XXX XXXX</span></div>
+</div>
+<div class="btn btn-primary btn-lg">Send code</div>
+<div style="flex:1"></div>
+</div>
+</div><div class="ios-home"></div></div>
+<div class="flow-note decision">Never silently fall back from SSO to phone — the user sees the error and chooses. All three options stay equal-weight; the error sits above them. Same pattern for Google sign-in failure with Google-specific copy.</div></div>
+
+<div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">— or —</div></div>
+
+<div class="screen-col"><div class="screen-label">OTP · invalid code</div><div class="state-badge error">code didn't match</div>
+<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
+<div class="screen no-nav"><div class="app-bar"><div class="back-btn">‹</div><div class="app-bar-title">Verify phone</div><div style="width:24px"></div></div>
+<div class="sc-pad"><div class="t-title">Check WhatsApp for your code</div>
+<div class="t-caption" style="margin-top:-4px">Sent to <strong>+20 10 1234 5678</strong>.</div>
+<div class="otp-row" style="margin-top:14px">
+<div class="otp-box err">9</div><div class="otp-box err">9</div><div class="otp-box err">9</div>
+<div class="otp-box err">9</div><div class="otp-box err">9</div><div class="otp-box err">9</div></div>
+<div class="input-err" style="justify-content:center;margin-top:8px">⚠ That code didn't match. Try again.</div>
+<div style="display:flex;justify-content:space-between;padding-top:6px">
+<div style="font-size:var(--s-sm);color:var(--navy);font-weight:600">Resend code</div>
+<div style="font-size:var(--s-sm);color:var(--navy);font-weight:600">Use SMS instead</div></div>
+<div style="flex:1"></div></div>
+</div><div class="ios-home"></div></div>
+<div class="flow-note decision">All six boxes flip to red border + tinted background. Inline error sits below them. Resend becomes immediately available — countdown not enforced after a failed attempt. Switch-channel link stays in its normal position.</div></div>
+
+<div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">— or —</div></div>
+
+<div class="screen-col"><div class="screen-label">OTP · WhatsApp delivery failed</div><div class="state-badge error">channel failure</div>
+<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
+<div class="screen no-nav"><div class="app-bar"><div class="back-btn">‹</div><div class="app-bar-title">Verify phone</div><div style="width:24px"></div></div>
+<div class="sc-pad"><div class="t-title">Check WhatsApp for your code</div>
+<div style="margin-top:10px;padding:10px 12px;background:var(--red-l);border:1px solid rgba(192,57,43,0.18);border-radius:8px;display:flex;align-items:flex-start;gap:7px">
+<div style="color:var(--red);font-size:13px;margin-top:1px">⚠</div>
+<div style="font-size:var(--s-xs);color:var(--red);line-height:1.5">WhatsApp didn't deliver the code. Try again, or get it by SMS.</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;margin-top:6px">
+<div class="btn btn-primary">Retry WhatsApp</div>
+<div class="btn btn-outline">Use SMS instead</div>
+</div>
+<div style="flex:1"></div></div>
+</div><div class="ios-home"></div></div>
+<div class="flow-note decision">Two explicit CTAs — never silently switch channel. Equal weight, retry on top. SMS-failure variant is structurally identical with the channels flipped: "SMS didn't deliver…" / "Retry SMS" / "Use WhatsApp instead."</div></div>
+
+<div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">— or —</div></div>
+
+<div class="screen-col"><div class="screen-label">OTP · rate-limited</div><div class="state-badge error">attempts exhausted</div>
+<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
+<div class="screen no-nav"><div class="app-bar"><div class="back-btn">‹</div><div class="app-bar-title">Verify phone</div><div style="width:24px"></div></div>
+<div class="sc-pad"><div class="t-title">Check WhatsApp for your code</div>
+<div style="margin-top:10px;padding:10px 12px;background:var(--red-l);border:1px solid rgba(192,57,43,0.18);border-radius:8px;display:flex;align-items:flex-start;gap:7px">
+<div style="color:var(--red);font-size:13px;margin-top:1px">⚠</div>
+<div style="font-size:var(--s-xs);color:var(--red);line-height:1.5">Too many attempts. Try a different number, or contact support at <strong>support@moneymore.app</strong>.</div>
+</div>
+<div class="otp-row" style="margin-top:8px;opacity:0.4">
+<div class="otp-box"></div><div class="otp-box"></div><div class="otp-box"></div>
+<div class="otp-box"></div><div class="otp-box"></div><div class="otp-box"></div></div>
+<div style="display:flex;flex-direction:column;gap:8px;margin-top:14px">
+<div class="btn btn-primary">Use a different number</div>
+<div class="btn btn-outline">Contact support</div>
+</div>
+<div style="flex:1"></div></div>
+</div><div class="ios-home"></div></div>
+<div class="flow-note decision">Input is disabled — OTP boxes greyed out. Distinct visually and textually from channel failure: this is a hard stop, not a retry. Two explicit recovery paths: change number, or contact support.</div></div>
+
+<div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">— or —</div></div>
+
+<div class="screen-col"><div class="screen-label">OTP · channel switched</div><div class="state-badge happy">switched to SMS</div>
+<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
+<div class="screen no-nav"><div class="app-bar"><div class="back-btn">‹</div><div class="app-bar-title">Verify phone</div><div style="width:24px"></div></div>
+<div class="sc-pad"><div class="t-title">Check your SMS for the code</div>
+<div class="t-caption" style="margin-top:-4px">Sent to <strong>+20 10 1234 5678</strong>.</div>
+<div class="inline-confirm" style="margin-top:10px">✓ Switched to SMS. New code sent.</div>
+<div class="otp-row" style="margin-top:10px">
+<div class="otp-box active">|</div><div class="otp-box"></div><div class="otp-box"></div>
+<div class="otp-box"></div><div class="otp-box"></div><div class="otp-box"></div></div>
+<div style="display:flex;justify-content:space-between;padding-top:6px">
+<div style="font-size:var(--s-sm);color:var(--t3);font-weight:500">Resend in <strong>60s</strong></div>
+<div style="font-size:var(--s-sm);color:var(--navy);font-weight:600">Use WhatsApp instead</div></div>
+<div style="flex:1"></div></div>
+</div><div class="ios-home"></div></div>
+<div class="flow-note decision">Channel switch is always an explicit user action — never auto-happens. Title updates to reference the new channel. Switch-link text swaps. Inline confirm banner is non-modal and auto-dismisses after ~3 seconds. Phone number preserved across the switch.</div></div>
+
+<div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">— or —</div></div>
+
+<div class="screen-col"><div class="screen-label">Entry · network error</div><div class="state-badge error">no connection</div>
+<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
+<div class="screen no-nav">
+<div class="sc-pad-lg" style="padding-top:48px">
+<div class="t-title" style="text-align:center;margin-bottom:6px">Continue to MoneyMore</div>
+<div style="margin-top:8px;padding:10px 12px;background:var(--red-l);border:1px solid rgba(192,57,43,0.18);border-radius:8px;display:flex;align-items:flex-start;gap:7px">
+<div style="font-size:13px;margin-top:1px">📶</div>
+<div style="font-size:var(--s-xs);color:var(--red);line-height:1.5">No connection. Check your internet and try again.</div>
+</div>
+<div class="btn btn-primary btn-lg" style="margin-top:6px">Retry</div>
+<div style="flex:1"></div>
+</div>
+</div><div class="ios-home"></div></div>
+<div class="flow-note decision">Distinct from rate-limit and channel failure — different icon (📶), different copy, different action. Must not consume an OTP attempt if the request never reached the server.</div></div>
+
+<div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">— or —</div></div>
+
+<div class="screen-col"><div class="screen-label">Name capture · validation error</div><div class="state-badge error">empty input</div>
+<div class="phone"><div class="ios-island"></div><div class="ios-status"><span>9:41</span><span>•••• 100%</span></div>
+<div class="screen no-nav"><div class="app-bar"><div class="back-btn">‹</div><div class="app-bar-title">Just one thing</div><div style="width:24px"></div></div>
+<div class="sc-pad">
+<div class="t-title">What should we call you?</div>
+<div class="t-caption" style="margin-top:-4px">First name is fine.</div>
+<div class="form-grp" style="margin-top:14px"><div class="form-label">Your name</div>
+<div class="input err"><span class="input-value" style="color:var(--t4)">e.g. Ahmed</span></div>
+<div class="input-err">⚠ Your name can't be empty.</div></div>
+<div style="flex:1"></div>
+<div class="btn btn-disabled btn-lg">Continue</div>
+</div>
+</div><div class="ios-home"></div></div>
+<div class="flow-note decision">Validation rejects both empty input and whitespace-only input — the latter shows a slightly different message ("Looks like that's just spaces — add a name."). Continue stays disabled until the input is valid. Error pairs ⚠ icon with text, never colour alone.</div></div>
+
+</div></div>
+
+<!-- HANDOFF -->
+<div class="handoff">
+<div class="handoff-title">Handoff</div>
+<div class="handoff-sub">Designer reference for this prototype. Every user-facing string from the flows above in English and Egyptian Arabic, and accessibility rules that change what you draw.</div>
+
+<div class="handoff-sec">
+<div class="handoff-h">Copy · English + Egyptian Arabic</div>
+<div class="handoff-p">All Arabic copy is Egyptian dialect and pending native-speaker review. RTL layout to be confirmed in Figma before any Arabic ships.</div>
+
+<table class="copy-table" style="margin-top:14px">
+<colgroup><col class="col-screen"><col class="col-element"><col class="col-en"><col class="col-ar"></colgroup>
+<thead><tr><th>Screen</th><th>Element</th><th>English</th><th>Egyptian Arabic (pending review)</th></tr></thead>
+<tbody>
+
+<tr class="group-start"><td class="screen-name" rowspan="3">Welcome 1 of 3</td><td class="element-name">Headline</td><td class="en">Your money, tracked automatically.</td><td class="ar">فلوسك بتتسجل لوحدها.</td></tr>
+<tr><td class="element-name">Sub</td><td class="en">Every bank SMS becomes a transaction. You don't lift a finger.</td><td class="ar">كل رسالة من البنك بتتحول لمعاملة. من غير ما تعمل أي حاجة.</td></tr>
+<tr><td class="element-name">Primary CTA</td><td class="en">Next</td><td class="ar">التالي</td></tr>
+
+<tr class="group-start"><td class="screen-name" rowspan="3">Welcome 2 of 3</td><td class="element-name">Headline</td><td class="en">No more end-of-month surprises.</td><td class="ar">مفيش مفاجآت آخر الشهر.</td></tr>
+<tr><td class="element-name">Sub</td><td class="en">Watch your spending move in real time. Know exactly what's left before payday.</td><td class="ar">اتفرّج على مصاريفك بتتحرك لحظة بلحظة. اعرف فاضلك كام قبل ما الراتب ينزل.</td></tr>
+<tr><td class="element-name">Primary CTA</td><td class="en">Next</td><td class="ar">التالي</td></tr>
+
+<tr class="group-start"><td class="screen-name" rowspan="3">Welcome 3 of 3</td><td class="element-name">Headline</td><td class="en">Ready when you are.</td><td class="ar">جاهزين لمّا تكون جاهز.</td></tr>
+<tr><td class="element-name">Sub</td><td class="en">60 seconds to set up. After that, your money tracks itself.</td><td class="ar">دقيقة واحدة للإعداد. وبعدها فلوسك بتتسجّل لوحدها.</td></tr>
+<tr><td class="element-name">Primary CTA</td><td class="en">Let's get started</td><td class="ar">يلا نبدأ</td></tr>
+
+<tr class="group-start"><td class="screen-name" rowspan="2">Language toggle</td><td class="element-name">Trigger label</td><td class="en">EN ▾ (when EN active) · ع ▾ (when AR active)</td><td class="ar">EN ▾ / ع ▾</td></tr>
+<tr><td class="element-name">Options</td><td class="en">English · العربية (each shown in its own language regardless of active locale)</td><td class="ar">English · العربية</td></tr>
+
+<tr class="group-start"><td class="screen-name" rowspan="6">Entry screen</td><td class="element-name">Title</td><td class="en">Continue to MoneyMore</td><td class="ar">كمّل لـ MoneyMore</td></tr>
+<tr><td class="element-name">Apple button</td><td class="en">Continue with Apple</td><td class="ar">كمّل بـ Apple</td></tr>
+<tr><td class="element-name">Google button</td><td class="en">Continue with Google</td><td class="ar">كمّل بـ Google</td></tr>
+<tr><td class="element-name">Divider</td><td class="en">or</td><td class="ar">أو</td></tr>
+<tr><td class="element-name">Phone field label + placeholder</td><td class="en">Phone number · placeholder: 10X XXX XXXX</td><td class="ar">رقم التليفون · placeholder: 10X XXX XXXX</td></tr>
+<tr><td class="element-name">Send-OTP CTA</td><td class="en">Send code</td><td class="ar">ابعت الكود</td></tr>
+
+<tr class="group-start"><td class="screen-name" rowspan="2">Entry · legal line</td><td class="element-name">Disclosure</td><td class="en">By continuing, you agree to our Terms and Privacy.</td><td class="ar">بالاستمرار، أنت بتوافق على شروط الاستخدام وسياسة الخصوصية.</td></tr>
+<tr><td class="element-name">Inline error · invalid phone</td><td class="en">Check the number — looks like it's missing digits.</td><td class="ar">راجع الرقم — يبان ناقص أرقام.</td></tr>
+
+<tr class="group-start"><td class="screen-name" rowspan="2">Entry · SSO failure</td><td class="element-name">Apple sign-in failed</td><td class="en">Apple sign-in didn't work. Try again, or use your phone number instead.</td><td class="ar">تسجيل الدخول بـ Apple ما اشتغلش. حاول تاني، أو استخدم رقم التليفون.</td></tr>
+<tr><td class="element-name">Google sign-in failed</td><td class="en">Google sign-in didn't work. Try again, or use your phone number instead.</td><td class="ar">تسجيل الدخول بـ Google ما اشتغلش. حاول تاني، أو استخدم رقم التليفون.</td></tr>
+
+<tr class="group-start"><td class="screen-name" rowspan="2">Entry · network error</td><td class="element-name">Banner</td><td class="en">No connection. Check your internet and try again.</td><td class="ar">مفيش اتصال. اتأكد من الإنترنت وحاول تاني.</td></tr>
+<tr><td class="element-name">CTA</td><td class="en">Retry</td><td class="ar">حاول تاني</td></tr>
+
+<tr class="group-start"><td class="screen-name" rowspan="3">OTP channel choice</td><td class="element-name">Headline</td><td class="en">Where should we send the code?</td><td class="ar">نبعت الكود فين؟</td></tr>
+<tr><td class="element-name">Sub</td><td class="en">Sending to +20 10 1234 5678.</td><td class="ar">هنبعته على +20 10 1234 5678.</td></tr>
+<tr><td class="element-name">CTA (disabled until choice)</td><td class="en">Send code</td><td class="ar">ابعت الكود</td></tr>
+
+<tr class="group-start"><td class="screen-name" rowspan="2">OTP channels</td><td class="element-name">WhatsApp option</td><td class="en">WhatsApp · Fastest — usually instant.</td><td class="ar">واتساب · الأسرع — عادةً بيوصل فوراً.</td></tr>
+<tr><td class="element-name">SMS option</td><td class="en">SMS · Standard text message.</td><td class="ar">رسالة نصية · SMS عادي.</td></tr>
+
+<tr class="group-start"><td class="screen-name" rowspan="5">OTP entry</td><td class="element-name">Title (WhatsApp)</td><td class="en">Check WhatsApp for your code</td><td class="ar">افتح واتساب · جالك كود</td></tr>
+<tr><td class="element-name">Title (SMS)</td><td class="en">Check your SMS for the code</td><td class="ar">شوف الرسائل · جالك كود</td></tr>
+<tr><td class="element-name">Sub</td><td class="en">Sent to +20 10 1234 5678. Didn't get it? Resend below or switch channel.</td><td class="ar">بعتنا الكود لـ +20 10 1234 5678. مجالكش؟ ابعت تاني أو غيّر القناة.</td></tr>
+<tr><td class="element-name">Resend label (timed → enabled)</td><td class="en">Resend in [NN]s → Resend code</td><td class="ar">إعادة الإرسال خلال [NN] ثانية → إعادة إرسال الكود</td></tr>
+<tr><td class="element-name">Switch-channel link</td><td class="en">Use SMS instead · Use WhatsApp instead</td><td class="ar">استخدم SMS بدلاً من ذلك · استخدم واتساب بدلاً من ذلك</td></tr>
+
+<tr class="group-start"><td class="screen-name" rowspan="3">OTP errors</td><td class="element-name">Invalid code</td><td class="en">That code didn't match. Try again.</td><td class="ar">الكود مش مظبوط. حاول تاني.</td></tr>
+<tr><td class="element-name">Channel failure (WhatsApp)</td><td class="en">WhatsApp didn't deliver the code. Try again, or get it by SMS.</td><td class="ar">واتساب ما وصّلش الكود. حاول تاني، أو استلمه بـ SMS.</td></tr>
+<tr><td class="element-name">Channel failure (SMS)</td><td class="en">SMS didn't deliver the code. Try again, or get it by WhatsApp.</td><td class="ar">SMS ما وصّلش الكود. حاول تاني، أو استلمه بواتساب.</td></tr>
+
+<tr class="group-start"><td class="screen-name" rowspan="3">OTP rate-limit</td><td class="element-name">Banner</td><td class="en">Too many attempts. Try a different number, or contact support at support@moneymore.app.</td><td class="ar">محاولات كتير. جرّب رقم تاني، أو اتواصل مع الدعم على support@moneymore.app.</td></tr>
+<tr><td class="element-name">Primary CTA</td><td class="en">Use a different number</td><td class="ar">جرّب رقم تاني</td></tr>
+<tr><td class="element-name">Secondary CTA</td><td class="en">Contact support</td><td class="ar">اتواصل مع الدعم</td></tr>
+
+<tr class="group-start"><td class="screen-name" rowspan="2">OTP channel switch confirm</td><td class="element-name">Inline banner (to SMS)</td><td class="en">Switched to SMS. New code sent.</td><td class="ar">حوّلنا لـ SMS. بعتنا كود جديد.</td></tr>
+<tr><td class="element-name">Inline banner (to WhatsApp)</td><td class="en">Switched to WhatsApp. New code sent.</td><td class="ar">حوّلنا لواتساب. بعتنا كود جديد.</td></tr>
+
+<tr class="group-start"><td class="screen-name" rowspan="5">Name capture</td><td class="element-name">Title</td><td class="en">What should we call you?</td><td class="ar">نناديك إزاي؟</td></tr>
+<tr><td class="element-name">Sub</td><td class="en">First name is fine.</td><td class="ar">الاسم الأول كفاية.</td></tr>
+<tr><td class="element-name">Input label + placeholder</td><td class="en">Your name · placeholder: e.g. Ahmed</td><td class="ar">اسمك · placeholder: مثلاً أحمد</td></tr>
+<tr><td class="element-name">Validation (empty)</td><td class="en">Your name can't be empty.</td><td class="ar">لازم تكتب اسمك.</td></tr>
+<tr><td class="element-name">Validation (whitespace only)</td><td class="en">Looks like that's just spaces — add a name.</td><td class="ar">دي مسافات بس — اكتب اسمك.</td></tr>
+
+<tr class="group-start"><td class="screen-name" rowspan="4">Tutorial intro</td><td class="element-name">Headline</td><td class="en">Turn on automatic tracking.</td><td class="ar">شغّل التتبع التلقائي.</td></tr>
+<tr><td class="element-name">Sub</td><td class="en">A 60-second setup that lets MoneyMore log transactions for you, every time your bank texts you.</td><td class="ar">إعداد دقيقة بيخلّي MoneyMore يسجّل المعاملات لوحده، كل ما البنك يبعتلك رسالة.</td></tr>
+<tr><td class="element-name">Primary CTA · Secondary CTA · Skip</td><td class="en">Open Shortcuts · Show me how · Skip</td><td class="ar">افتح Shortcuts · وريني إزاي · تخطّي</td></tr>
+<tr><td class="element-name">Defer link (steps 1–9)</td><td class="en">I'll do this later</td><td class="ar">أعمله بعدين</td></tr>
+
+<tr class="group-start"><td class="screen-name" rowspan="10">Tutorial steps 1–9 instructions</td><td class="element-name">Step 1</td><td class="en">Tap Automation, then New Automation.</td><td class="ar">اضغط Automation، وبعدين New Automation.</td></tr>
+<tr><td class="element-name">Step 2</td><td class="en">Choose Message.</td><td class="ar">اختار Message.</td></tr>
+<tr><td class="element-name">Step 3</td><td class="en">Tap Choose in the text field.</td><td class="ar">اضغط Choose في خانة النص.</td></tr>
+<tr><td class="element-name">Step 4</td><td class="en">Type your bank's currency code — EGP, USD, or جم.</td><td class="ar">اكتب كود عملة البنك — EGP أو USD أو جم.</td></tr>
+<tr><td class="element-name">Step 5</td><td class="en">Choose Run Immediately.</td><td class="ar">اختار Run Immediately.</td></tr>
+<tr><td class="element-name">Step 6</td><td class="en">Tap Create New Shortcut.</td><td class="ar">اضغط Create New Shortcut.</td></tr>
+<tr><td class="element-name">Step 7</td><td class="en">Search "Log from SMS" and tap it under MoneyMore.</td><td class="ar">دوّر على "Log from SMS" واضغطها تحت MoneyMore.</td></tr>
+<tr><td class="element-name">Step 8</td><td class="en">In the message field, tap Shortcut Input.</td><td class="ar">في خانة الرسالة، اضغط Shortcut Input.</td></tr>
+<tr><td class="element-name">Step 9</td><td class="en">Turn off Show When Run, then tap Done.</td><td class="ar">اقفل Show When Run، وبعدين اضغط Done.</td></tr>
+<tr><td class="element-name">Next CTA</td><td class="en">Next</td><td class="ar">التالي</td></tr>
+
+<tr class="group-start"><td class="screen-name" rowspan="3">Tutorial step 10</td><td class="element-name">Headline</td><td class="en">Automatic tracking is on.</td><td class="ar">التتبع التلقائي شغّال.</td></tr>
+<tr><td class="element-name">Sub</td><td class="en">From now on, every bank SMS becomes a transaction in MoneyMore.</td><td class="ar">من دلوقتي، كل رسالة من البنك بتتحول لمعاملة في MoneyMore.</td></tr>
+<tr><td class="element-name">Primary CTA</td><td class="en">Start Tracking</td><td class="ar">يلا نبدأ</td></tr>
+
+<tr class="group-start"><td class="screen-name" rowspan="3">Skip confirmation</td><td class="element-name">Headline</td><td class="en">Got it — you'll add transactions yourself.</td><td class="ar">تمام — هتسجّل المعاملات بنفسك.</td></tr>
+<tr><td class="element-name">Sub</td><td class="en">Changed your mind? You can turn on automatic tracking anytime from Profile.</td><td class="ar">غيّرت رأيك؟ تقدر تشغّل التتبع التلقائي في أي وقت من البروفايل.</td></tr>
+<tr><td class="element-name">Primary CTA</td><td class="en">Continue to Home</td><td class="ar">كمل للهوم</td></tr>
+
+<tr class="group-start"><td class="screen-name" rowspan="4">Manual-only Home</td><td class="element-name">Total card label</td><td class="en">Total spending this month</td><td class="ar">إجمالي المصاريف الشهر ده</td></tr>
+<tr><td class="element-name">Empty rows placeholder</td><td class="en">Add your first transaction to see your spending here.</td><td class="ar">سجّل أول معاملة عشان تشوف مصاريفك هنا.</td></tr>
+<tr><td class="element-name">Add transaction hero</td><td class="en">+ Add transaction</td><td class="ar">+ سجّل معاملة</td></tr>
+<tr><td class="element-name">Recovery link</td><td class="en">Want automatic tracking? Turn it on from Profile.</td><td class="ar">عايز التتبع التلقائي؟ شغّله من البروفايل.</td></tr>
+
+<tr class="group-start"><td class="screen-name" rowspan="3">Empty-but-armed Home</td><td class="element-name">Block headline</td><td class="en">You're set up.</td><td class="ar">جاهز.</td></tr>
+<tr><td class="element-name">Block body</td><td class="en">Transactions will appear here when your bank texts you next.</td><td class="ar">المعاملات هتظهر هنا أول ما البنك يبعتلك رسالة.</td></tr>
+<tr><td class="element-name">Total card label</td><td class="en">No transactions yet</td><td class="ar">لسه مفيش معاملات</td></tr>
+
+<tr class="group-start"><td class="screen-name" rowspan="2">Home greeting</td><td class="element-name">Morning (5am–4:59pm)</td><td class="en">Good morning, [name].</td><td class="ar">صباح الخير يا [name].</td></tr>
+<tr><td class="element-name">Evening (5pm–4:59am)</td><td class="en">Good evening, [name].</td><td class="ar">مساء الخير يا [name].</td></tr>
+
+<tr class="group-start"><td class="screen-name" rowspan="4">Push pre-prompt</td><td class="element-name">Headline</td><td class="en">Stay one step ahead of your money.</td><td class="ar">اعرف فلوسك بتتحرك.</td></tr>
+<tr><td class="element-name">Sub</td><td class="en">Get a heads-up before you hit a budget limit, and a quick confirm when transactions land.</td><td class="ar">تنبيه قبل ما توصل لحد الميزانية، وتأكيد سريع لما المعاملات تتسجل.</td></tr>
+<tr><td class="element-name">Primary CTA</td><td class="en">Turn on alerts</td><td class="ar">شغّل التنبيهات</td></tr>
+<tr><td class="element-name">Dismiss link</td><td class="en">Not now</td><td class="ar">مش دلوقتي</td></tr>
+
+<tr class="group-start"><td class="screen-name" rowspan="4">Welcome back · new device</td><td class="element-name">Headline</td><td class="en">Welcome back, [name].</td><td class="ar">حمد لله ع السلامة يا [name].</td></tr>
+<tr><td class="element-name">Sub</td><td class="en">New device means we need to turn automatic tracking back on. Takes 60 seconds.</td><td class="ar">جهاز جديد يعني محتاجين نشغّل التتبع التلقائي تاني. دقيقة واحدة.</td></tr>
+<tr><td class="element-name">Primary CTA</td><td class="en">Set up Shortcut</td><td class="ar">شغّل Shortcut</td></tr>
+<tr><td class="element-name">Skip link</td><td class="en">Skip</td><td class="ar">تخطّي</td></tr>
+
+<tr class="group-start"><td class="screen-name" rowspan="3">Re-prompt headlines</td><td class="element-name">3rd manual transaction</td><td class="en">That's 3 transactions logged by hand.</td><td class="ar">دي 3 معاملات سجّلتها بإيدك.</td></tr>
+<tr><td class="element-name">4th app open</td><td class="en">You're missing the best part.</td><td class="ar">فاتك أحسن حاجة.</td></tr>
+<tr><td class="element-name">Budget creation</td><td class="en">Budgets work better with auto-tracking.</td><td class="ar">الميزانيات بتشتغل أحسن مع التتبع التلقائي.</td></tr>
+
+<tr class="group-start"><td class="screen-name" rowspan="3">Re-prompt · shared</td><td class="element-name">Sub (all 3 triggers)</td><td class="en">One-time setup. After that, every bank SMS becomes a transaction automatically.</td><td class="ar">إعداد لمرة واحدة. وبعدها كل رسالة من البنك بتتحول لمعاملة لوحدها.</td></tr>
+<tr><td class="element-name">Primary CTA</td><td class="en">Set up now</td><td class="ar">شغّل دلوقتي</td></tr>
+<tr><td class="element-name">Dismiss link</td><td class="en">Not now</td><td class="ar">مش دلوقتي</td></tr>
+
+</tbody></table>
+
+<div class="callout warn" style="margin-top:18px">
+<strong>Open copy threads:</strong> OTP rate-limit timer assumes engineering-confirmed wait — copy may revise. Currency code variants (EGP, USD, جم, ج.م, L.E.) need ingestion-team confirmation. Push pre-prompt promises both budget alerts and transaction confirmations — both must be live at launch or copy revises. All Egyptian Arabic strings need native-speaker review before publishing. RTL layout to be verified in Figma before any Arabic ships.
+</div>
+</div>
+
+<div class="handoff-sec">
+<div class="handoff-h">Accessibility — what changes what you draw</div>
+<ul class="handoff-list">
+<li><strong>Touch targets — 44×44pt minimum</strong> on every interactive element. Includes the language toggle on welcome screens, OTP boxes, the resend link, the switch-channel link, the "Wrong number?" / back chevron, the "I'll do this later" app-bar action, the Skip link on the tutorial intro, the recovery link below the manual-only Home hero, and the centre [+] button.</li>
+<li><strong>Contrast — 4.5:1 minimum for text</strong>, 7:1 for any financial figures (Home Total amounts, category breakdown amounts).</li>
+<li><strong>Never colour-only for state.</strong> OTP error pairs red border with inline error text and warning icon. Disabled CTAs (OTP channel CTA before selection, Continue when name is empty) need a lock icon, opacity change, or text signal beyond colour. Selected channel state in the OTP channel sheet uses both border colour and a radio dot.</li>
+<li><strong>Focus order — input → primary CTA → secondary actions → dismiss.</strong> On Arabic layouts the visual direction flips to RTL but focus order stays top-to-bottom, not visual-left-to-right.</li>
+<li><strong>Tutorial step illustrations need text equivalents.</strong> Every step screen carries the instruction in copy — the visual is supportive, not the primary information. A user who can't see the mock still knows what to tap.</li>
+<li><strong>Welcome-back screen must announce the user's name to VoiceOver.</strong> Name is the moment-of-recognition signal — not just decoration.</li>
+</ul>
+</div>
+
+</div>
+
+</div>
+</body>
+</html>
