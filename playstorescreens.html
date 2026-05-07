@@ -1,0 +1,1630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoneyMore — Play Store Screenshots · Designer Prototype</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Cairo:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --navy:#1A3C5E; --navy-d:#0F2640; --navy-l:#2A5180;
+  --green:#2E8B57; --green-l:#E8F5EE; --green-d:#1F6B3F;
+  --gold:#B8860B; --gold-l:#FBF4DC;
+  --red:#C0392B; --red-l:#FDECEA;
+  --teal:#1F6B6B; --teal-l:#DCEEEE;
+  --page-bg:#F9F8F5; --page-border:#E2DFD8;
+  --screen-bg:#FAFAF8; --screen-bg2:#F2F0EB; --screen-bg3:#E8E5DE;
+  --t1:#1A1714; --t2:#3D3A35; --t3:#7A7670; --t4:#ABA7A0;
+  --t-pos:#1A6E3C; --t-neg:#A82419; --t-inv:#FFFFFF;
+  --b1:#E8E5DF; --b2:#D4D0C8; --b3:#BCBAB2;
+  --frame-bg:#2A2724; --frame-border:#1A1614;
+  --f-body:'Plus Jakarta Sans',sans-serif;
+  --f-mono:'DM Mono',monospace;
+  --f-arabic:'Cairo',sans-serif;
+  --s-xs:10px; --s-sm:12px; --s-base:14px; --s-md:16px;
+  --s-lg:18px; --s-xl:22px; --s-2xl:28px;
+  --r-sm:6px; --r-md:12px; --r-lg:16px; --r-xl:24px; --r-pill:999px;
+  --shadow-phone:0 12px 40px rgba(0,0,0,0.22),0 4px 12px rgba(0,0,0,0.14);
+  --shadow-card:0 1px 4px rgba(0,0,0,0.06);
+  /* Play Store frame: 9:16 ratio, scaled for layout readability */
+  --frame-w:340px;
+  --frame-h:604px;
+  --frame-r:18px;
+  /* Phone inside frame */
+  --ph-w:240px;
+  --ph-h:480px;
+  --ph-r:28px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-size:var(--s-base);line-height:1.6;-webkit-font-smoothing:antialiased;}
+.page{max-width:1500px;margin:0 auto;padding:48px 40px 96px;}
+
+/* ── DOC HEADER ─────────────────────────────────────────── */
+.doc-header{padding-bottom:32px;margin-bottom:40px;border-bottom:2px solid var(--b1);}
+.doc-meta{display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap;}
+.doc-tag{font-family:var(--f-mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;padding:4px 11px;border-radius:3px;font-weight:600;}
+.doc-tag.prototype{background:var(--green-l);color:#0F5830;}
+.doc-tag.designer{background:#EAE8FF;color:#3A3288;}
+.doc-tag.android{background:#E8F4EA;color:#1F5E2A;}
+.doc-tag.wip{background:var(--gold-l);color:#6B5210;}
+.doc-tag.version{background:var(--navy);color:#fff;}
+.doc-date{font-family:var(--f-mono);font-size:11px;color:var(--t2);margin-left:auto;font-weight:500;}
+.doc-title{font-size:34px;font-weight:700;color:var(--t1);letter-spacing:-0.02em;line-height:1.15;margin-bottom:10px;}
+.doc-subtitle{font-size:15px;color:var(--t1);font-weight:400;margin-bottom:30px;line-height:1.5;max-width:920px;}
+
+.doc-info{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--b1);border-radius:var(--r-md);overflow:hidden;background:white;}
+.doc-info-cell{padding:16px 20px;border-right:1px solid var(--b1);}
+.doc-info-cell:last-child{border-right:none;}
+.info-label{font-family:var(--f-mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--t2);margin-bottom:8px;font-weight:600;}
+.info-body{font-size:13px;color:var(--t1);line-height:1.55;}
+.info-body strong{color:var(--t1);font-weight:700;}
+.flow-list{display:flex;flex-direction:column;gap:4px;}
+.flow-list-item{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--t1);line-height:1.45;}
+.flow-list-item::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0;}
+
+/* ── SECTION ────────────────────────────────────────────── */
+.flow-section{margin-bottom:64px;}
+.flow-section-header{display:flex;align-items:center;gap:16px;margin-bottom:32px;}
+.flow-section-line{flex:1;height:1px;background:var(--b2);}
+.flow-section-title{font-family:var(--f-body);font-size:16px;font-weight:700;letter-spacing:-0.01em;color:#fff;background:var(--navy);padding:6px 14px;border-radius:4px;white-space:nowrap;}
+
+/* ── FRAMES GRID ────────────────────────────────────────── */
+.frames-grid{display:grid;grid-template-columns:repeat(4,var(--frame-w));gap:32px 28px;justify-content:start;}
+
+.frame-col{display:flex;flex-direction:column;align-items:center;gap:10px;}
+.frame-num{font-family:var(--f-mono);font-size:11px;font-weight:600;color:var(--t3);letter-spacing:0.06em;text-transform:uppercase;text-align:center;}
+.frame-num strong{color:var(--t1);font-weight:700;}
+.frame-purpose{font-family:var(--f-body);font-size:11px;font-weight:500;color:var(--t2);text-align:center;max-width:var(--frame-w);line-height:1.4;font-style:italic;}
+
+/* ── PLAY STORE FRAME ───────────────────────────────────── */
+.ps-frame{
+  width:var(--frame-w);
+  height:var(--frame-h);
+  border-radius:var(--frame-r);
+  overflow:hidden;
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  box-shadow:0 10px 32px rgba(0,0,0,0.16),0 2px 8px rgba(0,0,0,0.08);
+  border:1px solid rgba(0,0,0,0.08);
+}
+
+/* Background variants — solid blocks per design direction */
+.ps-bg-navy   { background:linear-gradient(180deg,#1F4570 0%,#15314F 100%); }
+.ps-bg-green  { background:linear-gradient(180deg,#2E8B57 0%,#1F6B3F 100%); }
+.ps-bg-gold   { background:linear-gradient(180deg,#C99318 0%,#A8780B 100%); }
+.ps-bg-teal   { background:linear-gradient(180deg,#1F6B6B 0%,#114848 100%); }
+.ps-bg-cream  { background:linear-gradient(180deg,#F4EDD8 0%,#E8DBB6 100%); }
+.ps-bg-trust  { background:linear-gradient(180deg,#3D5470 0%,#2A3D54 100%); }
+.ps-bg-brand  { background:linear-gradient(180deg,#1A3C5E 0%,#0F2640 100%); }
+
+/* Top zone — headline area (60%) */
+.ps-top{
+  flex:0 0 38%;
+  padding:28px 24px 12px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:8px;
+}
+
+.ps-headline{
+  font-family:var(--f-body);
+  font-size:24px;
+  font-weight:800;
+  line-height:1.1;
+  letter-spacing:-0.015em;
+  color:#fff;
+}
+.ps-headline.dark{color:#1A3C5E;}
+.ps-headline.cream{color:#F9F8F5;}
+
+.ps-subhead{
+  font-family:var(--f-body);
+  font-size:13px;
+  font-weight:500;
+  line-height:1.45;
+  color:rgba(255,255,255,0.85);
+  margin-top:4px;
+}
+.ps-subhead.dark{color:rgba(26,60,94,0.78);}
+.ps-subhead.cream{color:rgba(249,248,245,0.85);}
+
+/* Arabic versions */
+.ps-headline.ar{font-family:var(--f-arabic);font-weight:800;font-size:26px;direction:rtl;text-align:right;letter-spacing:0;line-height:1.25;}
+.ps-subhead.ar{font-family:var(--f-arabic);font-weight:500;font-size:14px;direction:rtl;text-align:right;line-height:1.55;}
+
+/* Bottom zone — phone mockup (40%) */
+.ps-bottom{
+  flex:1;
+  position:relative;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  padding-top:8px;
+  overflow:hidden;
+}
+
+/* ── PHONE MOCKUP (smaller than the in-app phone) ──────── */
+.phone-mini{
+  width:var(--ph-w);
+  height:var(--ph-h);
+  border-radius:var(--ph-r);
+  background:#1A1614;
+  position:relative;
+  overflow:hidden;
+  border:2px solid #0A0806;
+  box-shadow:var(--shadow-phone);
+  flex-shrink:0;
+}
+.phone-mini.tilted{transform:translateY(20px);}
+
+.pm-status{
+  position:absolute;top:0;left:0;right:0;height:18px;
+  background:var(--screen-bg);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 12px;z-index:10;
+  font-family:var(--f-mono);font-size:8px;color:var(--t1);font-weight:600;
+}
+.pm-screen{
+  position:absolute;top:18px;bottom:0;left:0;right:0;
+  background:var(--screen-bg);
+  overflow:hidden;
+  display:flex;flex-direction:column;
+}
+
+.pm-app-bar{
+  height:42px;display:flex;align-items:center;
+  padding:0 14px;background:var(--screen-bg);
+  border-bottom:1px solid var(--b1);flex-shrink:0;gap:10px;
+}
+.pm-app-bar-title{font-size:14px;font-weight:700;color:var(--t1);flex:1;}
+.pm-app-bar-action{font-size:11px;font-weight:700;color:var(--green);}
+
+.pm-content{flex:1;overflow:hidden;display:flex;flex-direction:column;padding:12px;gap:10px;}
+
+/* ── FRAME-SPECIFIC PHONE CONTENT ───────────────────────── */
+
+/* SMS notification (Frame 1) */
+.sms-notif{
+  background:#FFFFFF;
+  border:1px solid var(--b1);
+  border-radius:var(--r-md);
+  padding:10px 12px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+  display:flex;flex-direction:column;gap:4px;
+  position:relative;
+}
+.sms-notif::before{
+  content:'';position:absolute;top:-4px;left:14px;right:auto;
+  width:8px;height:8px;background:#FFFFFF;
+  border-left:1px solid var(--b1);border-top:1px solid var(--b1);
+  transform:rotate(45deg);
+}
+.sms-head{display:flex;align-items:center;gap:6px;}
+.sms-icon{width:16px;height:16px;border-radius:4px;background:#34A853;display:flex;align-items:center;justify-content:center;font-size:9px;}
+.sms-from{font-size:10px;font-weight:700;color:var(--t1);flex:1;}
+.sms-time{font-size:9px;color:var(--t3);}
+.sms-body{font-size:9.5px;color:var(--t2);line-height:1.4;}
+
+/* Magic arrow */
+.magic-arrow{
+  display:flex;align-items:center;justify-content:center;
+  padding:4px 0;gap:4px;
+}
+.magic-line{
+  width:2px;height:16px;
+  background:linear-gradient(180deg,var(--green) 0%,rgba(46,139,87,0.2) 100%);
+  border-radius:2px;
+}
+.magic-arrow-head{
+  width:0;height:0;
+  border-left:6px solid transparent;
+  border-right:6px solid transparent;
+  border-top:8px solid var(--green);
+  margin-top:-2px;
+}
+.magic-label{
+  position:absolute;
+  font-family:var(--f-mono);font-size:8px;font-weight:700;
+  color:var(--green);background:white;
+  padding:2px 6px;border-radius:var(--r-pill);
+  border:1px solid var(--green-l);
+  box-shadow:0 2px 6px rgba(0,0,0,0.06);
+  z-index:5;
+}
+
+/* Auto-categorised tx pill (Frame 1) */
+.tx-pill{
+  background:white;
+  border:1px solid var(--b1);
+  border-radius:var(--r-md);
+  padding:10px;
+  display:flex;align-items:center;gap:9px;
+  box-shadow:var(--shadow-card);
+}
+.tx-pill-icon{
+  width:30px;height:30px;border-radius:8px;
+  background:#FEF0E6;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;flex-shrink:0;
+}
+.tx-pill-info{flex:1;min-width:0;}
+.tx-pill-name{font-size:11px;font-weight:700;color:var(--t1);}
+.tx-pill-cat{font-size:9px;color:var(--t3);margin-top:1px;}
+.tx-pill-amt{font-size:12px;font-weight:700;color:var(--t1);}
+.tx-pill-tag{
+  display:inline-flex;align-items:center;gap:3px;
+  font-size:7.5px;font-weight:700;color:var(--green-d);
+  background:var(--green-l);padding:2px 6px;border-radius:var(--r-pill);
+  margin-top:3px;letter-spacing:0.04em;
+}
+
+/* FREE FOREVER stamp (Frame 2) */
+.free-stamp{
+  position:absolute;
+  top:-12px;right:-12px;
+  width:84px;height:84px;
+  border-radius:50%;
+  background:#F2C84B;
+  border:3px solid #1A3C5E;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-family:var(--f-body);font-weight:800;
+  color:#1A3C5E;
+  transform:rotate(12deg);
+  box-shadow:0 6px 16px rgba(0,0,0,0.18);
+  z-index:20;
+  letter-spacing:0.04em;
+}
+.free-stamp-1{font-size:18px;line-height:1;}
+.free-stamp-2{font-size:9px;line-height:1;margin-top:2px;letter-spacing:0.1em;}
+.free-stamp.ar{transform:rotate(-12deg);}
+.free-stamp.ar .free-stamp-1{font-family:var(--f-arabic);font-size:14px;}
+.free-stamp.ar .free-stamp-2{font-family:var(--f-arabic);font-size:9px;}
+
+/* Budget cards (Frame 2 + 5) */
+.bud-mini{
+  background:white;border:1px solid var(--b1);
+  border-radius:var(--r-md);padding:9px 11px;
+  box-shadow:var(--shadow-card);
+}
+.bud-mini-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;}
+.bud-mini-cat{font-size:11px;font-weight:700;color:var(--t1);}
+.bud-mini-amts{font-size:9px;color:var(--t3);font-family:var(--f-mono);}
+.bud-mini-bar{height:5px;background:var(--screen-bg2);border-radius:var(--r-pill);overflow:hidden;margin-bottom:4px;}
+.bud-mini-fill{height:100%;border-radius:var(--r-pill);background:var(--green);}
+.bud-mini-fill.warn{background:var(--gold);}
+.bud-mini-fill.danger{background:var(--red);}
+.bud-mini-foot{display:flex;justify-content:space-between;align-items:center;}
+.bud-mini-pct{font-size:8.5px;color:var(--t3);font-weight:600;}
+.bud-mini-left{font-size:8.5px;font-weight:700;color:var(--t2);}
+
+/* Transaction list (Frame 3) */
+.tx-row{
+  display:flex;align-items:center;padding:8px 0;gap:9px;
+  border-bottom:1px solid var(--b1);
+}
+.tx-row:last-child{border-bottom:none;}
+.tx-row-icon{
+  width:28px;height:28px;border-radius:7px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;flex-shrink:0;
+}
+.tx-icon-shop{background:#FAE8F0;}
+.tx-icon-food{background:#FEF0E6;}
+.tx-icon-tr{background:#EAF0FE;}
+.tx-icon-bill{background:#EEE8F8;}
+.tx-icon-cash{background:#E8F5EE;}
+.tx-icon-hlth{background:#E8F5EC;}
+
+.tx-row-info{flex:1;min-width:0;}
+.tx-row-name{font-size:10.5px;font-weight:700;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tx-row-cat{font-size:8.5px;color:var(--t3);margin-top:1px;}
+.tx-row-amt{font-size:10.5px;font-weight:700;color:var(--t1);}
+.tx-row-amt.neg::before{content:'−';}
+.tx-row-amt.pos::before{content:'+';color:var(--t-pos);}
+.tx-row-amt.pos{color:var(--t-pos);}
+
+.tx-date-divider{
+  font-family:var(--f-mono);font-size:8px;font-weight:700;
+  color:var(--t3);letter-spacing:0.06em;text-transform:uppercase;
+  padding:5px 0 2px;
+}
+
+/* Categories with bars (Frame 4) */
+.cat-row{
+  display:flex;flex-direction:column;gap:4px;padding:6px 0;
+}
+.cat-row-head{display:flex;align-items:center;gap:8px;}
+.cat-row-icon{
+  width:24px;height:24px;border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;flex-shrink:0;
+}
+.cat-row-name{flex:1;font-size:11px;font-weight:700;color:var(--t1);}
+.cat-row-pct{font-size:10px;font-weight:700;color:var(--t1);font-family:var(--f-mono);}
+.cat-row-bar{height:5px;background:var(--screen-bg2);border-radius:var(--r-pill);overflow:hidden;}
+.cat-row-fill{height:100%;border-radius:var(--r-pill);}
+.cat-row-fill.f1{background:#B05A10;}
+.cat-row-fill.f2{background:#1A52A0;}
+.cat-row-fill.f3{background:#6028A0;}
+.cat-row-fill.f4{background:#1A6E34;}
+
+/* Insights donut (Frame 6) */
+.donut-wrap{
+  display:flex;align-items:center;justify-content:center;
+  padding:6px 0 4px;
+}
+.donut{
+  width:96px;height:96px;
+  border-radius:50%;
+  background:conic-gradient(
+    #B05A10 0deg 126deg,
+    #1A52A0 126deg 216deg,
+    #6028A0 216deg 288deg,
+    #1A6E34 288deg 324deg,
+    #7A7670 324deg 360deg
+  );
+  position:relative;
+  display:flex;align-items:center;justify-content:center;
+}
+.donut::before{
+  content:'';position:absolute;
+  inset:18px;border-radius:50%;background:white;
+}
+.donut-center{position:relative;z-index:2;text-align:center;}
+.donut-amt{font-size:14px;font-weight:800;color:var(--t1);line-height:1;letter-spacing:-0.02em;}
+.donut-lbl{font-size:8px;color:var(--t3);font-weight:600;margin-top:2px;letter-spacing:0.04em;text-transform:uppercase;}
+
+.legend-row{display:flex;align-items:center;gap:6px;padding:3px 0;}
+.legend-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0;}
+.legend-name{flex:1;font-size:10px;color:var(--t2);font-weight:600;}
+.legend-pct{font-size:10px;color:var(--t1);font-weight:700;font-family:var(--f-mono);}
+
+/* Privacy card (Frame 7) */
+.privacy-shield{
+  width:50px;height:50px;border-radius:50%;
+  background:var(--green-l);
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;margin:6px auto 8px;
+}
+.privacy-title{font-size:13px;font-weight:800;color:var(--t1);text-align:center;letter-spacing:-0.01em;}
+.privacy-list{display:flex;flex-direction:column;gap:6px;margin-top:10px;}
+.privacy-item{display:flex;align-items:flex-start;gap:7px;}
+.privacy-check{
+  width:16px;height:16px;border-radius:50%;
+  background:var(--green);color:white;
+  display:flex;align-items:center;justify-content:center;
+  font-size:9px;font-weight:700;flex-shrink:0;margin-top:1px;
+}
+.privacy-text{font-size:10px;color:var(--t1);font-weight:600;line-height:1.35;}
+
+/* Hero home screen (Frame 8) */
+.hero-greeting{font-size:11px;color:var(--t3);font-weight:600;}
+.hero-balance{font-size:22px;font-weight:800;color:var(--t1);letter-spacing:-0.02em;line-height:1;margin-top:2px;}
+.hero-cur{font-size:9px;color:var(--t3);margin-top:2px;font-weight:600;}
+
+.hero-quick{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:6px;margin-top:6px;
+}
+.hero-quick-tile{
+  background:white;border:1px solid var(--b1);border-radius:var(--r-sm);
+  padding:7px 8px;
+  display:flex;flex-direction:column;gap:2px;
+}
+.hero-quick-icon{font-size:13px;}
+.hero-quick-lbl{font-size:8.5px;font-weight:700;color:var(--t1);}
+.hero-quick-val{font-size:9px;color:var(--t3);font-weight:600;}
+
+/* Bottom nav inside mini phone */
+.pm-nav{
+  height:36px;background:var(--screen-bg);
+  border-top:1px solid var(--b1);
+  display:flex;align-items:center;flex-shrink:0;
+}
+.pm-nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;}
+.pm-nav-icon{font-size:12px;}
+.pm-nav-lbl{font-size:7px;color:var(--t4);font-weight:600;}
+.pm-nav-item.on .pm-nav-lbl{color:var(--green);}
+
+/* RTL adjustments */
+.rtl-frame .ps-top{direction:rtl;text-align:right;}
+.rtl-frame .pm-app-bar{flex-direction:row-reverse;}
+.rtl-frame .pm-app-bar-title{text-align:right;}
+
+/* ── HANDOFF ───────────────────────────────────────────── */
+.handoff{margin-top:64px;padding:36px;background:white;border:1px solid var(--b1);border-radius:var(--r-md);}
+.handoff-title{font-size:26px;font-weight:700;color:var(--t1);margin-bottom:8px;letter-spacing:-0.01em;}
+.handoff-sub{font-size:14px;color:var(--t2);margin-bottom:28px;line-height:1.5;}
+.handoff-sec{margin-top:28px;padding-top:24px;border-top:1px solid var(--b1);}
+.handoff-sec:first-of-type{border-top:none;padding-top:0;margin-top:0;}
+.handoff-h{font-size:18px;font-weight:700;color:var(--t1);margin-bottom:12px;}
+.handoff-p{font-size:14px;color:var(--t1);line-height:1.6;margin-bottom:8px;}
+.handoff-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.handoff-list li{font-size:14px;color:var(--t1);line-height:1.6;padding-left:16px;position:relative;}
+.handoff-list li::before{content:'—';position:absolute;left:0;color:var(--t3);font-weight:700;}
+
+.copy-table{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed;}
+.copy-table col.col-frame{width:14%;}
+.copy-table col.col-element{width:18%;}
+.copy-table col.col-en{width:34%;}
+.copy-table col.col-ar{width:34%;}
+.copy-table th{text-align:left;padding:10px 12px;border-bottom:2px solid var(--b2);font-size:11px;color:var(--t2);text-transform:uppercase;letter-spacing:0.06em;font-weight:700;background:var(--screen-bg);}
+.copy-table td{padding:10px 12px;border-bottom:1px solid var(--b1);vertical-align:top;color:var(--t1);line-height:1.55;word-wrap:break-word;overflow-wrap:break-word;}
+.copy-table td.frame-name{font-weight:700;color:var(--t1);background:var(--screen-bg);}
+.copy-table td.element-name{color:var(--t2);font-weight:500;}
+.copy-table td.en{font-size:12px;color:var(--t1);}
+.copy-table td.ar{font-size:13px;color:var(--t1);direction:rtl;text-align:right;font-family:var(--f-arabic);font-weight:500;}
+.copy-table tr.group-start td{border-top:2px solid var(--b2);}
+
+.callout{padding:12px 14px;border-radius:0 var(--r-sm) var(--r-sm) 0;font-size:13px;line-height:1.55;margin-top:12px;}
+.callout.info{background:#EAF0FE;border-left:3px solid #4A80C0;color:#103868;}
+.callout.warn{background:var(--gold-l);border-left:3px solid var(--gold);color:#6B5210;}
+
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ═══════════════════════════════════════════════════════
+     DOC HEADER
+═══════════════════════════════════════════════════════════ -->
+<div class="doc-header">
+  <div class="doc-meta">
+    <span class="doc-tag prototype">Prototype</span>
+    <span class="doc-tag designer">Designer brief</span>
+    <span class="doc-tag android">Play Store · Android</span>
+    <span class="doc-tag wip">Draft v1</span>
+    <span class="doc-tag version">DB-PS-001</span>
+    <span class="doc-date">Phase 1 · Egypt market</span>
+  </div>
+
+  <div class="doc-title">Play Store Screenshots — 8 frames</div>
+  <div class="doc-subtitle">Eight Play Store screenshots in two complete sets — English (LTR) and Arabic (RTL). Final visual spec for designer to match in production assets. Each frame is a marketing composition: brand background + headline + subhead + phone mockup, sized to Play Store aspect ratio.</div>
+
+  <div class="doc-info">
+    <div class="doc-info-cell">
+      <div class="info-label">The problem</div>
+      <div class="info-body">
+        Play Store users decide in seven seconds. The first three frames are visible without scrolling and must answer "what is this, why is it different, why now" in three glances. Most expense-tracker downloads are lost to the subscription objection and the trust objection — these screenshots have to neutralise both before the user looks elsewhere.
+      </div>
+    </div>
+    <div class="doc-info-cell">
+      <div class="info-label">Sets in this document</div>
+      <div class="flow-list">
+        <div class="flow-list-item">English set · 8 frames · LTR</div>
+        <div class="flow-list-item">Arabic set · 8 frames · RTL</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     ENGLISH SET
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Set 1 — English (LTR)</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="frames-grid">
+
+    <!-- ── FRAME 1 — THE HOOK ─────────────────────── -->
+    <div class="frame-col">
+      <div class="frame-num"><strong>Frame 1</strong> · The hook</div>
+      <div class="ps-frame ps-bg-navy">
+        <div class="ps-top">
+          <div class="ps-headline">Your bank texts you. We log it.</div>
+          <div class="ps-subhead">Automatic expense tracking from SMS — free forever.</div>
+        </div>
+        <div class="ps-bottom">
+          <div class="phone-mini tilted">
+            <div class="pm-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+            <div class="pm-screen">
+              <div class="pm-app-bar">
+                <div class="pm-app-bar-title">Home</div>
+              </div>
+              <div class="pm-content">
+                <!-- SMS notification -->
+                <div class="sms-notif">
+                  <div class="sms-head">
+                    <div class="sms-icon">💬</div>
+                    <div class="sms-from">CIB EGYPT</div>
+                    <div class="sms-time">just now</div>
+                  </div>
+                  <div class="sms-body">Purchase 245.00 EGP at CARREFOUR MAADI on card ending 4471. Bal: 12,840.20 EGP</div>
+                </div>
+                <!-- Magic arrow -->
+                <div class="magic-arrow">
+                  <div class="magic-line"></div>
+                  <div class="magic-label">auto</div>
+                </div>
+                <div style="display:flex;justify-content:center;margin-top:-14px;margin-bottom:2px">
+                  <div class="magic-arrow-head"></div>
+                </div>
+                <!-- Auto-categorised -->
+                <div class="tx-pill">
+                  <div class="tx-pill-icon">🛒</div>
+                  <div class="tx-pill-info">
+                    <div class="tx-pill-name">Carrefour Maadi</div>
+                    <div class="tx-pill-cat">Groceries · today</div>
+                    <div class="tx-pill-tag">✓ auto-categorised</div>
+                  </div>
+                  <div class="tx-pill-amt">−245</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="frame-purpose">SMS to categorised transaction in one image. Shows the magic.</div>
+    </div>
+
+    <!-- ── FRAME 2 — FREE FOREVER ─────────────────── -->
+    <div class="frame-col">
+      <div class="frame-num"><strong>Frame 2</strong> · Free forever</div>
+      <div class="ps-frame ps-bg-green">
+        <div class="ps-top">
+          <div class="ps-headline">Free. No subscription.</div>
+          <div class="ps-subhead">Every feature, every category, every budget — free.</div>
+        </div>
+        <div class="ps-bottom">
+          <div class="phone-mini tilted">
+            <div class="free-stamp">
+              <div class="free-stamp-1">FREE</div>
+              <div class="free-stamp-2">FOREVER</div>
+            </div>
+            <div class="pm-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+            <div class="pm-screen">
+              <div class="pm-app-bar">
+                <div class="pm-app-bar-title">Budgets</div>
+                <div class="pm-app-bar-action">+ Add</div>
+              </div>
+              <div class="pm-content">
+                <div class="bud-mini">
+                  <div class="bud-mini-head">
+                    <div class="bud-mini-cat">🛒 Groceries</div>
+                    <div class="bud-mini-amts">2,140 / 3,000</div>
+                  </div>
+                  <div class="bud-mini-bar"><div class="bud-mini-fill" style="width:71%"></div></div>
+                  <div class="bud-mini-foot"><div class="bud-mini-pct">71% used</div><div class="bud-mini-left">860 EGP left</div></div>
+                </div>
+                <div class="bud-mini">
+                  <div class="bud-mini-head">
+                    <div class="bud-mini-cat">🍽 Dining</div>
+                    <div class="bud-mini-amts">1,580 / 1,800</div>
+                  </div>
+                  <div class="bud-mini-bar"><div class="bud-mini-fill warn" style="width:88%"></div></div>
+                  <div class="bud-mini-foot"><div class="bud-mini-pct">88% used</div><div class="bud-mini-left">220 EGP left</div></div>
+                </div>
+                <div class="bud-mini">
+                  <div class="bud-mini-head">
+                    <div class="bud-mini-cat">🚗 Transport</div>
+                    <div class="bud-mini-amts">420 / 1,200</div>
+                  </div>
+                  <div class="bud-mini-bar"><div class="bud-mini-fill" style="width:35%"></div></div>
+                  <div class="bud-mini-foot"><div class="bud-mini-pct">35% used</div><div class="bud-mini-left">780 EGP left</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="frame-purpose">Kills the subscription objection. The badge does the talking.</div>
+    </div>
+
+    <!-- ── FRAME 3 — BUILT FOR EGYPT ──────────────── -->
+    <div class="frame-col">
+      <div class="frame-num"><strong>Frame 3</strong> · Built for Egypt</div>
+      <div class="ps-frame ps-bg-gold">
+        <div class="ps-top">
+          <div class="ps-headline">Built for Egypt, in Egypt.</div>
+          <div class="ps-subhead">Egyptian banks. Egyptian pounds. Egyptian Arabic.</div>
+        </div>
+        <div class="ps-bottom">
+          <div class="phone-mini tilted">
+            <div class="pm-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+            <div class="pm-screen">
+              <div class="pm-app-bar">
+                <div class="pm-app-bar-title">Transactions</div>
+              </div>
+              <div class="pm-content" style="gap:0;padding:8px 12px;">
+                <div class="tx-date-divider">Today · 9 Nov</div>
+                <div class="tx-row">
+                  <div class="tx-row-icon tx-icon-shop">🛒</div>
+                  <div class="tx-row-info">
+                    <div class="tx-row-name">Carrefour Maadi</div>
+                    <div class="tx-row-cat">Groceries</div>
+                  </div>
+                  <div class="tx-row-amt neg">245</div>
+                </div>
+                <div class="tx-row">
+                  <div class="tx-row-icon tx-icon-food">🍔</div>
+                  <div class="tx-row-info">
+                    <div class="tx-row-name">Talabat</div>
+                    <div class="tx-row-cat">Dining</div>
+                  </div>
+                  <div class="tx-row-amt neg">128</div>
+                </div>
+                <div class="tx-row">
+                  <div class="tx-row-icon tx-icon-tr">🚗</div>
+                  <div class="tx-row-info">
+                    <div class="tx-row-name">Uber</div>
+                    <div class="tx-row-cat">Transport</div>
+                  </div>
+                  <div class="tx-row-amt neg">62</div>
+                </div>
+                <div class="tx-date-divider">Yesterday</div>
+                <div class="tx-row">
+                  <div class="tx-row-icon tx-icon-bill">📱</div>
+                  <div class="tx-row-info">
+                    <div class="tx-row-name">Vodafone Cash</div>
+                    <div class="tx-row-cat">Transfers</div>
+                  </div>
+                  <div class="tx-row-amt neg">500</div>
+                </div>
+                <div class="tx-row">
+                  <div class="tx-row-icon tx-icon-hlth">💊</div>
+                  <div class="tx-row-info">
+                    <div class="tx-row-name">El Ezaby Pharmacy</div>
+                    <div class="tx-row-cat">Health</div>
+                  </div>
+                  <div class="tx-row-amt neg">87</div>
+                </div>
+                <div class="tx-row">
+                  <div class="tx-row-icon tx-icon-cash">💰</div>
+                  <div class="tx-row-info">
+                    <div class="tx-row-name">InstaPay · Ahmed</div>
+                    <div class="tx-row-cat">Transfers</div>
+                  </div>
+                  <div class="tx-row-amt pos">1,500</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="frame-purpose">Local moat. Real merchants beat any feature claim.</div>
+    </div>
+
+    <!-- ── FRAME 4 — SMART CATEGORIES ─────────────── -->
+    <div class="frame-col">
+      <div class="frame-num"><strong>Frame 4</strong> · Smart categories</div>
+      <div class="ps-frame ps-bg-teal">
+        <div class="ps-top">
+          <div class="ps-headline">It learns. You don't teach.</div>
+          <div class="ps-subhead">Categories that fit how Egyptians actually spend.</div>
+        </div>
+        <div class="ps-bottom">
+          <div class="phone-mini tilted">
+            <div class="pm-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+            <div class="pm-screen">
+              <div class="pm-app-bar">
+                <div class="pm-app-bar-title">Categories</div>
+              </div>
+              <div class="pm-content">
+                <div class="cat-row">
+                  <div class="cat-row-head">
+                    <div class="cat-row-icon tx-icon-shop">🛒</div>
+                    <div class="cat-row-name">Groceries</div>
+                    <div class="cat-row-pct">35%</div>
+                  </div>
+                  <div class="cat-row-bar"><div class="cat-row-fill f1" style="width:35%"></div></div>
+                </div>
+                <div class="cat-row">
+                  <div class="cat-row-head">
+                    <div class="cat-row-icon tx-icon-tr">🚗</div>
+                    <div class="cat-row-name">Mowaslat</div>
+                    <div class="cat-row-pct">25%</div>
+                  </div>
+                  <div class="cat-row-bar"><div class="cat-row-fill f2" style="width:25%"></div></div>
+                </div>
+                <div class="cat-row">
+                  <div class="cat-row-head">
+                    <div class="cat-row-icon tx-icon-bill">📱</div>
+                    <div class="cat-row-name">Fawateer</div>
+                    <div class="cat-row-pct">20%</div>
+                  </div>
+                  <div class="cat-row-bar"><div class="cat-row-fill f3" style="width:20%"></div></div>
+                </div>
+                <div class="cat-row">
+                  <div class="cat-row-head">
+                    <div class="cat-row-icon tx-icon-food">🍽</div>
+                    <div class="cat-row-name">Akl</div>
+                    <div class="cat-row-pct">10%</div>
+                  </div>
+                  <div class="cat-row-bar"><div class="cat-row-fill f4" style="width:10%"></div></div>
+                </div>
+                <div class="cat-row">
+                  <div class="cat-row-head">
+                    <div class="cat-row-icon tx-icon-cash">💸</div>
+                    <div class="cat-row-name">Tahweelat</div>
+                    <div class="cat-row-pct">10%</div>
+                  </div>
+                  <div class="cat-row-bar"><div class="cat-row-fill f1" style="width:10%"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="frame-purpose">Egyptian-named categories signal intelligence without saying "AI".</div>
+    </div>
+
+    <!-- ── FRAME 5 — BUDGETS ──────────────────────── -->
+    <div class="frame-col">
+      <div class="frame-num"><strong>Frame 5</strong> · Budgets</div>
+      <div class="ps-frame ps-bg-brand">
+        <div class="ps-top">
+          <div class="ps-headline">Set a budget. Stay on track.</div>
+          <div class="ps-subhead">Daily, weekly, monthly — your call.</div>
+        </div>
+        <div class="ps-bottom">
+          <div class="phone-mini tilted">
+            <div class="pm-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+            <div class="pm-screen">
+              <div class="pm-app-bar">
+                <div class="pm-app-bar-title">November</div>
+                <div class="pm-app-bar-action">Edit</div>
+              </div>
+              <div class="pm-content">
+                <div class="bud-mini">
+                  <div class="bud-mini-head">
+                    <div class="bud-mini-cat">🍽 Dining</div>
+                    <div class="bud-mini-amts">1,580 / 1,800</div>
+                  </div>
+                  <div class="bud-mini-bar"><div class="bud-mini-fill warn" style="width:88%"></div></div>
+                  <div class="bud-mini-foot"><div class="bud-mini-pct">88% used</div><div class="bud-mini-left" style="color:#8A6510">close to limit</div></div>
+                </div>
+                <div class="bud-mini">
+                  <div class="bud-mini-head">
+                    <div class="bud-mini-cat">🛒 Groceries</div>
+                    <div class="bud-mini-amts">2,140 / 3,000</div>
+                  </div>
+                  <div class="bud-mini-bar"><div class="bud-mini-fill" style="width:71%"></div></div>
+                  <div class="bud-mini-foot"><div class="bud-mini-pct">71% used</div><div class="bud-mini-left" style="color:#1A6E3C">on track</div></div>
+                </div>
+                <div class="bud-mini">
+                  <div class="bud-mini-head">
+                    <div class="bud-mini-cat">🚗 Transport</div>
+                    <div class="bud-mini-amts">420 / 1,200</div>
+                  </div>
+                  <div class="bud-mini-bar"><div class="bud-mini-fill" style="width:35%"></div></div>
+                  <div class="bud-mini-foot"><div class="bud-mini-pct">35% used</div><div class="bud-mini-left" style="color:#1A6E3C">on track</div></div>
+                </div>
+                <div class="bud-mini">
+                  <div class="bud-mini-head">
+                    <div class="bud-mini-cat">🛍 Shopping</div>
+                    <div class="bud-mini-amts">920 / 1,500</div>
+                  </div>
+                  <div class="bud-mini-bar"><div class="bud-mini-fill" style="width:61%"></div></div>
+                  <div class="bud-mini-foot"><div class="bud-mini-pct">61% used</div><div class="bud-mini-left" style="color:#1A6E3C">on track</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="frame-purpose">Progress bars show control. One warning, three healthy.</div>
+    </div>
+
+    <!-- ── FRAME 6 — REAL INSIGHTS ────────────────── -->
+    <div class="frame-col">
+      <div class="frame-num"><strong>Frame 6</strong> · Real insights</div>
+      <div class="ps-frame ps-bg-green">
+        <div class="ps-top">
+          <div class="ps-headline">See where it actually goes.</div>
+          <div class="ps-subhead">Monthly trends. Category breakdowns. Real numbers.</div>
+        </div>
+        <div class="ps-bottom">
+          <div class="phone-mini tilted">
+            <div class="pm-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+            <div class="pm-screen">
+              <div class="pm-app-bar">
+                <div class="pm-app-bar-title">Insights</div>
+              </div>
+              <div class="pm-content" style="gap:6px;">
+                <div class="donut-wrap">
+                  <div class="donut">
+                    <div class="donut-center">
+                      <div class="donut-amt">8,420</div>
+                      <div class="donut-lbl">EGP · Nov</div>
+                    </div>
+                  </div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:2px;margin-top:4px">
+                  <div class="legend-row">
+                    <div class="legend-dot" style="background:#B05A10"></div>
+                    <div class="legend-name">Groceries</div>
+                    <div class="legend-pct">35%</div>
+                  </div>
+                  <div class="legend-row">
+                    <div class="legend-dot" style="background:#1A52A0"></div>
+                    <div class="legend-name">Transport</div>
+                    <div class="legend-pct">25%</div>
+                  </div>
+                  <div class="legend-row">
+                    <div class="legend-dot" style="background:#6028A0"></div>
+                    <div class="legend-name">Bills</div>
+                    <div class="legend-pct">20%</div>
+                  </div>
+                  <div class="legend-row">
+                    <div class="legend-dot" style="background:#1A6E34"></div>
+                    <div class="legend-name">Dining</div>
+                    <div class="legend-pct">10%</div>
+                  </div>
+                  <div class="legend-row">
+                    <div class="legend-dot" style="background:#7A7670"></div>
+                    <div class="legend-name">Other</div>
+                    <div class="legend-pct">10%</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="frame-purpose">Donut + legend. Hits "I have no idea where it goes."</div>
+    </div>
+
+    <!-- ── FRAME 7 — PRIVACY ──────────────────────── -->
+    <div class="frame-col">
+      <div class="frame-num"><strong>Frame 7</strong> · Privacy</div>
+      <div class="ps-frame ps-bg-trust">
+        <div class="ps-top">
+          <div class="ps-headline">We never touch your bank account.</div>
+          <div class="ps-subhead">We read SMS. That's it. Your data stays yours.</div>
+        </div>
+        <div class="ps-bottom">
+          <div class="phone-mini tilted">
+            <div class="pm-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+            <div class="pm-screen">
+              <div class="pm-app-bar">
+                <div class="pm-app-bar-title">Privacy</div>
+              </div>
+              <div class="pm-content">
+                <div class="privacy-shield">🔒</div>
+                <div class="privacy-title">Your data, your control.</div>
+                <div class="privacy-list">
+                  <div class="privacy-item">
+                    <div class="privacy-check">✓</div>
+                    <div class="privacy-text">No bank login. We never connect to your account.</div>
+                  </div>
+                  <div class="privacy-item">
+                    <div class="privacy-check">✓</div>
+                    <div class="privacy-text">No data selling. Your spending stays private.</div>
+                  </div>
+                  <div class="privacy-item">
+                    <div class="privacy-check">✓</div>
+                    <div class="privacy-text">Your data stays yours. Delete it any time.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="frame-purpose">Cooler palette signals trust. Three checks address the trust killer.</div>
+    </div>
+
+    <!-- ── FRAME 8 — DOWNLOAD CTA ─────────────────── -->
+    <div class="frame-col">
+      <div class="frame-num"><strong>Frame 8</strong> · Download CTA</div>
+      <div class="ps-frame ps-bg-brand">
+        <div class="ps-top">
+          <div class="ps-headline">Tracking your money should be effortless.</div>
+          <div class="ps-subhead">Free. Automatic. Built for Egypt. Download now.</div>
+        </div>
+        <div class="ps-bottom">
+          <div class="phone-mini tilted">
+            <div class="pm-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+            <div class="pm-screen">
+              <div class="pm-app-bar">
+                <div class="pm-app-bar-title">MoneyMore</div>
+                <div style="font-size:11px;font-weight:700;color:var(--t1)">Ahmed</div>
+              </div>
+              <div class="pm-content">
+                <div style="background:linear-gradient(135deg,#1A3C5E 0%,#0F2640 100%);border-radius:var(--r-md);padding:14px;color:white;">
+                  <div class="hero-greeting" style="color:rgba(255,255,255,0.6)">Total balance · Nov</div>
+                  <div class="hero-balance" style="color:#fff">12,840.20</div>
+                  <div class="hero-cur" style="color:rgba(255,255,255,0.55)">EGP across 2 accounts</div>
+                </div>
+                <div class="hero-quick">
+                  <div class="hero-quick-tile">
+                    <div class="hero-quick-icon">💳</div>
+                    <div class="hero-quick-lbl">Spent this month</div>
+                    <div class="hero-quick-val">8,420 EGP</div>
+                  </div>
+                  <div class="hero-quick-tile">
+                    <div class="hero-quick-icon">🎯</div>
+                    <div class="hero-quick-lbl">Budgets on track</div>
+                    <div class="hero-quick-val">3 of 4</div>
+                  </div>
+                  <div class="hero-quick-tile">
+                    <div class="hero-quick-icon">📈</div>
+                    <div class="hero-quick-lbl">vs last month</div>
+                    <div class="hero-quick-val" style="color:var(--t-pos)">−12%</div>
+                  </div>
+                  <div class="hero-quick-tile">
+                    <div class="hero-quick-icon">📥</div>
+                    <div class="hero-quick-lbl">Income</div>
+                    <div class="hero-quick-val">15,000 EGP</div>
+                  </div>
+                </div>
+              </div>
+              <div class="pm-nav">
+                <div class="pm-nav-item on"><div class="pm-nav-icon">🏠</div><div class="pm-nav-lbl">Home</div></div>
+                <div class="pm-nav-item"><div class="pm-nav-icon">↕️</div><div class="pm-nav-lbl">Tx</div></div>
+                <div class="pm-nav-item"><div class="pm-nav-icon">🎯</div><div class="pm-nav-lbl">Budgets</div></div>
+                <div class="pm-nav-item"><div class="pm-nav-icon">👤</div><div class="pm-nav-lbl">Me</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="frame-purpose">Brand-recall close. Home screen, full hierarchy, last impression.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     ARABIC SET (RTL)
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Set 2 — Arabic (RTL)</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="frames-grid">
+
+    <!-- ── FRAME 1 AR ─────────────────────────────── -->
+    <div class="frame-col">
+      <div class="frame-num"><strong>Frame 1 · AR</strong> · The hook</div>
+      <div class="ps-frame ps-bg-navy rtl-frame">
+        <div class="ps-top">
+          <div class="ps-headline ar">البنك بيبعتلك.<br>احنا بنسجلها.</div>
+          <div class="ps-subhead ar">متابعة مصاريف تلقائية من رسائل البنك — مجاني للأبد.</div>
+        </div>
+        <div class="ps-bottom">
+          <div class="phone-mini tilted">
+            <div class="pm-status"><span>٩:٤١</span><span>▲▲ 🔋</span></div>
+            <div class="pm-screen">
+              <div class="pm-app-bar">
+                <div class="pm-app-bar-title" style="font-family:var(--f-arabic);direction:rtl">الرئيسية</div>
+              </div>
+              <div class="pm-content">
+                <div class="sms-notif" style="direction:rtl">
+                  <div class="sms-head" style="flex-direction:row-reverse">
+                    <div class="sms-icon">💬</div>
+                    <div class="sms-from" style="font-family:var(--f-arabic);text-align:right">CIB EGYPT</div>
+                    <div class="sms-time" style="font-family:var(--f-arabic)">الآن</div>
+                  </div>
+                  <div class="sms-body" style="font-family:var(--f-arabic);text-align:right">شراء بقيمة ٢٤٥٫٠٠ ج.م. من كارفور المعادي بالكارت ٤٤٧١. الرصيد: ١٢,٨٤٠٫٢٠ ج.م.</div>
+                </div>
+                <div class="magic-arrow">
+                  <div class="magic-line"></div>
+                  <div class="magic-label" style="font-family:var(--f-arabic);font-size:8px">تلقائي</div>
+                </div>
+                <div style="display:flex;justify-content:center;margin-top:-14px;margin-bottom:2px">
+                  <div class="magic-arrow-head"></div>
+                </div>
+                <div class="tx-pill" style="flex-direction:row-reverse;direction:rtl">
+                  <div class="tx-pill-icon">🛒</div>
+                  <div class="tx-pill-info" style="text-align:right">
+                    <div class="tx-pill-name" style="font-family:var(--f-arabic)">كارفور المعادي</div>
+                    <div class="tx-pill-cat" style="font-family:var(--f-arabic)">بقالة · النهاردة</div>
+                    <div class="tx-pill-tag" style="font-family:var(--f-arabic);font-size:8.5px">✓ متصنف تلقائي</div>
+                  </div>
+                  <div class="tx-pill-amt">−٢٤٥</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="frame-purpose">SMS لمعاملة مصنفة في صورة واحدة.</div>
+    </div>
+
+    <!-- ── FRAME 2 AR ─────────────────────────────── -->
+    <div class="frame-col">
+      <div class="frame-num"><strong>Frame 2 · AR</strong> · Free forever</div>
+      <div class="ps-frame ps-bg-green rtl-frame">
+        <div class="ps-top">
+          <div class="ps-headline ar">مجاني. مفيش اشتراك.</div>
+          <div class="ps-subhead ar">كل المزايا، كل التصنيفات، كل الميزانيات — مجاني.</div>
+        </div>
+        <div class="ps-bottom">
+          <div class="phone-mini tilted">
+            <div class="free-stamp ar" style="left:-12px;right:auto">
+              <div class="free-stamp-1">مجاني</div>
+              <div class="free-stamp-2">للأبد</div>
+            </div>
+            <div class="pm-status"><span>٩:٤١</span><span>▲▲ 🔋</span></div>
+            <div class="pm-screen">
+              <div class="pm-app-bar" style="flex-direction:row-reverse">
+                <div class="pm-app-bar-title" style="font-family:var(--f-arabic);text-align:right">الميزانيات</div>
+                <div class="pm-app-bar-action" style="font-family:var(--f-arabic)">إضافة +</div>
+              </div>
+              <div class="pm-content">
+                <div class="bud-mini" style="direction:rtl">
+                  <div class="bud-mini-head">
+                    <div class="bud-mini-cat" style="font-family:var(--f-arabic)">بقالة 🛒</div>
+                    <div class="bud-mini-amts">٣,٠٠٠ / ٢,١٤٠</div>
+                  </div>
+                  <div class="bud-mini-bar"><div class="bud-mini-fill" style="width:71%"></div></div>
+                  <div class="bud-mini-foot"><div class="bud-mini-pct" style="font-family:var(--f-arabic)">٧١٪ مستخدم</div><div class="bud-mini-left" style="font-family:var(--f-arabic)">فاضل ٨٦٠ ج.م.</div></div>
+                </div>
+                <div class="bud-mini" style="direction:rtl">
+                  <div class="bud-mini-head">
+                    <div class="bud-mini-cat" style="font-family:var(--f-arabic)">أكل 🍽</div>
+                    <div class="bud-mini-amts">١,٨٠٠ / ١,٥٨٠</div>
+                  </div>
+                  <div class="bud-mini-bar"><div class="bud-mini-fill warn" style="width:88%"></div></div>
+                  <div class="bud-mini-foot"><div class="bud-mini-pct" style="font-family:var(--f-arabic)">٨٨٪ مستخدم</div><div class="bud-mini-left" style="font-family:var(--f-arabic)">فاضل ٢٢٠ ج.م.</div></div>
+                </div>
+                <div class="bud-mini" style="direction:rtl">
+                  <div class="bud-mini-head">
+                    <div class="bud-mini-cat" style="font-family:var(--f-arabic)">مواصلات 🚗</div>
+                    <div class="bud-mini-amts">١,٢٠٠ / ٤٢٠</div>
+                  </div>
+                  <div class="bud-mini-bar"><div class="bud-mini-fill" style="width:35%"></div></div>
+                  <div class="bud-mini-foot"><div class="bud-mini-pct" style="font-family:var(--f-arabic)">٣٥٪ مستخدم</div><div class="bud-mini-left" style="font-family:var(--f-arabic)">فاضل ٧٨٠ ج.م.</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="frame-purpose">يقتل اعتراض الاشتراك. الختم بيتكلم.</div>
+    </div>
+
+    <!-- ── FRAME 3 AR ─────────────────────────────── -->
+    <div class="frame-col">
+      <div class="frame-num"><strong>Frame 3 · AR</strong> · Built for Egypt</div>
+      <div class="ps-frame ps-bg-gold rtl-frame">
+        <div class="ps-top">
+          <div class="ps-headline ar">مصمم لمصر، في مصر.</div>
+          <div class="ps-subhead ar">بنوك مصرية. جنيه مصري. عربي مصري.</div>
+        </div>
+        <div class="ps-bottom">
+          <div class="phone-mini tilted">
+            <div class="pm-status"><span>٩:٤١</span><span>▲▲ 🔋</span></div>
+            <div class="pm-screen">
+              <div class="pm-app-bar" style="flex-direction:row-reverse">
+                <div class="pm-app-bar-title" style="font-family:var(--f-arabic);text-align:right">المعاملات</div>
+              </div>
+              <div class="pm-content" style="gap:0;padding:8px 12px;">
+                <div class="tx-date-divider" style="font-family:var(--f-arabic);text-align:right;direction:rtl">النهاردة · ٩ نوفمبر</div>
+                <div class="tx-row" style="flex-direction:row-reverse">
+                  <div class="tx-row-icon tx-icon-shop">🛒</div>
+                  <div class="tx-row-info" style="text-align:right">
+                    <div class="tx-row-name" style="font-family:var(--f-arabic)">كارفور المعادي</div>
+                    <div class="tx-row-cat" style="font-family:var(--f-arabic)">بقالة</div>
+                  </div>
+                  <div class="tx-row-amt neg">٢٤٥</div>
+                </div>
+                <div class="tx-row" style="flex-direction:row-reverse">
+                  <div class="tx-row-icon tx-icon-food">🍔</div>
+                  <div class="tx-row-info" style="text-align:right">
+                    <div class="tx-row-name" style="font-family:var(--f-arabic)">طلبات</div>
+                    <div class="tx-row-cat" style="font-family:var(--f-arabic)">أكل</div>
+                  </div>
+                  <div class="tx-row-amt neg">١٢٨</div>
+                </div>
+                <div class="tx-row" style="flex-direction:row-reverse">
+                  <div class="tx-row-icon tx-icon-tr">🚗</div>
+                  <div class="tx-row-info" style="text-align:right">
+                    <div class="tx-row-name" style="font-family:var(--f-arabic)">أوبر</div>
+                    <div class="tx-row-cat" style="font-family:var(--f-arabic)">مواصلات</div>
+                  </div>
+                  <div class="tx-row-amt neg">٦٢</div>
+                </div>
+                <div class="tx-date-divider" style="font-family:var(--f-arabic);text-align:right;direction:rtl">إمبارح</div>
+                <div class="tx-row" style="flex-direction:row-reverse">
+                  <div class="tx-row-icon tx-icon-bill">📱</div>
+                  <div class="tx-row-info" style="text-align:right">
+                    <div class="tx-row-name" style="font-family:var(--f-arabic)">فودافون كاش</div>
+                    <div class="tx-row-cat" style="font-family:var(--f-arabic)">تحويلات</div>
+                  </div>
+                  <div class="tx-row-amt neg">٥٠٠</div>
+                </div>
+                <div class="tx-row" style="flex-direction:row-reverse">
+                  <div class="tx-row-icon tx-icon-hlth">💊</div>
+                  <div class="tx-row-info" style="text-align:right">
+                    <div class="tx-row-name" style="font-family:var(--f-arabic)">صيدلية العزبي</div>
+                    <div class="tx-row-cat" style="font-family:var(--f-arabic)">صحة</div>
+                  </div>
+                  <div class="tx-row-amt neg">٨٧</div>
+                </div>
+                <div class="tx-row" style="flex-direction:row-reverse">
+                  <div class="tx-row-icon tx-icon-cash">💰</div>
+                  <div class="tx-row-info" style="text-align:right">
+                    <div class="tx-row-name" style="font-family:var(--f-arabic)">انستاباي · أحمد</div>
+                    <div class="tx-row-cat" style="font-family:var(--f-arabic)">تحويلات</div>
+                  </div>
+                  <div class="tx-row-amt pos">١,٥٠٠</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="frame-purpose">محلات مصرية حقيقية. ولا ادعاء ميزة بيغلب ده.</div>
+    </div>
+
+    <!-- ── FRAME 4 AR ─────────────────────────────── -->
+    <div class="frame-col">
+      <div class="frame-num"><strong>Frame 4 · AR</strong> · Smart categories</div>
+      <div class="ps-frame ps-bg-teal rtl-frame">
+        <div class="ps-top">
+          <div class="ps-headline ar">بيتعلم. مش بتعلمه.</div>
+          <div class="ps-subhead ar">تصنيفات بتناسب طريقة المصريين في الصرف.</div>
+        </div>
+        <div class="ps-bottom">
+          <div class="phone-mini tilted">
+            <div class="pm-status"><span>٩:٤١</span><span>▲▲ 🔋</span></div>
+            <div class="pm-screen">
+              <div class="pm-app-bar" style="flex-direction:row-reverse">
+                <div class="pm-app-bar-title" style="font-family:var(--f-arabic);text-align:right">التصنيفات</div>
+              </div>
+              <div class="pm-content">
+                <div class="cat-row">
+                  <div class="cat-row-head" style="flex-direction:row-reverse">
+                    <div class="cat-row-icon tx-icon-shop">🛒</div>
+                    <div class="cat-row-name" style="font-family:var(--f-arabic);text-align:right">بقالة</div>
+                    <div class="cat-row-pct">٣٥٪</div>
+                  </div>
+                  <div class="cat-row-bar"><div class="cat-row-fill f1" style="width:35%"></div></div>
+                </div>
+                <div class="cat-row">
+                  <div class="cat-row-head" style="flex-direction:row-reverse">
+                    <div class="cat-row-icon tx-icon-tr">🚗</div>
+                    <div class="cat-row-name" style="font-family:var(--f-arabic);text-align:right">مواصلات</div>
+                    <div class="cat-row-pct">٢٥٪</div>
+                  </div>
+                  <div class="cat-row-bar"><div class="cat-row-fill f2" style="width:25%"></div></div>
+                </div>
+                <div class="cat-row">
+                  <div class="cat-row-head" style="flex-direction:row-reverse">
+                    <div class="cat-row-icon tx-icon-bill">📱</div>
+                    <div class="cat-row-name" style="font-family:var(--f-arabic);text-align:right">فواتير</div>
+                    <div class="cat-row-pct">٢٠٪</div>
+                  </div>
+                  <div class="cat-row-bar"><div class="cat-row-fill f3" style="width:20%"></div></div>
+                </div>
+                <div class="cat-row">
+                  <div class="cat-row-head" style="flex-direction:row-reverse">
+                    <div class="cat-row-icon tx-icon-food">🍽</div>
+                    <div class="cat-row-name" style="font-family:var(--f-arabic);text-align:right">أكل</div>
+                    <div class="cat-row-pct">١٠٪</div>
+                  </div>
+                  <div class="cat-row-bar"><div class="cat-row-fill f4" style="width:10%"></div></div>
+                </div>
+                <div class="cat-row">
+                  <div class="cat-row-head" style="flex-direction:row-reverse">
+                    <div class="cat-row-icon tx-icon-cash">💸</div>
+                    <div class="cat-row-name" style="font-family:var(--f-arabic);text-align:right">تحويلات</div>
+                    <div class="cat-row-pct">١٠٪</div>
+                  </div>
+                  <div class="cat-row-bar"><div class="cat-row-fill f1" style="width:10%"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="frame-purpose">تصنيفات بأسماء مصرية. ذكاء بدون ما نقول AI.</div>
+    </div>
+
+    <!-- ── FRAME 5 AR ─────────────────────────────── -->
+    <div class="frame-col">
+      <div class="frame-num"><strong>Frame 5 · AR</strong> · Budgets</div>
+      <div class="ps-frame ps-bg-brand rtl-frame">
+        <div class="ps-top">
+          <div class="ps-headline ar">حدد ميزانيتك.<br>اتحكم في فلوسك.</div>
+          <div class="ps-subhead ar">يومية، أسبوعية، شهرية — أنت اللي تختار.</div>
+        </div>
+        <div class="ps-bottom">
+          <div class="phone-mini tilted">
+            <div class="pm-status"><span>٩:٤١</span><span>▲▲ 🔋</span></div>
+            <div class="pm-screen">
+              <div class="pm-app-bar" style="flex-direction:row-reverse">
+                <div class="pm-app-bar-title" style="font-family:var(--f-arabic);text-align:right">نوفمبر</div>
+                <div class="pm-app-bar-action" style="font-family:var(--f-arabic)">تعديل</div>
+              </div>
+              <div class="pm-content">
+                <div class="bud-mini" style="direction:rtl">
+                  <div class="bud-mini-head">
+                    <div class="bud-mini-cat" style="font-family:var(--f-arabic)">أكل 🍽</div>
+                    <div class="bud-mini-amts">١,٨٠٠ / ١,٥٨٠</div>
+                  </div>
+                  <div class="bud-mini-bar"><div class="bud-mini-fill warn" style="width:88%"></div></div>
+                  <div class="bud-mini-foot"><div class="bud-mini-pct" style="font-family:var(--f-arabic)">٨٨٪ مستخدم</div><div class="bud-mini-left" style="color:#8A6510;font-family:var(--f-arabic)">قرب الحد</div></div>
+                </div>
+                <div class="bud-mini" style="direction:rtl">
+                  <div class="bud-mini-head">
+                    <div class="bud-mini-cat" style="font-family:var(--f-arabic)">بقالة 🛒</div>
+                    <div class="bud-mini-amts">٣,٠٠٠ / ٢,١٤٠</div>
+                  </div>
+                  <div class="bud-mini-bar"><div class="bud-mini-fill" style="width:71%"></div></div>
+                  <div class="bud-mini-foot"><div class="bud-mini-pct" style="font-family:var(--f-arabic)">٧١٪ مستخدم</div><div class="bud-mini-left" style="color:#1A6E3C;font-family:var(--f-arabic)">في المسار</div></div>
+                </div>
+                <div class="bud-mini" style="direction:rtl">
+                  <div class="bud-mini-head">
+                    <div class="bud-mini-cat" style="font-family:var(--f-arabic)">مواصلات 🚗</div>
+                    <div class="bud-mini-amts">١,٢٠٠ / ٤٢٠</div>
+                  </div>
+                  <div class="bud-mini-bar"><div class="bud-mini-fill" style="width:35%"></div></div>
+                  <div class="bud-mini-foot"><div class="bud-mini-pct" style="font-family:var(--f-arabic)">٣٥٪ مستخدم</div><div class="bud-mini-left" style="color:#1A6E3C;font-family:var(--f-arabic)">في المسار</div></div>
+                </div>
+                <div class="bud-mini" style="direction:rtl">
+                  <div class="bud-mini-head">
+                    <div class="bud-mini-cat" style="font-family:var(--f-arabic)">تسوق 🛍</div>
+                    <div class="bud-mini-amts">١,٥٠٠ / ٩٢٠</div>
+                  </div>
+                  <div class="bud-mini-bar"><div class="bud-mini-fill" style="width:61%"></div></div>
+                  <div class="bud-mini-foot"><div class="bud-mini-pct" style="font-family:var(--f-arabic)">٦١٪ مستخدم</div><div class="bud-mini-left" style="color:#1A6E3C;font-family:var(--f-arabic)">في المسار</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="frame-purpose">شرايط التقدم بتتكلم. تحذير واحد، تلاتة سليمين.</div>
+    </div>
+
+    <!-- ── FRAME 6 AR ─────────────────────────────── -->
+    <div class="frame-col">
+      <div class="frame-num"><strong>Frame 6 · AR</strong> · Real insights</div>
+      <div class="ps-frame ps-bg-green rtl-frame">
+        <div class="ps-top">
+          <div class="ps-headline ar">شوف فلوسك بتروح فين فعلاً.</div>
+          <div class="ps-subhead ar">اتجاهات شهرية. تحليلات. أرقام حقيقية.</div>
+        </div>
+        <div class="ps-bottom">
+          <div class="phone-mini tilted">
+            <div class="pm-status"><span>٩:٤١</span><span>▲▲ 🔋</span></div>
+            <div class="pm-screen">
+              <div class="pm-app-bar" style="flex-direction:row-reverse">
+                <div class="pm-app-bar-title" style="font-family:var(--f-arabic);text-align:right">التحليلات</div>
+              </div>
+              <div class="pm-content" style="gap:6px;">
+                <div class="donut-wrap">
+                  <div class="donut">
+                    <div class="donut-center">
+                      <div class="donut-amt">٨,٤٢٠</div>
+                      <div class="donut-lbl" style="font-family:var(--f-arabic)">ج.م. · نوفمبر</div>
+                    </div>
+                  </div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:2px;margin-top:4px">
+                  <div class="legend-row" style="flex-direction:row-reverse">
+                    <div class="legend-dot" style="background:#B05A10"></div>
+                    <div class="legend-name" style="font-family:var(--f-arabic);text-align:right">بقالة</div>
+                    <div class="legend-pct">٣٥٪</div>
+                  </div>
+                  <div class="legend-row" style="flex-direction:row-reverse">
+                    <div class="legend-dot" style="background:#1A52A0"></div>
+                    <div class="legend-name" style="font-family:var(--f-arabic);text-align:right">مواصلات</div>
+                    <div class="legend-pct">٢٥٪</div>
+                  </div>
+                  <div class="legend-row" style="flex-direction:row-reverse">
+                    <div class="legend-dot" style="background:#6028A0"></div>
+                    <div class="legend-name" style="font-family:var(--f-arabic);text-align:right">فواتير</div>
+                    <div class="legend-pct">٢٠٪</div>
+                  </div>
+                  <div class="legend-row" style="flex-direction:row-reverse">
+                    <div class="legend-dot" style="background:#1A6E34"></div>
+                    <div class="legend-name" style="font-family:var(--f-arabic);text-align:right">أكل</div>
+                    <div class="legend-pct">١٠٪</div>
+                  </div>
+                  <div class="legend-row" style="flex-direction:row-reverse">
+                    <div class="legend-dot" style="background:#7A7670"></div>
+                    <div class="legend-name" style="font-family:var(--f-arabic);text-align:right">غير ذلك</div>
+                    <div class="legend-pct">١٠٪</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="frame-purpose">دونات + مفتاح. بيضرب على وجع "فلوسي بتروح فين".</div>
+    </div>
+
+    <!-- ── FRAME 7 AR ─────────────────────────────── -->
+    <div class="frame-col">
+      <div class="frame-num"><strong>Frame 7 · AR</strong> · Privacy</div>
+      <div class="ps-frame ps-bg-trust rtl-frame">
+        <div class="ps-top">
+          <div class="ps-headline ar">ما بنوصلش لحسابك البنكي.</div>
+          <div class="ps-subhead ar">بنقرأ رسائل بس. بياناتك ملكك.</div>
+        </div>
+        <div class="ps-bottom">
+          <div class="phone-mini tilted">
+            <div class="pm-status"><span>٩:٤١</span><span>▲▲ 🔋</span></div>
+            <div class="pm-screen">
+              <div class="pm-app-bar" style="flex-direction:row-reverse">
+                <div class="pm-app-bar-title" style="font-family:var(--f-arabic);text-align:right">الخصوصية</div>
+              </div>
+              <div class="pm-content">
+                <div class="privacy-shield">🔒</div>
+                <div class="privacy-title" style="font-family:var(--f-arabic)">بياناتك، تحت سيطرتك.</div>
+                <div class="privacy-list">
+                  <div class="privacy-item" style="flex-direction:row-reverse">
+                    <div class="privacy-check">✓</div>
+                    <div class="privacy-text" style="font-family:var(--f-arabic);text-align:right">مفيش ربط بنكي. أبداً ما بنتصلش بحسابك.</div>
+                  </div>
+                  <div class="privacy-item" style="flex-direction:row-reverse">
+                    <div class="privacy-check">✓</div>
+                    <div class="privacy-text" style="font-family:var(--f-arabic);text-align:right">ما بنبيعش بياناتك. مصاريفك تفضل خاصة.</div>
+                  </div>
+                  <div class="privacy-item" style="flex-direction:row-reverse">
+                    <div class="privacy-check">✓</div>
+                    <div class="privacy-text" style="font-family:var(--f-arabic);text-align:right">بياناتك ملكك. امسحها وقت ما تحب.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="frame-purpose">بالتة هادية بتقول ثقة. ٣ علامات بتقتل قاتل التحميل.</div>
+    </div>
+
+    <!-- ── FRAME 8 AR ─────────────────────────────── -->
+    <div class="frame-col">
+      <div class="frame-num"><strong>Frame 8 · AR</strong> · Download CTA</div>
+      <div class="ps-frame ps-bg-brand rtl-frame">
+        <div class="ps-top">
+          <div class="ps-headline ar">متابعة فلوسك<br>لازم تكون سهلة.</div>
+          <div class="ps-subhead ar">مجاني. تلقائي. مصري. نزّل دلوقتي.</div>
+        </div>
+        <div class="ps-bottom">
+          <div class="phone-mini tilted">
+            <div class="pm-status"><span>٩:٤١</span><span>▲▲ 🔋</span></div>
+            <div class="pm-screen">
+              <div class="pm-app-bar" style="flex-direction:row-reverse">
+                <div class="pm-app-bar-title" style="font-family:var(--f-arabic);text-align:right">ماني مور</div>
+                <div style="font-size:11px;font-weight:700;color:var(--t1);font-family:var(--f-arabic)">أحمد</div>
+              </div>
+              <div class="pm-content">
+                <div style="background:linear-gradient(135deg,#1A3C5E 0%,#0F2640 100%);border-radius:var(--r-md);padding:14px;color:white;direction:rtl;text-align:right">
+                  <div class="hero-greeting" style="color:rgba(255,255,255,0.6);font-family:var(--f-arabic)">إجمالي الرصيد · نوفمبر</div>
+                  <div class="hero-balance" style="color:#fff">١٢,٨٤٠٫٢٠</div>
+                  <div class="hero-cur" style="color:rgba(255,255,255,0.55);font-family:var(--f-arabic)">جنيه عبر حسابين</div>
+                </div>
+                <div class="hero-quick">
+                  <div class="hero-quick-tile" style="text-align:right">
+                    <div class="hero-quick-icon">💳</div>
+                    <div class="hero-quick-lbl" style="font-family:var(--f-arabic)">صرف الشهر</div>
+                    <div class="hero-quick-val" style="font-family:var(--f-arabic)">٨,٤٢٠ ج.م.</div>
+                  </div>
+                  <div class="hero-quick-tile" style="text-align:right">
+                    <div class="hero-quick-icon">🎯</div>
+                    <div class="hero-quick-lbl" style="font-family:var(--f-arabic)">ميزانيات في المسار</div>
+                    <div class="hero-quick-val" style="font-family:var(--f-arabic)">٣ من ٤</div>
+                  </div>
+                  <div class="hero-quick-tile" style="text-align:right">
+                    <div class="hero-quick-icon">📈</div>
+                    <div class="hero-quick-lbl" style="font-family:var(--f-arabic)">مقارنة بالشهر اللي فات</div>
+                    <div class="hero-quick-val" style="color:var(--t-pos);font-family:var(--f-arabic)">−١٢٪</div>
+                  </div>
+                  <div class="hero-quick-tile" style="text-align:right">
+                    <div class="hero-quick-icon">📥</div>
+                    <div class="hero-quick-lbl" style="font-family:var(--f-arabic)">دخل</div>
+                    <div class="hero-quick-val" style="font-family:var(--f-arabic)">١٥,٠٠٠ ج.م.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="pm-nav" style="flex-direction:row-reverse">
+                <div class="pm-nav-item on"><div class="pm-nav-icon">🏠</div><div class="pm-nav-lbl" style="font-family:var(--f-arabic)">الرئيسية</div></div>
+                <div class="pm-nav-item"><div class="pm-nav-icon">↕️</div><div class="pm-nav-lbl" style="font-family:var(--f-arabic)">معاملات</div></div>
+                <div class="pm-nav-item"><div class="pm-nav-icon">🎯</div><div class="pm-nav-lbl" style="font-family:var(--f-arabic)">ميزانيات</div></div>
+                <div class="pm-nav-item"><div class="pm-nav-icon">👤</div><div class="pm-nav-lbl" style="font-family:var(--f-arabic)">حسابي</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="frame-purpose">إغلاق بصورة العلامة التجارية. الانطباع الأخير.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     HANDOFF
+═══════════════════════════════════════════════════════════ -->
+<div class="handoff">
+  <div class="handoff-title">Handoff</div>
+  <div class="handoff-sub">Designer reference for the 8 Play Store screenshots, in both English and Arabic. Every string here is final — no placeholders to resolve. Arabic copy is pending native-speaker review.</div>
+
+  <!-- ── Copy table ── -->
+  <div class="handoff-sec">
+    <div class="handoff-h">Copy · English + Arabic</div>
+    <div class="handoff-p">All eight frames, both languages, every overlay string. In-app phone mockup content (merchant names, category labels, EGP values) listed where it differs from defaults.</div>
+
+    <table class="copy-table" style="margin-top:12px">
+      <colgroup>
+        <col class="col-frame">
+        <col class="col-element">
+        <col class="col-en">
+        <col class="col-ar">
+      </colgroup>
+      <thead>
+        <tr>
+          <th>Frame</th>
+          <th>Element</th>
+          <th>English</th>
+          <th>Arabic</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr class="group-start">
+          <td class="frame-name" rowspan="3">Frame 1<br><span style="font-weight:400;color:var(--t3);font-size:11px">The hook</span></td>
+          <td class="element-name">Headline</td>
+          <td class="en">Your bank texts you. We log it.</td>
+          <td class="ar">البنك بيبعتلك. احنا بنسجلها.</td>
+        </tr>
+        <tr>
+          <td class="element-name">Subhead</td>
+          <td class="en">Automatic expense tracking from SMS — free forever.</td>
+          <td class="ar">متابعة مصاريف تلقائية من رسائل البنك — مجاني للأبد.</td>
+        </tr>
+        <tr>
+          <td class="element-name">In-app · auto tag</td>
+          <td class="en">auto-categorised</td>
+          <td class="ar">متصنف تلقائي</td>
+        </tr>
+
+        <tr class="group-start">
+          <td class="frame-name" rowspan="3">Frame 2<br><span style="font-weight:400;color:var(--t3);font-size:11px">Free forever</span></td>
+          <td class="element-name">Headline</td>
+          <td class="en">Free. No subscription.</td>
+          <td class="ar">مجاني. مفيش اشتراك.</td>
+        </tr>
+        <tr>
+          <td class="element-name">Subhead</td>
+          <td class="en">Every feature, every category, every budget — free.</td>
+          <td class="ar">كل المزايا، كل التصنيفات، كل الميزانيات — مجاني.</td>
+        </tr>
+        <tr>
+          <td class="element-name">Stamp badge</td>
+          <td class="en">FREE · FOREVER</td>
+          <td class="ar">مجاني · للأبد</td>
+        </tr>
+
+        <tr class="group-start">
+          <td class="frame-name" rowspan="2">Frame 3<br><span style="font-weight:400;color:var(--t3);font-size:11px">Built for Egypt</span></td>
+          <td class="element-name">Headline</td>
+          <td class="en">Built for Egypt, in Egypt.</td>
+          <td class="ar">مصمم لمصر، في مصر.</td>
+        </tr>
+        <tr>
+          <td class="element-name">Subhead</td>
+          <td class="en">Egyptian banks. Egyptian pounds. Egyptian Arabic.</td>
+          <td class="ar">بنوك مصرية. جنيه مصري. عربي مصري.</td>
+        </tr>
+
+        <tr class="group-start">
+          <td class="frame-name" rowspan="2">Frame 4<br><span style="font-weight:400;color:var(--t3);font-size:11px">Smart categories</span></td>
+          <td class="element-name">Headline</td>
+          <td class="en">It learns. You don't teach.</td>
+          <td class="ar">بيتعلم. مش بتعلمه.</td>
+        </tr>
+        <tr>
+          <td class="element-name">Subhead</td>
+          <td class="en">Categories that fit how Egyptians actually spend.</td>
+          <td class="ar">تصنيفات بتناسب طريقة المصريين في الصرف.</td>
+        </tr>
+
+        <tr class="group-start">
+          <td class="frame-name" rowspan="2">Frame 5<br><span style="font-weight:400;color:var(--t3);font-size:11px">Budgets</span></td>
+          <td class="element-name">Headline</td>
+          <td class="en">Set a budget. Stay on track.</td>
+          <td class="ar">حدد ميزانيتك. اتحكم في فلوسك.</td>
+        </tr>
+        <tr>
+          <td class="element-name">Subhead</td>
+          <td class="en">Daily, weekly, monthly — your call.</td>
+          <td class="ar">يومية، أسبوعية، شهرية — أنت اللي تختار.</td>
+        </tr>
+
+        <tr class="group-start">
+          <td class="frame-name" rowspan="2">Frame 6<br><span style="font-weight:400;color:var(--t3);font-size:11px">Real insights</span></td>
+          <td class="element-name">Headline</td>
+          <td class="en">See where it actually goes.</td>
+          <td class="ar">شوف فلوسك بتروح فين فعلاً.</td>
+        </tr>
+        <tr>
+          <td class="element-name">Subhead</td>
+          <td class="en">Monthly trends. Category breakdowns. Real numbers.</td>
+          <td class="ar">اتجاهات شهرية. تحليلات. أرقام حقيقية.</td>
+        </tr>
+
+        <tr class="group-start">
+          <td class="frame-name" rowspan="5">Frame 7<br><span style="font-weight:400;color:var(--t3);font-size:11px">Privacy</span></td>
+          <td class="element-name">Headline</td>
+          <td class="en">We never touch your bank account.</td>
+          <td class="ar">ما بنوصلش لحسابك البنكي.</td>
+        </tr>
+        <tr>
+          <td class="element-name">Subhead</td>
+          <td class="en">We read SMS. That's it. Your data stays yours.</td>
+          <td class="ar">بنقرأ رسائل بس. بياناتك ملكك.</td>
+        </tr>
+        <tr>
+          <td class="element-name">In-app · check 1</td>
+          <td class="en">No bank login. We never connect to your account.</td>
+          <td class="ar">مفيش ربط بنكي. أبداً ما بنتصلش بحسابك.</td>
+        </tr>
+        <tr>
+          <td class="element-name">In-app · check 2</td>
+          <td class="en">No data selling. Your spending stays private.</td>
+          <td class="ar">ما بنبيعش بياناتك. مصاريفك تفضل خاصة.</td>
+        </tr>
+        <tr>
+          <td class="element-name">In-app · check 3</td>
+          <td class="en">Your data stays yours. Delete it any time.</td>
+          <td class="ar">بياناتك ملكك. امسحها وقت ما تحب.</td>
+        </tr>
+
+        <tr class="group-start">
+          <td class="frame-name" rowspan="2">Frame 8<br><span style="font-weight:400;color:var(--t3);font-size:11px">Download CTA</span></td>
+          <td class="element-name">Headline</td>
+          <td class="en">Tracking your money should be effortless.</td>
+          <td class="ar">متابعة فلوسك لازم تكون سهلة.</td>
+        </tr>
+        <tr>
+          <td class="element-name">Subhead</td>
+          <td class="en">Free. Automatic. Built for Egypt. Download now.</td>
+          <td class="ar">مجاني. تلقائي. مصري. نزّل دلوقتي.</td>
+        </tr>
+
+      </tbody>
+    </table>
+
+    <div class="callout warn" style="margin-top:16px">Arabic copy in all eight frames is pending review by a native Egyptian Arabic speaker before any production asset is signed off. Treat the strings above as draft until that review is complete.</div>
+  </div>
+
+  <!-- ── Accessibility ── -->
+  <div class="handoff-sec">
+    <div class="handoff-h">Accessibility — what changes what you draw</div>
+    <ul class="handoff-list">
+      <li><strong>Contrast — 4.5:1 minimum for headline text on background.</strong> Check every frame, especially Frame 3 (cream/gold background) and Frame 6 (green background) where readability degrades fastest. Run each colour pair through a contrast tool before finalising.</li>
+      <li><strong>7:1 for in-app financial figures.</strong> EGP amounts, percentages, and balance numbers inside the phone mockup must clear the higher bar — these are the proof points.</li>
+      <li><strong>Never colour-only for state.</strong> The "close to limit" budget bar in Frame 5 needs the warning amber colour <em>and</em> the words "close to limit" — the gold bar alone reads as decorative.</li>
+      <li><strong>Headline at thumbnail size.</strong> Play Store renders these at ~150px wide in search results. Headline must remain legible at that size — keep to ≤6 words, weight 700+, no thin display fonts.</li>
+      <li><strong>Arabic font pairing.</strong> Cairo or IBM Plex Sans Arabic at weights 700/800. The font in the prototype is Cairo as a placeholder — confirm the production pick before locking the asset.</li>
+    </ul>
+  </div>
+
+  <!-- ── Notes for production ── -->
+  <div class="handoff-sec">
+    <div class="handoff-h">Notes for production assets</div>
+    <ul class="handoff-list">
+      <li><strong>Final asset dimensions.</strong> Play Store phone screenshots are 1080×1920px (9:16). The prototype frame is shown at smaller scale here; designer renders at full resolution.</li>
+      <li><strong>Two complete sets, not one with translated overlay.</strong> The Arabic phone mockup content (merchant names, category labels, numerals) differs from the English version. Do not reuse the English image and swap the headline.</li>
+      <li><strong>Consistent phone position across all 8 frames.</strong> Same vertical offset, same tilt, same shadow. The eye should recognise all 8 as a set immediately.</li>
+      <li><strong>Numerals.</strong> In-app content uses Eastern Arabic numerals (٠١٢٣٤٥٦٧٨٩) in the Arabic set, Western in the English set. EGP currency abbreviated as "EGP" in English, "ج.م." in Arabic.</li>
+      <li><strong>Frame 7 palette is intentionally cooler.</strong> The trust frame uses a desaturated navy-grey, distinct from the brand navy in Frames 5 and 8. Keep that distinction.</li>
+      <li><strong>Order matters.</strong> If frames must be cut, drop in this sequence: 8 → 6 → 4. Frames 1, 2, 3, 5, 7 are load-bearing for ASO conversion logic.</li>
+    </ul>
+  </div>
+
+</div>
+
+</div>
+</body>
+</html>
