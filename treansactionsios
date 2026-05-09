@@ -1,0 +1,1899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoneyMore — Transactions tab (iOS) · Designer Prototype</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --navy:#1A3C5E; --green:#2E8B57; --green-l:#E8F5EE;
+  --gold:#B8860B; --gold-l:#FBF4DC; --red:#C0392B; --red-l:#FDECEA;
+  --page-bg:#F9F8F5;
+  --screen-bg:#FAFAF8; --screen-bg2:#F2F0EB; --screen-bg3:#E8E5DE;
+  --t1:#1A1714; --t2:#3D3A35; --t3:#7A7670; --t4:#ABA7A0;
+  --t-pos:#1A6E3C; --t-neg:#A82419;
+  --b1:#E8E5DF; --b2:#D4D0C8; --b3:#BCBAB2;
+  --frame-bg:#2A2724; --frame-border:#1A1614;
+  --f-body:'Plus Jakarta Sans',sans-serif; --f-mono:'DM Mono',monospace;
+  --s-xs:10px; --s-sm:12px; --s-base:14px; --s-md:16px;
+  --s-lg:18px; --s-xl:22px; --s-2xl:28px;
+  --r-sm:6px; --r-md:12px; --r-lg:16px; --r-xl:24px; --r-pill:999px;
+  --shadow-phone:0 8px 32px rgba(0,0,0,0.14),0 2px 8px rgba(0,0,0,0.08);
+  --shadow-card:0 1px 4px rgba(0,0,0,0.06);
+  --ph-w:280px; --ph-h:580px; --ph-r:36px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-size:var(--s-base);line-height:1.6;-webkit-font-smoothing:antialiased;}
+.page{max-width:1500px;margin:0 auto;padding:48px 40px 96px;}
+
+/* ── DOC HEADER ─────────────────────────────────────────── */
+.doc-header{padding-bottom:32px;margin-bottom:40px;border-bottom:2px solid var(--b1);}
+.doc-meta{display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap;}
+.doc-tag{font-family:var(--f-mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;padding:4px 11px;border-radius:3px;font-weight:600;}
+.doc-tag.prototype{background:var(--green-l);color:#0F5830;}
+.doc-tag.designer{background:#EAE8FF;color:#3A3288;}
+.doc-tag.ios{background:#E8F0FA;color:#103868;}
+.doc-tag.wip{background:var(--gold-l);color:#6B5210;}
+.doc-tag.version{background:var(--navy);color:#fff;}
+.doc-date{font-family:var(--f-mono);font-size:11px;color:var(--t2);margin-left:auto;font-weight:500;}
+.doc-title{font-size:34px;font-weight:700;color:var(--t1);letter-spacing:-0.02em;line-height:1.15;margin-bottom:10px;}
+.doc-subtitle{font-size:15px;color:var(--t1);font-weight:400;margin-bottom:30px;line-height:1.5;max-width:920px;}
+
+.doc-info{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--b1);border-radius:var(--r-md);overflow:hidden;background:white;}
+.doc-info-cell{padding:16px 20px;border-right:1px solid var(--b1);}
+.doc-info-cell:last-child{border-right:none;}
+.info-label{font-family:var(--f-mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--t2);margin-bottom:8px;font-weight:600;}
+.info-body{font-size:13px;color:var(--t1);line-height:1.55;}
+.info-body strong{color:var(--t1);font-weight:700;}
+.flow-list{display:flex;flex-direction:column;gap:4px;}
+.flow-list-item{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--t1);line-height:1.45;}
+.flow-list-item::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0;}
+
+/* ── FLOW SECTION ──────────────────────────────────────── */
+.flow-section{margin-bottom:64px;}
+.flow-section-header{display:flex;align-items:center;gap:16px;margin-bottom:28px;}
+.flow-section-line{flex:1;height:1px;background:var(--b2);}
+.flow-section-title{font-family:var(--f-body);font-size:16px;font-weight:700;letter-spacing:-0.01em;color:#fff;background:var(--navy);padding:6px 14px;border-radius:4px;white-space:nowrap;}
+
+.phone-row{display:flex;align-items:flex-start;gap:0;overflow-x:auto;padding-bottom:12px;}
+.phone-row::-webkit-scrollbar{height:4px;}
+.phone-row::-webkit-scrollbar-track{background:var(--b1);border-radius:2px;}
+.phone-row::-webkit-scrollbar-thumb{background:var(--b3);border-radius:2px;}
+
+.screen-col{display:flex;flex-direction:column;align-items:center;gap:10px;flex-shrink:0;}
+.screen-label{font-family:var(--f-body);font-size:11px;font-weight:600;color:var(--t2);text-align:center;max-width:var(--ph-w);line-height:1.4;}
+
+.state-badge{font-family:var(--f-mono);font-size:10px;font-weight:500;padding:3px 9px;border-radius:3px;letter-spacing:0.04em;}
+.state-badge.happy{background:#EBF7F1;color:#1A6E3C;}
+.state-badge.empty{background:var(--gold-l);color:#8A6510;}
+.state-badge.error{background:var(--red-l);color:var(--red);}
+.state-badge.loading{background:#E8F0FA;color:#103868;}
+.state-badge.success{background:var(--green-l);color:#0F5830;}
+.state-badge.os{background:#ECECEC;color:#555;}
+.state-badge.interaction{background:#EAE8FF;color:#3A3288;}
+.state-badge.warn{background:var(--gold-l);color:#8A6510;}
+
+.flow-arrow{display:flex;flex-direction:column;align-items:center;flex-shrink:0;padding-top:calc(var(--ph-h)/2 - 16px);padding-left:6px;padding-right:6px;}
+.arrow-line{width:32px;height:1px;background:var(--b2);position:relative;}
+.arrow-line::after{content:'';position:absolute;right:-1px;top:-3px;border-left:5px solid var(--b2);border-top:3px solid transparent;border-bottom:3px solid transparent;}
+.arrow-label{font-family:var(--f-body);font-size:10px;font-weight:600;color:var(--t2);text-align:center;max-width:80px;line-height:1.35;margin-top:6px;}
+.arrow-label.deny{color:var(--red);}
+.arrow-label.interaction{color:#3A3288;}
+
+/* ── PHONE FRAME — iOS ─────────────────────────────────── */
+.phone{width:var(--ph-w);height:var(--ph-h);border-radius:var(--ph-r);background:var(--frame-bg);box-shadow:var(--shadow-phone);position:relative;overflow:hidden;border:2px solid var(--frame-border);flex-shrink:0;}
+
+.ios-island{position:absolute;top:8px;left:50%;transform:translateX(-50%);width:84px;height:24px;background:#0A0A0A;border-radius:18px;z-index:20;}
+.ios-status{position:absolute;top:0;left:0;right:0;height:42px;background:var(--screen-bg);display:flex;align-items:flex-end;justify-content:space-between;padding:0 22px 6px;z-index:10;font-family:var(--f-mono);font-size:9px;font-weight:700;color:var(--t1);}
+.ios-home{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);width:104px;height:4px;background:rgba(0,0,0,0.28);border-radius:2px;z-index:30;}
+
+.screen{position:absolute;top:42px;bottom:62px;left:0;right:0;background:var(--screen-bg);overflow:hidden;display:flex;flex-direction:column;}
+.screen.no-nav{bottom:20px;}
+
+/* iOS bottom nav — 5 slots with raised centre [+] */
+.ios-nav{position:absolute;bottom:20px;left:0;right:0;height:42px;background:var(--screen-bg);border-top:1px solid var(--b1);display:flex;align-items:center;z-index:10;}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:4px 0;}
+.nav-icon{width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--t4);}
+.nav-item.on .nav-icon{color:var(--green);}
+.nav-lbl{font-size:8px;color:var(--t4);font-weight:500;}
+.nav-item.on .nav-lbl{color:var(--green);font-weight:600;}
+.nav-plus{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);width:46px;height:46px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px;font-weight:300;box-shadow:0 4px 14px rgba(26,60,94,0.35);z-index:11;}
+.nav-plus.active{background:var(--green);}
+
+/* ── SCREEN INNER PRIMITIVES ───────────────────────────── */
+.app-bar{height:46px;display:flex;align-items:center;padding:0 16px;background:var(--screen-bg);flex-shrink:0;gap:10px;}
+.app-bar-title{font-size:var(--s-md);font-weight:700;color:var(--t1);flex:1;letter-spacing:-0.01em;}
+.app-bar-action{font-size:var(--s-sm);font-weight:600;color:var(--navy);}
+.back-btn{font-size:20px;color:var(--navy);line-height:1;font-weight:300;}
+
+.sc-area{flex:1;overflow:hidden;display:flex;flex-direction:column;}
+.sc-pad{padding:14px;display:flex;flex-direction:column;gap:10px;}
+
+.t-title{font-size:var(--s-xl);font-weight:700;color:var(--t1);letter-spacing:-0.01em;line-height:1.2;}
+.t-heading{font-size:var(--s-lg);font-weight:600;color:var(--t1);line-height:1.25;}
+.t-body{font-size:var(--s-base);color:var(--t2);line-height:1.5;}
+.t-caption{font-size:var(--s-sm);color:var(--t3);line-height:1.5;}
+.t-xs{font-size:var(--s-xs);color:var(--t4);}
+.t-pos{color:var(--t-pos);}
+.t-neg{color:var(--t-neg);}
+
+/* Summary bar (3-col Spent / Income / Net) */
+.sum-bar{display:flex;background:#fff;border:1px solid var(--b1);border-radius:var(--r-md);padding:12px 0;box-shadow:var(--shadow-card);}
+.sum-cell{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;border-right:1px solid var(--b1);padding:0 8px;}
+.sum-cell:last-child{border-right:none;}
+.sum-lbl{font-size:9px;font-weight:700;color:var(--t3);letter-spacing:0.06em;text-transform:uppercase;}
+.sum-val{font-size:14px;font-weight:700;color:var(--t1);letter-spacing:-0.01em;}
+.sum-val.pos{color:var(--t-pos);}
+.sum-val.neg{color:var(--t1);}
+.sum-val.net{color:var(--t1);}
+
+/* Range pill row */
+.range-row{display:flex;align-items:center;justify-content:space-between;padding:0 14px 8px;}
+.range-pill{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;background:var(--screen-bg2);border-radius:var(--r-pill);font-size:var(--s-xs);font-weight:600;color:var(--t2);}
+.range-pill .chev{font-size:8px;color:var(--t3);}
+
+/* Search bar */
+.search-bar{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--screen-bg2);border-radius:var(--r-sm);margin:0 14px 8px;}
+.search-ico{font-size:12px;color:var(--t3);}
+.search-ph{font-size:var(--s-sm);color:var(--t4);flex:1;}
+.search-input{font-size:var(--s-sm);color:var(--t1);flex:1;}
+
+/* Filter row — type tabs */
+.tab-row{display:flex;gap:4px;padding:0 14px 8px;border-bottom:1px solid var(--b1);}
+.tab-pill{padding:7px 12px;border-radius:var(--r-pill);font-size:var(--s-xs);font-weight:600;color:var(--t3);background:transparent;}
+.tab-pill.on{background:var(--navy);color:#fff;}
+
+/* Date preset chips row */
+.chip-row{display:flex;gap:6px;padding:10px 14px;overflow-x:auto;}
+.chip-row::-webkit-scrollbar{display:none;}
+.date-chip{padding:5px 10px;border-radius:var(--r-pill);font-size:var(--s-xs);font-weight:600;color:var(--t2);background:#fff;border:1px solid var(--b2);white-space:nowrap;flex-shrink:0;}
+.date-chip.on{background:var(--navy);color:#fff;border-color:var(--navy);}
+.clear-link{margin-left:auto;font-size:var(--s-xs);font-weight:700;color:var(--navy);text-decoration:underline;align-self:center;flex-shrink:0;padding:0 4px;}
+
+/* Date group header inside list */
+.date-hdr{padding:8px 14px 4px;font-size:var(--s-xs);font-weight:700;color:var(--t3);letter-spacing:0.05em;text-transform:uppercase;background:var(--screen-bg);}
+
+/* Transaction row */
+.tx-row{display:flex;align-items:center;gap:10px;padding:11px 14px;background:#fff;border-bottom:1px solid var(--b1);}
+.tx-ico{width:34px;height:34px;border-radius:var(--r-sm);background:var(--screen-bg2);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.tx-info{flex:1;min-width:0;}
+.tx-name{font-size:var(--s-sm);font-weight:600;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tx-cat{font-size:var(--s-xs);color:var(--t3);margin-top:1px;}
+.tx-right{text-align:right;flex-shrink:0;}
+.tx-amt{font-size:var(--s-sm);font-weight:700;color:var(--t1);}
+.tx-amt.pos{color:var(--t-pos);}
+.tx-time{font-size:9px;color:var(--t4);margin-top:1px;}
+.tx-pill{display:inline-block;padding:2px 7px;border-radius:var(--r-pill);font-size:9px;font-weight:600;background:var(--gold-l);color:#8A6510;margin-top:2px;}
+
+/* Pending shimmer row */
+.tx-row.pending .tx-ico{background:var(--screen-bg2);}
+.tx-row.pending .tx-cat{color:var(--t3);font-style:italic;}
+.shimmer{background:linear-gradient(90deg,var(--screen-bg2) 25%,var(--screen-bg3) 50%,var(--screen-bg2) 75%);background-size:200% 100%;animation:sh 1.4s infinite;border-radius:var(--r-sm);}
+@keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* Empty state */
+.empty-state{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 22px;text-align:center;gap:10px;}
+.empty-icon{width:58px;height:58px;border-radius:50%;background:var(--screen-bg2);display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:4px;}
+.empty-ttl{font-size:var(--s-base);font-weight:700;color:var(--t1);line-height:1.3;}
+.empty-desc{font-size:var(--s-sm);color:var(--t3);line-height:1.5;max-width:240px;}
+.empty-actions{display:flex;flex-direction:column;gap:8px;width:100%;max-width:220px;margin-top:12px;}
+
+/* Buttons */
+.btn{height:42px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;font-family:var(--f-body);font-size:var(--s-sm);font-weight:700;border:none;width:100%;cursor:default;}
+.btn-primary{background:var(--navy);color:#fff;}
+.btn-accent{background:var(--green);color:#fff;}
+.btn-outline{background:transparent;border:1.5px solid var(--navy);color:var(--navy);}
+.btn-ghost{background:transparent;color:var(--navy);}
+.btn-danger{background:var(--red);color:#fff;}
+.btn-disabled{background:var(--screen-bg3);color:var(--t4);}
+.btn-lg{height:48px;font-size:var(--s-base);}
+.btn-link{background:transparent;color:var(--navy);font-weight:600;font-size:var(--s-xs);height:auto;padding:6px 0;text-decoration:underline;}
+
+/* Form */
+.form-grp{display:flex;flex-direction:column;gap:5px;}
+.form-label{font-size:var(--s-xs);font-weight:700;color:var(--t2);letter-spacing:0.03em;}
+.input{height:42px;border:1.5px solid var(--b2);border-radius:var(--r-sm);background:#fff;padding:0 12px;font-size:var(--s-sm);color:var(--t1);display:flex;align-items:center;}
+.input.focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(26,60,94,0.07);}
+.input.err{border-color:var(--red);}
+.input.big{height:54px;font-size:24px;font-weight:700;}
+.input-err{font-size:var(--s-xs);color:var(--red);}
+.input-hint{font-size:var(--s-xs);color:var(--t3);}
+.input-row{display:flex;align-items:center;justify-content:space-between;height:42px;border:1.5px solid var(--b2);border-radius:var(--r-sm);background:#fff;padding:0 12px;}
+.input-row .val{font-size:var(--s-sm);color:var(--t1);font-weight:500;}
+.input-row .val.ph{color:var(--t4);}
+.input-row .chev{font-size:12px;color:var(--t3);}
+.optional-tag{font-size:10px;color:var(--t4);font-weight:500;text-transform:none;letter-spacing:0;margin-left:4px;}
+
+/* Toggle row */
+.tog-row{display:flex;align-items:flex-start;justify-content:space-between;padding:10px 0;gap:12px;}
+.tog-body{flex:1;}
+.tog-lbl{font-size:var(--s-sm);color:var(--t1);font-weight:600;}
+.tog-help{font-size:var(--s-xs);color:var(--t3);margin-top:3px;line-height:1.45;}
+.tog{width:38px;height:22px;border-radius:var(--r-pill);background:var(--screen-bg3);position:relative;flex-shrink:0;margin-top:2px;}
+.tog.on{background:var(--green);}
+.tog::after{content:'';position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,0.18);}
+.tog.on::after{left:19px;}
+
+/* Sheet */
+.overlay{position:absolute;inset:0;background:rgba(0,0,0,0.45);display:flex;align-items:flex-end;z-index:40;}
+.sheet{background:#fff;border-radius:var(--r-xl) var(--r-xl) 0 0;width:100%;padding:14px 14px 24px;box-shadow:0 -4px 24px rgba(0,0,0,0.12);max-height:90%;overflow:hidden;display:flex;flex-direction:column;}
+.sheet-handle{width:36px;height:4px;background:var(--b2);border-radius:2px;margin:0 auto 12px;}
+.sheet-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.sheet-ttl{font-size:var(--s-md);font-weight:700;color:var(--t1);}
+.sheet-close{font-size:18px;color:var(--t3);line-height:1;}
+
+/* iOS-style action sheet */
+.action-sheet{background:transparent;width:100%;padding:0 8px 24px;display:flex;flex-direction:column;gap:8px;}
+.as-group{background:#fff;border-radius:14px;overflow:hidden;}
+.as-item{padding:14px;font-size:15px;color:var(--navy);font-weight:500;text-align:center;border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:center;gap:8px;}
+.as-item:last-child{border-bottom:none;}
+.as-item.cancel{font-weight:700;color:var(--red);}
+.as-ico{font-size:16px;}
+
+/* Detail sheet — view mode */
+.detail-head{display:flex;align-items:center;gap:12px;padding:4px 0 14px;}
+.detail-head-ico{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;background:#1F4D5C;color:#7DDDDB;}
+.detail-head-info{flex:1;min-width:0;}
+.detail-head-name{font-size:15px;font-weight:700;color:var(--t1);line-height:1.2;}
+.detail-head-src{font-size:var(--s-xs);color:var(--t3);margin-top:2px;}
+.detail-pill{padding:4px 10px;border-radius:var(--r-pill);background:var(--screen-bg2);font-size:10px;font-weight:600;color:var(--t2);white-space:nowrap;}
+.detail-pill.editing{background:var(--gold-l);color:#8A6510;}
+.detail-amt-block{padding:0 0 18px;}
+.detail-amt{font-size:34px;font-weight:700;color:var(--t-neg);letter-spacing:-0.02em;line-height:1;}
+.detail-amt.pos{color:var(--t-pos);}
+.detail-amt-ccy{font-size:18px;font-weight:600;color:var(--t-neg);margin-left:4px;letter-spacing:-0.01em;}
+.detail-amt.pos .detail-amt-ccy{color:var(--t-pos);}
+
+/* Stacked detail rows — flat, separated by hairlines (reference style) */
+.detail-rows{display:flex;flex-direction:column;}
+.detail-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-top:1px solid var(--b1);gap:12px;}
+.detail-row:first-child{border-top:none;padding-top:6px;}
+.detail-key{font-size:var(--s-sm);color:var(--t3);font-weight:500;flex-shrink:0;}
+.detail-val{font-size:var(--s-sm);color:var(--t1);font-weight:600;text-align:right;display:flex;align-items:center;gap:6px;}
+.detail-val .cat-chip{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:6px;font-size:11px;flex-shrink:0;}
+.detail-val .add-link{color:var(--gold);font-weight:700;}
+.detail-val .add-plus{color:var(--gold);font-weight:700;margin-right:2px;}
+.detail-tog-row{display:flex;align-items:flex-start;justify-content:space-between;padding:14px 0;border-top:1px solid var(--b1);gap:12px;}
+.detail-tog-body{flex:1;}
+.detail-tog-lbl{font-size:var(--s-sm);color:var(--t1);font-weight:600;}
+.detail-tog-help{font-size:var(--s-xs);color:var(--t3);margin-top:3px;line-height:1.4;}
+
+/* Edit mode — field cards (reference style) */
+.field-card{border:1px solid var(--b2);border-radius:var(--r-md);padding:10px 14px;background:#fff;display:flex;flex-direction:column;gap:6px;}
+.field-card.focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(26,60,94,0.06);}
+.field-card-lbl{font-size:var(--s-xs);font-weight:700;color:var(--t2);letter-spacing:0.04em;}
+.field-card-lbl .opt{font-weight:500;color:var(--t4);text-transform:none;letter-spacing:0;margin-left:4px;}
+.field-card-val{display:flex;align-items:center;justify-content:space-between;font-size:var(--s-md);color:var(--t1);font-weight:600;min-height:24px;}
+.field-card-val.big{font-size:var(--s-xl);}
+.field-card-val .ccy{font-size:var(--s-xs);font-weight:700;color:var(--t3);letter-spacing:0.04em;}
+.field-card-val .chev{font-size:14px;color:var(--t3);}
+.field-card-val.ph{color:var(--t4);font-weight:500;}
+.field-card-note{font-size:var(--s-sm);color:var(--t4);font-weight:400;}
+
+/* Confirm dialog (iOS-style centred) */
+.confirm-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;padding:24px;z-index:50;}
+.confirm-box{background:#F4F4F4;border-radius:14px;width:100%;max-width:240px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.22);}
+.confirm-body{padding:18px 16px 14px;text-align:center;}
+.confirm-ttl{font-size:14px;font-weight:700;color:#111;margin-bottom:6px;line-height:1.3;}
+.confirm-desc{font-size:11px;color:#444;line-height:1.45;}
+.confirm-acts{display:flex;flex-direction:column;border-top:1px solid #D0D0D0;}
+.confirm-btn{padding:12px;text-align:center;font-size:14px;color:var(--navy);border-bottom:1px solid #D0D0D0;font-weight:500;}
+.confirm-btn:last-child{border-bottom:none;}
+.confirm-btn.primary{font-weight:700;color:var(--navy);}
+.confirm-btn.danger{color:var(--red);font-weight:700;}
+
+/* Toast */
+.toast{position:absolute;bottom:88px;left:14px;right:14px;background:var(--t1);color:#fff;border-radius:var(--r-md);padding:12px 14px;font-size:var(--s-sm);font-weight:600;display:flex;align-items:center;justify-content:space-between;box-shadow:0 6px 18px rgba(0,0,0,0.22);z-index:60;}
+.toast-cta{color:#9DD9B7;font-weight:700;font-size:var(--s-sm);text-decoration:underline;}
+
+/* Banner (offline / error) */
+.banner{padding:8px 14px;font-size:var(--s-xs);font-weight:600;display:flex;align-items:center;gap:6px;}
+.banner.offline{background:#FFF3D6;color:#6B5210;border-bottom:1px solid #E6D27A;}
+.banner.error{background:var(--red-l);color:var(--red);border-bottom:1px solid rgba(192,57,43,0.18);}
+.banner-cta{margin-left:auto;font-weight:700;text-decoration:underline;}
+
+/* Category list rows in picker */
+.cat-list{flex:1;overflow-y:auto;}
+.cat-row{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--b1);background:#fff;}
+.cat-ico{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.cat-ico.food{background:#FEF0E6;color:#B05A10;}
+.cat-ico.tr{background:#EAF0FE;color:#1A52A0;}
+.cat-ico.shop{background:#FAE8F0;color:#A01850;}
+.cat-ico.bill{background:#EEE8F8;color:#6028A0;}
+.cat-ico.salary{background:var(--green-l);color:var(--green);}
+.cat-ico.coffee{background:#F4ECDC;color:#8A6510;}
+.cat-ico.create{background:var(--navy);color:#fff;}
+.cat-name{font-size:var(--s-sm);font-weight:600;color:var(--t1);flex:1;}
+.cat-row.create .cat-name{color:var(--navy);}
+
+/* Type segmented control */
+.seg{display:flex;background:var(--screen-bg2);border-radius:var(--r-sm);padding:3px;}
+.seg-item{flex:1;text-align:center;padding:7px 0;font-size:var(--s-xs);font-weight:600;color:var(--t3);border-radius:4px;}
+.seg-item.on{background:#fff;color:var(--t1);box-shadow:0 1px 3px rgba(0,0,0,0.08);}
+
+/* Loading skeleton row */
+.skel-row{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--b1);}
+.skel-cir{width:34px;height:34px;border-radius:var(--r-sm);}
+.skel-line{height:10px;border-radius:3px;}
+.skel-line.l{width:60%;}
+.skel-line.s{width:35%;margin-top:5px;}
+
+/* Flow notes */
+.flow-note{max-width:var(--ph-w);padding:9px 12px;border-radius:4px;font-family:var(--f-body);font-size:11px;font-weight:500;line-height:1.5;}
+.flow-note.decision{background:#FBF4DC;color:#6B5210;border-left:3px solid var(--gold);}
+.flow-note.bug{background:var(--red-l);color:#7A1810;border-left:3px solid var(--red);}
+.flow-note.new{background:var(--green-l);color:#0F5830;border-left:3px solid var(--green);}
+.flow-note.info{background:#EAF0FE;color:#103868;border-left:3px solid #4A80C0;}
+
+/* ── HANDOFF ───────────────────────────────────────────── */
+.handoff{margin-top:64px;padding:36px;background:#fff;border:1px solid var(--b1);border-radius:var(--r-md);}
+.handoff-title{font-size:26px;font-weight:700;color:var(--t1);margin-bottom:8px;letter-spacing:-0.01em;}
+.handoff-sub{font-size:14px;color:var(--t2);margin-bottom:28px;line-height:1.5;}
+.handoff-sec{margin-top:28px;padding-top:24px;border-top:1px solid var(--b1);}
+.handoff-sec:first-of-type{border-top:none;padding-top:0;margin-top:0;}
+.handoff-h{font-size:18px;font-weight:700;color:var(--t1);margin-bottom:12px;}
+.handoff-p{font-size:14px;color:var(--t1);line-height:1.6;margin-bottom:8px;}
+.handoff-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.handoff-list li{font-size:14px;color:var(--t1);line-height:1.6;padding-left:16px;position:relative;}
+.handoff-list li::before{content:'—';position:absolute;left:0;color:var(--t3);font-weight:700;}
+
+.copy-table{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed;}
+.copy-table col.col-screen{width:22%;}
+.copy-table col.col-element{width:20%;}
+.copy-table col.col-en{width:29%;}
+.copy-table col.col-ar{width:29%;}
+.copy-table th{text-align:left;padding:10px 12px;border-bottom:2px solid var(--b2);font-size:11px;color:var(--t2);text-transform:uppercase;letter-spacing:0.06em;font-weight:700;background:var(--screen-bg);}
+.copy-table td{padding:10px 12px;border-bottom:1px solid var(--b1);vertical-align:top;color:var(--t1);line-height:1.55;word-wrap:break-word;overflow-wrap:break-word;}
+.copy-table td.screen-name{font-weight:700;color:var(--t1);background:var(--screen-bg);}
+.copy-table td.element-name{color:var(--t2);font-weight:500;}
+.copy-table td.en{font-size:12px;color:var(--t1);}
+.copy-table td.ar{font-size:12px;color:var(--t1);direction:rtl;text-align:right;font-family:var(--f-body);}
+.copy-table tr.group-start td{border-top:2px solid var(--b2);}
+.draft-badge{display:inline-block;background:var(--gold-l);color:#6B5210;font-size:10px;font-weight:700;padding:2px 8px;border-radius:3px;margin-left:8px;letter-spacing:0.04em;text-transform:uppercase;}
+
+.callout{padding:12px 14px;border-radius:0 var(--r-sm) var(--r-sm) 0;font-size:13px;line-height:1.55;margin-top:12px;}
+.callout.warn{background:var(--gold-l);border-left:3px solid var(--gold);color:#6B5210;}
+.callout.info{background:#EAF0FE;border-left:3px solid #4A80C0;color:#103868;}
+
+.w-full{width:100%;}
+.spacer{flex:1;}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ═══════════════════════════════════════════════════════
+     DOC HEADER
+═══════════════════════════════════════════════════════════ -->
+<div class="doc-header">
+  <div class="doc-meta">
+    <span class="doc-tag prototype">Prototype</span>
+    <span class="doc-tag designer">Designer brief</span>
+    <span class="doc-tag ios">iOS</span>
+    <span class="doc-tag wip">Draft v1</span>
+    <span class="doc-tag version">DB-TX-iOS</span>
+    <span class="doc-date">Transactions tab · iOS</span>
+  </div>
+
+  <div class="doc-title">Transactions tab — iOS</div>
+  <div class="doc-subtitle">The list of every transaction the user has captured, with search, filtering, row interactions, and entry points for adding and reviewing. Built for iOS where bank SMS is not auto-read — captures come via the Shortcut or manual entry.</div>
+
+  <div class="doc-info">
+    <div class="doc-info-cell">
+      <div class="info-label">The problem</div>
+      <div class="info-body">
+        On iOS we cannot read bank SMS automatically. The Transactions tab has to do double duty: be the home for everything the user has captured, and also explain why the list might be empty without making the user feel the app is broken. The empty states must reframe the iOS reality — Shortcut + manual — as the path, not as a failure. Detail editing, internal-transfer flagging, and category creation also live here and must feel light, not bureaucratic.
+      </div>
+    </div>
+    <div class="doc-info-cell">
+      <div class="info-label">Flows in this document</div>
+      <div class="flow-list">
+        <div class="flow-list-item">Default tab — list with rows, search, filters</div>
+        <div class="flow-list-item">Empty states — Shortcut not set, set + waiting, manual-only, first session</div>
+        <div class="flow-list-item">No-results — search, filter, range</div>
+        <div class="flow-list-item">Connectivity — loading, error, offline</div>
+        <div class="flow-list-item">Transaction detail — view, edit, internal-transfer, delete + undo</div>
+        <div class="flow-list-item">Add transaction — sheet, validation, soft warning</div>
+        <div class="flow-list-item">Review transaction — uncategorised flow</div>
+        <div class="flow-list-item">Category picker — search, type-ahead, create new</div>
+        <div class="flow-list-item">Centre [+] action sheet</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 1 — Default tab (list with rows, summary, filters)
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 1 — Default tab · List with rows</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="phone-row">
+
+    <!-- Phone 1: Default tab — list view with summary -->
+    <div class="screen-col">
+      <div class="screen-label">Transactions tab · default with rows</div>
+      <div class="state-badge happy">default</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●●● 100%</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="app-bar-title">Transactions</div>
+          </div>
+          <div class="sc-area">
+            <div class="range-row">
+              <div class="range-pill">This month <span class="chev">▾</span></div>
+            </div>
+            <div class="search-bar">
+              <div class="search-ico">🔍</div>
+              <div class="search-ph">Search merchant or amount</div>
+            </div>
+            <div class="tab-row">
+              <div class="tab-pill on">All</div>
+              <div class="tab-pill">Spending</div>
+              <div class="tab-pill">Income</div>
+              <div class="tab-pill">Transfers</div>
+            </div>
+            <div style="flex:1;overflow:hidden">
+              <div class="date-hdr">Today</div>
+              <div class="tx-row">
+                <div class="tx-ico">☕</div>
+                <div class="tx-info"><div class="tx-name">Costa Coffee</div><div class="tx-cat">Food & Dining</div></div>
+                <div class="tx-right"><div class="tx-amt">−85</div><div class="tx-time">9:12 AM</div></div>
+              </div>
+              <div class="tx-row">
+                <div class="tx-ico">🚗</div>
+                <div class="tx-info"><div class="tx-name">Uber</div><div class="tx-cat">Transport</div></div>
+                <div class="tx-right"><div class="tx-amt">−42</div><div class="tx-time">8:24 AM</div></div>
+              </div>
+              <div class="date-hdr">Yesterday</div>
+              <div class="tx-row">
+                <div class="tx-ico">🛒</div>
+                <div class="tx-info"><div class="tx-name">Carrefour</div><div class="tx-cat">Groceries</div></div>
+                <div class="tx-right"><div class="tx-amt">−620</div><div class="tx-time">7:40 PM</div></div>
+              </div>
+              <div class="tx-row">
+                <div class="tx-ico">💼</div>
+                <div class="tx-info"><div class="tx-name">Salary</div><div class="tx-cat">Income</div></div>
+                <div class="tx-right"><div class="tx-amt pos">+8,000</div><div class="tx-time">2:10 PM</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ios-nav">
+          <div class="nav-item"><div class="nav-icon">🏠</div><div class="nav-lbl">Home</div></div>
+          <div class="nav-item on"><div class="nav-icon">↕</div><div class="nav-lbl">Transactions</div></div>
+          <div class="nav-item" style="visibility:hidden"></div>
+          <div class="nav-item"><div class="nav-icon">🎯</div><div class="nav-lbl">Budgets</div></div>
+          <div class="nav-item"><div class="nav-icon">👤</div><div class="nav-lbl">Profile</div></div>
+        </div>
+        <div class="nav-plus">+</div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note decision">Range pill controls the period the list reflects. Date headers ("Today", "Yesterday", explicit dates) split the list. Internal transfers appear in the list but greyed and unsigned.</div>
+    </div>
+
+    <div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">tap range pill</div></div>
+
+    <!-- Phone 2: Date range picker sheet -->
+    <div class="screen-col">
+      <div class="screen-label">Date range · preset picker</div>
+      <div class="state-badge interaction">picker open</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●●● 100%</span></div>
+        <div class="screen">
+          <div class="app-bar"><div class="app-bar-title">Transactions</div></div>
+          <div class="sc-area" style="opacity:0.45">
+          </div>
+          <div class="overlay">
+            <div class="sheet">
+              <div class="sheet-handle"></div>
+              <div class="sheet-hdr"><div class="sheet-ttl">Date range</div><div class="sheet-close">✕</div></div>
+              <div style="display:flex;flex-direction:column;gap:0;background:#fff;border:1px solid var(--b1);border-radius:var(--r-md);overflow:hidden">
+                <div style="padding:12px 14px;border-bottom:1px solid var(--b1);font-size:var(--s-sm);font-weight:600;color:var(--t1);background:var(--green-l);display:flex;justify-content:space-between;align-items:center">This month <span style="color:var(--green);font-weight:700">✓</span></div>
+                <div style="padding:12px 14px;border-bottom:1px solid var(--b1);font-size:var(--s-sm);color:var(--t1)">Last month</div>
+                <div style="padding:12px 14px;border-bottom:1px solid var(--b1);font-size:var(--s-sm);color:var(--t1)">Last 7 days</div>
+                <div style="padding:12px 14px;border-bottom:1px solid var(--b1);font-size:var(--s-sm);color:var(--t1)">Last 30 days</div>
+                <div style="padding:12px 14px;font-size:var(--s-sm);color:var(--t1);display:flex;justify-content:space-between;align-items:center">Custom <span class="chev" style="color:var(--t3);font-size:11px">›</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+    </div>
+
+    <div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">type queries</div></div>
+
+    <!-- Phone 3: Search active -->
+    <div class="screen-col">
+      <div class="screen-label">Search active · two filters applied</div>
+      <div class="state-badge interaction">filtered</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:42</span><span>●●●● 100%</span></div>
+        <div class="screen">
+          <div class="app-bar"><div class="app-bar-title">Transactions</div></div>
+          <div class="sc-area">
+            <div class="range-row">
+              <div class="range-pill">Last 7 days <span class="chev">▾</span></div>
+              <div class="clear-link">Clear all</div>
+            </div>
+            <div class="search-bar" style="background:#fff;border:1.5px solid var(--navy)">
+              <div class="search-ico">🔍</div>
+              <div class="search-input">costa</div>
+              <div style="font-size:14px;color:var(--t4)">✕</div>
+            </div>
+            <div class="tab-row">
+              <div class="tab-pill">All</div>
+              <div class="tab-pill on">Spending</div>
+              <div class="tab-pill">Income</div>
+              <div class="tab-pill">Transfers</div>
+            </div>
+            <div style="flex:1;overflow:hidden">
+              <div class="date-hdr">Today</div>
+              <div class="tx-row">
+                <div class="tx-ico">☕</div>
+                <div class="tx-info"><div class="tx-name">Costa Coffee</div><div class="tx-cat">Food & Dining</div></div>
+                <div class="tx-right"><div class="tx-amt">−85</div><div class="tx-time">9:12 AM</div></div>
+              </div>
+              <div class="date-hdr">3 days ago</div>
+              <div class="tx-row">
+                <div class="tx-ico">☕</div>
+                <div class="tx-info"><div class="tx-name">Costa Coffee</div><div class="tx-cat">Food & Dining</div></div>
+                <div class="tx-right"><div class="tx-amt">−95</div><div class="tx-time">3:48 PM</div></div>
+              </div>
+              <div class="date-hdr">5 days ago</div>
+              <div class="tx-row">
+                <div class="tx-ico">☕</div>
+                <div class="tx-info"><div class="tx-name">Costa City Stars</div><div class="tx-cat">Food & Dining</div></div>
+                <div class="tx-right"><div class="tx-amt">−320</div><div class="tx-time">11:20 AM</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ios-nav">
+          <div class="nav-item"><div class="nav-icon">🏠</div><div class="nav-lbl">Home</div></div>
+          <div class="nav-item on"><div class="nav-icon">↕</div><div class="nav-lbl">Transactions</div></div>
+          <div class="nav-item" style="visibility:hidden"></div>
+          <div class="nav-item"><div class="nav-icon">🎯</div><div class="nav-lbl">Budgets</div></div>
+          <div class="nav-item"><div class="nav-icon">👤</div><div class="nav-lbl">Profile</div></div>
+        </div>
+        <div class="nav-plus">+</div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note decision">"Clear all" link appears whenever 2+ filters are active (search + tab, search + range, tab + range, etc.). Single filter = no Clear all link.</div>
+    </div>
+
+    <div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">row in flight</div></div>
+
+    <!-- Phone 4: Needs category + internal transfer rows -->
+    <div class="screen-col">
+      <div class="screen-label">Row states · needs category and internal transfer</div>
+      <div class="state-badge happy">row variants</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:42</span><span>●●●● 100%</span></div>
+        <div class="screen">
+          <div class="app-bar"><div class="app-bar-title">Transactions</div></div>
+          <div class="sc-area">
+            <div class="range-row"><div class="range-pill">This month <span class="chev">▾</span></div></div>
+            <div style="flex:1;overflow:hidden">
+              <div class="date-hdr">Today</div>
+              <!-- Needs category row -->
+              <div class="tx-row">
+                <div class="tx-ico" style="background:var(--gold-l);color:#8A6510">🛒</div>
+                <div class="tx-info">
+                  <div class="tx-name">Spinneys</div>
+                  <div class="tx-pill">Needs category</div>
+                </div>
+                <div class="tx-right"><div class="tx-amt">−215</div><div class="tx-time">just now</div></div>
+              </div>
+              <!-- Normal row -->
+              <div class="tx-row">
+                <div class="tx-ico">☕</div>
+                <div class="tx-info"><div class="tx-name">Costa Coffee</div><div class="tx-cat">Food & Dining</div></div>
+                <div class="tx-right"><div class="tx-amt">−85</div><div class="tx-time">9:12 AM</div></div>
+              </div>
+              <!-- Internal transfer row (de-emphasised, italic cat) -->
+              <div class="tx-row">
+                <div class="tx-ico">🔄</div>
+                <div class="tx-info">
+                  <div class="tx-name">CIB → NBE</div>
+                  <div class="tx-cat" style="font-style:italic;color:var(--t4)">Internal transfer · not counted</div>
+                </div>
+                <div class="tx-right"><div class="tx-amt" style="color:var(--t3)">2,000</div><div class="tx-time">7:15 AM</div></div>
+              </div>
+              <div class="date-hdr">Yesterday</div>
+              <div class="tx-row">
+                <div class="tx-ico">🛒</div>
+                <div class="tx-info"><div class="tx-name">Carrefour</div><div class="tx-cat">Groceries</div></div>
+                <div class="tx-right"><div class="tx-amt">−620</div><div class="tx-time">7:40 PM</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ios-nav">
+          <div class="nav-item"><div class="nav-icon">🏠</div><div class="nav-lbl">Home</div></div>
+          <div class="nav-item on"><div class="nav-icon">↕</div><div class="nav-lbl">Transactions</div></div>
+          <div class="nav-item" style="visibility:hidden"></div>
+          <div class="nav-item"><div class="nav-icon">🎯</div><div class="nav-lbl">Budgets</div></div>
+          <div class="nav-item"><div class="nav-icon">👤</div><div class="nav-lbl">Profile</div></div>
+        </div>
+        <div class="nav-plus">+</div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note decision">Two non-default row variants. Needs category: gold pill in place of the category line, gold-tinted merchant icon, tap opens the review sheet. Internal transfer: greyed amount with no sign, italic helper, tap opens the detail sheet. Both are tappable as full rows.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 2 — Empty states (4 variants)
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 2 — Empty states</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="phone-row">
+
+    <!-- Empty 1: First session post-onboarding -->
+    <div class="screen-col">
+      <div class="screen-label">First session · post-onboarding</div>
+      <div class="state-badge empty">empty · first session</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●●● 100%</span></div>
+        <div class="screen">
+          <div class="app-bar"><div class="app-bar-title">Transactions</div></div>
+          <div class="empty-state">
+            <div class="empty-icon">👋</div>
+            <div class="empty-ttl">Nothing here yet — that's expected</div>
+            <div class="empty-desc">On iOS, transactions come in one at a time — through the Shortcut when your bank notifies you, or manually whenever you want.</div>
+            <div class="empty-actions">
+              <div class="btn btn-accent">Set up the Shortcut</div>
+              <div class="btn btn-outline">Add one manually</div>
+            </div>
+          </div>
+        </div>
+        <div class="ios-nav">
+          <div class="nav-item"><div class="nav-icon">🏠</div><div class="nav-lbl">Home</div></div>
+          <div class="nav-item on"><div class="nav-icon">↕</div><div class="nav-lbl">Transactions</div></div>
+          <div class="nav-item" style="visibility:hidden"></div>
+          <div class="nav-item"><div class="nav-icon">🎯</div><div class="nav-lbl">Budgets</div></div>
+          <div class="nav-item"><div class="nav-icon">👤</div><div class="nav-lbl">Profile</div></div>
+        </div>
+        <div class="nav-plus">+</div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note new">First impression after sign-up. Sets the iOS expectation up front: captures arrive one at a time. Both CTAs visible — Shortcut is preferred but manual is a real path.</div>
+    </div>
+
+    <!-- Empty 2: Shortcuts not configured + zero transactions -->
+    <div class="screen-col">
+      <div class="screen-label">Shortcut not set up · zero transactions</div>
+      <div class="state-badge empty">shortcut not set</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●●● 100%</span></div>
+        <div class="screen">
+          <div class="app-bar"><div class="app-bar-title">Transactions</div></div>
+          <div class="empty-state">
+            <div class="empty-icon">⚡</div>
+            <div class="empty-ttl">Set up the Shortcut, capture as you spend</div>
+            <div class="empty-desc">iOS doesn't read your bank SMS automatically. The Shortcut grabs each transaction the moment your bank notifies you — one tap and you're done.</div>
+            <div class="empty-actions">
+              <div class="btn btn-accent">Set up the Shortcut</div>
+              <div class="btn btn-outline">Add one manually</div>
+            </div>
+          </div>
+        </div>
+        <div class="ios-nav">
+          <div class="nav-item"><div class="nav-icon">🏠</div><div class="nav-lbl">Home</div></div>
+          <div class="nav-item on"><div class="nav-icon">↕</div><div class="nav-lbl">Transactions</div></div>
+          <div class="nav-item" style="visibility:hidden"></div>
+          <div class="nav-item"><div class="nav-icon">🎯</div><div class="nav-lbl">Budgets</div></div>
+          <div class="nav-item"><div class="nav-icon">👤</div><div class="nav-lbl">Profile</div></div>
+        </div>
+        <div class="nav-plus">+</div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note decision">User has come back, still hasn't set up the Shortcut, still has no data. Headline reframes the problem as a setup step, not a missing feature.</div>
+    </div>
+
+    <!-- Empty 3: Shortcuts configured + zero transactions -->
+    <div class="screen-col">
+      <div class="screen-label">Shortcut set · waiting for first capture</div>
+      <div class="state-badge empty">shortcut ready</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●●● 100%</span></div>
+        <div class="screen">
+          <div class="app-bar"><div class="app-bar-title">Transactions</div></div>
+          <div class="empty-state">
+            <div class="empty-icon">✓</div>
+            <div class="empty-ttl">You're set. Waiting for your first one.</div>
+            <div class="empty-desc">The Shortcut runs the next time your bank sends a notification. Spend, get paid, transfer — it shows up here. Add one manually if you can't wait.</div>
+            <div class="empty-actions">
+              <div class="btn btn-outline">Add one manually</div>
+            </div>
+          </div>
+        </div>
+        <div class="ios-nav">
+          <div class="nav-item"><div class="nav-icon">🏠</div><div class="nav-lbl">Home</div></div>
+          <div class="nav-item on"><div class="nav-icon">↕</div><div class="nav-lbl">Transactions</div></div>
+          <div class="nav-item" style="visibility:hidden"></div>
+          <div class="nav-item"><div class="nav-icon">🎯</div><div class="nav-lbl">Budgets</div></div>
+          <div class="nav-item"><div class="nav-icon">👤</div><div class="nav-lbl">Profile</div></div>
+        </div>
+        <div class="nav-plus">+</div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note new">Setup is done. The screen acknowledges that and waits warmly. Only one CTA — manual — because the Shortcut already exists.</div>
+    </div>
+
+    <!-- Empty 4: Manual-only mode + zero -->
+    <div class="screen-col">
+      <div class="screen-label">Manual-only mode · zero transactions</div>
+      <div class="state-badge empty">manual-only</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●●● 100%</span></div>
+        <div class="screen">
+          <div class="app-bar"><div class="app-bar-title">Transactions</div></div>
+          <div class="empty-state">
+            <div class="empty-icon">✏️</div>
+            <div class="empty-ttl">Add your first transaction</div>
+            <div class="empty-desc">Log what you spend, earn, or transfer. Two taps each. Your budgets and totals start working the moment you add one.</div>
+            <div class="empty-actions">
+              <div class="btn btn-accent">Add one manually</div>
+            </div>
+          </div>
+        </div>
+        <div class="ios-nav">
+          <div class="nav-item"><div class="nav-icon">🏠</div><div class="nav-lbl">Home</div></div>
+          <div class="nav-item on"><div class="nav-icon">↕</div><div class="nav-lbl">Transactions</div></div>
+          <div class="nav-item" style="visibility:hidden"></div>
+          <div class="nav-item"><div class="nav-icon">🎯</div><div class="nav-lbl">Budgets</div></div>
+          <div class="nav-item"><div class="nav-icon">👤</div><div class="nav-lbl">Profile</div></div>
+        </div>
+        <div class="nav-plus">+</div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note decision">Reached after the user has dismissed the Shortcut nag three times. No mention of Shortcuts here — manual is the path. Single primary CTA.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 3 — No-results states (search, filter combos, range)
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 3 — No-results states</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="phone-row">
+
+    <!-- Filter only no-results -->
+    <div class="screen-col">
+      <div class="screen-label">No results · filters only</div>
+      <div class="state-badge empty">no-results · filter</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●●● 100%</span></div>
+        <div class="screen">
+          <div class="app-bar"><div class="app-bar-title">Transactions</div></div>
+          <div class="sc-area">
+            <div class="range-row">
+              <div class="range-pill">Last month <span class="chev">▾</span></div>
+              <div class="clear-link">Clear all</div>
+            </div>
+            <div class="search-bar"><div class="search-ico">🔍</div><div class="search-ph">Search merchant or amount</div></div>
+            <div class="tab-row">
+              <div class="tab-pill">All</div><div class="tab-pill">Spending</div><div class="tab-pill on">Income</div><div class="tab-pill">Transfers</div>
+            </div>
+            <div class="empty-state" style="padding:32px 22px 24px">
+              <div class="empty-icon" style="width:44px;height:44px;font-size:20px">🔍</div>
+              <div class="empty-ttl">No transactions match these filters</div>
+              <div class="empty-desc">Try clearing a filter or widening the date range.</div>
+              <div class="empty-actions"><div class="btn btn-outline">Clear all filters</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="ios-nav">
+          <div class="nav-item"><div class="nav-icon">🏠</div><div class="nav-lbl">Home</div></div>
+          <div class="nav-item on"><div class="nav-icon">↕</div><div class="nav-lbl">Transactions</div></div>
+          <div class="nav-item" style="visibility:hidden"></div>
+          <div class="nav-item"><div class="nav-icon">🎯</div><div class="nav-lbl">Budgets</div></div>
+          <div class="nav-item"><div class="nav-icon">👤</div><div class="nav-lbl">Profile</div></div>
+        </div>
+        <div class="nav-plus">+</div>
+        <div class="ios-home"></div>
+      </div>
+    </div>
+
+    <!-- Search only no-results -->
+    <div class="screen-col">
+      <div class="screen-label">No results · search only</div>
+      <div class="state-badge empty">no-results · search</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●●● 100%</span></div>
+        <div class="screen">
+          <div class="app-bar"><div class="app-bar-title">Transactions</div></div>
+          <div class="sc-area">
+            <div class="range-row"><div class="range-pill">This month <span class="chev">▾</span></div></div>
+            <div class="search-bar" style="background:#fff;border:1.5px solid var(--navy)">
+              <div class="search-ico">🔍</div>
+              <div class="search-input">starbukcs</div>
+              <div style="font-size:14px;color:var(--t4)">✕</div>
+            </div>
+            <div class="tab-row">
+              <div class="tab-pill on">All</div><div class="tab-pill">Spending</div><div class="tab-pill">Income</div><div class="tab-pill">Transfers</div>
+            </div>
+            <div class="empty-state" style="padding:32px 22px 24px">
+              <div class="empty-icon" style="width:44px;height:44px;font-size:20px">🔎</div>
+              <div class="empty-ttl">No matches for that search</div>
+              <div class="empty-desc">Check the spelling or try a different merchant or amount.</div>
+            </div>
+          </div>
+        </div>
+        <div class="ios-nav">
+          <div class="nav-item"><div class="nav-icon">🏠</div><div class="nav-lbl">Home</div></div>
+          <div class="nav-item on"><div class="nav-icon">↕</div><div class="nav-lbl">Transactions</div></div>
+          <div class="nav-item" style="visibility:hidden"></div>
+          <div class="nav-item"><div class="nav-icon">🎯</div><div class="nav-lbl">Budgets</div></div>
+          <div class="nav-item"><div class="nav-icon">👤</div><div class="nav-lbl">Profile</div></div>
+        </div>
+        <div class="nav-plus">+</div>
+        <div class="ios-home"></div>
+      </div>
+    </div>
+
+    <!-- Combined no-results -->
+    <div class="screen-col">
+      <div class="screen-label">No results · search + filters</div>
+      <div class="state-badge empty">no-results · combined</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●●● 100%</span></div>
+        <div class="screen">
+          <div class="app-bar"><div class="app-bar-title">Transactions</div></div>
+          <div class="sc-area">
+            <div class="range-row">
+              <div class="range-pill">Last 7 days <span class="chev">▾</span></div>
+              <div class="clear-link">Clear all</div>
+            </div>
+            <div class="search-bar" style="background:#fff;border:1.5px solid var(--navy)">
+              <div class="search-ico">🔍</div>
+              <div class="search-input">vodafone</div>
+              <div style="font-size:14px;color:var(--t4)">✕</div>
+            </div>
+            <div class="tab-row">
+              <div class="tab-pill">All</div><div class="tab-pill on">Spending</div><div class="tab-pill">Income</div><div class="tab-pill">Transfers</div>
+            </div>
+            <div class="empty-state" style="padding:32px 22px 24px">
+              <div class="empty-icon" style="width:44px;height:44px;font-size:20px">🔍</div>
+              <div class="empty-ttl">Nothing fits this search and filters</div>
+              <div class="empty-desc">Clear a filter or simplify your search to see more.</div>
+              <div class="empty-actions"><div class="btn btn-outline">Clear all</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="ios-nav">
+          <div class="nav-item"><div class="nav-icon">🏠</div><div class="nav-lbl">Home</div></div>
+          <div class="nav-item on"><div class="nav-icon">↕</div><div class="nav-lbl">Transactions</div></div>
+          <div class="nav-item" style="visibility:hidden"></div>
+          <div class="nav-item"><div class="nav-icon">🎯</div><div class="nav-lbl">Budgets</div></div>
+          <div class="nav-item"><div class="nav-icon">👤</div><div class="nav-lbl">Profile</div></div>
+        </div>
+        <div class="nav-plus">+</div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note decision">Three distinct copy variants for no-results: filter-only, search-only, combined. Plus a fourth (date range only) — not shown but listed in the copy table. Each variant gives the user the most useful next step for their state.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 4 — Connectivity (loading, error, offline)
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 4 — Connectivity states</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="phone-row">
+
+    <!-- Loading -->
+    <div class="screen-col">
+      <div class="screen-label">Loading · initial fetch</div>
+      <div class="state-badge loading">loading</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●●● 100%</span></div>
+        <div class="screen">
+          <div class="app-bar"><div class="app-bar-title">Transactions</div></div>
+          <div class="sc-area">
+            <div class="range-row"><div class="range-pill">This month <span class="chev">▾</span></div></div>
+            <div class="search-bar"><div class="search-ico">🔍</div><div class="search-ph">Search merchant or amount</div></div>
+            <div class="tab-row">
+              <div class="tab-pill on">All</div><div class="tab-pill">Spending</div><div class="tab-pill">Income</div><div class="tab-pill">Transfers</div>
+            </div>
+            <div style="flex:1">
+              <div class="skel-row">
+                <div class="shimmer skel-cir"></div>
+                <div style="flex:1"><div class="shimmer skel-line l"></div><div class="shimmer skel-line s"></div></div>
+                <div class="shimmer skel-line" style="width:40px;height:10px"></div>
+              </div>
+              <div class="skel-row">
+                <div class="shimmer skel-cir"></div>
+                <div style="flex:1"><div class="shimmer skel-line l"></div><div class="shimmer skel-line s"></div></div>
+                <div class="shimmer skel-line" style="width:40px;height:10px"></div>
+              </div>
+              <div class="skel-row">
+                <div class="shimmer skel-cir"></div>
+                <div style="flex:1"><div class="shimmer skel-line l"></div><div class="shimmer skel-line s"></div></div>
+                <div class="shimmer skel-line" style="width:40px;height:10px"></div>
+              </div>
+              <div class="skel-row">
+                <div class="shimmer skel-cir"></div>
+                <div style="flex:1"><div class="shimmer skel-line l"></div><div class="shimmer skel-line s"></div></div>
+                <div class="shimmer skel-line" style="width:40px;height:10px"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ios-nav">
+          <div class="nav-item"><div class="nav-icon">🏠</div><div class="nav-lbl">Home</div></div>
+          <div class="nav-item on"><div class="nav-icon">↕</div><div class="nav-lbl">Transactions</div></div>
+          <div class="nav-item" style="visibility:hidden"></div>
+          <div class="nav-item"><div class="nav-icon">🎯</div><div class="nav-lbl">Budgets</div></div>
+          <div class="nav-item"><div class="nav-icon">👤</div><div class="nav-lbl">Profile</div></div>
+        </div>
+        <div class="nav-plus">+</div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note info">Skeleton rows fill the list area. Tabs and range pill stay interactive throughout — user can change scope while the data is fetching.</div>
+    </div>
+
+    <!-- Error -->
+    <div class="screen-col">
+      <div class="screen-label">Error · fetch failed</div>
+      <div class="state-badge error">error</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●●● 100%</span></div>
+        <div class="screen">
+          <div class="app-bar"><div class="app-bar-title">Transactions</div></div>
+          <div class="banner error">⚠ Couldn't load transactions. Check your connection. <span class="banner-cta">Retry</span></div>
+          <div class="sc-area">
+            <div class="empty-state" style="padding-top:48px">
+              <div class="empty-icon" style="background:var(--red-l)">⚠</div>
+              <div class="empty-ttl">Couldn't load your transactions</div>
+              <div class="empty-desc">Check your connection and try again. If you're offline, we'll show your last update.</div>
+              <div class="empty-actions"><div class="btn btn-primary">Retry</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="ios-nav">
+          <div class="nav-item"><div class="nav-icon">🏠</div><div class="nav-lbl">Home</div></div>
+          <div class="nav-item on"><div class="nav-icon">↕</div><div class="nav-lbl">Transactions</div></div>
+          <div class="nav-item" style="visibility:hidden"></div>
+          <div class="nav-item"><div class="nav-icon">🎯</div><div class="nav-lbl">Budgets</div></div>
+          <div class="nav-item"><div class="nav-icon">👤</div><div class="nav-lbl">Profile</div></div>
+        </div>
+        <div class="nav-plus">+</div>
+        <div class="ios-home"></div>
+      </div>
+    </div>
+
+    <!-- Offline / cached -->
+    <div class="screen-col">
+      <div class="screen-label">Offline · cached list shown</div>
+      <div class="state-badge warn">offline</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>✈ 100%</span></div>
+        <div class="screen">
+          <div class="app-bar"><div class="app-bar-title">Transactions</div></div>
+          <div class="banner offline">📡 Offline · Last updated 9:12 AM</div>
+          <div class="sc-area">
+            <div class="range-row"><div class="range-pill">This month <span class="chev">▾</span></div></div>
+            <div style="flex:1;overflow:hidden">
+              <div class="date-hdr">Today</div>
+              <div class="tx-row">
+                <div class="tx-ico">☕</div>
+                <div class="tx-info"><div class="tx-name">Costa Coffee</div><div class="tx-cat">Food & Dining</div></div>
+                <div class="tx-right"><div class="tx-amt">−85</div><div class="tx-time">9:12 AM</div></div>
+              </div>
+              <div class="tx-row">
+                <div class="tx-ico">🚗</div>
+                <div class="tx-info"><div class="tx-name">Uber</div><div class="tx-cat">Transport</div></div>
+                <div class="tx-right"><div class="tx-amt">−42</div><div class="tx-time">8:24 AM</div></div>
+              </div>
+              <div class="date-hdr">Yesterday</div>
+              <div class="tx-row">
+                <div class="tx-ico">🛒</div>
+                <div class="tx-info"><div class="tx-name">Carrefour</div><div class="tx-cat">Groceries</div></div>
+                <div class="tx-right"><div class="tx-amt">−620</div><div class="tx-time">7:40 PM</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ios-nav">
+          <div class="nav-item"><div class="nav-icon">🏠</div><div class="nav-lbl">Home</div></div>
+          <div class="nav-item on"><div class="nav-icon">↕</div><div class="nav-lbl">Transactions</div></div>
+          <div class="nav-item" style="visibility:hidden"></div>
+          <div class="nav-item"><div class="nav-icon">🎯</div><div class="nav-lbl">Budgets</div></div>
+          <div class="nav-item"><div class="nav-icon">👤</div><div class="nav-lbl">Profile</div></div>
+        </div>
+        <div class="nav-plus">+</div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note decision">Cached list still visible — user can browse what they had. Adding or editing should be blocked while offline (handled in the centre [+] sheet, not on the list itself).</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 5 — Detail sheet (view, edit, internal transfer, delete + undo)
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 5 — Transaction detail · view, edit, delete</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="phone-row">
+
+    <!-- Detail sheet — view -->
+    <div class="screen-col">
+      <div class="screen-label">Detail sheet · view mode</div>
+      <div class="state-badge happy">view</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:42</span><span>●●●● 100%</span></div>
+        <div class="screen">
+          <div class="app-bar" style="opacity:0.4"><div class="app-bar-title">Transactions</div></div>
+          <div class="overlay">
+            <div class="sheet">
+              <div class="sheet-handle"></div>
+              <div style="display:flex;justify-content:flex-end;margin-bottom:4px"><div class="sheet-close">✕</div></div>
+              <div class="detail-head">
+                <div class="detail-head-ico">🍴</div>
+                <div class="detail-head-info">
+                  <div class="detail-head-name">Costa Coffee</div>
+                  <div class="detail-head-src">From SMS</div>
+                </div>
+                <div class="detail-pill">Details</div>
+              </div>
+              <div class="detail-amt-block">
+                <span class="detail-amt">85</span><span class="detail-amt-ccy">EGP</span>
+              </div>
+              <div class="detail-rows">
+                <div class="detail-row">
+                  <div class="detail-key">Date</div>
+                  <div class="detail-val">5 May 2026 · 9:12 AM</div>
+                </div>
+                <div class="detail-row">
+                  <div class="detail-key">Type</div>
+                  <div class="detail-val">Spending</div>
+                </div>
+                <div class="detail-row">
+                  <div class="detail-key">Category</div>
+                  <div class="detail-val">
+                    <span class="cat-chip" style="background:#FEF0E6;color:#B05A10">☕</span>
+                    Food & Dining
+                  </div>
+                </div>
+                <div class="detail-row">
+                  <div class="detail-key">Note</div>
+                  <div class="detail-val"><span class="add-plus">+</span><span class="add-link">Add a note</span></div>
+                </div>
+                <div class="detail-tog-row">
+                  <div class="detail-tog-body">
+                    <div class="detail-tog-lbl">Mark as internal transfer</div>
+                    <div class="detail-tog-help">Won't count as spending or income.</div>
+                  </div>
+                  <div class="tog"></div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px;margin-top:18px">
+                <div class="btn btn-accent btn-lg" style="border-radius:var(--r-pill)">✎ &nbsp;Edit</div>
+                <div class="btn btn-lg" style="background:transparent;border:1.5px solid var(--red);color:var(--red);border-radius:var(--r-pill)">Delete</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note decision">Header carries merchant identity (icon + name + source) on the left, "Details" pill on the right. Amount is the visual anchor below — red for spending, green for income. Rows below are flat, hairline-separated. Internal transfer toggle sits at the bottom of the rows with its short helper line.</div>
+    </div>
+
+    <div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">tap Edit</div></div>
+
+    <!-- Detail sheet — edit mode -->
+    <div class="screen-col">
+      <div class="screen-label">Detail sheet · edit mode</div>
+      <div class="state-badge interaction">editing</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:42</span><span>●●●● 100%</span></div>
+        <div class="screen">
+          <div class="app-bar" style="opacity:0.4"><div class="app-bar-title">Transactions</div></div>
+          <div class="overlay">
+            <div class="sheet" style="height:90%;overflow-y:auto">
+              <div class="sheet-handle"></div>
+              <div style="display:flex;justify-content:flex-end;margin-bottom:4px"><div class="sheet-close">✕</div></div>
+              <div class="detail-head">
+                <div class="detail-head-ico">🍴</div>
+                <div class="detail-head-info">
+                  <div class="detail-head-name">Costa Coffee</div>
+                  <div class="detail-head-src">From SMS</div>
+                </div>
+                <div class="detail-pill editing">Editing</div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <div class="field-card focus">
+                  <div class="field-card-lbl">Amount</div>
+                  <div class="field-card-val big"><span>85</span><span class="ccy">EGP</span></div>
+                </div>
+                <div class="field-card">
+                  <div class="field-card-lbl">Merchant</div>
+                  <div class="field-card-val">Costa Coffee</div>
+                </div>
+                <div class="field-card">
+                  <div class="field-card-lbl">Date & Time</div>
+                  <div class="field-card-val">5 May 2026 · 9:12 AM<span class="chev">›</span></div>
+                </div>
+                <div class="field-card">
+                  <div class="field-card-lbl">Type</div>
+                  <div style="background:var(--screen-bg2);border-radius:var(--r-pill);padding:3px;display:flex;margin-top:2px">
+                    <div style="flex:1;text-align:center;padding:8px 0;font-size:var(--s-xs);font-weight:700;color:#fff;background:var(--green);border-radius:var(--r-pill)">Expenses</div>
+                    <div style="flex:1;text-align:center;padding:8px 0;font-size:var(--s-xs);font-weight:600;color:var(--t3)">Income</div>
+                    <div style="flex:1;text-align:center;padding:8px 0;font-size:var(--s-xs);font-weight:600;color:var(--t3)">Transfer</div>
+                  </div>
+                </div>
+                <div class="field-card">
+                  <div class="field-card-lbl">Category</div>
+                  <div class="field-card-val">
+                    <span style="display:flex;align-items:center;gap:8px"><span class="cat-chip" style="background:#FEF0E6;color:#B05A10">☕</span>Food & Dining</span>
+                    <span class="chev">▾</span>
+                  </div>
+                </div>
+                <div class="field-card">
+                  <div class="field-card-lbl">Note <span class="opt">(Optional)</span></div>
+                  <div class="field-card-val ph">Add a note</div>
+                </div>
+              </div>
+              <div style="margin-top:16px">
+                <div class="btn btn-disabled btn-lg" style="border-radius:var(--r-pill)">Save</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note decision">Edit mode replaces the read-only rows with framed input cards in the same order. "Editing" pill replaces "Details". Save is disabled until at least one field changes.</div>
+    </div>
+
+    <div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">change Type</div></div>
+
+    <!-- Detail sheet — edit · type changed -->
+    <div class="screen-col">
+      <div class="screen-label">Edit · type changed · category cleared</div>
+      <div class="state-badge interaction">type change warning</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:42</span><span>●●●● 100%</span></div>
+        <div class="screen">
+          <div class="app-bar" style="opacity:0.4"><div class="app-bar-title">Transactions</div></div>
+          <div class="overlay">
+            <div class="sheet" style="height:90%;overflow-y:auto">
+              <div class="sheet-handle"></div>
+              <div style="display:flex;justify-content:flex-end;margin-bottom:4px"><div class="sheet-close">✕</div></div>
+              <div class="detail-head">
+                <div class="detail-head-ico">🍴</div>
+                <div class="detail-head-info">
+                  <div class="detail-head-name">Costa Coffee</div>
+                  <div class="detail-head-src">From SMS</div>
+                </div>
+                <div class="detail-pill editing">Editing</div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <div class="field-card">
+                  <div class="field-card-lbl">Amount</div>
+                  <div class="field-card-val big"><span>85</span><span class="ccy">EGP</span></div>
+                </div>
+                <div class="field-card">
+                  <div class="field-card-lbl">Type</div>
+                  <div style="background:var(--screen-bg2);border-radius:var(--r-pill);padding:3px;display:flex;margin-top:2px">
+                    <div style="flex:1;text-align:center;padding:8px 0;font-size:var(--s-xs);font-weight:600;color:var(--t3)">Expenses</div>
+                    <div style="flex:1;text-align:center;padding:8px 0;font-size:var(--s-xs);font-weight:700;color:#fff;background:var(--green);border-radius:var(--r-pill)">Income</div>
+                    <div style="flex:1;text-align:center;padding:8px 0;font-size:var(--s-xs);font-weight:600;color:var(--t3)">Transfer</div>
+                  </div>
+                </div>
+                <div class="field-card" style="border-color:var(--gold);background:#FFFBEC">
+                  <div class="field-card-lbl" style="color:#8A6510">Category</div>
+                  <div class="field-card-val ph">Pick a category<span class="chev">▾</span></div>
+                  <div style="font-size:var(--s-xs);color:#8A6510;font-weight:500;line-height:1.4;margin-top:2px">Changing the type clears the category. Pick a new one before you save.</div>
+                </div>
+                <div class="field-card">
+                  <div class="field-card-lbl">Date & Time</div>
+                  <div class="field-card-val">5 May 2026 · 9:12 AM<span class="chev">›</span></div>
+                </div>
+              </div>
+              <div style="margin-top:16px">
+                <div class="btn btn-disabled btn-lg" style="border-radius:var(--r-pill)">Save</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note decision">Helper line + gold tint appear on the Category card whenever Type has changed from its original value. Save stays disabled until a new category is picked.</div>
+    </div>
+
+    <div class="flow-arrow"><div class="arrow-line deny" style="background:var(--red)"></div><div class="arrow-label">tap Delete</div></div>
+
+    <!-- Delete confirm dialog -->
+    <div class="screen-col">
+      <div class="screen-label">Delete · iOS confirm dialog</div>
+      <div class="state-badge os">OS-style confirm</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:42</span><span>●●●● 100%</span></div>
+        <div class="screen">
+          <div class="app-bar" style="opacity:0.3"><div class="app-bar-title">Transactions</div></div>
+          <div class="confirm-overlay">
+            <div class="confirm-box">
+              <div class="confirm-body">
+                <div class="confirm-ttl">Delete this transaction?</div>
+                <div class="confirm-desc">Costa Coffee · −85 EGP. This can't be undone after a few seconds.</div>
+              </div>
+              <div class="confirm-acts">
+                <div class="confirm-btn">Cancel</div>
+                <div class="confirm-btn danger">Delete</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note new">iOS-native confirm style. Two actions only — Cancel (default) and Delete (destructive red). Sheet behind dimmed but not dismissed.</div>
+    </div>
+
+    <div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">deleted</div></div>
+
+    <!-- Toast with undo -->
+    <div class="screen-col">
+      <div class="screen-label">Deleted · undo toast (5s)</div>
+      <div class="state-badge success">undo window</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:42</span><span>●●●● 100%</span></div>
+        <div class="screen">
+          <div class="app-bar"><div class="app-bar-title">Transactions</div></div>
+          <div class="sc-area">
+            <div class="range-row"><div class="range-pill">This month <span class="chev">▾</span></div></div>
+            <div style="flex:1;overflow:hidden">
+              <div class="date-hdr">Today</div>
+              <div class="tx-row">
+                <div class="tx-ico">🚗</div>
+                <div class="tx-info"><div class="tx-name">Uber</div><div class="tx-cat">Transport</div></div>
+                <div class="tx-right"><div class="tx-amt">−42</div><div class="tx-time">8:24 AM</div></div>
+              </div>
+              <div class="date-hdr">Yesterday</div>
+              <div class="tx-row">
+                <div class="tx-ico">🛒</div>
+                <div class="tx-info"><div class="tx-name">Carrefour</div><div class="tx-cat">Groceries</div></div>
+                <div class="tx-right"><div class="tx-amt">−620</div><div class="tx-time">7:40 PM</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="toast">
+            <div>Transaction deleted</div>
+            <div class="toast-cta">Undo</div>
+          </div>
+        </div>
+        <div class="ios-nav">
+          <div class="nav-item"><div class="nav-icon">🏠</div><div class="nav-lbl">Home</div></div>
+          <div class="nav-item on"><div class="nav-icon">↕</div><div class="nav-lbl">Transactions</div></div>
+          <div class="nav-item" style="visibility:hidden"></div>
+          <div class="nav-item"><div class="nav-icon">🎯</div><div class="nav-lbl">Budgets</div></div>
+          <div class="nav-item"><div class="nav-icon">👤</div><div class="nav-lbl">Profile</div></div>
+        </div>
+        <div class="nav-plus">+</div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note decision">Toast sits above the bottom nav, 5-second window. Undo restores the row to its original date group with all metadata preserved. Summary updates immediately.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 6 — Centre [+] action sheet → Add Transaction
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 6 — Centre [+] · Add transaction</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="phone-row">
+
+    <!-- Centre [+] action sheet -->
+    <div class="screen-col">
+      <div class="screen-label">Centre [+] · action sheet</div>
+      <div class="state-badge interaction">action sheet</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:42</span><span>●●●● 100%</span></div>
+        <div class="screen">
+          <div class="app-bar" style="opacity:0.4"><div class="app-bar-title">Transactions</div></div>
+          <div class="overlay" style="background:rgba(0,0,0,0.35)">
+            <div class="action-sheet">
+              <div class="as-group">
+                <div class="as-item"><span class="as-ico">✏️</span> Add a transaction</div>
+                <div class="as-item"><span class="as-ico">🎯</span> Set a budget</div>
+              </div>
+              <div class="as-group">
+                <div class="as-item cancel">Cancel</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="nav-plus active">×</div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note decision">iOS-native action sheet — grouped pill buttons floating at the bottom. The centre [+] rotates to ✕ while open and recolours to green. Tap outside or Cancel to dismiss.</div>
+    </div>
+
+    <div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">Add a transaction</div></div>
+
+    <!-- Add transaction sheet — empty -->
+    <div class="screen-col">
+      <div class="screen-label">Add transaction · empty form</div>
+      <div class="state-badge happy">form open</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:42</span><span>●●●● 100%</span></div>
+        <div class="screen">
+          <div class="app-bar" style="opacity:0.4"><div class="app-bar-title">Transactions</div></div>
+          <div class="overlay">
+            <div class="sheet">
+              <div class="sheet-handle"></div>
+              <div class="sheet-hdr">
+                <div class="sheet-ttl">Add transaction</div>
+                <div class="sheet-close">✕</div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:12px">
+                <div class="form-grp">
+                  <div class="form-label">AMOUNT</div>
+                  <div class="input big focus" style="color:var(--t4)">0</div>
+                </div>
+                <div class="form-grp">
+                  <div class="form-label">TYPE</div>
+                  <div class="seg">
+                    <div class="seg-item on">Spending</div>
+                    <div class="seg-item">Income</div>
+                    <div class="seg-item">Transfer</div>
+                  </div>
+                </div>
+                <div class="form-grp">
+                  <div class="form-label">CATEGORY</div>
+                  <div class="input-row"><div class="val ph">Pick a category</div><div class="chev">›</div></div>
+                </div>
+                <div class="form-grp">
+                  <div class="form-label">DATE</div>
+                  <div class="input-row"><div class="val">Today</div><div class="chev">›</div></div>
+                </div>
+                <div class="form-grp">
+                  <div class="form-label">MERCHANT <span class="optional-tag">(optional)</span></div>
+                  <div class="input-row"><div class="val ph">e.g. Costa Coffee</div></div>
+                </div>
+              </div>
+              <div style="display:flex;gap:8px;margin-top:14px">
+                <div class="btn btn-ghost" style="flex:1">Cancel</div>
+                <div class="btn btn-disabled" style="flex:1">Save</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note decision">Save disabled until amount and category are filled. Date defaults to today. Merchant and Note are optional and visually quieter than required fields.</div>
+    </div>
+
+    <div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">enter 0</div></div>
+
+    <!-- Validation error — zero amount -->
+    <div class="screen-col">
+      <div class="screen-label">Add transaction · validation error</div>
+      <div class="state-badge error">validation</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:42</span><span>●●●● 100%</span></div>
+        <div class="screen">
+          <div class="app-bar" style="opacity:0.4"><div class="app-bar-title">Transactions</div></div>
+          <div class="overlay">
+            <div class="sheet">
+              <div class="sheet-handle"></div>
+              <div class="sheet-hdr"><div class="sheet-ttl">Add transaction</div><div class="sheet-close">✕</div></div>
+              <div style="display:flex;flex-direction:column;gap:12px">
+                <div class="form-grp">
+                  <div class="form-label">AMOUNT</div>
+                  <div class="input big err">0</div>
+                  <div class="input-err">⚠ Enter an amount greater than zero to save this transaction.</div>
+                </div>
+                <div class="form-grp">
+                  <div class="form-label">TYPE</div>
+                  <div class="seg"><div class="seg-item on">Spending</div><div class="seg-item">Income</div><div class="seg-item">Transfer</div></div>
+                </div>
+                <div class="form-grp">
+                  <div class="form-label">CATEGORY</div>
+                  <div class="input-row"><div class="val">☕ Food & Dining</div><div class="chev">›</div></div>
+                </div>
+              </div>
+              <div style="display:flex;gap:8px;margin-top:14px">
+                <div class="btn btn-ghost" style="flex:1">Cancel</div>
+                <div class="btn btn-disabled" style="flex:1">Save</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+    </div>
+
+    <div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">amount > 100,000</div></div>
+
+    <!-- Soft warning >100,000 EGP -->
+    <div class="screen-col">
+      <div class="screen-label">Add transaction · soft warning</div>
+      <div class="state-badge warn">confirm dialog</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:42</span><span>●●●● 100%</span></div>
+        <div class="screen">
+          <div class="app-bar" style="opacity:0.3"><div class="app-bar-title">Transactions</div></div>
+          <div class="overlay" style="opacity:0.5">
+            <div class="sheet" style="opacity:0.6">
+              <div class="sheet-handle"></div>
+              <div class="sheet-hdr"><div class="sheet-ttl">Add transaction</div></div>
+              <div class="form-grp"><div class="form-label">AMOUNT</div><div class="input big">125,000</div></div>
+            </div>
+          </div>
+          <div class="confirm-overlay">
+            <div class="confirm-box">
+              <div class="confirm-body">
+                <div class="confirm-ttl">That's a big one — sure about the amount?</div>
+                <div class="confirm-desc">Double-check before you save. You can still go ahead if it's right.</div>
+              </div>
+              <div class="confirm-acts">
+                <div class="confirm-btn">Let me check</div>
+                <div class="confirm-btn primary">Yes, save it</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note decision">Soft warning fires when the entered amount exceeds 100,000 EGP. Not a hard block — user can confirm and continue. "Let me check" returns to the form with the amount field still focused.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 7 — Review transaction (uncategorised flow)
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 7 — Review transaction · category assignment</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="phone-row">
+
+    <!-- Review sheet entry -->
+    <div class="screen-col">
+      <div class="screen-label">Review sheet · entry</div>
+      <div class="state-badge interaction">needs category</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:42</span><span>●●●● 100%</span></div>
+        <div class="screen">
+          <div class="app-bar" style="opacity:0.4"><div class="app-bar-title">Transactions</div></div>
+          <div class="overlay">
+            <div class="sheet">
+              <div class="sheet-handle"></div>
+              <div style="display:flex;justify-content:flex-end;margin-bottom:4px"><div class="sheet-close">✕</div></div>
+              <div class="detail-head">
+                <div class="detail-head-ico" style="background:var(--gold-l);color:#8A6510">🛒</div>
+                <div class="detail-head-info">
+                  <div class="detail-head-name">Spinneys</div>
+                  <div class="detail-head-src">From SMS</div>
+                </div>
+                <div class="detail-pill editing">Needs category</div>
+              </div>
+              <div class="detail-amt-block">
+                <span class="detail-amt">215</span><span class="detail-amt-ccy">EGP</span>
+              </div>
+              <div class="detail-rows">
+                <div class="detail-row">
+                  <div class="detail-key">Date</div>
+                  <div class="detail-val">5 May 2026 · just now</div>
+                </div>
+                <div class="detail-row">
+                  <div class="detail-key">Type</div>
+                  <div class="detail-val">Spending</div>
+                </div>
+                <div class="detail-row" style="margin:0 -14px;padding:14px;background:#FFFBEC;border-top:1px solid var(--gold);border-bottom:1px solid var(--gold)">
+                  <div class="detail-key" style="color:#8A6510;font-weight:700">Category</div>
+                  <div class="detail-val" style="color:#8A6510">Pick one<span class="chev" style="margin-left:4px">›</span></div>
+                </div>
+                <div class="detail-row">
+                  <div class="detail-key">Note</div>
+                  <div class="detail-val"><span class="add-plus">+</span><span class="add-link">Add a note</span></div>
+                </div>
+              </div>
+              <div style="margin-top:18px">
+                <div class="btn btn-disabled btn-lg" style="border-radius:var(--r-pill)">Save</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note decision">Review sheet uses the same anatomy as the detail sheet, with three differences: gold "Needs category" pill replaces "Details", the Category row is highlighted gold, and Save is the only action — Edit and Delete are not offered until categorisation is done.</div>
+    </div>
+
+    <div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">tap Pick one</div></div>
+
+    <!-- Category picker — full -->
+    <div class="screen-col">
+      <div class="screen-label">Category picker · default</div>
+      <div class="state-badge interaction">picker</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:42</span><span>●●●● 100%</span></div>
+        <div class="screen">
+          <div class="app-bar" style="opacity:0.4"><div class="app-bar-title">Transactions</div></div>
+          <div class="overlay">
+            <div class="sheet" style="height:85%">
+              <div class="sheet-handle"></div>
+              <div class="sheet-hdr">
+                <div class="sheet-ttl">Pick a category</div>
+                <div class="sheet-close">✕</div>
+              </div>
+              <div class="search-bar" style="margin:0 0 12px">
+                <div class="search-ico">🔍</div>
+                <div class="search-ph">Search or type a new category</div>
+              </div>
+              <div class="cat-list" style="border:1px solid var(--b1);border-radius:var(--r-md);overflow:hidden">
+                <div class="cat-row"><div class="cat-ico food">🍕</div><div class="cat-name">Food & Dining</div></div>
+                <div class="cat-row"><div class="cat-ico tr">🚗</div><div class="cat-name">Transport</div></div>
+                <div class="cat-row"><div class="cat-ico shop">🛍</div><div class="cat-name">Shopping</div></div>
+                <div class="cat-row"><div class="cat-ico bill">📱</div><div class="cat-name">Bills & Utilities</div></div>
+                <div class="cat-row"><div class="cat-ico salary">💼</div><div class="cat-name">Salary</div></div>
+                <div class="cat-row"><div class="cat-ico coffee">☕</div><div class="cat-name">Coffee</div></div>
+                <div class="cat-row create"><div class="cat-ico create">+</div><div class="cat-name">Create new category</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+    </div>
+
+    <div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">type "fitn"</div></div>
+
+    <!-- Category picker — type-ahead create -->
+    <div class="screen-col">
+      <div class="screen-label">Picker · type-ahead create</div>
+      <div class="state-badge interaction">type-ahead</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:42</span><span>●●●● 100%</span></div>
+        <div class="screen">
+          <div class="app-bar" style="opacity:0.4"><div class="app-bar-title">Transactions</div></div>
+          <div class="overlay">
+            <div class="sheet" style="height:85%">
+              <div class="sheet-handle"></div>
+              <div class="sheet-hdr"><div class="sheet-ttl">Pick a category</div><div class="sheet-close">✕</div></div>
+              <div class="search-bar" style="margin:0 0 12px;background:#fff;border:1.5px solid var(--navy)">
+                <div class="search-ico">🔍</div>
+                <div class="search-input">fitn</div>
+                <div style="font-size:14px;color:var(--t4)">✕</div>
+              </div>
+              <div class="cat-list" style="border:1px solid var(--b1);border-radius:var(--r-md);overflow:hidden">
+                <div class="cat-row create" style="background:var(--green-l)">
+                  <div class="cat-ico" style="background:var(--green);color:#fff">+</div>
+                  <div class="cat-name" style="color:var(--green)">Create "fitn"</div>
+                </div>
+                <div style="padding:24px 14px;text-align:center">
+                  <div style="font-size:var(--s-xs);color:var(--t3)">No matching categories. You can create a new one above.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note decision">Type-ahead row pinned to the top of the list whenever the search query has no exact match. Tapping it opens the new-category form pre-filled with the typed name.</div>
+    </div>
+
+    <div class="flow-arrow"><div class="arrow-line"></div><div class="arrow-label">+ Create new</div></div>
+
+    <!-- Create new category form -->
+    <div class="screen-col">
+      <div class="screen-label">New category · form</div>
+      <div class="state-badge interaction">new category</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:42</span><span>●●●● 100%</span></div>
+        <div class="screen">
+          <div class="app-bar" style="opacity:0.4"><div class="app-bar-title">Transactions</div></div>
+          <div class="overlay">
+            <div class="sheet">
+              <div class="sheet-handle"></div>
+              <div class="sheet-hdr">
+                <div class="sheet-ttl">New category</div>
+                <div class="sheet-close">✕</div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:14px;margin-top:4px">
+                <div style="display:flex;align-items:center;justify-content:center;gap:14px;padding:8px 0">
+                  <div class="cat-ico" style="width:48px;height:48px;font-size:22px;background:var(--screen-bg2);color:var(--t2)">🏃</div>
+                  <div style="display:flex;flex-direction:column;gap:2px">
+                    <div style="font-size:var(--s-xs);color:var(--t3);font-weight:600">Icon & colour</div>
+                    <div class="btn-link" style="text-decoration:underline">Change</div>
+                  </div>
+                </div>
+                <div class="form-grp">
+                  <div class="form-label">NAME</div>
+                  <div class="input focus">Fitness</div>
+                </div>
+              </div>
+              <div style="display:flex;gap:8px;margin-top:18px">
+                <div class="btn btn-ghost" style="flex:1">Cancel</div>
+                <div class="btn btn-primary" style="flex:1">Save</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note decision">Default icon and colour are auto-picked based on the name. The "Change" link opens an icon and colour picker. Name field is the only required input — Save enables once it has at least one character.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     HANDOFF — Copy table + Accessibility
+═══════════════════════════════════════════════════════════ -->
+<div class="handoff">
+  <div class="handoff-title">Handoff</div>
+  <div class="handoff-sub">Every user-facing string in this prototype, in English and Egyptian Arabic, plus accessibility rules that change what gets drawn. Arabic is draft pending native-speaker review.</div>
+
+  <div class="handoff-sec">
+    <div class="handoff-h">Copy · English + Arabic <span class="draft-badge">Arabic draft — review pending</span></div>
+    <div class="handoff-p">Grouped by screen. Western Arabic numerals (1, 2, 3) in both languages. Currency: "EGP" in English, "ج.م" in Arabic.</div>
+
+    <div class="callout info">RTL layout still to be confirmed in Figma — particularly filter chip wrap, summary number alignment, toast positioning, and date-preset row spacing.</div>
+
+    <table class="copy-table" style="margin-top:12px">
+      <colgroup>
+        <col class="col-screen"><col class="col-element"><col class="col-en"><col class="col-ar">
+      </colgroup>
+      <thead>
+        <tr><th>Screen</th><th>Element</th><th>English</th><th>Arabic</th></tr>
+      </thead>
+      <tbody>
+
+        <!-- Tab + summary -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="2">Default tab</td>
+          <td class="element-name">Tab title</td><td class="en">Transactions</td><td class="ar">المعاملات</td>
+        </tr>
+        <tr><td class="element-name">Default range pill</td><td class="en">This month</td><td class="ar">الشهر ده</td></tr>
+
+        <!-- Search and filters -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="11">Search and filters</td>
+          <td class="element-name">Search placeholder</td><td class="en">Search merchant or amount</td><td class="ar">ابحث باسم المحل أو المبلغ</td>
+        </tr>
+        <tr><td class="element-name">Type tab · All</td><td class="en">All</td><td class="ar">الكل</td></tr>
+        <tr><td class="element-name">Type tab · Spending</td><td class="en">Spending</td><td class="ar">مصروفات</td></tr>
+        <tr><td class="element-name">Type tab · Income</td><td class="en">Income</td><td class="ar">دخل</td></tr>
+        <tr><td class="element-name">Type tab · Transfers</td><td class="en">Transfers</td><td class="ar">تحويلات</td></tr>
+        <tr><td class="element-name">Date preset · This month</td><td class="en">This month</td><td class="ar">الشهر ده</td></tr>
+        <tr><td class="element-name">Date preset · Last month</td><td class="en">Last month</td><td class="ar">الشهر اللي فات</td></tr>
+        <tr><td class="element-name">Date preset · 7 days</td><td class="en">Last 7 days</td><td class="ar">آخر 7 أيام</td></tr>
+        <tr><td class="element-name">Date preset · 30 days</td><td class="en">Last 30 days</td><td class="ar">آخر 30 يوم</td></tr>
+        <tr><td class="element-name">Date preset · Custom</td><td class="en">Custom</td><td class="ar">مخصص</td></tr>
+        <tr><td class="element-name">Clear all link</td><td class="en">Clear all</td><td class="ar">مسح الكل</td></tr>
+
+        <!-- Row states -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="2">Row states</td>
+          <td class="element-name">Needs category pill</td><td class="en">Needs category</td><td class="ar">محتاجة تصنيف</td>
+        </tr>
+        <tr><td class="element-name">Internal transfer helper</td><td class="en">Internal transfer · not counted</td><td class="ar">تحويل داخلي · مش متحسب</td></tr>
+
+        <!-- Empty: first session -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="4">Empty · first session</td>
+          <td class="element-name">Headline</td><td class="en">Nothing here yet — that's expected</td><td class="ar">لسه مفيش حاجة هنا — وده طبيعي</td>
+        </tr>
+        <tr><td class="element-name">Body</td><td class="en">On iOS, transactions come in one at a time — through the Shortcut when your bank notifies you, or manually whenever you want.</td><td class="ar">على الـ iOS، العمليات بتيجي واحدة واحدة — عن طريق الشورت كت لما البنك يبعتلك إشعار، أو يدوي في أي وقت.</td></tr>
+        <tr><td class="element-name">Primary CTA</td><td class="en">Set up the Shortcut</td><td class="ar">فعّل الشورت كت</td></tr>
+        <tr><td class="element-name">Secondary CTA</td><td class="en">Add one manually</td><td class="ar">ضيفها يدوي</td></tr>
+
+        <!-- Empty: shortcut not set -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="4">Empty · Shortcut not set</td>
+          <td class="element-name">Headline</td><td class="en">Set up the Shortcut, capture as you spend</td><td class="ar">فعّل الشورت كت، وكل عملية هتتسجّل</td>
+        </tr>
+        <tr><td class="element-name">Body</td><td class="en">iOS doesn't read your bank SMS automatically. The Shortcut grabs each transaction the moment your bank notifies you — one tap and you're done.</td><td class="ar">الـ iOS مش بيقرا رسايل البنك لوحده. الشورت كت بيمسك كل عملية أول ما البنك يبعتلك إشعار — ضغطة واحدة وخلاص.</td></tr>
+        <tr><td class="element-name">Primary CTA</td><td class="en">Set up the Shortcut</td><td class="ar">فعّل الشورت كت</td></tr>
+        <tr><td class="element-name">Secondary CTA</td><td class="en">Add one manually</td><td class="ar">ضيفها يدوي</td></tr>
+
+        <!-- Empty: shortcut set, waiting -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="3">Empty · Shortcut ready</td>
+          <td class="element-name">Headline</td><td class="en">You're set. Waiting for your first one.</td><td class="ar">كله جاهز. مستنيين أول عملية.</td>
+        </tr>
+        <tr><td class="element-name">Body</td><td class="en">The Shortcut runs the next time your bank sends a notification. Spend, get paid, transfer — it shows up here. Add one manually if you can't wait.</td><td class="ar">الشورت كت هيشتغل أول ما البنك يبعتلك إشعار جديد. أي عملية هتظهر هنا على طول. تقدر كمان تضيف عملية يدوي لو حابب.</td></tr>
+        <tr><td class="element-name">Sole CTA</td><td class="en">Add one manually</td><td class="ar">ضيفها يدوي</td></tr>
+
+        <!-- Empty: manual-only -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="3">Empty · Manual-only</td>
+          <td class="element-name">Headline</td><td class="en">Add your first transaction</td><td class="ar">ضيف أول عملية ليك</td>
+        </tr>
+        <tr><td class="element-name">Body</td><td class="en">Log what you spend, earn, or transfer. Two taps each. Your budgets and totals start working the moment you add one.</td><td class="ar">سجّل اللي صرفته، قبضته، أو حوّلته. ضغطتين بس. الميزانيات والإجماليات هتبدأ تشتغل أول ما تضيف عملية.</td></tr>
+        <tr><td class="element-name">Sole CTA</td><td class="en">Add one manually</td><td class="ar">ضيفها يدوي</td></tr>
+
+        <!-- No-results: filter -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="2">No-results · filter</td>
+          <td class="element-name">Headline</td><td class="en">No transactions match these filters</td><td class="ar">مفيش عمليات بالفلاتر دي</td>
+        </tr>
+        <tr><td class="element-name">Body</td><td class="en">Try clearing a filter or widening the date range.</td><td class="ar">جرّب تشيل فلتر أو توسّع المدة الزمنية.</td></tr>
+
+        <!-- No-results: search -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="2">No-results · search</td>
+          <td class="element-name">Headline</td><td class="en">No matches for that search</td><td class="ar">مفيش نتايج للبحث ده</td>
+        </tr>
+        <tr><td class="element-name">Body</td><td class="en">Check the spelling or try a different merchant or amount.</td><td class="ar">اتأكد من الكتابة أو جرّب اسم محل تاني أو مبلغ مختلف.</td></tr>
+
+        <!-- No-results: combined -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="2">No-results · combined</td>
+          <td class="element-name">Headline</td><td class="en">Nothing fits this search and filters</td><td class="ar">مفيش حاجة بالبحث والفلاتر دي</td>
+        </tr>
+        <tr><td class="element-name">Body</td><td class="en">Clear a filter or simplify your search to see more.</td><td class="ar">شيل فلتر أو بسّط البحث عشان تشوف نتايج أكتر.</td></tr>
+
+        <!-- No-results: range -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="2">No-results · date range</td>
+          <td class="element-name">Headline</td><td class="en">No transactions in this date range</td><td class="ar">مفيش عمليات في المدة دي</td>
+        </tr>
+        <tr><td class="element-name">Body</td><td class="en">Pick a different range or check a wider window.</td><td class="ar">اختار مدة تانية أو وسّع النطاق شوية.</td></tr>
+
+        <!-- Connectivity -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="4">Connectivity</td>
+          <td class="element-name">Loading label</td><td class="en">Loading transactions…</td><td class="ar">بنحمّل العمليات…</td>
+        </tr>
+        <tr><td class="element-name">Error banner</td><td class="en">Couldn't load transactions. Check your connection.</td><td class="ar">مقدرناش نحمّل العمليات. اتأكد من الاتصال.</td></tr>
+        <tr><td class="element-name">Error retry CTA</td><td class="en">Retry</td><td class="ar">حاول تاني</td></tr>
+        <tr><td class="element-name">Offline indicator</td><td class="en">Offline · Last updated [time]</td><td class="ar">مفيش نت · آخر تحديث [time]</td></tr>
+
+        <!-- Detail sheet -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="8">Detail sheet</td>
+          <td class="element-name">Header pill (view)</td><td class="en">Details</td><td class="ar">التفاصيل</td>
+        </tr>
+        <tr><td class="element-name">Header pill (edit)</td><td class="en">Editing</td><td class="ar">جاري التعديل</td></tr>
+        <tr><td class="element-name">Source label</td><td class="en">From SMS</td><td class="ar">من رسالة البنك</td></tr>
+        <tr><td class="element-name">Add a note link</td><td class="en">+ Add a note</td><td class="ar">+ ضيف ملاحظة</td></tr>
+        <tr><td class="element-name">Internal transfer toggle</td><td class="en">Mark as internal transfer</td><td class="ar">اعتبرها تحويل داخلي</td></tr>
+        <tr><td class="element-name">Internal transfer helper</td><td class="en">Won't count as spending or income.</td><td class="ar">مش هتتحسب كمصروف ولا دخل.</td></tr>
+        <tr><td class="element-name">Type-change helper</td><td class="en">Changing the type clears the category. Pick a new one before you save.</td><td class="ar">تغيير النوع بيمسح التصنيف. اختار تصنيف جديد قبل ما تحفظ.</td></tr>
+        <tr><td class="element-name">Buttons</td><td class="en">Edit · Save · Delete</td><td class="ar">تعديل · حفظ · حذف</td></tr>
+
+        <!-- Delete confirm + toast -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="4">Delete + undo</td>
+          <td class="element-name">Confirm dialog title</td><td class="en">Delete this transaction?</td><td class="ar">تحذف العملية دي؟</td>
+        </tr>
+        <tr><td class="element-name">Confirm dialog body</td><td class="en">[Merchant] · [Amount]. This can't be undone after a few seconds.</td><td class="ar">[المحل] · [المبلغ]. مش هتقدر ترجع فيها بعد كام ثانية.</td></tr>
+        <tr><td class="element-name">Toast text</td><td class="en">Transaction deleted</td><td class="ar">اتمسحت العملية</td></tr>
+        <tr><td class="element-name">Toast CTA</td><td class="en">Undo</td><td class="ar">تراجع</td></tr>
+
+        <!-- Add transaction -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="11">Add transaction sheet</td>
+          <td class="element-name">Sheet title</td><td class="en">Add transaction</td><td class="ar">إضافة عملية</td>
+        </tr>
+        <tr><td class="element-name">Field · Amount</td><td class="en">Amount</td><td class="ar">المبلغ</td></tr>
+        <tr><td class="element-name">Field · Type</td><td class="en">Type</td><td class="ar">النوع</td></tr>
+        <tr><td class="element-name">Field · Category</td><td class="en">Category</td><td class="ar">التصنيف</td></tr>
+        <tr><td class="element-name">Field · Date</td><td class="en">Date</td><td class="ar">التاريخ</td></tr>
+        <tr><td class="element-name">Field · Merchant</td><td class="en">Merchant (optional)</td><td class="ar">المحل (اختياري)</td></tr>
+        <tr><td class="element-name">Field · Note</td><td class="en">Note (optional)</td><td class="ar">ملاحظة (اختياري)</td></tr>
+        <tr><td class="element-name">Validation error</td><td class="en">Enter an amount greater than zero to save this transaction.</td><td class="ar">اكتب مبلغ أكبر من صفر عشان تقدر تحفظ العملية.</td></tr>
+        <tr><td class="element-name">Soft warning headline</td><td class="en">That's a big one — sure about the amount?</td><td class="ar">ده مبلغ كبير — متأكد منه؟</td></tr>
+        <tr><td class="element-name">Soft warning body</td><td class="en">Double-check before you save. You can still go ahead if it's right.</td><td class="ar">راجعه قبل ما تحفظ. لو صح، كمّل عادي.</td></tr>
+        <tr><td class="element-name">Soft warning CTAs</td><td class="en">Yes, save it · Let me check</td><td class="ar">أه، احفظها · خليني أراجع</td></tr>
+
+        <!-- Review -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="3">Review transaction</td>
+          <td class="element-name">Header pill</td><td class="en">Needs category</td><td class="ar">محتاجة تصنيف</td>
+        </tr>
+        <tr><td class="element-name">Category row prompt</td><td class="en">Pick one</td><td class="ar">اختار</td></tr>
+        <tr><td class="element-name">Save button</td><td class="en">Save</td><td class="ar">حفظ</td></tr>
+
+        <!-- Category picker -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="6">Category picker</td>
+          <td class="element-name">Sheet title</td><td class="en">Pick a category</td><td class="ar">اختار تصنيف</td>
+        </tr>
+        <tr><td class="element-name">Search placeholder</td><td class="en">Search or type a new category</td><td class="ar">ابحث أو اكتب تصنيف جديد</td></tr>
+        <tr><td class="element-name">Type-ahead row</td><td class="en">Create "[query]"</td><td class="ar">أنشئ "[query]"</td></tr>
+        <tr><td class="element-name">Create new entry</td><td class="en">+ Create new category</td><td class="ar">+ إنشاء تصنيف جديد</td></tr>
+        <tr><td class="element-name">New category · Name</td><td class="en">Name</td><td class="ar">الاسم</td></tr>
+        <tr><td class="element-name">New category · Change link</td><td class="en">Change</td><td class="ar">تغيير</td></tr>
+
+        <!-- Centre [+] action sheet -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="3">Centre [+] action sheet</td>
+          <td class="element-name">Add transaction</td><td class="en">Add a transaction</td><td class="ar">ضيف عملية</td>
+        </tr>
+        <tr><td class="element-name">Set a budget</td><td class="en">Set a budget</td><td class="ar">حدّد ميزانية</td></tr>
+        <tr><td class="element-name">Cancel</td><td class="en">Cancel</td><td class="ar">إلغاء</td></tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <div class="handoff-sec">
+    <div class="handoff-h">Accessibility</div>
+    <ul class="handoff-list">
+      <li><strong>Touch targets — 44×44px minimum</strong> on every interactive element. Filter chips, date presets, type tabs, the centre [+], the close ✕ on every sheet, the toast Undo, and the Edit/Delete pill buttons all need to clear this.</li>
+      <li><strong>Contrast — 4.5:1 minimum for text</strong>, 7:1 for financial figures (the big amount on the detail sheet, transaction-row amounts). Check the de-emphasised internal-transfer amount carefully — grey-on-light loses contrast fastest.</li>
+      <li><strong>Never colour-only for state.</strong> Income amounts have the green colour <em>and</em> a leading "+". Internal-transfer rows are greyed <em>and</em> labelled "Internal transfer · not counted". The "Needs category" pill carries text, not just gold colour. Disabled CTAs need a text or icon signal alongside the grey fill.</li>
+      <li><strong>Focus order — top-to-bottom, including on RTL.</strong> Range pill → search → tabs → list. Inside sheets: header → amount → field rows in order → primary CTA → destructive action. RTL flips the visual direction but not the focus order.</li>
+      <li><strong>"Needs category" rows must announce as a single unit</strong> to screen readers — merchant, amount, and "Needs category" together — not three separate fields.</li>
+    </ul>
+  </div>
+
+</div>
+
+</div>
+</body>
+</html>
