@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoneyMore — Budgets (iOS) · Designer Prototype v2</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --navy:#1A3C5E; --green:#2E8B57; --green-l:#E8F5EE;
+  --gold:#B8860B; --gold-l:#FBF4DC; --red:#C0392B; --red-l:#FDECEA;
+  --page-bg:#F9F8F5;
+  --screen-bg:#FAFAF8; --screen-bg2:#F2F0EB; --screen-bg3:#E8E5DE;
+  --t1:#1A1714; --t2:#3D3A35; --t3:#7A7670; --t4:#ABA7A0;
+  --t-pos:#1A6E3C;
+  --b1:#E8E5DF; --b2:#D4D0C8; --b3:#BCBAB2;
+
+  /* Status colours for limit states */
+  --on-limit:    #2E8B57;
+  --on-limit-l:  #E8F5EE;
+  --near:        #C9A11A;
+  --near-l:      #FAF1D0;
+  --over:        #C0392B;
+  --over-l:      #FDECEA;
+
+  --frame-bg:#2A2724; --frame-border:#1A1614;
+  --f-body:'Plus Jakarta Sans',sans-serif; --f-mono:'DM Mono',monospace;
+  --s-xs:10px; --s-sm:12px; --s-base:14px; --s-md:16px; --s-lg:18px; --s-xl:22px; --s-2xl:28px;
+  --r-sm:6px; --r-md:12px; --r-lg:16px; --r-xl:24px; --r-pill:999px;
+  --shadow-phone:0 8px 32px rgba(0,0,0,0.14),0 2px 8px rgba(0,0,0,0.08);
+  --shadow-card:0 1px 4px rgba(0,0,0,0.06);
+  --ph-w:300px; --ph-r:42px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-size:var(--s-base);line-height:1.6;-webkit-font-smoothing:antialiased;}
+.page{max-width:1500px;margin:0 auto;padding:48px 40px 96px;}
+
+/* ── DOC HEADER ─────────────────────────────────────────── */
+.doc-header{padding-bottom:32px;margin-bottom:40px;border-bottom:2px solid var(--b1);}
+.doc-meta{display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap;}
+.doc-tag{font-family:var(--f-mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;padding:4px 11px;border-radius:3px;font-weight:600;}
+.doc-tag.prototype{background:var(--green-l);color:#0F5830;}
+.doc-tag.designer{background:#EAE8FF;color:#3A3288;}
+.doc-tag.ios{background:#E8F0FA;color:#103868;}
+.doc-tag.wip{background:var(--gold-l);color:#6B5210;}
+.doc-tag.version{background:var(--navy);color:#fff;}
+.doc-date{font-family:var(--f-mono);font-size:11px;color:var(--t2);margin-left:auto;font-weight:500;}
+.doc-title{font-size:34px;font-weight:700;color:var(--t1);letter-spacing:-0.02em;line-height:1.15;margin-bottom:10px;}
+.doc-subtitle{font-size:15px;color:var(--t1);font-weight:400;margin-bottom:30px;line-height:1.5;max-width:920px;}
+.doc-info{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--b1);border-radius:var(--r-md);overflow:hidden;background:white;}
+.doc-info-cell{padding:16px 20px;border-right:1px solid var(--b1);}
+.doc-info-cell:last-child{border-right:none;}
+.info-label{font-family:var(--f-mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--t2);margin-bottom:8px;font-weight:600;}
+.info-body{font-size:13px;color:var(--t1);line-height:1.55;}
+.info-body strong{color:var(--t1);font-weight:700;}
+.flow-list{display:flex;flex-direction:column;gap:4px;}
+.flow-list-item{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--t1);line-height:1.45;}
+.flow-list-item::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--b3);flex-shrink:0;}
+.flow-list-item.active::before{background:var(--green);}
+.flow-list-item.reused::before{background:var(--b3);}
+.flow-list-item.reused{color:var(--t3);font-style:italic;}
+
+/* ── FLOW SECTION ──────────────────────────────────────── */
+.flow-section{margin-bottom:64px;}
+.flow-section-header{display:flex;align-items:center;gap:16px;margin-bottom:28px;}
+.flow-section-line{flex:1;height:1px;background:var(--b2);}
+.flow-section-title{font-family:var(--f-body);font-size:16px;font-weight:700;letter-spacing:-0.01em;color:#fff;background:var(--navy);padding:6px 14px;border-radius:4px;white-space:nowrap;}
+.flow-intro{font-size:13px;color:var(--t2);line-height:1.55;max-width:760px;margin-bottom:20px;}
+.phone-row{display:flex;align-items:flex-start;gap:0;overflow-x:auto;padding-bottom:12px;}
+.phone-row::-webkit-scrollbar{height:4px;}
+.phone-row::-webkit-scrollbar-track{background:var(--b1);border-radius:2px;}
+.phone-row::-webkit-scrollbar-thumb{background:var(--b3);border-radius:2px;}
+
+.screen-col{display:flex;flex-direction:column;align-items:center;gap:10px;flex-shrink:0;}
+.screen-label{font-family:var(--f-body);font-size:11px;font-weight:600;color:var(--t2);text-align:center;max-width:var(--ph-w);line-height:1.4;}
+
+.state-badge{font-family:var(--f-mono);font-size:10px;font-weight:500;padding:3px 9px;border-radius:3px;letter-spacing:0.04em;}
+.state-badge.happy{background:#EBF7F1;color:#1A6E3C;}
+.state-badge.empty{background:var(--gold-l);color:#8A6510;}
+.state-badge.success{background:var(--green-l);color:#0F5830;}
+.state-badge.interaction{background:#EAE8FF;color:#3A3288;}
+.state-badge.countdown{background:#E8F0FA;color:#103868;}
+
+.flow-arrow{display:flex;flex-direction:column;align-items:center;flex-shrink:0;align-self:center;padding-left:8px;padding-right:8px;margin-top:24px;}
+.arrow-line{width:32px;height:1px;background:var(--b2);position:relative;}
+.arrow-line::after{content:'';position:absolute;right:-1px;top:-3px;border-left:5px solid var(--b2);border-top:3px solid transparent;border-bottom:3px solid transparent;}
+.arrow-label{font-family:var(--f-body);font-size:10px;font-weight:600;color:var(--t2);text-align:center;max-width:80px;line-height:1.35;margin-top:6px;}
+
+/* ── PHONE FRAME — iOS (auto-height) ──────────────────── */
+.phone{
+  width:var(--ph-w);
+  border-radius:var(--ph-r);
+  background:var(--frame-bg);
+  box-shadow:var(--shadow-phone);
+  position:relative;
+  overflow:hidden;
+  border:2px solid var(--frame-border);
+  flex-shrink:0;
+  padding:8px 0 12px;
+}
+.ios-island{
+  position:absolute;
+  top:10px;left:50%;transform:translateX(-50%);
+  width:96px;height:26px;
+  background:#0A0A0A;
+  border-radius:18px;
+  z-index:30;
+}
+.ios-status{
+  height:42px;
+  display:flex;align-items:flex-end;justify-content:space-between;
+  padding:0 22px 6px;
+  font-family:var(--f-mono);font-size:9px;font-weight:700;color:var(--t1);
+  background:var(--screen-bg);
+  position:relative;
+  z-index:5;
+}
+.screen{
+  background:var(--screen-bg);
+  display:flex;flex-direction:column;
+  min-height:600px;
+  position:relative;
+}
+.ios-home{
+  height:24px;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--screen-bg);
+}
+.ios-home::after{
+  content:'';
+  width:120px;height:4px;
+  background:rgba(0,0,0,0.32);
+  border-radius:2px;
+}
+
+/* ── 5-slot bottom nav with raised + ──────────────────── */
+.ios-tabbar{
+  height:60px;
+  background:var(--screen-bg);
+  border-top:1px solid var(--b1);
+  display:flex;align-items:center;
+  position:relative;
+}
+.ios-tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 0;}
+.ios-tab-icon{font-size:15px;color:var(--t4);}
+.ios-tab-lbl{font-size:9px;color:var(--t4);font-weight:500;}
+.ios-tab.on .ios-tab-icon{color:var(--navy);}
+.ios-tab.on .ios-tab-lbl{color:var(--navy);font-weight:700;}
+
+/* Raised + button (centre slot) */
+.ios-tab.add{
+  position:relative;
+}
+.ios-tab.add .add-btn{
+  width:50px;height:50px;
+  border-radius:50%;
+  background:var(--green);
+  color:white;
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;font-weight:300;
+  position:absolute;
+  top:-22px;left:50%;transform:translateX(-50%);
+  box-shadow:0 4px 12px rgba(46,139,87,0.35);
+  border:3px solid var(--screen-bg);
+}
+
+/* ── SCREEN INNER PRIMITIVES ───────────────────────────── */
+.app-bar{padding:14px 18px 8px;display:flex;align-items:flex-end;gap:10px;background:var(--screen-bg);}
+.app-bar-title-lg{font-size:24px;font-weight:700;color:var(--t1);letter-spacing:-0.02em;flex:1;line-height:1.1;}
+.app-bar-action-icon{
+  width:34px;height:34px;border-radius:50%;
+  background:white;border:1px solid var(--b1);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--navy);font-size:14px;
+  box-shadow:var(--shadow-card);
+}
+
+.sc-area{flex:1;display:flex;flex-direction:column;}
+.sc-pad{padding:14px 18px;display:flex;flex-direction:column;gap:14px;}
+
+.t-title{font-size:var(--s-xl);font-weight:700;color:var(--t1);letter-spacing:-0.01em;line-height:1.2;}
+.t-heading{font-size:var(--s-md);font-weight:700;color:var(--t1);line-height:1.3;}
+.t-body{font-size:var(--s-base);color:var(--t2);line-height:1.5;}
+.t-caption{font-size:var(--s-sm);color:var(--t3);line-height:1.5;}
+
+/* Section heading */
+.sec-heading{display:flex;align-items:baseline;gap:6px;}
+.sec-heading-ttl{font-size:14px;font-weight:700;color:var(--t1);letter-spacing:-0.01em;}
+.sec-heading-sub{font-size:11px;color:var(--t3);font-weight:500;}
+
+/* ── Spending Overview — 3 cards ───────────────────────── */
+.overview-row{display:flex;gap:8px;}
+.overview-card{
+  flex:1;
+  background:white;
+  border:1px solid var(--b1);
+  border-radius:12px;
+  padding:11px 10px 12px;
+  box-shadow:var(--shadow-card);
+  display:flex;flex-direction:column;gap:6px;
+}
+.ov-count{font-size:22px;font-weight:700;letter-spacing:-0.02em;line-height:1;}
+.ov-count.on{color:var(--on-limit);}
+.ov-count.near{color:var(--near);}
+.ov-count.over{color:var(--over);}
+.ov-label{font-size:10px;font-weight:600;color:var(--t2);letter-spacing:-0.01em;}
+.ov-bar{height:3px;border-radius:var(--r-pill);background:var(--screen-bg2);overflow:hidden;margin-top:2px;}
+.ov-bar-fill{height:100%;border-radius:var(--r-pill);}
+.ov-bar-fill.on{background:var(--on-limit);}
+.ov-bar-fill.near{background:var(--near);}
+.ov-bar-fill.over{background:var(--over);}
+
+/* ── Filter chips ──────────────────────────────────────── */
+.filter-row{
+  display:flex;gap:8px;
+  overflow-x:auto;
+  margin:0 -18px;padding:0 18px 4px;
+}
+.filter-row::-webkit-scrollbar{display:none;}
+.chip{
+  flex-shrink:0;
+  padding:7px 14px;
+  border-radius:var(--r-pill);
+  background:white;
+  border:1px solid var(--b1);
+  font-size:12px;font-weight:600;
+  color:var(--t2);
+  white-space:nowrap;
+}
+.chip.on{
+  background:var(--navy);
+  border-color:var(--navy);
+  color:white;
+}
+
+/* ── Budget row ────────────────────────────────────────── */
+.budget-row{
+  background:white;
+  border:1px solid var(--b1);
+  border-radius:12px;
+  padding:14px;
+  display:flex;flex-direction:column;gap:10px;
+  box-shadow:var(--shadow-card);
+}
+.budget-row-head{display:flex;align-items:center;gap:10px;}
+.budget-emoji-wrap{
+  width:36px;height:36px;border-radius:9px;
+  background:var(--screen-bg2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0;
+}
+.budget-name-block{flex:1;min-width:0;}
+.budget-name{font-size:14px;font-weight:700;color:var(--t1);line-height:1.2;}
+.budget-status-pill{
+  display:inline-flex;align-items:center;
+  font-size:10px;font-weight:700;
+  padding:3px 8px;border-radius:var(--r-pill);
+  margin-top:3px;
+}
+.budget-status-pill.on{background:var(--on-limit-l);color:var(--on-limit);}
+.budget-status-pill.near{background:var(--near-l);color:var(--near);}
+.budget-status-pill.over{background:var(--over-l);color:var(--over);}
+.budget-chev{color:var(--t4);font-size:18px;}
+.prog-track{height:5px;background:var(--screen-bg2);border-radius:var(--r-pill);overflow:hidden;}
+.prog-fill{height:100%;border-radius:var(--r-pill);}
+.prog-fill.on{background:var(--on-limit);}
+.prog-fill.near{background:var(--near);}
+.prog-fill.over{background:var(--over);}
+.budget-foot{display:flex;justify-content:space-between;align-items:center;}
+.budget-foot-left{font-size:11px;color:var(--t1);font-weight:600;}
+.budget-foot-left strong{color:var(--t1);font-weight:700;}
+.budget-foot-left .muted{color:var(--t3);font-weight:500;}
+.budget-foot-right{font-size:10px;color:var(--t3);font-weight:500;}
+.budget-foot-right strong{color:var(--t2);font-weight:700;}
+
+/* ── Empty state ───────────────────────────────────────── */
+.empty-state{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:40px 22px 16px;}
+.empty-icon-lg{
+  width:72px;height:72px;border-radius:20px;
+  background:linear-gradient(135deg,var(--green-l),#D6EFDF);
+  display:flex;align-items:center;justify-content:center;
+  font-size:32px;
+  margin-bottom:6px;
+}
+.empty-headline{font-size:20px;font-weight:700;color:var(--t1);letter-spacing:-0.01em;line-height:1.2;}
+.empty-sub{font-size:13px;color:var(--t2);line-height:1.55;max-width:240px;}
+.empty-actions{display:flex;flex-direction:column;gap:8px;width:100%;padding:24px 22px 0;}
+
+/* Buttons */
+.btn{height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:var(--f-body);font-size:var(--s-sm);font-weight:700;border:none;width:100%;cursor:default;}
+.btn-primary{background:var(--navy);color:white;}
+.btn-accent{background:var(--green);color:white;}
+.btn-outline{background:transparent;border:1.5px solid var(--navy);color:var(--navy);}
+.btn-ghost{background:transparent;color:var(--navy);}
+
+/* ── Suggested Budgets — countdown ─────────────────────── */
+.countdown-card{
+  background:white;
+  border:1px dashed #C8A858;
+  border-radius:14px;
+  padding:18px 16px;
+  display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;
+}
+.countdown-icon{
+  width:44px;height:44px;border-radius:50%;
+  background:var(--gold-l);
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;
+  margin-bottom:2px;
+}
+.countdown-headline{font-size:15px;font-weight:700;color:var(--t1);letter-spacing:-0.01em;line-height:1.25;}
+.countdown-sub{font-size:12px;color:var(--t3);line-height:1.5;max-width:230px;}
+
+/* ── Suggested Budgets — suggestions row ───────────────── */
+.suggestion-row{
+  background:white;
+  border:1px dashed #C8A858;
+  border-radius:14px;
+  padding:14px;
+  display:flex;align-items:center;gap:12px;
+}
+.suggestion-emoji-wrap{
+  width:36px;height:36px;border-radius:9px;
+  background:var(--screen-bg2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0;
+}
+.suggestion-info{flex:1;min-width:0;}
+.suggestion-name{font-size:14px;font-weight:700;color:var(--t1);line-height:1.2;}
+.suggestion-amt{font-size:12px;color:var(--t3);margin-top:2px;}
+.suggestion-amt strong{color:var(--t1);font-weight:700;}
+.suggestion-actions{display:flex;gap:6px;flex-shrink:0;}
+.sa-btn{
+  width:34px;height:34px;border-radius:9px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:700;
+}
+.sa-btn.accept{background:var(--green);color:white;}
+.sa-btn.dismiss{background:white;border:1px solid var(--b1);color:var(--t3);}
+
+/* ── Modal (suggestion accept) ─────────────────────────── */
+.overlay{position:absolute;inset:0;background:rgba(0,0,0,0.45);display:flex;align-items:flex-end;z-index:40;}
+.bottom-sheet{background:var(--screen-bg);border-radius:var(--r-xl) var(--r-xl) 0 0;width:100%;padding:14px 18px 24px;box-shadow:0 -4px 24px rgba(0,0,0,0.1);}
+.bs-handle{width:36px;height:4px;background:var(--b2);border-radius:2px;margin:0 auto 14px;}
+.bs-title{font-size:18px;font-weight:700;color:var(--t1);margin-bottom:6px;line-height:1.25;letter-spacing:-0.01em;}
+.bs-body{font-size:13px;color:var(--t2);line-height:1.5;margin-bottom:14px;}
+
+.modal-cat-row{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 12px;
+  background:white;
+  border:1px solid var(--b1);
+  border-radius:10px;
+  margin-bottom:14px;
+}
+.modal-cat-name{font-size:14px;font-weight:700;color:var(--t1);}
+
+.amount-input{
+  background:white;border:1.5px solid var(--navy);
+  border-radius:10px;
+  padding:12px 14px;
+  display:flex;align-items:baseline;justify-content:space-between;
+  margin-bottom:6px;
+}
+.amount-val{font-size:24px;font-weight:700;color:var(--t1);letter-spacing:-0.02em;}
+.amount-cur{font-size:12px;color:var(--t3);font-weight:600;}
+.amount-hint{font-size:11px;color:var(--t3);margin-bottom:14px;}
+.amount-hint strong{color:var(--t2);font-weight:700;}
+
+/* ── Toast ─────────────────────────────────────────────── */
+.toast-success{
+  background:var(--t1);color:white;
+  border-radius:10px;padding:12px 14px;
+  display:flex;align-items:center;gap:10px;
+  box-shadow:0 4px 16px rgba(0,0,0,0.18);
+  margin:14px 18px 0;
+}
+.toast-ico{color:#7BD09E;font-size:14px;}
+.toast-txt{font-size:12px;font-weight:600;}
+
+/* ── Flow notes ────────────────────────────────────────── */
+.flow-note{max-width:var(--ph-w);padding:9px 12px;border-radius:4px;font-family:var(--f-body);font-size:11px;font-weight:500;line-height:1.5;}
+.flow-note.decision{background:#FBF4DC;color:#6B5210;border-left:3px solid var(--gold);}
+.flow-note.new{background:var(--green-l);color:#0F5830;border-left:3px solid var(--green);}
+.flow-note.info{background:#EAF0FE;color:#103868;border-left:3px solid #4A80C0;}
+
+/* ── HANDOFF ───────────────────────────────────────────── */
+.handoff{margin-top:64px;padding:36px;background:white;border:1px solid var(--b1);border-radius:var(--r-md);}
+.handoff-title{font-size:26px;font-weight:700;color:var(--t1);margin-bottom:8px;letter-spacing:-0.01em;}
+.handoff-sub{font-size:14px;color:var(--t2);margin-bottom:28px;line-height:1.5;}
+.handoff-sec{margin-top:28px;padding-top:24px;border-top:1px solid var(--b1);}
+.handoff-sec:first-of-type{border-top:none;padding-top:0;margin-top:0;}
+.handoff-h{font-size:18px;font-weight:700;color:var(--t1);margin-bottom:12px;}
+.handoff-p{font-size:14px;color:var(--t1);line-height:1.6;margin-bottom:8px;}
+.handoff-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.handoff-list li{font-size:14px;color:var(--t1);line-height:1.6;padding-left:16px;position:relative;}
+.handoff-list li::before{content:'—';position:absolute;left:0;color:var(--t3);font-weight:700;}
+
+.copy-table{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed;}
+.copy-table col.col-screen{width:20%;}
+.copy-table col.col-element{width:22%;}
+.copy-table col.col-en{width:29%;}
+.copy-table col.col-ar{width:29%;}
+.copy-table th{text-align:left;padding:10px 12px;border-bottom:2px solid var(--b2);font-size:11px;color:var(--t2);text-transform:uppercase;letter-spacing:0.06em;font-weight:700;background:var(--screen-bg);}
+.copy-table td{padding:10px 12px;border-bottom:1px solid var(--b1);vertical-align:top;color:var(--t1);line-height:1.55;word-wrap:break-word;overflow-wrap:break-word;}
+.copy-table td.screen-name{font-weight:700;color:var(--t1);background:var(--screen-bg);}
+.copy-table td.element-name{color:var(--t2);font-weight:500;}
+.copy-table td.en{font-size:12px;color:var(--t1);}
+.copy-table td.ar{font-size:12px;color:var(--t1);direction:rtl;text-align:right;font-family:var(--f-body);}
+.copy-table tr.group-start td{border-top:2px solid var(--b2);}
+
+.callout{padding:12px 14px;border-radius:0 var(--r-sm) var(--r-sm) 0;font-size:13px;line-height:1.55;margin-top:12px;}
+.callout.warn{background:var(--gold-l);border-left:3px solid var(--gold);color:#6B5210;}
+.callout.info{background:#EAF0FE;border-left:3px solid #4A80C0;color:#103868;}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ═══════════════════════════════════════════════════════
+     DOC HEADER
+═══════════════════════════════════════════════════════════ -->
+<div class="doc-header">
+  <div class="doc-meta">
+    <span class="doc-tag prototype">Prototype</span>
+    <span class="doc-tag designer">Designer brief</span>
+    <span class="doc-tag ios">iOS</span>
+    <span class="doc-tag wip">Draft v2</span>
+    <span class="doc-tag version">DB-Budgets-iOS</span>
+    <span class="doc-date">May 2026</span>
+  </div>
+
+  <div class="doc-title">Budgets — iOS</div>
+  <div class="doc-subtitle">Category-level spending limits on iOS, where bank SMS auto-categorisation isn't possible. Users get there through manual entries or the iOS Shortcut (enabled elsewhere in the app — Home and Transactions). Suggested Budgets unlock after 30 days of activity.</div>
+
+  <div class="doc-info">
+    <div class="doc-info-cell">
+      <div class="info-label">The problem</div>
+      <div class="info-body">
+        iOS doesn't allow background SMS reads, so the Android pattern of automatic categorisation breaks. The user gets data into MoneyMore by logging entries by hand or by enabling the iOS Shortcut (prompted from Home and Transactions, not here). The Budgets tab's job is to turn that data into useful limits — first manually, then through 30-day suggestions that come from real spending patterns.
+      </div>
+    </div>
+    <div class="doc-info-cell">
+      <div class="info-label">Flows in this document</div>
+      <div class="flow-list">
+        <div class="flow-list-item active">Flow 1 — Empty state to first budget</div>
+        <div class="flow-list-item active">Flow 2 — Suggestions countdown (pre-30 days)</div>
+        <div class="flow-list-item active">Flow 3 — Suggested Budgets unlock</div>
+        <div class="flow-list-item active">Flow 4 — Accept a suggestion (modal)</div>
+        <div class="flow-list-item reused">Create-budget flow — reuses Android (DB-010), not redrawn here</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 1 — Empty state to first budget
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 1 — Empty state to first budget</div>
+    <div class="flow-section-line"></div>
+  </div>
+  <div class="flow-intro">User opens the Budgets tab for the first time. Zero budgets, zero activity. One CTA: Create budget. The Shortcut sell happens on Home and Transactions, not here — by the time the user is in Budgets they've either chosen a data source or they haven't.</div>
+
+  <div class="phone-row">
+
+    <!-- Phone 1: Empty state -->
+    <div class="screen-col">
+      <div class="screen-label">Budgets tab · zero budgets</div>
+      <div class="state-badge empty">empty state</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="app-bar-title-lg">Budgets</div>
+            <div class="app-bar-action-icon">🔔</div>
+          </div>
+          <div class="empty-state">
+            <div class="empty-icon-lg">🎯</div>
+            <div class="empty-headline">Decide where your money goes.</div>
+            <div class="empty-sub">Set a monthly limit by category and we'll track every transaction against it.</div>
+          </div>
+          <div class="empty-actions">
+            <div class="btn btn-accent">Create budget</div>
+          </div>
+          <div style="flex:1"></div>
+          <div class="ios-tabbar">
+            <div class="ios-tab"><div class="ios-tab-icon">🏠</div><div class="ios-tab-lbl">Home</div></div>
+            <div class="ios-tab"><div class="ios-tab-icon">↕</div><div class="ios-tab-lbl">Transactions</div></div>
+            <div class="ios-tab add"><div class="add-btn">+</div></div>
+            <div class="ios-tab on"><div class="ios-tab-icon">🎯</div><div class="ios-tab-lbl">Budgets</div></div>
+            <div class="ios-tab"><div class="ios-tab-icon">🎁</div><div class="ios-tab-lbl">Offers</div></div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note decision">Single CTA. Earlier draft had a second "Enable Shortcut" CTA stacked underneath — removed because the Shortcut sell already lives on Home and Transactions, and re-prompting here would compete with the actual job of this tab.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">tap Create budget</div>
+    </div>
+
+    <!-- Phone 2: Routes to create-budget flow (reused) -->
+    <div class="screen-col">
+      <div class="screen-label">Routes into Create-budget flow</div>
+      <div class="state-badge happy">reused from DB-010</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar" style="padding-bottom:14px">
+            <div style="font-size:18px;font-weight:700;color:var(--t1);display:flex;align-items:center;gap:8px"><span style="color:var(--navy);font-size:22px;font-weight:400">‹</span> Choose category</div>
+          </div>
+          <div style="padding:14px 18px;display:flex;flex-direction:column;gap:8px;flex:1">
+            <div style="font-size:11px;color:var(--t3);text-align:center;padding:36px 16px;background:var(--screen-bg2);border-radius:10px;border:1px dashed var(--b3);line-height:1.6">
+              Create-budget flow is shared with Android.<br><br>
+              See <strong style="color:var(--t2)">DB-010 — Home Tab Revamp</strong> for category picker, amount input, save CTA, validation, and success states.<br><br>
+              No iOS delta on this flow.
+            </div>
+          </div>
+          <div class="ios-tabbar">
+            <div class="ios-tab"><div class="ios-tab-icon">🏠</div><div class="ios-tab-lbl">Home</div></div>
+            <div class="ios-tab"><div class="ios-tab-icon">↕</div><div class="ios-tab-lbl">Transactions</div></div>
+            <div class="ios-tab add"><div class="add-btn">+</div></div>
+            <div class="ios-tab on"><div class="ios-tab-icon">🎯</div><div class="ios-tab-lbl">Budgets</div></div>
+            <div class="ios-tab"><div class="ios-tab-icon">🎁</div><div class="ios-tab-lbl">Offers</div></div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note info">Engineering: confirm category list parity between Android and iOS before launch. No copy delta on this screen.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 2 — Suggestions countdown
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 2 — Suggestions countdown (pre-30 days)</div>
+    <div class="flow-section-line"></div>
+  </div>
+  <div class="flow-intro">User has activity (manual or Shortcut) but hasn't hit 30 days yet. The Suggested Budgets slot is occupied by a countdown — single component, no separate slot heading. Make the wait feel earned, not imposed.</div>
+
+  <div class="phone-row">
+
+    <!-- Phone 1: Active state — no budgets yet, countdown showing -->
+    <div class="screen-col">
+      <div class="screen-label">Budgets tab · countdown · 18 days</div>
+      <div class="state-badge countdown">countdown · X &gt; 1</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="app-bar-title-lg">Budgets</div>
+            <div class="app-bar-action-icon">🔔</div>
+          </div>
+          <div class="sc-pad">
+            <!-- Spending Overview — 3 cards -->
+            <div class="sec-heading">
+              <div class="sec-heading-ttl">Spending Overview</div>
+              <div class="sec-heading-sub">in May</div>
+            </div>
+            <div class="overview-row">
+              <div class="overview-card">
+                <div class="ov-count on">2</div>
+                <div class="ov-label">On Limit</div>
+                <div class="ov-bar"><div class="ov-bar-fill on" style="width:50%"></div></div>
+              </div>
+              <div class="overview-card">
+                <div class="ov-count near">1</div>
+                <div class="ov-label">Near Limit</div>
+                <div class="ov-bar"><div class="ov-bar-fill near" style="width:25%"></div></div>
+              </div>
+              <div class="overview-card">
+                <div class="ov-count over">0</div>
+                <div class="ov-label">Over Limit</div>
+                <div class="ov-bar"><div class="ov-bar-fill over" style="width:0%"></div></div>
+              </div>
+            </div>
+
+            <!-- Suggested Budgets section — countdown occupies the slot -->
+            <div class="sec-heading" style="margin-top:6px">
+              <div class="sec-heading-ttl">Suggested Budgets</div>
+            </div>
+            <div class="countdown-card">
+              <div class="countdown-icon">⏳</div>
+              <div class="countdown-headline">Personalised limits in 18 days.</div>
+              <div class="countdown-sub">Keep logging — the more we see, the better we suggest.</div>
+            </div>
+
+            <!-- Filter chips -->
+            <div class="filter-row" style="margin-top:6px">
+              <div class="chip on">All</div>
+              <div class="chip">On Limit</div>
+              <div class="chip">Near Limit</div>
+              <div class="chip">Over Limit</div>
+            </div>
+
+            <!-- Existing budgets -->
+            <div class="budget-row">
+              <div class="budget-row-head">
+                <div class="budget-emoji-wrap">🍕</div>
+                <div class="budget-name-block">
+                  <div class="budget-name">Food & Dining</div>
+                  <div class="budget-status-pill near">Near Limit</div>
+                </div>
+                <div class="budget-chev">›</div>
+              </div>
+              <div class="prog-track"><div class="prog-fill near" style="width:91%"></div></div>
+              <div class="budget-foot">
+                <div class="budget-foot-left"><strong>1,820</strong> <span class="muted">of 2,000 EGP</span></div>
+                <div class="budget-foot-right">Remaining <strong>180 EGP</strong></div>
+              </div>
+            </div>
+
+            <div class="budget-row">
+              <div class="budget-row-head">
+                <div class="budget-emoji-wrap">🚗</div>
+                <div class="budget-name-block">
+                  <div class="budget-name">Transport</div>
+                  <div class="budget-status-pill on">On Limit</div>
+                </div>
+                <div class="budget-chev">›</div>
+              </div>
+              <div class="prog-track"><div class="prog-fill on" style="width:42%"></div></div>
+              <div class="budget-foot">
+                <div class="budget-foot-left"><strong>590</strong> <span class="muted">of 1,400 EGP</span></div>
+                <div class="budget-foot-right">Remaining <strong>810 EGP</strong></div>
+              </div>
+            </div>
+          </div>
+          <div style="flex:1"></div>
+          <div class="ios-tabbar">
+            <div class="ios-tab"><div class="ios-tab-icon">🏠</div><div class="ios-tab-lbl">Home</div></div>
+            <div class="ios-tab"><div class="ios-tab-icon">↕</div><div class="ios-tab-lbl">Transactions</div></div>
+            <div class="ios-tab add"><div class="add-btn">+</div></div>
+            <div class="ios-tab on"><div class="ios-tab-icon">🎯</div><div class="ios-tab-lbl">Budgets</div></div>
+            <div class="ios-tab"><div class="ios-tab-icon">🎁</div><div class="ios-tab-lbl">Offers</div></div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note decision">Spending Overview is three cards (On Limit / Near Limit / Over Limit), each with a count, label, and short coloured bar. Counts are how many of the user's budgets fall into each state. Cards stay flat-coloured even when count is 0 — the bar shrinks to zero width but the card itself doesn't dim.</div>
+      <div class="flow-note info">Filter chips (All / On Limit / Near Limit / Over Limit) sit between Suggested Budgets and the budget list, scrollable horizontally. Tapping a chip filters only the budget list below — never the overview cards or the suggestions slot.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">days tick down</div>
+    </div>
+
+    <!-- Phone 2: Countdown, X = 1 -->
+    <div class="screen-col">
+      <div class="screen-label">Countdown · final-day variant</div>
+      <div class="state-badge countdown">countdown · X = 1</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="app-bar-title-lg">Budgets</div>
+            <div class="app-bar-action-icon">🔔</div>
+          </div>
+          <div class="sc-pad">
+            <div class="sec-heading">
+              <div class="sec-heading-ttl">Spending Overview</div>
+              <div class="sec-heading-sub">in May</div>
+            </div>
+            <div class="overview-row">
+              <div class="overview-card">
+                <div class="ov-count on">2</div>
+                <div class="ov-label">On Limit</div>
+                <div class="ov-bar"><div class="ov-bar-fill on" style="width:50%"></div></div>
+              </div>
+              <div class="overview-card">
+                <div class="ov-count near">1</div>
+                <div class="ov-label">Near Limit</div>
+                <div class="ov-bar"><div class="ov-bar-fill near" style="width:25%"></div></div>
+              </div>
+              <div class="overview-card">
+                <div class="ov-count over">1</div>
+                <div class="ov-label">Over Limit</div>
+                <div class="ov-bar"><div class="ov-bar-fill over" style="width:25%"></div></div>
+              </div>
+            </div>
+
+            <div class="sec-heading" style="margin-top:6px">
+              <div class="sec-heading-ttl">Suggested Budgets</div>
+            </div>
+            <div class="countdown-card">
+              <div class="countdown-icon">⏳</div>
+              <div class="countdown-headline">Personalised limits tomorrow.</div>
+              <div class="countdown-sub">Keep logging — the more we see, the better we suggest.</div>
+            </div>
+
+            <div class="filter-row" style="margin-top:6px">
+              <div class="chip on">All</div>
+              <div class="chip">On Limit</div>
+              <div class="chip">Near Limit</div>
+              <div class="chip">Over Limit</div>
+            </div>
+
+            <div class="budget-row">
+              <div class="budget-row-head">
+                <div class="budget-emoji-wrap">🍕</div>
+                <div class="budget-name-block">
+                  <div class="budget-name">Food & Dining</div>
+                  <div class="budget-status-pill over">Over Limit</div>
+                </div>
+                <div class="budget-chev">›</div>
+              </div>
+              <div class="prog-track"><div class="prog-fill over" style="width:100%"></div></div>
+              <div class="budget-foot">
+                <div class="budget-foot-left"><strong>2,090</strong> <span class="muted">of 2,000 EGP</span></div>
+                <div class="budget-foot-right">Exceeding by <strong>90 EGP</strong></div>
+              </div>
+            </div>
+          </div>
+          <div style="flex:1"></div>
+          <div class="ios-tabbar">
+            <div class="ios-tab"><div class="ios-tab-icon">🏠</div><div class="ios-tab-lbl">Home</div></div>
+            <div class="ios-tab"><div class="ios-tab-icon">↕</div><div class="ios-tab-lbl">Transactions</div></div>
+            <div class="ios-tab add"><div class="add-btn">+</div></div>
+            <div class="ios-tab on"><div class="ios-tab-icon">🎯</div><div class="ios-tab-lbl">Budgets</div></div>
+            <div class="ios-tab"><div class="ios-tab-icon">🎁</div><div class="ios-tab-lbl">Offers</div></div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note new">Single-day case substitutes "tomorrow" for the numeral. Numerals stay Western Arabic (1, 2, 3) per locked convention; only X = 1 uses a word.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 3 — Suggested Budgets unlock
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 3 — Suggested Budgets unlock</div>
+    <div class="flow-section-line"></div>
+  </div>
+  <div class="flow-intro">30 days have elapsed. The countdown card swaps for a list of category-level suggestions — amounts derived from the user's actual 30-day activity. Categories with zero transactions are skipped, not shown as 0 EGP. Categories with an existing budget are excluded.</div>
+
+  <div class="phone-row">
+
+    <!-- Phone 1: Suggestions unlocked -->
+    <div class="screen-col">
+      <div class="screen-label">Suggested Budgets visible · multiple suggestions</div>
+      <div class="state-badge happy">suggestions ready</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="app-bar-title-lg">Budgets</div>
+            <div class="app-bar-action-icon">🔔</div>
+          </div>
+          <div class="sc-pad">
+            <div class="sec-heading">
+              <div class="sec-heading-ttl">Spending Overview</div>
+              <div class="sec-heading-sub">in May</div>
+            </div>
+            <div class="overview-row">
+              <div class="overview-card">
+                <div class="ov-count on">2</div>
+                <div class="ov-label">On Limit</div>
+                <div class="ov-bar"><div class="ov-bar-fill on" style="width:67%"></div></div>
+              </div>
+              <div class="overview-card">
+                <div class="ov-count near">1</div>
+                <div class="ov-label">Near Limit</div>
+                <div class="ov-bar"><div class="ov-bar-fill near" style="width:33%"></div></div>
+              </div>
+              <div class="overview-card">
+                <div class="ov-count over">0</div>
+                <div class="ov-label">Over Limit</div>
+                <div class="ov-bar"><div class="ov-bar-fill over" style="width:0%"></div></div>
+              </div>
+            </div>
+
+            <div class="sec-heading" style="margin-top:6px">
+              <div class="sec-heading-ttl">Suggested Budgets</div>
+              <div class="sec-heading-sub">based on your last 30 days</div>
+            </div>
+
+            <div class="suggestion-row">
+              <div class="suggestion-emoji-wrap">🛍</div>
+              <div class="suggestion-info">
+                <div class="suggestion-name">Shopping</div>
+                <div class="suggestion-amt"><strong>980</strong> EGP/month</div>
+              </div>
+              <div class="suggestion-actions">
+                <div class="sa-btn accept">✓</div>
+                <div class="sa-btn dismiss">×</div>
+              </div>
+            </div>
+
+            <div class="suggestion-row">
+              <div class="suggestion-emoji-wrap">📱</div>
+              <div class="suggestion-info">
+                <div class="suggestion-name">Bills & Utilities</div>
+                <div class="suggestion-amt"><strong>420</strong> EGP/month</div>
+              </div>
+              <div class="suggestion-actions">
+                <div class="sa-btn accept">✓</div>
+                <div class="sa-btn dismiss">×</div>
+              </div>
+            </div>
+
+            <div class="filter-row" style="margin-top:6px">
+              <div class="chip on">All</div>
+              <div class="chip">On Limit</div>
+              <div class="chip">Near Limit</div>
+              <div class="chip">Over Limit</div>
+            </div>
+
+            <div class="budget-row">
+              <div class="budget-row-head">
+                <div class="budget-emoji-wrap">🍕</div>
+                <div class="budget-name-block">
+                  <div class="budget-name">Food & Dining</div>
+                  <div class="budget-status-pill near">Near Limit</div>
+                </div>
+                <div class="budget-chev">›</div>
+              </div>
+              <div class="prog-track"><div class="prog-fill near" style="width:91%"></div></div>
+              <div class="budget-foot">
+                <div class="budget-foot-left"><strong>1,820</strong> <span class="muted">of 2,000 EGP</span></div>
+                <div class="budget-foot-right">Remaining <strong>180 EGP</strong></div>
+              </div>
+            </div>
+          </div>
+          <div style="flex:1"></div>
+          <div class="ios-tabbar">
+            <div class="ios-tab"><div class="ios-tab-icon">🏠</div><div class="ios-tab-lbl">Home</div></div>
+            <div class="ios-tab"><div class="ios-tab-icon">↕</div><div class="ios-tab-lbl">Transactions</div></div>
+            <div class="ios-tab add"><div class="add-btn">+</div></div>
+            <div class="ios-tab on"><div class="ios-tab-icon">🎯</div><div class="ios-tab-lbl">Budgets</div></div>
+            <div class="ios-tab"><div class="ios-tab-icon">🎁</div><div class="ios-tab-lbl">Offers</div></div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note decision">Each suggestion is its own row with a dashed gold border (matches the countdown's visual treatment, signals "not yet a real budget"). Two action buttons per row: green check (accept → opens modal) and outline × (dismiss). Both are 34×34 visually, 44×44 tap target.</div>
+      <div class="flow-note info">Suggestions sit above filter chips and the budget list. Order: Spending Overview → Suggested Budgets → filter chips → budget list. Suggestions go away when accepted (after modal save) or dismissed.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 4 — Accept a suggestion (modal)
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 4 — Accept a suggestion</div>
+    <div class="flow-section-line"></div>
+  </div>
+  <div class="flow-intro">Tapping the green check on a suggestion opens a bottom-sheet modal with the suggested amount pre-filled. The user can edit the amount, then save. The modal is the create-budget moment — same primitives as the standard create-budget flow (DB-010), but with the category locked and the amount pre-filled.</div>
+
+  <div class="phone-row">
+
+    <!-- Phone 1: Modal opens -->
+    <div class="screen-col">
+      <div class="screen-label">Tap green check · modal opens</div>
+      <div class="state-badge interaction">modal · pre-filled</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="app-bar-title-lg">Budgets</div>
+            <div class="app-bar-action-icon">🔔</div>
+          </div>
+          <div class="sc-pad" style="opacity:0.4">
+            <div class="sec-heading">
+              <div class="sec-heading-ttl">Spending Overview</div>
+              <div class="sec-heading-sub">in May</div>
+            </div>
+            <div class="overview-row">
+              <div class="overview-card"><div class="ov-count on">2</div><div class="ov-label">On Limit</div><div class="ov-bar"><div class="ov-bar-fill on" style="width:67%"></div></div></div>
+              <div class="overview-card"><div class="ov-count near">1</div><div class="ov-label">Near Limit</div><div class="ov-bar"><div class="ov-bar-fill near" style="width:33%"></div></div></div>
+              <div class="overview-card"><div class="ov-count over">0</div><div class="ov-label">Over Limit</div><div class="ov-bar"></div></div>
+            </div>
+          </div>
+
+          <!-- Bottom-sheet modal -->
+          <div class="overlay">
+            <div class="bottom-sheet">
+              <div class="bs-handle"></div>
+              <div class="bs-title">Set as budget</div>
+              <div class="bs-body">Based on your last 30 days. You can change the amount before saving.</div>
+
+              <div class="modal-cat-row">
+                <div class="suggestion-emoji-wrap">🛍</div>
+                <div class="modal-cat-name">Shopping</div>
+              </div>
+
+              <div style="font-size:11px;font-weight:700;color:var(--t2);letter-spacing:0.03em;margin-bottom:5px">MONTHLY LIMIT (EGP)</div>
+              <div class="amount-input">
+                <span class="amount-val">980</span>
+                <span class="amount-cur">EGP</span>
+              </div>
+              <div class="amount-hint">Suggested: <strong>980 EGP</strong> · your average over 30 days</div>
+
+              <div class="btn btn-accent">Save budget</div>
+            </div>
+          </div>
+
+          <div style="flex:1"></div>
+          <div class="ios-tabbar">
+            <div class="ios-tab"><div class="ios-tab-icon">🏠</div><div class="ios-tab-lbl">Home</div></div>
+            <div class="ios-tab"><div class="ios-tab-icon">↕</div><div class="ios-tab-lbl">Transactions</div></div>
+            <div class="ios-tab add"><div class="add-btn">+</div></div>
+            <div class="ios-tab on"><div class="ios-tab-icon">🎯</div><div class="ios-tab-lbl">Budgets</div></div>
+            <div class="ios-tab"><div class="ios-tab-icon">🎁</div><div class="ios-tab-lbl">Offers</div></div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note decision">Bottom sheet, dismissible by handle drag or tap-outside. Category is locked (not editable) — the suggestion is for that category specifically. Amount is pre-filled with the suggested figure but fully editable, same input primitive as the standard create-budget flow.</div>
+      <div class="flow-note info">The hint line below the input ("Suggested: 980 EGP · your average over 30 days") stays visible even if the user edits the amount, so they can see what they're moving away from.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">tap Save</div>
+    </div>
+
+    <!-- Phone 2: Saved -->
+    <div class="screen-col">
+      <div class="screen-label">Modal closes · budget saved</div>
+      <div class="state-badge success">budget added</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="app-bar-title-lg">Budgets</div>
+            <div class="app-bar-action-icon">🔔</div>
+          </div>
+          <div class="toast-success">
+            <span class="toast-ico">✓</span>
+            <span class="toast-txt">Shopping budget set · 980 EGP/month</span>
+          </div>
+          <div class="sc-pad">
+            <div class="sec-heading">
+              <div class="sec-heading-ttl">Spending Overview</div>
+              <div class="sec-heading-sub">in May</div>
+            </div>
+            <div class="overview-row">
+              <div class="overview-card">
+                <div class="ov-count on">3</div>
+                <div class="ov-label">On Limit</div>
+                <div class="ov-bar"><div class="ov-bar-fill on" style="width:75%"></div></div>
+              </div>
+              <div class="overview-card">
+                <div class="ov-count near">1</div>
+                <div class="ov-label">Near Limit</div>
+                <div class="ov-bar"><div class="ov-bar-fill near" style="width:25%"></div></div>
+              </div>
+              <div class="overview-card">
+                <div class="ov-count over">0</div>
+                <div class="ov-label">Over Limit</div>
+                <div class="ov-bar"></div>
+              </div>
+            </div>
+
+            <div class="sec-heading" style="margin-top:6px">
+              <div class="sec-heading-ttl">Suggested Budgets</div>
+              <div class="sec-heading-sub">based on your last 30 days</div>
+            </div>
+
+            <div class="suggestion-row">
+              <div class="suggestion-emoji-wrap">📱</div>
+              <div class="suggestion-info">
+                <div class="suggestion-name">Bills & Utilities</div>
+                <div class="suggestion-amt"><strong>420</strong> EGP/month</div>
+              </div>
+              <div class="suggestion-actions">
+                <div class="sa-btn accept">✓</div>
+                <div class="sa-btn dismiss">×</div>
+              </div>
+            </div>
+
+            <div class="filter-row" style="margin-top:6px">
+              <div class="chip on">All</div>
+              <div class="chip">On Limit</div>
+              <div class="chip">Near Limit</div>
+              <div class="chip">Over Limit</div>
+            </div>
+
+            <!-- Newly accepted budget — highlighted -->
+            <div class="budget-row" style="border-color:var(--green);background:#FCFEFD">
+              <div class="budget-row-head">
+                <div class="budget-emoji-wrap">🛍</div>
+                <div class="budget-name-block">
+                  <div class="budget-name">Shopping</div>
+                  <div class="budget-status-pill on">On Limit</div>
+                </div>
+                <div class="budget-chev">›</div>
+              </div>
+              <div class="prog-track"><div class="prog-fill on" style="width:38%"></div></div>
+              <div class="budget-foot">
+                <div class="budget-foot-left"><strong>370</strong> <span class="muted">of 980 EGP</span></div>
+                <div class="budget-foot-right">Remaining <strong>610 EGP</strong></div>
+              </div>
+            </div>
+          </div>
+          <div style="flex:1"></div>
+          <div class="ios-tabbar">
+            <div class="ios-tab"><div class="ios-tab-icon">🏠</div><div class="ios-tab-lbl">Home</div></div>
+            <div class="ios-tab"><div class="ios-tab-icon">↕</div><div class="ios-tab-lbl">Transactions</div></div>
+            <div class="ios-tab add"><div class="add-btn">+</div></div>
+            <div class="ios-tab on"><div class="ios-tab-icon">🎯</div><div class="ios-tab-lbl">Budgets</div></div>
+            <div class="ios-tab"><div class="ios-tab-icon">🎁</div><div class="ios-tab-lbl">Offers</div></div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note decision">On save: modal closes, toast confirms, the accepted suggestion drops out of the suggestions list, and a new budget row enters the list with green border + soft background highlight for ~2 seconds, then fades to the standard row style. Spending Overview counts update. The new budget shows actual spend-to-date against the saved limit — number is computed from the 30-day data we already have.</div>
+      <div class="flow-note new">If all suggestions are accepted or dismissed, the Suggested Budgets section is removed from the tab — no empty placeholder. Re-suggesting is out of scope for v1.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     HANDOFF
+═══════════════════════════════════════════════════════════ -->
+<div class="handoff">
+  <div class="handoff-title">Handoff</div>
+  <div class="handoff-sub">Designer reference for this prototype. Every user-facing string in the flows above, plus the accessibility rules that change what you draw.</div>
+
+  <!-- ── Copy table ── -->
+  <div class="handoff-sec">
+    <div class="handoff-h">Copy · English + Arabic</div>
+    <div class="handoff-p">All Arabic copy is <strong>draft</strong> — pending native Egyptian Arabic speaker review before publishing. RTL layout to be confirmed in Figma, particularly for the dynamic countdown string where the day count sits inside the sentence.</div>
+
+    <table class="copy-table" style="margin-top:12px">
+      <colgroup>
+        <col class="col-screen">
+        <col class="col-element">
+        <col class="col-en">
+        <col class="col-ar">
+      </colgroup>
+      <thead>
+        <tr>
+          <th>Screen</th>
+          <th>Element</th>
+          <th>English</th>
+          <th>Arabic (draft)</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <!-- Empty state -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="4">Budgets tab — empty state</td>
+          <td class="element-name">Tab title</td>
+          <td class="en">Budgets</td>
+          <td class="ar">البادچتس</td>
+        </tr>
+        <tr>
+          <td class="element-name">Headline</td>
+          <td class="en">Decide where your money goes.</td>
+          <td class="ar">قرّر فلوسك بتروح فين.</td>
+        </tr>
+        <tr>
+          <td class="element-name">Sub-copy</td>
+          <td class="en">Set a monthly limit by category and we'll track every transaction against it.</td>
+          <td class="ar">حدّد حد شهري لكل فئة، وإحنا نتابع كل عملية على حسب الحد ده.</td>
+        </tr>
+        <tr>
+          <td class="element-name">Primary CTA</td>
+          <td class="en">Create budget</td>
+          <td class="ar">اعمل بادچت</td>
+        </tr>
+
+        <!-- Spending Overview labels -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="6">Spending Overview (active state)</td>
+          <td class="element-name">Section heading</td>
+          <td class="en">Spending Overview</td>
+          <td class="ar">نظرة على المصروف</td>
+        </tr>
+        <tr>
+          <td class="element-name">Section sub (current month)</td>
+          <td class="en">in {Month}</td>
+          <td class="ar">في {الشهر}</td>
+        </tr>
+        <tr>
+          <td class="element-name">Card 1 label</td>
+          <td class="en">On Limit</td>
+          <td class="ar">في الحد</td>
+        </tr>
+        <tr>
+          <td class="element-name">Card 2 label</td>
+          <td class="en">Near Limit</td>
+          <td class="ar">قرب الحد</td>
+        </tr>
+        <tr>
+          <td class="element-name">Card 3 label</td>
+          <td class="en">Over Limit</td>
+          <td class="ar">فوق الحد</td>
+        </tr>
+        <tr>
+          <td class="element-name">Filter chips</td>
+          <td class="en">All · On Limit · Near Limit · Over Limit</td>
+          <td class="ar">الكل · في الحد · قرب الحد · فوق الحد</td>
+        </tr>
+
+        <!-- Budget row -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="3">Budget row (per state)</td>
+          <td class="element-name">Foot — under limit</td>
+          <td class="en">Remaining {amount} EGP</td>
+          <td class="ar">باقي {المبلغ} جنيه</td>
+        </tr>
+        <tr>
+          <td class="element-name">Foot — over limit</td>
+          <td class="en">Exceeding by {amount} EGP</td>
+          <td class="ar">زاد بـ {المبلغ} جنيه</td>
+        </tr>
+        <tr>
+          <td class="element-name">Amount line format</td>
+          <td class="en">{spent} of {limit} EGP</td>
+          <td class="ar">{المصروف} من {الحد} جنيه</td>
+        </tr>
+
+        <!-- Countdown -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="4">Suggested Budgets — countdown</td>
+          <td class="element-name">Section heading</td>
+          <td class="en">Suggested Budgets</td>
+          <td class="ar">بادچتس مقترحة</td>
+        </tr>
+        <tr>
+          <td class="element-name">Headline (X &gt; 1)</td>
+          <td class="en">Personalised limits in {X} days.</td>
+          <td class="ar">حدودك المخصّصة بعد {X} يوم.</td>
+        </tr>
+        <tr>
+          <td class="element-name">Headline (X = 1)</td>
+          <td class="en">Personalised limits tomorrow.</td>
+          <td class="ar">حدودك المخصّصة بكرة.</td>
+        </tr>
+        <tr>
+          <td class="element-name">Sub-text</td>
+          <td class="en">Keep logging — the more we see, the better we suggest.</td>
+          <td class="ar">كمّل تسجيل — كل ما نشوف أكتر، نقترح أحسن.</td>
+        </tr>
+
+        <!-- Suggestions ready -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="4">Suggested Budgets — suggestions ready</td>
+          <td class="element-name">Section sub</td>
+          <td class="en">based on your last 30 days</td>
+          <td class="ar">على أساس آخر 30 يوم</td>
+        </tr>
+        <tr>
+          <td class="element-name">Suggestion amount format</td>
+          <td class="en">{amount} EGP/month</td>
+          <td class="ar">{المبلغ} جنيه شهرياً</td>
+        </tr>
+        <tr>
+          <td class="element-name">Accept (✓ a11y label)</td>
+          <td class="en">Accept suggested {category} budget</td>
+          <td class="ar">قبول بادچت {الفئة} المقترح</td>
+        </tr>
+        <tr>
+          <td class="element-name">Dismiss (× a11y label)</td>
+          <td class="en">Dismiss suggested {category} budget</td>
+          <td class="ar">تجاهل بادچت {الفئة} المقترح</td>
+        </tr>
+
+        <!-- Modal -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="5">Accept suggestion modal</td>
+          <td class="element-name">Modal title</td>
+          <td class="en">Set as budget</td>
+          <td class="ar">حطّه بادچت</td>
+        </tr>
+        <tr>
+          <td class="element-name">Modal body</td>
+          <td class="en">Based on your last 30 days. You can change the amount before saving.</td>
+          <td class="ar">على أساس آخر 30 يوم. تقدر تغيّر المبلغ قبل ما تحفظ.</td>
+        </tr>
+        <tr>
+          <td class="element-name">Amount field label</td>
+          <td class="en">Monthly limit (EGP)</td>
+          <td class="ar">الحد الشهري (جنيه)</td>
+        </tr>
+        <tr>
+          <td class="element-name">Hint under amount</td>
+          <td class="en">Suggested: {amount} EGP · your average over 30 days</td>
+          <td class="ar">المقترح: {المبلغ} جنيه · متوسطك في 30 يوم</td>
+        </tr>
+        <tr>
+          <td class="element-name">Save CTA</td>
+          <td class="en">Save budget</td>
+          <td class="ar">احفظ البادچت</td>
+        </tr>
+
+        <!-- Confirmation toast -->
+        <tr class="group-start">
+          <td class="screen-name" rowspan="1">Save confirmation</td>
+          <td class="element-name">Toast</td>
+          <td class="en">{Category} budget set · {amount} EGP/month</td>
+          <td class="ar">بادچت {الفئة} اتحدّد · {المبلغ} جنيه شهرياً</td>
+        </tr>
+
+      </tbody>
+    </table>
+
+    <div class="callout warn">
+      <strong>Currency:</strong> "EGP" in English and "جنيه" in Arabic. Numerals stay Western Arabic (1, 2, 3) in both languages per locked convention. The countdown's X = 1 case substitutes "tomorrow" / "بكرة" for the numeral.
+    </div>
+
+    <div class="callout info">
+      <strong>Create-budget flow copy:</strong> Reused from Android (DB-010). See that copy deck for category picker, amount input, EGP suffix, save CTA, and validation messages used inside the standard create-budget flow.
+    </div>
+  </div>
+
+  <!-- ── Accessibility ── -->
+  <div class="handoff-sec">
+    <div class="handoff-h">Accessibility — what changes what you draw</div>
+    <ul class="handoff-list">
+      <li><strong>Touch targets — 44×44px minimum</strong> on every interactive element. Critical here for the ✓ and × buttons on suggestion rows (visually 34×34, must hit 44×44 tap area), the filter chips, the bell icon, and the modal's drag handle.</li>
+      <li><strong>Contrast — 4.5:1 minimum for body text, 7:1 for financial figures</strong> (budget amounts, spend totals, EGP values). Verify the 7:1 against the navy filter-chip-active state, the green/gold/red status pills, and the muted "of 2,000 EGP" text on budget rows.</li>
+      <li><strong>Never colour-only for state.</strong> Status pills use both colour and label text ("On Limit", "Near Limit", "Over Limit"); progress bars need that label nearby. Spending Overview cards combine count, label, and bar — never strip to colour-only.</li>
+      <li><strong>Focus order — top-to-bottom, even on RTL.</strong> Title → bell → Spending Overview cards (left-to-right or RTL flipped) → Suggested Budgets → filter chips → budget list. Within each suggestion row: name → accept → dismiss.</li>
+      <li><strong>Dynamic count in countdown headline (Flow 2) needs careful RTL handling</strong> — the {X} variable sits inside the sentence on both EN and AR, and Arabic numerals are LTR within an RTL paragraph. Confirm with native speaker review that the direction marks are right.</li>
+    </ul>
+  </div>
+
+</div>
+
+</div>
+</body>
+</html>
