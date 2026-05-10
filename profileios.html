@@ -1,0 +1,2014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoneyMore — Profile (iOS) · Designer Prototype</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --navy:#1A3C5E; --navy-2:#264a72; --green:#2E8B57; --green-l:#E8F5EE;
+  --gold:#B8860B; --gold-l:#FBF4DC; --red:#C0392B; --red-l:#FDECEA;
+  --page-bg:#F9F8F5;
+  --screen-bg:#FAFAF8; --screen-bg2:#F2F0EB; --screen-bg3:#E8E5DE;
+  --t1:#1A1714; --t2:#3D3A35; --t3:#7A7670; --t4:#ABA7A0;
+  --t-pos:#1A6E3C; --t-neg:#A82419;
+  --b1:#E8E5DF; --b2:#D4D0C8; --b3:#BCBAB2;
+  --frame-bg:#2A2724; --frame-border:#1A1614;
+  --f-body:'Plus Jakarta Sans',sans-serif; --f-mono:'DM Mono',monospace;
+  --s-xs:10px; --s-sm:12px; --s-base:14px; --s-md:16px; --s-lg:18px; --s-xl:22px; --s-2xl:28px;
+  --r-sm:6px; --r-md:12px; --r-lg:16px; --r-xl:24px; --r-pill:999px;
+  --shadow-phone:0 8px 32px rgba(0,0,0,0.14),0 2px 8px rgba(0,0,0,0.08);
+  --shadow-card:0 1px 4px rgba(0,0,0,0.06);
+  --ph-w:280px; --ph-r:32px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-size:var(--s-base);line-height:1.6;-webkit-font-smoothing:antialiased;}
+.page{max-width:1500px;margin:0 auto;padding:48px 40px 96px;}
+
+/* ── DOC HEADER ─────────────────────────────────────────── */
+.doc-header{padding-bottom:32px;margin-bottom:40px;border-bottom:2px solid var(--b1);}
+.doc-meta{display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap;}
+.doc-tag{font-family:var(--f-mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;padding:4px 11px;border-radius:3px;font-weight:600;}
+.doc-tag.prototype{background:var(--green-l);color:#0F5830;}
+.doc-tag.designer{background:#EAE8FF;color:#3A3288;}
+.doc-tag.ios{background:#E8F0FA;color:#103868;}
+.doc-tag.wip{background:var(--gold-l);color:#6B5210;}
+.doc-tag.version{background:var(--navy);color:#fff;}
+.doc-date{font-family:var(--f-mono);font-size:11px;color:var(--t2);margin-left:auto;font-weight:500;}
+.doc-title{font-size:34px;font-weight:700;color:var(--t1);letter-spacing:-0.02em;line-height:1.15;margin-bottom:10px;}
+.doc-subtitle{font-size:15px;color:var(--t1);font-weight:400;margin-bottom:30px;line-height:1.5;max-width:920px;}
+
+.doc-info{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--b1);border-radius:var(--r-md);overflow:hidden;background:white;}
+.doc-info-cell{padding:16px 20px;border-right:1px solid var(--b1);}
+.doc-info-cell:last-child{border-right:none;}
+.info-label{font-family:var(--f-mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--t2);margin-bottom:8px;font-weight:600;}
+.info-body{font-size:13px;color:var(--t1);line-height:1.55;}
+.info-body strong{color:var(--t1);font-weight:700;}
+
+.flow-list{display:flex;flex-direction:column;gap:4px;}
+.flow-list-item{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--t1);line-height:1.45;}
+.flow-list-item::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0;}
+
+/* ── FLOW SECTION ──────────────────────────────────────── */
+.flow-section{margin-bottom:64px;}
+.flow-section-header{display:flex;align-items:center;gap:16px;margin-bottom:28px;}
+.flow-section-line{flex:1;height:1px;background:var(--b2);}
+.flow-section-title{font-family:var(--f-body);font-size:16px;font-weight:700;color:#fff;background:var(--navy);padding:6px 14px;border-radius:4px;white-space:nowrap;}
+
+.phone-row{display:flex;align-items:flex-start;gap:0;overflow-x:auto;padding-bottom:12px;}
+.phone-row::-webkit-scrollbar{height:4px;}
+.phone-row::-webkit-scrollbar-track{background:var(--b1);border-radius:2px;}
+.phone-row::-webkit-scrollbar-thumb{background:var(--b3);border-radius:2px;}
+
+.screen-col{display:flex;flex-direction:column;align-items:center;gap:10px;flex-shrink:0;}
+.screen-label{font-family:var(--f-body);font-size:11px;font-weight:600;color:var(--t2);text-align:center;max-width:var(--ph-w);line-height:1.4;}
+
+.state-badge{font-family:var(--f-mono);font-size:10px;font-weight:500;padding:3px 9px;border-radius:3px;letter-spacing:0.04em;}
+.state-badge.happy{background:#EBF7F1;color:#1A6E3C;}
+.state-badge.empty{background:var(--gold-l);color:#8A6510;}
+.state-badge.error{background:var(--red-l);color:var(--red);}
+.state-badge.loading{background:#E8F0FA;color:#103868;}
+.state-badge.success{background:var(--green-l);color:#0F5830;}
+.state-badge.os{background:#ECECEC;color:#555;}
+.state-badge.interaction{background:#EAE8FF;color:#3A3288;}
+
+.flow-arrow{display:flex;flex-direction:column;align-items:center;flex-shrink:0;padding-top:280px;padding-left:6px;padding-right:6px;}
+.arrow-line{width:32px;height:1px;background:var(--b2);position:relative;}
+.arrow-line::after{content:'';position:absolute;right:-1px;top:-3px;border-left:5px solid var(--b2);border-top:3px solid transparent;border-bottom:3px solid transparent;}
+.arrow-label{font-family:var(--f-body);font-size:10px;font-weight:600;color:var(--t2);text-align:center;max-width:74px;line-height:1.35;margin-top:6px;}
+.arrow-label.deny{color:var(--red);}
+
+/* ── PHONE FRAME — iOS, auto-height ─────────────────────── */
+.phone{width:var(--ph-w);min-height:560px;border-radius:var(--ph-r);background:var(--frame-bg);box-shadow:var(--shadow-phone);position:relative;overflow:hidden;border:2px solid var(--frame-border);flex-shrink:0;display:flex;flex-direction:column;}
+.ios-island{position:absolute;top:8px;left:50%;transform:translateX(-50%);width:80px;height:22px;background:#0A0A0A;border-radius:18px;z-index:20;}
+.ios-status{height:42px;background:var(--screen-bg);display:flex;align-items:flex-end;justify-content:space-between;padding:0 20px 5px;font-family:var(--f-mono);font-size:9px;font-weight:600;color:var(--t1);flex-shrink:0;}
+.ios-home{height:24px;background:var(--screen-bg);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ios-home::after{content:'';width:100px;height:4px;background:rgba(0,0,0,0.25);border-radius:2px;}
+.screen{background:var(--screen-bg);overflow:hidden;display:flex;flex-direction:column;flex:1;}
+
+/* ── PROFILE HERO ──────────────────────────────────────── */
+.prof-hero{padding:18px 14px 56px;background:linear-gradient(160deg,var(--navy) 0%,var(--navy-2) 100%);position:relative;color:white;}
+.prof-hero-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.prof-hero-eyebrow{font-family:var(--f-mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.7);font-weight:600;}
+.prof-hero-gear{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;color:white;font-size:14px;}
+.prof-avatar{width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,0.15);border:2px solid rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;color:white;font-size:22px;font-weight:700;letter-spacing:-0.02em;margin-bottom:10px;}
+.prof-name{font-size:var(--s-lg);font-weight:700;color:white;letter-spacing:-0.01em;}
+.prof-identity{font-size:var(--s-sm);color:rgba(255,255,255,0.7);margin-top:2px;}
+.completed-badge{position:absolute;top:18px;right:54px;display:inline-flex;align-items:center;gap:4px;background:rgba(46,139,87,0.85);color:white;padding:3px 9px;border-radius:var(--r-pill);font-size:9px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;}
+.completed-badge::before{content:'✓';font-size:9px;}
+
+/* Account rows pull up under the hero */
+.under-hero{margin-top:-44px;padding:0 14px 14px;display:flex;flex-direction:column;gap:14px;}
+
+.sec-lbl{font-family:var(--f-mono);font-size:10px;font-weight:600;color:var(--t3);letter-spacing:0.1em;text-transform:uppercase;padding:14px 4px 6px;}
+
+.row-group{background:white;border:1px solid var(--b1);border-radius:var(--r-md);overflow:hidden;box-shadow:var(--shadow-card);}
+.row{display:flex;align-items:center;gap:11px;padding:12px 14px;background:white;}
+.row + .row{border-top:1px solid var(--b1);}
+.row-icon{width:30px;height:30px;border-radius:var(--r-sm);background:var(--screen-bg2);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.row-icon.tinted-navy{background:rgba(26,60,94,0.08);color:var(--navy);}
+.row-icon.tinted-neutral{background:var(--screen-bg2);color:var(--t2);}
+.row-icon.tinted-red{background:var(--red-l);color:var(--red);}
+.row-body{flex:1;min-width:0;}
+.row-title{font-size:var(--s-sm);font-weight:600;color:var(--t1);}
+.row-sub{font-size:var(--s-xs);color:var(--t3);margin-top:1px;line-height:1.4;}
+.row-value{font-size:var(--s-xs);color:var(--t2);font-weight:500;flex-shrink:0;max-width:120px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.row-chev{color:var(--t4);font-size:14px;flex-shrink:0;line-height:1;}
+.row.danger .row-title{color:var(--red);}
+.row.danger .row-icon{background:var(--red-l);color:var(--red);}
+
+/* dashed Add row for missing identity */
+.row.add{background:transparent;border:1.5px dashed var(--b3);border-radius:var(--r-md);}
+.row.add .row-icon{background:var(--green-l);color:var(--green);}
+.row.add .row-action{font-size:var(--s-xs);font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:0.06em;flex-shrink:0;}
+
+/* status pills */
+.status-pill{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:var(--r-pill);font-size:9px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;flex-shrink:0;}
+.status-pill.on{background:var(--green-l);color:#0F5830;}
+.status-pill.off{background:var(--gold-l);color:#8A6510;}
+.status-pill.granted{background:var(--green-l);color:#0F5830;}
+.status-pill.denied{background:var(--red-l);color:var(--red);}
+.status-pill::before{content:'';width:5px;height:5px;border-radius:50%;background:currentColor;}
+
+/* skeleton */
+.skel{background:linear-gradient(90deg,var(--screen-bg2) 25%,var(--screen-bg3) 50%,var(--screen-bg2) 75%);background-size:200% 100%;animation:sh 1.4s infinite;border-radius:var(--r-sm);}
+@keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.skel-row{display:flex;align-items:center;gap:11px;padding:12px 14px;}
+.skel-row + .skel-row{border-top:1px solid var(--b1);}
+.skel-cir{width:30px;height:30px;border-radius:var(--r-sm);flex-shrink:0;}
+.skel-line{height:9px;border-radius:3px;}
+.retry-banner{margin:14px;background:var(--gold-l);border:1px solid rgba(184,134,11,0.22);border-radius:var(--r-sm);padding:10px 12px;display:flex;align-items:center;gap:8px;}
+.retry-banner-txt{font-size:var(--s-xs);color:#6B5210;flex:1;line-height:1.4;}
+.retry-banner-link{font-size:var(--s-xs);font-weight:700;color:var(--navy);text-decoration:underline;}
+
+/* sub-screens (no hero) */
+.app-bar{height:46px;display:flex;align-items:center;padding:0 14px;background:var(--screen-bg);border-bottom:1px solid var(--b1);flex-shrink:0;gap:10px;}
+.app-bar-title{font-size:var(--s-md);font-weight:700;color:var(--t1);flex:1;}
+.back-btn{font-size:18px;color:var(--navy);line-height:1;}
+
+.sc-pad{padding:14px;display:flex;flex-direction:column;gap:10px;}
+.sc-pad-lg{padding:20px 16px;display:flex;flex-direction:column;gap:14px;}
+
+.t-title{font-size:var(--s-xl);font-weight:700;color:var(--t1);letter-spacing:-0.01em;line-height:1.2;}
+.t-heading{font-size:var(--s-lg);font-weight:600;color:var(--t1);line-height:1.25;}
+.t-body{font-size:var(--s-base);color:var(--t2);line-height:1.5;}
+.t-caption{font-size:var(--s-sm);color:var(--t3);line-height:1.5;}
+.rtl{direction:rtl;text-align:right;}
+
+/* form */
+.form-grp{display:flex;flex-direction:column;gap:5px;}
+.form-label{font-size:var(--s-xs);font-weight:700;color:var(--t2);letter-spacing:0.03em;}
+.input{height:42px;border:1.5px solid var(--b2);border-radius:var(--r-sm);background:white;padding:0 10px;font-size:var(--s-sm);color:var(--t1);display:flex;align-items:center;}
+.input.focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(26,60,94,0.07);}
+.input.err{border-color:var(--red);}
+.input.value{font-weight:600;}
+.input-err{font-size:var(--s-xs);color:var(--red);display:flex;align-items:center;gap:4px;}
+.input-hint{font-size:var(--s-xs);color:var(--t3);}
+.input-prefix{display:flex;align-items:center;border:1.5px solid var(--b2);border-radius:var(--r-sm);background:white;height:42px;overflow:hidden;}
+.input-prefix.focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(26,60,94,0.07);}
+.input-prefix .pf{padding:0 10px;background:var(--screen-bg2);height:100%;display:flex;align-items:center;font-size:var(--s-sm);font-weight:600;color:var(--t2);border-right:1px solid var(--b2);gap:4px;}
+.input-prefix .val{flex:1;padding:0 10px;font-size:var(--s-sm);color:var(--t1);font-weight:500;}
+
+/* buttons */
+.btn{height:42px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;font-family:var(--f-body);font-size:var(--s-sm);font-weight:700;border:none;width:100%;cursor:default;gap:6px;}
+.btn-primary{background:var(--navy);color:white;}
+.btn-accent{background:var(--green);color:white;}
+.btn-outline{background:transparent;border:1.5px solid var(--navy);color:var(--navy);}
+.btn-ghost{background:transparent;color:var(--navy);}
+.btn-danger{background:var(--red);color:white;}
+.btn-disabled{background:var(--screen-bg3);color:var(--t4);}
+.btn-lg{height:48px;font-size:var(--s-base);}
+.btn-link{background:transparent;color:var(--navy);text-decoration:underline;font-weight:600;font-size:var(--s-xs);height:auto;padding:4px 0;width:auto;}
+
+/* SSO */
+.sso-btn{height:46px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;gap:8px;font-size:var(--s-sm);font-weight:700;border:1.5px solid var(--b2);background:white;color:var(--t1);}
+.sso-btn.apple{background:#000;color:#fff;border-color:#000;}
+.sso-btn .ico{font-size:14px;}
+
+/* OTP */
+.otp-row{display:flex;gap:6px;justify-content:center;}
+.otp-box{width:32px;height:42px;border:1.5px solid var(--b2);border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:var(--t1);background:white;}
+.otp-box.filled{border-color:var(--navy);}
+.otp-box.active{border-color:var(--navy);box-shadow:0 0 0 3px rgba(26,60,94,0.07);}
+
+/* keyboard */
+.keyboard{background:var(--screen-bg3);padding:6px 4px 10px;display:flex;flex-direction:column;gap:4px;flex-shrink:0;border-top:1px solid var(--b2);margin-top:auto;}
+.kb-row{display:flex;gap:3px;justify-content:center;}
+.kb-key{flex:1;height:22px;background:white;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:var(--t2);box-shadow:0 1px 0 rgba(0,0,0,0.08);}
+.kb-key.wide{flex:2;}
+.kb-key.dark{background:var(--t4);color:white;}
+.kb-key.action{background:var(--navy);color:white;}
+
+/* segmented control (theme) — matches the screenshot pattern */
+.segmented{display:flex;border:1px solid var(--b2);border-radius:var(--r-pill);padding:3px;background:white;}
+.seg-opt{flex:1;text-align:center;padding:8px 0;font-size:var(--s-sm);font-weight:700;color:var(--t3);border-radius:var(--r-pill);}
+.seg-opt.on{background:var(--navy);color:white;}
+
+/* dropdown (language) */
+.select-input{height:46px;border:1.5px solid var(--b2);border-radius:var(--r-sm);background:white;padding:0 12px;display:flex;align-items:center;justify-content:space-between;font-size:var(--s-sm);font-weight:600;color:var(--t1);}
+.select-input .chev{color:var(--t3);font-size:14px;}
+
+/* feedback states */
+.empty-state{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:24px 16px;}
+.empty-icon{width:52px;height:52px;border-radius:50%;background:var(--green-l);display:flex;align-items:center;justify-content:center;font-size:24px;}
+.empty-icon.err{background:var(--red-l);}
+.empty-icon.warn{background:var(--gold-l);}
+.empty-ttl{font-size:var(--s-base);font-weight:700;color:var(--t1);}
+.empty-desc{font-size:var(--s-sm);color:var(--t3);line-height:1.5;max-width:220px;}
+
+.err-banner{padding:10px 12px;background:var(--red-l);border:1px solid rgba(192,57,43,0.18);border-radius:var(--r-sm);display:flex;align-items:flex-start;gap:7px;}
+.err-ico{color:var(--red);font-size:13px;flex-shrink:0;margin-top:1px;}
+.err-txt{font-size:var(--s-xs);color:var(--red);line-height:1.5;}
+.toast{margin:14px;padding:11px 14px;background:var(--t1);color:white;border-radius:var(--r-sm);font-size:var(--s-xs);font-weight:600;display:flex;align-items:center;gap:8px;}
+.toast::before{content:'✓';color:#7DD89B;font-size:12px;font-weight:700;}
+
+/* iOS native action sheet (sign out) */
+.action-sheet-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.45);display:flex;flex-direction:column;justify-content:flex-end;padding:8px;z-index:40;gap:8px;}
+.action-sheet{background:rgba(247,247,247,0.96);backdrop-filter:blur(20px);border-radius:14px;overflow:hidden;}
+.as-header{padding:14px 16px;text-align:center;border-bottom:0.5px solid rgba(60,60,67,0.2);}
+.as-header-ttl{font-size:11px;font-weight:600;color:#3C3C43;line-height:1.4;}
+.as-btn{padding:14px;text-align:center;font-size:15px;color:#007AFF;background:transparent;}
+.as-btn + .as-btn{border-top:0.5px solid rgba(60,60,67,0.2);}
+.as-btn.danger{color:#FF3B30;font-weight:600;}
+.as-btn.cancel-group{background:rgba(247,247,247,0.96);border-radius:14px;font-weight:600;}
+
+/* iOS native alert (used for delete confirm result, errors) */
+.alert-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;padding:32px;z-index:40;}
+.alert-box{background:rgba(247,247,247,0.96);backdrop-filter:blur(20px);border-radius:14px;width:100%;overflow:hidden;}
+.alert-head{padding:18px 16px 14px;text-align:center;}
+.alert-ttl{font-size:14px;font-weight:700;color:#000;margin-bottom:4px;}
+.alert-msg{font-size:12px;color:#000;line-height:1.4;}
+.alert-acts{border-top:0.5px solid rgba(60,60,67,0.3);display:flex;}
+.alert-act{flex:1;padding:11px;text-align:center;font-size:14px;color:#007AFF;}
+.alert-act + .alert-act{border-left:0.5px solid rgba(60,60,67,0.3);}
+.alert-act.bold{font-weight:700;}
+.alert-act.danger{color:#FF3B30;font-weight:700;}
+
+/* OS permission dialog */
+.perm-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.58);display:flex;align-items:center;justify-content:center;padding:32px;z-index:50;}
+.perm-box{background:rgba(247,247,247,0.96);backdrop-filter:blur(20px);border-radius:14px;width:100%;overflow:hidden;}
+.perm-head{padding:18px 16px 14px;text-align:center;}
+.perm-ttl{font-size:14px;font-weight:700;color:#000;margin-bottom:5px;}
+.perm-desc{font-size:11px;color:#3C3C43;line-height:1.45;}
+.perm-acts{border-top:0.5px solid rgba(60,60,67,0.3);display:flex;flex-direction:column;}
+.perm-acts .alert-act{border-left:none;border-top:0.5px solid rgba(60,60,67,0.3);}
+.perm-acts .alert-act:first-child{border-top:none;}
+
+/* radio list (delete reason) */
+.radio-row{display:flex;align-items:center;gap:11px;padding:13px 14px;background:white;}
+.radio-row + .radio-row{border-top:1px solid var(--b1);}
+.radio-circle{width:18px;height:18px;border-radius:50%;border:2px solid var(--b3);flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.radio-circle.on{border-color:var(--navy);}
+.radio-circle.on::after{content:'';width:8px;height:8px;border-radius:50%;background:var(--navy);}
+.radio-label{font-size:var(--s-sm);color:var(--t1);flex:1;}
+
+/* form area (contact us / feedback) */
+.textarea{min-height:90px;border:1.5px solid var(--b2);border-radius:var(--r-sm);background:white;padding:10px 12px;font-size:var(--s-sm);color:var(--t1);line-height:1.5;}
+.textarea.focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(26,60,94,0.07);}
+.char-counter{font-size:9px;color:var(--t4);text-align:right;font-family:var(--f-mono);}
+
+/* flow notes */
+.flow-note{max-width:var(--ph-w);padding:9px 12px;border-radius:4px;font-family:var(--f-body);font-size:11px;font-weight:500;line-height:1.5;}
+.flow-note.decision{background:#FBF4DC;color:#6B5210;border-left:3px solid var(--gold);}
+.flow-note.bug{background:var(--red-l);color:#7A1810;border-left:3px solid var(--red);}
+.flow-note.new{background:var(--green-l);color:#0F5830;border-left:3px solid var(--green);}
+
+/* ── HANDOFF ───────────────────────────────────────────── */
+.handoff{margin-top:64px;padding:36px;background:white;border:1px solid var(--b1);border-radius:var(--r-md);}
+.handoff-title{font-size:26px;font-weight:700;color:var(--t1);margin-bottom:8px;letter-spacing:-0.01em;}
+.handoff-sub{font-size:14px;color:var(--t2);margin-bottom:28px;line-height:1.5;}
+.handoff-sec{margin-top:28px;padding-top:24px;border-top:1px solid var(--b1);}
+.handoff-sec:first-of-type{border-top:none;padding-top:0;margin-top:0;}
+.handoff-h{font-size:18px;font-weight:700;color:var(--t1);margin-bottom:12px;}
+.handoff-p{font-size:14px;color:var(--t1);line-height:1.6;margin-bottom:8px;}
+.handoff-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.handoff-list li{font-size:14px;color:var(--t1);line-height:1.6;padding-left:16px;position:relative;}
+.handoff-list li::before{content:'—';position:absolute;left:0;color:var(--t3);font-weight:700;}
+
+.copy-table{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed;}
+.copy-table col.col-screen{width:22%;} .copy-table col.col-element{width:20%;}
+.copy-table col.col-en{width:29%;} .copy-table col.col-ar{width:29%;}
+.copy-table th{text-align:left;padding:10px 12px;border-bottom:2px solid var(--b2);font-size:11px;color:var(--t2);text-transform:uppercase;letter-spacing:0.06em;font-weight:700;background:var(--screen-bg);}
+.copy-table td{padding:10px 12px;border-bottom:1px solid var(--b1);vertical-align:top;color:var(--t1);line-height:1.55;word-wrap:break-word;}
+.copy-table td.screen-name{font-weight:700;background:var(--screen-bg);}
+.copy-table td.element-name{color:var(--t2);font-weight:500;}
+.copy-table td.en{font-size:12px;}
+.copy-table td.ar{font-size:12px;direction:rtl;text-align:right;}
+.copy-table tr.group-start td{border-top:2px solid var(--b2);}
+
+.callout{padding:12px 14px;border-radius:0 var(--r-sm) var(--r-sm) 0;font-size:13px;line-height:1.55;margin-top:12px;}
+.callout.warn{background:var(--gold-l);border-left:3px solid var(--gold);color:#6B5210;}
+.callout.info{background:#EAF0FE;border-left:3px solid #4A80C0;color:#103868;}
+
+.w-full{width:100%;}
+.spacer{flex:1;}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ═══════════════════════════════════════════════════════
+     DOC HEADER
+═══════════════════════════════════════════════════════════ -->
+<div class="doc-header">
+  <div class="doc-meta">
+    <span class="doc-tag prototype">Prototype</span>
+    <span class="doc-tag designer">Designer brief</span>
+    <span class="doc-tag ios">iOS</span>
+    <span class="doc-tag wip">Draft v1</span>
+    <span class="doc-tag version">DB-041</span>
+    <span class="doc-date">iOS counterpart to DB-040 Profile (Android)</span>
+  </div>
+
+  <div class="doc-title">Profile (iOS)</div>
+  <div class="doc-subtitle">A single Profile screen for managing account info, preferences, permissions, automatic tracking setup, support, and account actions. iOS counterpart to the Android Profile, with iOS-native patterns (action sheets, alerts, settings deep-link) and iOS-only divergences (Theme = System / Dark / Light, Automatic tracking via Shortcuts).</div>
+
+  <div class="doc-info">
+    <div class="doc-info-cell">
+      <div class="info-label">The problem</div>
+      <div class="info-body">
+        Activated iOS users need a single place to manage their identity, language, theme, permissions, automatic tracking setup, and account actions — without contacting support. The screen carries weight: it's where users add a backup sign-in method, recover from denied push permissions, set up the iOS Shortcut that drives automatic tracking, and ultimately sign out or delete their account. The design has to be calm, scannable, and let destructive actions feel weighty without feeling buried.
+      </div>
+    </div>
+    <div class="doc-info-cell">
+      <div class="info-label">Flows in this document</div>
+      <div class="flow-list">
+        <div class="flow-list-item">Flow 1 — Profile root (4 variants + fetch fail)</div>
+        <div class="flow-list-item">Flow 2 — Edit name (only editable field in Account)</div>
+        <div class="flow-list-item">Flow 3 — Add missing identity (phone via OTP + email via SSO)</div>
+        <div class="flow-list-item">Flow 4 — Settings (Language + Theme)</div>
+        <div class="flow-list-item">Flow 5 — Permissions: Push deep-link + Automatic tracking</div>
+        <div class="flow-list-item">Flow 6 — Help: Contact us + Submit feedback</div>
+        <div class="flow-list-item">Flow 7 — Sign out (iOS action sheet)</div>
+        <div class="flow-list-item">Flow 8 — Delete account (Step 1 reason → Step 2 warning)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 1 — Profile root variants
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 1 — Profile root variants</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="phone-row">
+
+    <!-- Phone 1: default · all complete · automatic tracking on -->
+    <div class="screen-col">
+      <div class="screen-label">Default · all complete · tracking on</div>
+      <div class="state-badge happy">default</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="prof-hero">
+            <div class="prof-hero-top">
+              <div class="prof-hero-eyebrow">Profile</div>
+              <div class="prof-hero-gear">⚙</div>
+            </div>
+            <div class="completed-badge">Completed</div>
+            <div class="prof-avatar">A</div>
+            <div class="prof-name">Ahmed Hassan</div>
+            <div class="prof-identity">ahmed@example.com</div>
+          </div>
+
+          <div class="under-hero">
+            <div class="sec-lbl">Account</div>
+            <div class="row-group">
+              <div class="row">
+                <div class="row-icon tinted-navy">👤</div>
+                <div class="row-body">
+                  <div class="row-title">Name</div>
+                  <div class="row-sub">Ahmed Hassan</div>
+                </div>
+                <div class="row-chev">›</div>
+              </div>
+              <div class="row">
+                <div class="row-icon tinted-navy">✉</div>
+                <div class="row-body">
+                  <div class="row-title">Email</div>
+                  <div class="row-sub">ahmed@example.com</div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="row-icon tinted-navy">📱</div>
+                <div class="row-body">
+                  <div class="row-title">Phone</div>
+                  <div class="row-sub">+20 100 123 4567</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="sec-lbl">Permissions</div>
+            <div class="row-group">
+              <div class="row">
+                <div class="row-icon tinted-neutral">⚡</div>
+                <div class="row-body">
+                  <div class="row-title">Automatic tracking</div>
+                  <div class="row-sub">Logs bank transactions for you</div>
+                </div>
+                <div class="status-pill on">On</div>
+              </div>
+              <div class="row">
+                <div class="row-icon tinted-neutral">🔔</div>
+                <div class="row-body">
+                  <div class="row-title">Push notifications</div>
+                  <div class="row-sub">Budget alerts and recaps</div>
+                </div>
+                <div class="status-pill granted">Granted</div>
+              </div>
+            </div>
+
+            <div class="sec-lbl">Help & support</div>
+            <div class="row-group">
+              <div class="row">
+                <div class="row-icon tinted-neutral">💬</div>
+                <div class="row-body"><div class="row-title">Contact us</div></div>
+                <div class="row-chev">›</div>
+              </div>
+              <div class="row">
+                <div class="row-icon tinted-neutral">⭐</div>
+                <div class="row-body"><div class="row-title">Submit feedback</div></div>
+                <div class="row-chev">›</div>
+              </div>
+            </div>
+
+            <div class="sec-lbl">Account actions</div>
+            <div class="row-group">
+              <div class="row">
+                <div class="row-icon tinted-neutral">↩</div>
+                <div class="row-body"><div class="row-title">Sign out</div></div>
+                <div class="row-chev">›</div>
+              </div>
+              <div class="row danger">
+                <div class="row-icon">🗑</div>
+                <div class="row-body"><div class="row-title">Delete account</div></div>
+                <div class="row-chev">›</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note decision">"Completed" badge appears only when both phone and email are linked and verified. No "Incomplete" inverse — missing identity is signalled by the Add row in the Account section, not by a negative state.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">phone-only signup</div>
+    </div>
+
+    <!-- Phone 2: missing email -->
+    <div class="screen-col">
+      <div class="screen-label">Missing email · phone-only signup</div>
+      <div class="state-badge empty">missing identity</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="prof-hero">
+            <div class="prof-hero-top">
+              <div class="prof-hero-eyebrow">Profile</div>
+              <div class="prof-hero-gear">⚙</div>
+            </div>
+            <div class="prof-avatar">A</div>
+            <div class="prof-name">Ahmed Hassan</div>
+            <div class="prof-identity">+20 100 123 4567</div>
+          </div>
+
+          <div class="under-hero">
+            <div class="sec-lbl">Account</div>
+            <div class="row-group">
+              <div class="row">
+                <div class="row-icon tinted-navy">👤</div>
+                <div class="row-body"><div class="row-title">Name</div><div class="row-sub">Ahmed Hassan</div></div>
+                <div class="row-chev">›</div>
+              </div>
+              <div class="row">
+                <div class="row-icon tinted-navy">📱</div>
+                <div class="row-body"><div class="row-title">Phone</div><div class="row-sub">+20 100 123 4567</div></div>
+              </div>
+            </div>
+            <div style="margin-top:10px"></div>
+            <div class="row add">
+              <div class="row-icon">+</div>
+              <div class="row-body">
+                <div class="row-title">Add an email</div>
+                <div class="row-sub">A second way to sign in</div>
+              </div>
+              <div class="row-action">Add</div>
+            </div>
+
+            <div class="sec-lbl">Permissions</div>
+            <div class="row-group">
+              <div class="row">
+                <div class="row-icon tinted-neutral">⚡</div>
+                <div class="row-body"><div class="row-title">Automatic tracking</div><div class="row-sub">Logs bank transactions for you</div></div>
+                <div class="status-pill on">On</div>
+              </div>
+              <div class="row">
+                <div class="row-icon tinted-neutral">🔔</div>
+                <div class="row-body"><div class="row-title">Push notifications</div><div class="row-sub">Budget alerts and recaps</div></div>
+                <div class="status-pill granted">Granted</div>
+              </div>
+            </div>
+
+            <div class="sec-lbl">Help & support</div>
+            <div class="row-group">
+              <div class="row"><div class="row-icon tinted-neutral">💬</div><div class="row-body"><div class="row-title">Contact us</div></div><div class="row-chev">›</div></div>
+              <div class="row"><div class="row-icon tinted-neutral">⭐</div><div class="row-body"><div class="row-title">Submit feedback</div></div><div class="row-chev">›</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note decision">Missing-identity row uses dashed border and green plus icon. Same row shape as a regular row, not a separate banner — keeps the section rhythm. Position: after the existing identity rows, before the next section.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">SSO signup</div>
+    </div>
+
+    <!-- Phone 3: missing phone (Google/Apple SSO user) -->
+    <div class="screen-col">
+      <div class="screen-label">Missing phone · SSO signup</div>
+      <div class="state-badge empty">missing identity</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="prof-hero">
+            <div class="prof-hero-top">
+              <div class="prof-hero-eyebrow">Profile</div>
+              <div class="prof-hero-gear">⚙</div>
+            </div>
+            <div class="prof-avatar">A</div>
+            <div class="prof-name">Ahmed Hassan</div>
+            <div class="prof-identity">ahmed@example.com</div>
+          </div>
+
+          <div class="under-hero">
+            <div class="sec-lbl">Account</div>
+            <div class="row-group">
+              <div class="row">
+                <div class="row-icon tinted-navy">👤</div>
+                <div class="row-body"><div class="row-title">Name</div><div class="row-sub">Ahmed Hassan</div></div>
+                <div class="row-chev">›</div>
+              </div>
+              <div class="row">
+                <div class="row-icon tinted-navy">✉</div>
+                <div class="row-body"><div class="row-title">Email</div><div class="row-sub">ahmed@example.com</div></div>
+              </div>
+            </div>
+            <div style="margin-top:10px"></div>
+            <div class="row add">
+              <div class="row-icon">+</div>
+              <div class="row-body">
+                <div class="row-title">Add a phone number</div>
+                <div class="row-sub">A second way to sign in</div>
+              </div>
+              <div class="row-action">Add</div>
+            </div>
+
+            <div class="sec-lbl">Permissions</div>
+            <div class="row-group">
+              <div class="row">
+                <div class="row-icon tinted-neutral">⚡</div>
+                <div class="row-body"><div class="row-title">Automatic tracking</div><div class="row-sub">Tap to set up the Shortcut</div></div>
+                <div class="status-pill off">Not set up</div>
+              </div>
+              <div class="row">
+                <div class="row-icon tinted-neutral">🔔</div>
+                <div class="row-body"><div class="row-title">Push notifications</div><div class="row-sub">Budget alerts and recaps</div></div>
+                <div class="status-pill granted">Granted</div>
+              </div>
+            </div>
+
+            <div class="sec-lbl">Help & support</div>
+            <div class="row-group">
+              <div class="row"><div class="row-icon tinted-neutral">💬</div><div class="row-body"><div class="row-title">Contact us</div></div><div class="row-chev">›</div></div>
+              <div class="row"><div class="row-icon tinted-neutral">⭐</div><div class="row-body"><div class="row-title">Submit feedback</div></div><div class="row-chev">›</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note decision">Automatic tracking subtext shifts by state — descriptive when On, recovery-focused when Not set up. Same string framing as Home iOS to keep the two surfaces aligned.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">push denied</div>
+    </div>
+
+    <!-- Phone 4: push denied -->
+    <div class="screen-col">
+      <div class="screen-label">Push denied · re-enable affordance</div>
+      <div class="state-badge empty">push denied</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="prof-hero">
+            <div class="prof-hero-top">
+              <div class="prof-hero-eyebrow">Profile</div>
+              <div class="prof-hero-gear">⚙</div>
+            </div>
+            <div class="completed-badge">Completed</div>
+            <div class="prof-avatar">A</div>
+            <div class="prof-name">Ahmed Hassan</div>
+            <div class="prof-identity">ahmed@example.com</div>
+          </div>
+
+          <div class="under-hero">
+            <div class="sec-lbl">Account</div>
+            <div class="row-group">
+              <div class="row"><div class="row-icon tinted-navy">👤</div><div class="row-body"><div class="row-title">Name</div><div class="row-sub">Ahmed Hassan</div></div><div class="row-chev">›</div></div>
+              <div class="row"><div class="row-icon tinted-navy">✉</div><div class="row-body"><div class="row-title">Email</div><div class="row-sub">ahmed@example.com</div></div></div>
+              <div class="row"><div class="row-icon tinted-navy">📱</div><div class="row-body"><div class="row-title">Phone</div><div class="row-sub">+20 100 123 4567</div></div></div>
+            </div>
+
+            <div class="sec-lbl">Permissions</div>
+            <div class="row-group">
+              <div class="row">
+                <div class="row-icon tinted-neutral">⚡</div>
+                <div class="row-body"><div class="row-title">Automatic tracking</div><div class="row-sub">Logs bank transactions for you</div></div>
+                <div class="status-pill on">On</div>
+              </div>
+              <div class="row">
+                <div class="row-icon tinted-red">🔔</div>
+                <div class="row-body">
+                  <div class="row-title">Push notifications</div>
+                  <div class="row-sub">Tap to enable in Settings</div>
+                </div>
+                <div class="status-pill denied">Denied</div>
+              </div>
+            </div>
+
+            <div class="sec-lbl">Help & support</div>
+            <div class="row-group">
+              <div class="row"><div class="row-icon tinted-neutral">💬</div><div class="row-body"><div class="row-title">Contact us</div></div><div class="row-chev">›</div></div>
+              <div class="row"><div class="row-icon tinted-neutral">⭐</div><div class="row-body"><div class="row-title">Submit feedback</div></div><div class="row-chev">›</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note decision">Push row tints red on Denied. Subtext shifts to recovery-focused. Tap deep-links to iOS Settings for this app — status refreshes when the user returns.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">fetch fails</div>
+    </div>
+
+    <!-- Phone 5: fetch fail · skeleton with retry -->
+    <div class="screen-col">
+      <div class="screen-label">Profile fetch fails · skeleton + retry</div>
+      <div class="state-badge error">fetch error</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="prof-hero">
+            <div class="prof-hero-top">
+              <div class="prof-hero-eyebrow">Profile</div>
+              <div class="prof-hero-gear">⚙</div>
+            </div>
+            <div class="prof-avatar" style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.4)">—</div>
+            <div class="skel skel-line" style="width:120px;height:14px;margin-bottom:6px;background:rgba(255,255,255,0.15)"></div>
+            <div class="skel skel-line" style="width:160px;height:10px;background:rgba(255,255,255,0.1)"></div>
+          </div>
+
+          <div class="retry-banner" style="margin-top:-32px">
+            <div class="retry-banner-txt">Couldn't load your profile. Check your connection.</div>
+            <div class="retry-banner-link">Retry</div>
+          </div>
+
+          <div class="under-hero" style="margin-top:14px">
+            <div class="sec-lbl">Account</div>
+            <div class="row-group">
+              <div class="skel-row"><div class="skel skel-cir"></div><div style="flex:1"><div class="skel skel-line" style="width:60%;margin-bottom:5px"></div><div class="skel skel-line" style="width:80%;height:7px"></div></div></div>
+              <div class="skel-row"><div class="skel skel-cir"></div><div style="flex:1"><div class="skel skel-line" style="width:50%;margin-bottom:5px"></div><div class="skel skel-line" style="width:75%;height:7px"></div></div></div>
+              <div class="skel-row"><div class="skel skel-cir"></div><div style="flex:1"><div class="skel skel-line" style="width:55%;margin-bottom:5px"></div><div class="skel skel-line" style="width:70%;height:7px"></div></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note bug">Don't render stale fields when fetch fails. Skeleton holds the layout, retry banner sits at the top of the scroll area, and the rest of the screen stays in skeleton until data lands.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 2 — Edit name (only editable field in Account)
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 2 — Edit name</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="phone-row">
+
+    <!-- Phone 1: edit name · focused -->
+    <div class="screen-col">
+      <div class="screen-label">Edit name · focused with keyboard</div>
+      <div class="state-badge happy">input focused</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="back-btn">‹ Profile</div>
+            <div class="app-bar-title" style="text-align:center">Edit name</div>
+            <div style="width:46px"></div>
+          </div>
+          <div class="sc-pad">
+            <div class="form-grp">
+              <div class="form-label">YOUR NAME</div>
+              <div class="input focus value">Ahmed Hassan|</div>
+              <div class="input-hint">Letters only — Arabic or English. Up to 50 characters.</div>
+            </div>
+            <div style="height:8px"></div>
+            <div class="btn btn-primary btn-lg">Save</div>
+            <div class="btn btn-ghost">Cancel</div>
+          </div>
+          <div class="keyboard">
+            <div class="kb-row"><div class="kb-key">q</div><div class="kb-key">w</div><div class="kb-key">e</div><div class="kb-key">r</div><div class="kb-key">t</div><div class="kb-key">y</div><div class="kb-key">u</div><div class="kb-key">i</div><div class="kb-key">o</div><div class="kb-key">p</div></div>
+            <div class="kb-row"><div class="kb-key">a</div><div class="kb-key">s</div><div class="kb-key">d</div><div class="kb-key">f</div><div class="kb-key">g</div><div class="kb-key">h</div><div class="kb-key">j</div><div class="kb-key">k</div><div class="kb-key">l</div></div>
+            <div class="kb-row"><div class="kb-key dark">⇧</div><div class="kb-key">z</div><div class="kb-key">x</div><div class="kb-key">c</div><div class="kb-key">v</div><div class="kb-key">b</div><div class="kb-key">n</div><div class="kb-key">m</div><div class="kb-key dark">⌫</div></div>
+            <div class="kb-row"><div class="kb-key wide">123</div><div class="kb-key wide">space</div><div class="kb-key action">done</div></div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note decision">Email and Phone rows on Profile are display-only — only Name is editable inline through this screen. Email/Phone get added through the Add flow when missing, never edited once linked.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">invalid input</div>
+    </div>
+
+    <!-- Phone 2: edit name · validation error -->
+    <div class="screen-col">
+      <div class="screen-label">Edit name · validation error</div>
+      <div class="state-badge error">validation</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="back-btn">‹ Profile</div>
+            <div class="app-bar-title" style="text-align:center">Edit name</div>
+            <div style="width:46px"></div>
+          </div>
+          <div class="sc-pad">
+            <div class="form-grp">
+              <div class="form-label">YOUR NAME</div>
+              <div class="input err value">Ahmed123|</div>
+              <div class="input-err">⚠ Letters only — no numbers or symbols</div>
+            </div>
+            <div style="height:8px"></div>
+            <div class="btn btn-disabled btn-lg">Save</div>
+            <div class="btn btn-ghost">Cancel</div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note decision">Validation runs on input, not on save. Save button stays disabled until input is valid.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">save fails</div>
+    </div>
+
+    <!-- Phone 3: save failed -->
+    <div class="screen-col">
+      <div class="screen-label">Save fails · iOS alert</div>
+      <div class="state-badge error">network error</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="back-btn">‹ Profile</div>
+            <div class="app-bar-title" style="text-align:center">Edit name</div>
+            <div style="width:46px"></div>
+          </div>
+          <div class="sc-pad" style="opacity:0.4">
+            <div class="form-grp">
+              <div class="form-label">YOUR NAME</div>
+              <div class="input value">Ahmed Hassan</div>
+            </div>
+            <div style="height:8px"></div>
+            <div class="btn btn-primary btn-lg">Save</div>
+          </div>
+          <div class="alert-overlay">
+            <div class="alert-box">
+              <div class="alert-head">
+                <div class="alert-ttl">Couldn't save</div>
+                <div class="alert-msg">Check your connection and try again.</div>
+              </div>
+              <div class="alert-acts">
+                <div class="alert-act">Cancel</div>
+                <div class="alert-act bold">Try again</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note bug">User stays on the edit screen on failure — never bounce back to Profile and lose the typed input. Field reverts to last-saved value only if user picks Cancel.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 3 — Add missing identity
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 3 — Add missing identity (phone via OTP, email via SSO)</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="phone-row">
+
+    <!-- Phone 1: Add phone — entry -->
+    <div class="screen-col">
+      <div class="screen-label">Add phone · entry</div>
+      <div class="state-badge happy">entry</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="back-btn">‹ Profile</div>
+            <div class="app-bar-title" style="text-align:center">Add phone</div>
+            <div style="width:46px"></div>
+          </div>
+          <div class="sc-pad-lg">
+            <div class="t-heading">Add a phone number</div>
+            <div class="t-caption">A backup way to sign in if you ever lose access to your email.</div>
+            <div style="height:6px"></div>
+            <div class="form-grp">
+              <div class="form-label">PHONE NUMBER</div>
+              <div class="input-prefix focus">
+                <div class="pf">🇪🇬 +20</div>
+                <div class="val">100 123 4567|</div>
+              </div>
+            </div>
+            <div class="spacer"></div>
+            <div class="btn btn-primary btn-lg">Send code</div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">send code</div>
+    </div>
+
+    <!-- Phone 2: OTP entry -->
+    <div class="screen-col">
+      <div class="screen-label">Verify · OTP entry</div>
+      <div class="state-badge happy">otp entry</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="back-btn">‹</div>
+            <div class="app-bar-title" style="text-align:center">Verify</div>
+            <div style="width:20px"></div>
+          </div>
+          <div class="sc-pad-lg">
+            <div class="t-heading">Enter the 6-digit code</div>
+            <div class="t-caption">We sent it to <strong style="color:var(--t1)">+20 100 123 4567</strong>.</div>
+            <div style="height:14px"></div>
+            <div class="otp-row">
+              <div class="otp-box filled">8</div>
+              <div class="otp-box filled">2</div>
+              <div class="otp-box filled">4</div>
+              <div class="otp-box active">|</div>
+              <div class="otp-box"></div>
+              <div class="otp-box"></div>
+            </div>
+            <div style="text-align:center;margin-top:12px"><span class="btn-link">Resend code</span></div>
+            <div class="spacer"></div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note new">iOS auto-fills the code from SMS via the QuickType bar above the keyboard — same pattern as DB-031 sign-up. No design needed for the QuickType bar (system-rendered).</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">rate limit</div>
+    </div>
+
+    <!-- Phone 3: OTP rate limit -->
+    <div class="screen-col">
+      <div class="screen-label">Verify · OTP rate-limit error</div>
+      <div class="state-badge error">rate limit</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="back-btn">‹</div>
+            <div class="app-bar-title" style="text-align:center">Verify</div>
+            <div style="width:20px"></div>
+          </div>
+          <div class="sc-pad-lg">
+            <div class="t-heading">Enter the 6-digit code</div>
+            <div class="t-caption">We sent it to <strong style="color:var(--t1)">+20 100 123 4567</strong>.</div>
+            <div style="height:14px"></div>
+            <div class="otp-row">
+              <div class="otp-box"></div>
+              <div class="otp-box"></div>
+              <div class="otp-box"></div>
+              <div class="otp-box"></div>
+              <div class="otp-box"></div>
+              <div class="otp-box"></div>
+            </div>
+            <div class="err-banner" style="margin-top:14px">
+              <div class="err-ico">⚠</div>
+              <div>
+                <div class="err-txt">Too many attempts. Try again in 5 minutes.</div>
+              </div>
+            </div>
+            <div class="spacer"></div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note bug">Rate-limit copy and timing inherited from Sign-up OTP spec (DB-031). Phone number stays preserved — user does not lose their entered number on rate-limit hit.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">phone linked</div>
+    </div>
+
+    <!-- Phone 4: success toast on Profile -->
+    <div class="screen-col">
+      <div class="screen-label">Profile · phone linked toast</div>
+      <div class="state-badge success">success</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="prof-hero">
+            <div class="prof-hero-top">
+              <div class="prof-hero-eyebrow">Profile</div>
+              <div class="prof-hero-gear">⚙</div>
+            </div>
+            <div class="completed-badge">Completed</div>
+            <div class="prof-avatar">A</div>
+            <div class="prof-name">Ahmed Hassan</div>
+            <div class="prof-identity">ahmed@example.com</div>
+          </div>
+          <div class="under-hero">
+            <div class="sec-lbl">Account</div>
+            <div class="row-group">
+              <div class="row"><div class="row-icon tinted-navy">👤</div><div class="row-body"><div class="row-title">Name</div><div class="row-sub">Ahmed Hassan</div></div><div class="row-chev">›</div></div>
+              <div class="row"><div class="row-icon tinted-navy">✉</div><div class="row-body"><div class="row-title">Email</div><div class="row-sub">ahmed@example.com</div></div></div>
+              <div class="row"><div class="row-icon tinted-navy">📱</div><div class="row-body"><div class="row-title">Phone</div><div class="row-sub">+20 100 123 4567</div></div></div>
+            </div>
+          </div>
+          <div class="toast" style="position:absolute;left:0;right:0;bottom:32px">Phone linked. You can now sign in with phone or email.</div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note new">Phone moves into the Account row group on success. "Completed" badge appears on the hero. Toast confirms — auto-dismisses after 3s.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">email path</div>
+    </div>
+
+    <!-- Phone 5: Add email — SSO entry -->
+    <div class="screen-col">
+      <div class="screen-label">Add email · SSO picker</div>
+      <div class="state-badge happy">sso entry</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="back-btn">‹ Profile</div>
+            <div class="app-bar-title" style="text-align:center">Add email</div>
+            <div style="width:46px"></div>
+          </div>
+          <div class="sc-pad-lg">
+            <div class="t-heading">Link your email account</div>
+            <div class="t-caption">Adding an email lets you sign in on future devices, even if you lose your phone.</div>
+            <div style="height:14px"></div>
+            <div class="sso-btn apple">
+              <span class="ico"></span> Continue with Apple
+            </div>
+            <div class="sso-btn">
+              <span class="ico" style="color:#4285F4">G</span> Continue with Google
+            </div>
+            <div class="spacer"></div>
+            <div style="text-align:center"><span class="btn-link" style="color:var(--t3)">Cancel</span></div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note decision">Email is added via SSO link, not via typed email + verification code. Apple sits above Google on iOS by App Store convention.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">already linked</div>
+    </div>
+
+    <!-- Phone 6: SSO returns email already linked -->
+    <div class="screen-col">
+      <div class="screen-label">SSO · email already linked elsewhere</div>
+      <div class="state-badge error">conflict</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="back-btn">‹ Profile</div>
+            <div class="app-bar-title" style="text-align:center">Add email</div>
+            <div style="width:46px"></div>
+          </div>
+          <div class="sc-pad-lg">
+            <div class="empty-state">
+              <div class="empty-icon err">⚠</div>
+              <div class="empty-ttl">Couldn't link this email</div>
+              <div class="empty-desc">It's already connected to another MoneyMore account. Reach out to support and we'll help sort it out.</div>
+            </div>
+            <div class="spacer"></div>
+            <div class="btn btn-primary btn-lg">Contact support</div>
+            <div class="btn btn-ghost">Try a different email</div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note bug">Never confirm the existence of another account. The error stays vague — same pattern as DB-031 sign-in conflict handling.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 4 — Settings (Language + Theme via gear icon)
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 4 — Settings · Language + Theme</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="phone-row">
+
+    <!-- Phone 1: Settings · default state -->
+    <div class="screen-col">
+      <div class="screen-label">Settings · default · current values</div>
+      <div class="state-badge happy">default</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="back-btn">‹</div>
+            <div class="app-bar-title" style="text-align:center">Settings</div>
+            <div style="width:20px"></div>
+          </div>
+          <div class="sc-pad-lg">
+            <div class="form-grp">
+              <div class="t-heading" style="font-size:var(--s-md);margin-bottom:2px">Select language</div>
+              <div class="select-input">
+                <span>English</span>
+                <span class="chev">⌄</span>
+              </div>
+              <div class="t-caption" style="font-size:var(--s-xs);margin-top:6px">Selecting a language applies it immediately. The whole app flips, including layout direction.</div>
+            </div>
+
+            <div style="height:14px"></div>
+
+            <div class="form-grp">
+              <div class="t-heading" style="font-size:var(--s-md);margin-bottom:2px">Theme</div>
+              <div class="segmented">
+                <div class="seg-opt on">System</div>
+                <div class="seg-opt">Dark</div>
+                <div class="seg-opt">Light</div>
+              </div>
+              <div class="t-caption" style="font-size:var(--s-xs);margin-top:6px">System matches your phone's appearance setting and switches automatically. Light or Dark always stays the same.</div>
+            </div>
+
+            <div class="spacer"></div>
+            <div class="btn btn-accent btn-lg">Save</div>
+            <div class="btn btn-outline">Cancel</div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note decision">Reached from the gear icon top-right of the Profile hero. Language + Theme live together, not as separate Profile rows. Pattern matches the attached reference screenshot.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">tap language</div>
+    </div>
+
+    <!-- Phone 2: Language picker open -->
+    <div class="screen-col">
+      <div class="screen-label">Language · picker open</div>
+      <div class="state-badge interaction">picker</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="back-btn">‹</div>
+            <div class="app-bar-title" style="text-align:center">Settings</div>
+            <div style="width:20px"></div>
+          </div>
+          <div class="sc-pad-lg" style="opacity:0.4">
+            <div class="form-grp">
+              <div class="t-heading" style="font-size:var(--s-md)">Select language</div>
+              <div class="select-input"><span>English</span><span class="chev">⌄</span></div>
+            </div>
+          </div>
+          <div class="action-sheet-overlay" style="justify-content:flex-end">
+            <div class="action-sheet">
+              <div class="as-header"><div class="as-header-ttl">Select language</div></div>
+              <div class="as-btn bold" style="color:var(--navy);font-weight:600">English  ✓</div>
+              <div class="as-btn">العربية</div>
+            </div>
+            <div class="action-sheet">
+              <div class="as-btn cancel-group">Cancel</div>
+            </div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note decision">Language uses the iOS native action sheet with the current selection check-marked. Each label appears in its own script — easier to scan than a styled list.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">pick Arabic</div>
+    </div>
+
+    <!-- Phone 3: Settings RTL preview -->
+    <div class="screen-col">
+      <div class="screen-label">Settings · Arabic applied (RTL)</div>
+      <div class="state-badge happy">arabic / rtl</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>🔋 ●●●</span></div>
+        <div class="screen rtl">
+          <div class="app-bar">
+            <div style="width:20px"></div>
+            <div class="app-bar-title" style="text-align:center">الإعدادات</div>
+            <div class="back-btn">›</div>
+          </div>
+          <div class="sc-pad-lg">
+            <div class="form-grp">
+              <div class="t-heading" style="font-size:var(--s-md);margin-bottom:2px">اللغة</div>
+              <div class="select-input">
+                <span class="chev">⌄</span>
+                <span>العربية</span>
+              </div>
+              <div class="t-caption" style="font-size:var(--s-xs);margin-top:6px">اختيار اللغة يطبّق على طول. التطبيق كله هيتقلب، حتى اتجاه العرض.</div>
+            </div>
+
+            <div style="height:14px"></div>
+
+            <div class="form-grp">
+              <div class="t-heading" style="font-size:var(--s-md);margin-bottom:2px">المظهر</div>
+              <div class="segmented">
+                <div class="seg-opt on">النظام</div>
+                <div class="seg-opt">داكن</div>
+                <div class="seg-opt">فاتح</div>
+              </div>
+              <div class="t-caption" style="font-size:var(--s-xs);margin-top:6px">النظام بيمشي مع إعداد المظهر في تليفونك ويتبدّل تلقائياً.</div>
+            </div>
+
+            <div class="spacer"></div>
+            <div class="btn btn-accent btn-lg">احفظ</div>
+            <div class="btn btn-outline">إلغاء</div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note new">Language switch is live — applies on tap, no Save needed. Save button covers Theme. Flagged Theme = three options (System, Dark, Light) per OQ-2 resolution.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 5 — Permissions: Push deep-link + Automatic tracking
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 5 — Permissions: Push deep-link + Automatic tracking</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="phone-row">
+
+    <!-- Phone 1: Push denied row tap → confirm overlay -->
+    <div class="screen-col">
+      <div class="screen-label">Push denied · confirm before deep-link</div>
+      <div class="state-badge interaction">action sheet</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="prof-hero" style="opacity:0.4">
+            <div class="prof-hero-top">
+              <div class="prof-hero-eyebrow">Profile</div>
+              <div class="prof-hero-gear">⚙</div>
+            </div>
+            <div class="prof-avatar">A</div>
+            <div class="prof-name">Ahmed Hassan</div>
+            <div class="prof-identity">ahmed@example.com</div>
+          </div>
+          <div class="under-hero" style="opacity:0.3">
+            <div class="sec-lbl">Permissions</div>
+            <div class="row-group">
+              <div class="row"><div class="row-icon tinted-red">🔔</div><div class="row-body"><div class="row-title">Push notifications</div></div><div class="status-pill denied">Denied</div></div>
+            </div>
+          </div>
+          <div class="action-sheet-overlay">
+            <div class="action-sheet">
+              <div class="as-header">
+                <div class="as-header-ttl">To enable push notifications, open Settings and turn them on for MoneyMore.</div>
+              </div>
+              <div class="as-btn bold">Open Settings</div>
+            </div>
+            <div class="action-sheet">
+              <div class="as-btn cancel-group">Cancel</div>
+            </div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note decision">Tapping the Denied push row shows a brief explanation in an action sheet before deep-linking. The explanation prevents the user being dropped into iOS Settings without context.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">Open Settings</div>
+    </div>
+
+    <!-- Phone 2: iOS Settings reference -->
+    <div class="screen-col">
+      <div class="screen-label">iOS Settings · MoneyMore notifications · reference only</div>
+      <div class="state-badge os">OS-rendered</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen" style="background:#000">
+          <div style="height:42px;display:flex;align-items:center;padding:0 16px;color:#0A84FF;font-size:13px"><span>‹ Settings</span></div>
+          <div style="text-align:center;padding:8px 0 16px;color:white"><div style="width:40px;height:40px;background:var(--green);border-radius:9px;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-size:20px;color:white">$</div><div style="font-size:13px;font-weight:600">MoneyMore</div></div>
+          <div style="background:#1C1C1E;margin:8px 12px;border-radius:10px;padding:0 14px">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 0;color:white;font-size:13px;border-bottom:0.5px solid rgba(255,255,255,0.1)"><span>Allow Notifications</span><div style="width:36px;height:20px;background:#39393D;border-radius:10px;position:relative"><div style="position:absolute;top:2px;left:2px;width:16px;height:16px;background:white;border-radius:50%"></div></div></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 0;color:rgba(255,255,255,0.4);font-size:12px"><span>Sounds</span><span style="opacity:0.6">›</span></div>
+          </div>
+          <div style="padding:0 16px;color:rgba(235,235,245,0.6);font-size:11px;margin-top:6px;line-height:1.4">Notifications, banners, sounds, and badges are off for this app.</div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note new">Not designed by MoneyMore — reference only. iOS handles everything from this point. Status refreshes when the user returns to the app.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">tap row</div>
+    </div>
+
+    <!-- Phone 3: Automatic tracking · Not set up · tap → tutorial -->
+    <div class="screen-col">
+      <div class="screen-label">Automatic tracking · tap launches Shortcuts tutorial</div>
+      <div class="state-badge interaction">handoff</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="back-btn">‹</div>
+            <div class="app-bar-title" style="text-align:center">Set up tracking</div>
+            <div style="width:20px"></div>
+          </div>
+          <div class="sc-pad-lg">
+            <div class="empty-state">
+              <div class="empty-icon">⚡</div>
+              <div class="empty-ttl">Set up automatic tracking</div>
+              <div class="empty-desc">A 9-step Shortcut so MoneyMore logs your bank transactions for you. Takes about 2 minutes.</div>
+            </div>
+            <div class="spacer"></div>
+            <div class="btn btn-accent btn-lg">Start setup</div>
+            <div class="btn btn-ghost">Maybe later</div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note new">Tapping Automatic tracking when status is Not set up opens the shared 9-step Shortcuts tutorial owned by Sign-up (DB-031). This is the entry screen — tutorial steps are not duplicated here. On completion, status flips to On and user returns to Profile.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">tutorial done</div>
+    </div>
+
+    <!-- Phone 4: Profile after setup · status On + toast -->
+    <div class="screen-col">
+      <div class="screen-label">Profile · tracking now On + toast</div>
+      <div class="state-badge success">setup complete</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="prof-hero">
+            <div class="prof-hero-top">
+              <div class="prof-hero-eyebrow">Profile</div>
+              <div class="prof-hero-gear">⚙</div>
+            </div>
+            <div class="completed-badge">Completed</div>
+            <div class="prof-avatar">A</div>
+            <div class="prof-name">Ahmed Hassan</div>
+            <div class="prof-identity">ahmed@example.com</div>
+          </div>
+          <div class="under-hero">
+            <div class="sec-lbl">Permissions</div>
+            <div class="row-group">
+              <div class="row">
+                <div class="row-icon tinted-neutral">⚡</div>
+                <div class="row-body"><div class="row-title">Automatic tracking</div><div class="row-sub">Logs bank transactions for you</div></div>
+                <div class="status-pill on">On</div>
+              </div>
+              <div class="row">
+                <div class="row-icon tinted-neutral">🔔</div>
+                <div class="row-body"><div class="row-title">Push notifications</div><div class="row-sub">Budget alerts and recaps</div></div>
+                <div class="status-pill granted">Granted</div>
+              </div>
+            </div>
+          </div>
+          <div class="toast" style="position:absolute;left:0;right:0;bottom:32px">Automatic tracking is on. We'll log transactions as they come in.</div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note new">If user later deletes the Shortcut from iOS Shortcuts app, status reverts to Not set up on next app launch — and the 3-dismissal cap from Home iOS resets, so they get re-prompted.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 6 — Help · Contact us + Submit feedback
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 6 — Help · Contact us + Submit feedback</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="phone-row">
+
+    <!-- Phone 1: Contact us · empty form -->
+    <div class="screen-col">
+      <div class="screen-label">Contact us · empty</div>
+      <div class="state-badge happy">empty</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="back-btn">‹ Profile</div>
+            <div class="app-bar-title" style="text-align:center">Contact us</div>
+            <div style="width:46px"></div>
+          </div>
+          <div class="sc-pad-lg">
+            <div class="t-caption">Tell us what's going on. We reply by email within 24 hours.</div>
+            <div style="height:6px"></div>
+            <div class="form-grp">
+              <div class="form-label">YOUR MESSAGE</div>
+              <div class="textarea" style="color:var(--t4)">Type here…</div>
+              <div class="char-counter">0 / 1000</div>
+            </div>
+            <div class="spacer"></div>
+            <div class="btn btn-disabled btn-lg">Send</div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note decision">Sender identity pulled from the signed-in account — no email field on the form. Send disabled until message has at least 10 characters.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">filled</div>
+    </div>
+
+    <!-- Phone 2: Contact us · filled, valid -->
+    <div class="screen-col">
+      <div class="screen-label">Contact us · filled · valid</div>
+      <div class="state-badge happy">valid</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="back-btn">‹ Profile</div>
+            <div class="app-bar-title" style="text-align:center">Contact us</div>
+            <div style="width:46px"></div>
+          </div>
+          <div class="sc-pad-lg">
+            <div class="t-caption">Tell us what's going on. We reply by email within 24 hours.</div>
+            <div style="height:6px"></div>
+            <div class="form-grp">
+              <div class="form-label">YOUR MESSAGE</div>
+              <div class="textarea focus" style="font-size:var(--s-sm);color:var(--t1)">My budget alerts stopped coming through after the last update — push is granted but I haven't gotten anything in 3 days.</div>
+              <div class="char-counter">137 / 1000</div>
+            </div>
+            <div class="spacer"></div>
+            <div class="btn btn-primary btn-lg">Send</div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">submitted</div>
+    </div>
+
+    <!-- Phone 3: Contact us · success -->
+    <div class="screen-col">
+      <div class="screen-label">Contact us · sent</div>
+      <div class="state-badge success">sent</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="back-btn">‹ Profile</div>
+            <div class="app-bar-title" style="text-align:center">Contact us</div>
+            <div style="width:46px"></div>
+          </div>
+          <div class="sc-pad-lg">
+            <div class="empty-state" style="margin-top:30px">
+              <div class="empty-icon">✓</div>
+              <div class="empty-ttl">Message sent</div>
+              <div class="empty-desc">We'll reply to ahmed@example.com within 24 hours. Check spam if you don't see it.</div>
+            </div>
+            <div class="spacer"></div>
+            <div class="btn btn-accent btn-lg">Done</div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">no internet</div>
+    </div>
+
+    <!-- Phone 4: Contact us · no internet -->
+    <div class="screen-col">
+      <div class="screen-label">Contact us · no internet · message preserved</div>
+      <div class="state-badge error">network error</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="back-btn">‹ Profile</div>
+            <div class="app-bar-title" style="text-align:center">Contact us</div>
+            <div style="width:46px"></div>
+          </div>
+          <div class="sc-pad-lg">
+            <div class="err-banner">
+              <div class="err-ico">⚠</div>
+              <div>
+                <div class="err-txt">No internet. Check your connection and try again — your message is saved.</div>
+              </div>
+            </div>
+            <div class="form-grp">
+              <div class="form-label">YOUR MESSAGE</div>
+              <div class="textarea" style="font-size:var(--s-sm);color:var(--t1)">My budget alerts stopped coming through after the last update — push is granted but I haven't gotten anything in 3 days.</div>
+            </div>
+            <div class="spacer"></div>
+            <div class="btn btn-primary btn-lg">Try again</div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note bug">Form contents preserved on network failure — never wipe what the user typed. Same pattern for Submit feedback.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">feedback path</div>
+    </div>
+
+    <!-- Phone 5: Submit feedback (same shape, different copy) -->
+    <div class="screen-col">
+      <div class="screen-label">Submit feedback · same shape</div>
+      <div class="state-badge happy">filled</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="back-btn">‹ Profile</div>
+            <div class="app-bar-title" style="text-align:center">Submit feedback</div>
+            <div style="width:46px"></div>
+          </div>
+          <div class="sc-pad-lg">
+            <div class="t-caption">What's working, what's not, what you'd like to see. We read everything.</div>
+            <div style="height:6px"></div>
+            <div class="form-grp">
+              <div class="form-label">YOUR FEEDBACK</div>
+              <div class="textarea focus" style="font-size:var(--s-sm);color:var(--t1)">Would love to see weekly spending recaps as a separate notification, not bundled with budget alerts.</div>
+              <div class="char-counter">112 / 1000</div>
+            </div>
+            <div class="spacer"></div>
+            <div class="btn btn-primary btn-lg">Send</div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note decision">Submit feedback uses the same form shape as Contact us — only the title and intro copy change. Don't redesign per destination.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 7 — Sign out (iOS action sheet)
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 7 — Sign out</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="phone-row">
+
+    <!-- Phone 1: Sign out action sheet -->
+    <div class="screen-col">
+      <div class="screen-label">Sign out · iOS action sheet</div>
+      <div class="state-badge interaction">action sheet</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="prof-hero" style="opacity:0.4">
+            <div class="prof-hero-top">
+              <div class="prof-hero-eyebrow">Profile</div>
+              <div class="prof-hero-gear">⚙</div>
+            </div>
+            <div class="prof-avatar">A</div>
+            <div class="prof-name">Ahmed Hassan</div>
+            <div class="prof-identity">ahmed@example.com</div>
+          </div>
+          <div class="under-hero" style="opacity:0.3"></div>
+          <div class="action-sheet-overlay">
+            <div class="action-sheet">
+              <div class="as-header">
+                <div class="as-header-ttl">Sign out of MoneyMore?<br/><span style="font-weight:400">You'll need your phone, email, or Apple/Google to sign back in.</span></div>
+              </div>
+              <div class="as-btn danger">Sign out</div>
+            </div>
+            <div class="action-sheet">
+              <div class="as-btn cancel-group">Cancel</div>
+            </div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note decision">iOS native action sheet, not a modal. Confirm action is destructive-styled (red) but not as heavy as Delete — sign-out is reversible.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">network fails</div>
+    </div>
+
+    <!-- Phone 2: Sign out network error -->
+    <div class="screen-col">
+      <div class="screen-label">Sign out · network failure</div>
+      <div class="state-badge error">network error</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="prof-hero" style="opacity:0.4">
+            <div class="prof-hero-top">
+              <div class="prof-hero-eyebrow">Profile</div>
+              <div class="prof-hero-gear">⚙</div>
+            </div>
+            <div class="prof-avatar">A</div>
+            <div class="prof-name">Ahmed Hassan</div>
+            <div class="prof-identity">ahmed@example.com</div>
+          </div>
+          <div class="alert-overlay">
+            <div class="alert-box">
+              <div class="alert-head">
+                <div class="alert-ttl">Couldn't sign out</div>
+                <div class="alert-msg">Check your connection and try again. You're still signed in.</div>
+              </div>
+              <div class="alert-acts">
+                <div class="alert-act">Cancel</div>
+                <div class="alert-act bold">Try again</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note bug">Never clear the session optimistically. Wait for backend confirmation. On failure, user stays signed in and sees a clear iOS alert.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 8 — Delete account (Step 1 reason → Step 2 warning)
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 8 — Delete account</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="phone-row">
+
+    <!-- Phone 1: Step 1 — reason picker, no selection -->
+    <div class="screen-col">
+      <div class="screen-label">Step 1 · pick a reason · Continue disabled</div>
+      <div class="state-badge happy">step 1 · no selection</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="back-btn">‹ Profile</div>
+            <div class="app-bar-title" style="text-align:center">Delete account</div>
+            <div style="width:46px"></div>
+          </div>
+          <div class="sc-pad-lg" style="padding-bottom:0">
+            <div class="t-heading">Before you go — what's the reason?</div>
+            <div class="t-caption">Helps us understand what to fix. One step left after this.</div>
+          </div>
+          <div style="padding:0 14px;display:flex;flex-direction:column;margin-top:10px">
+            <div class="row-group">
+              <div class="radio-row"><div class="radio-circle"></div><div class="radio-label">Too many notifications</div></div>
+              <div class="radio-row"><div class="radio-circle"></div><div class="radio-label">Don't understand how to use it</div></div>
+              <div class="radio-row"><div class="radio-circle"></div><div class="radio-label">Had a critical issue</div></div>
+              <div class="radio-row"><div class="radio-circle"></div><div class="radio-label">Don't find the app useful</div></div>
+              <div class="radio-row"><div class="radio-circle"></div><div class="radio-label">Concerned about privacy</div></div>
+              <div class="radio-row"><div class="radio-circle"></div><div class="radio-label">Don't feel safe using the app</div></div>
+              <div class="radio-row"><div class="radio-circle"></div><div class="radio-label">Other</div></div>
+            </div>
+          </div>
+          <div class="sc-pad" style="margin-top:auto">
+            <div class="btn btn-disabled btn-lg">Continue</div>
+            <div class="btn btn-ghost">Cancel</div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note decision">Continue disabled until a reason is selected. Order of reasons is fixed — don't randomise. Reason captured for analytics, never required as free text.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">pick reason</div>
+    </div>
+
+    <!-- Phone 2: Step 1 — reason picked -->
+    <div class="screen-col">
+      <div class="screen-label">Step 1 · reason picked · Continue enabled</div>
+      <div class="state-badge happy">step 1 · selected</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="back-btn">‹ Profile</div>
+            <div class="app-bar-title" style="text-align:center">Delete account</div>
+            <div style="width:46px"></div>
+          </div>
+          <div class="sc-pad-lg" style="padding-bottom:0">
+            <div class="t-heading">Before you go — what's the reason?</div>
+            <div class="t-caption">Helps us understand what to fix. One step left after this.</div>
+          </div>
+          <div style="padding:0 14px;margin-top:10px">
+            <div class="row-group">
+              <div class="radio-row"><div class="radio-circle"></div><div class="radio-label">Too many notifications</div></div>
+              <div class="radio-row"><div class="radio-circle"></div><div class="radio-label">Don't understand how to use it</div></div>
+              <div class="radio-row"><div class="radio-circle"></div><div class="radio-label">Had a critical issue</div></div>
+              <div class="radio-row"><div class="radio-circle on" style="background:rgba(26,60,94,0.04)"><div class="radio-circle on" style="border:none;width:auto;height:auto"></div></div><div class="radio-label" style="font-weight:600">Don't find the app useful</div></div>
+              <div class="radio-row"><div class="radio-circle"></div><div class="radio-label">Concerned about privacy</div></div>
+              <div class="radio-row"><div class="radio-circle"></div><div class="radio-label">Don't feel safe using the app</div></div>
+              <div class="radio-row"><div class="radio-circle"></div><div class="radio-label">Other</div></div>
+            </div>
+          </div>
+          <div class="sc-pad" style="margin-top:auto">
+            <div class="btn btn-primary btn-lg">Continue</div>
+            <div class="btn btn-ghost">Cancel</div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">Continue</div>
+    </div>
+
+    <!-- Phone 3: Step 2 — final warning -->
+    <div class="screen-col">
+      <div class="screen-label">Step 2 · final warning</div>
+      <div class="state-badge error">step 2 · warning</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="back-btn">‹</div>
+            <div class="app-bar-title" style="text-align:center">Delete account</div>
+            <div style="width:20px"></div>
+          </div>
+          <div class="sc-pad-lg">
+            <div class="empty-state" style="margin-top:20px">
+              <div class="empty-icon err">⚠</div>
+              <div class="t-title" style="color:var(--red);text-align:center">This can't be undone</div>
+              <div class="empty-desc" style="max-width:240px">Deleting your account permanently removes your transactions, budgets, settings, and sign-in. There's no recovery.</div>
+            </div>
+            <div class="spacer"></div>
+            <div class="btn btn-primary btn-lg">No, keep it</div>
+            <div class="btn btn-danger">Yes, delete it</div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note bug">Primary action is "No, keep it" — gives the reversible choice the visual weight. "Yes, delete it" is the secondary, red-styled destructive button. Asymmetric weighting protects against accidental deletion.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">delete fails</div>
+    </div>
+
+    <!-- Phone 4: Delete fails -->
+    <div class="screen-col">
+      <div class="screen-label">Delete request fails · iOS alert</div>
+      <div class="state-badge error">backend error</div>
+      <div class="phone">
+        <div class="ios-island"></div>
+        <div class="ios-status"><span>9:41</span><span>●●● 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="back-btn">‹</div>
+            <div class="app-bar-title" style="text-align:center">Delete account</div>
+            <div style="width:20px"></div>
+          </div>
+          <div class="sc-pad-lg" style="opacity:0.4">
+            <div class="empty-state" style="margin-top:20px">
+              <div class="empty-icon err">⚠</div>
+              <div class="t-title" style="color:var(--red);text-align:center">This can't be undone</div>
+            </div>
+          </div>
+          <div class="alert-overlay">
+            <div class="alert-box">
+              <div class="alert-head">
+                <div class="alert-ttl">Couldn't delete your account</div>
+                <div class="alert-msg">Something went wrong on our end. Your account hasn't been deleted. Try again or contact support.</div>
+              </div>
+              <div class="alert-acts">
+                <div class="alert-act">Cancel</div>
+                <div class="alert-act bold">Try again</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ios-home"></div>
+      </div>
+      <div class="flow-note bug">On failure, user stays on Step 2 and sees an iOS alert. Account is not deleted. Reassurance copy ("hasn't been deleted") is critical — user just confirmed deletion and needs to know the action didn't silently succeed.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     HANDOFF — Copy table + Accessibility
+═══════════════════════════════════════════════════════════ -->
+<div class="handoff">
+  <div class="handoff-title">Handoff</div>
+  <div class="handoff-sub">Designer reference. Every user-facing string from the flows above, grouped by screen. Arabic is draft and pending native Egyptian Arabic speaker review. English is also draft pending UX Writer sign-off.</div>
+
+  <div class="handoff-sec">
+    <div class="handoff-h">Copy · English + Arabic</div>
+    <div class="callout warn">All strings below are draft simulations. Final copy comes from Project 5 with UX Writer review.</div>
+
+    <table class="copy-table" style="margin-top:14px">
+      <colgroup>
+        <col class="col-screen"><col class="col-element"><col class="col-en"><col class="col-ar">
+      </colgroup>
+      <thead>
+        <tr><th>Screen</th><th>Element</th><th>English</th><th>Arabic</th></tr>
+      </thead>
+      <tbody>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="13">Profile root</td>
+          <td class="element-name">Hero eyebrow</td><td class="en">Profile</td><td class="ar">الملف الشخصي</td>
+        </tr>
+        <tr><td class="element-name">Completed badge</td><td class="en">Completed</td><td class="ar">مكتمل</td></tr>
+        <tr><td class="element-name">Section: Account</td><td class="en">Account</td><td class="ar">الحساب</td></tr>
+        <tr><td class="element-name">Section: Permissions</td><td class="en">Permissions</td><td class="ar">الأذونات</td></tr>
+        <tr><td class="element-name">Section: Help & support</td><td class="en">Help & support</td><td class="ar">المساعدة والدعم</td></tr>
+        <tr><td class="element-name">Section: Account actions</td><td class="en">Account actions</td><td class="ar">إجراءات الحساب</td></tr>
+        <tr><td class="element-name">Row: Name</td><td class="en">Name</td><td class="ar">الاسم</td></tr>
+        <tr><td class="element-name">Row: Email</td><td class="en">Email</td><td class="ar">الإيميل</td></tr>
+        <tr><td class="element-name">Row: Phone</td><td class="en">Phone</td><td class="ar">رقم التليفون</td></tr>
+        <tr><td class="element-name">Add row · email</td><td class="en">Add an email · A second way to sign in</td><td class="ar">ضيف إيميل · طريقة تانية تدخل بيها</td></tr>
+        <tr><td class="element-name">Add row · phone</td><td class="en">Add a phone number · A second way to sign in</td><td class="ar">ضيف رقم تليفون · طريقة تانية تدخل بيها</td></tr>
+        <tr><td class="element-name">Add row CTA</td><td class="en">Add</td><td class="ar">ضيف</td></tr>
+        <tr><td class="element-name">Avatar a11y label</td><td class="en">Profile photo, initials shown</td><td class="ar">صورة الحساب، الحروف الأولى ظاهرة</td></tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="6">Permissions section</td>
+          <td class="element-name">Automatic tracking · row</td><td class="en">Automatic tracking</td><td class="ar">التتبع التلقائي</td>
+        </tr>
+        <tr><td class="element-name">Subtext · On</td><td class="en">Logs bank transactions for you</td><td class="ar">بيسجّل معاملات البنك بالنيابة عنك</td></tr>
+        <tr><td class="element-name">Subtext · Not set up</td><td class="en">Tap to set up the Shortcut</td><td class="ar">دوس عشان تعمل إعداد للاختصار</td></tr>
+        <tr><td class="element-name">Status · On / Not set up</td><td class="en">On / Not set up</td><td class="ar">شغّال / مش معمول إعداد</td></tr>
+        <tr><td class="element-name">Push notifications · row</td><td class="en">Push notifications</td><td class="ar">الإشعارات</td></tr>
+        <tr><td class="element-name">Push subtext · Granted / Denied</td><td class="en">Budget alerts and recaps · Tap to enable in Settings</td><td class="ar">تنبيهات الميزانية والملخصات · دوس عشان تفعّلها من الإعدادات</td></tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="2">Profile · fetch fail</td>
+          <td class="element-name">Retry banner</td><td class="en">Couldn't load your profile. Check your connection.</td><td class="ar">ماقدرناش نحمّل ملفك الشخصي. اتأكد من الاتصال.</td>
+        </tr>
+        <tr><td class="element-name">Retry CTA</td><td class="en">Retry</td><td class="ar">حاول تاني</td></tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="6">Edit name</td>
+          <td class="element-name">Screen title</td><td class="en">Edit name</td><td class="ar">تعديل الاسم</td>
+        </tr>
+        <tr><td class="element-name">Field label</td><td class="en">Your name</td><td class="ar">اسمك</td></tr>
+        <tr><td class="element-name">Hint</td><td class="en">Letters only — Arabic or English. Up to 50 characters.</td><td class="ar">حروف بس — عربي أو إنجليزي. لحد 50 حرف.</td></tr>
+        <tr><td class="element-name">Validation error · numbers/symbols</td><td class="en">Letters only — no numbers or symbols</td><td class="ar">حروف بس — مفيش أرقام ولا رموز</td></tr>
+        <tr><td class="element-name">Save / Cancel</td><td class="en">Save / Cancel</td><td class="ar">احفظ / إلغاء</td></tr>
+        <tr><td class="element-name">Save fails alert</td><td class="en">Couldn't save · Check your connection and try again.</td><td class="ar">ماقدرناش نحفظ · اتأكد من الاتصال وحاول تاني.</td></tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="6">Add phone (OTP)</td>
+          <td class="element-name">Screen title</td><td class="en">Add phone</td><td class="ar">ضيف تليفون</td>
+        </tr>
+        <tr><td class="element-name">Heading</td><td class="en">Add a phone number</td><td class="ar">ضيف رقم تليفون</td></tr>
+        <tr><td class="element-name">Body</td><td class="en">A backup way to sign in if you ever lose access to your email.</td><td class="ar">طريقة احتياطية تدخل بيها لو يوم فقدت الوصول لإيميلك.</td></tr>
+        <tr><td class="element-name">Verify heading</td><td class="en">Enter the 6-digit code</td><td class="ar">اكتب الكود اللي من 6 أرقام</td></tr>
+        <tr><td class="element-name">Verify body</td><td class="en">We sent it to {phone}.</td><td class="ar">بعتنا الكود على {phone}.</td></tr>
+        <tr><td class="element-name">Rate-limit error</td><td class="en">Too many attempts. Try again in 5 minutes.</td><td class="ar">جرّبت كتير. حاول تاني بعد 5 دقايق.</td></tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="5">Add email (SSO)</td>
+          <td class="element-name">Screen title</td><td class="en">Add email</td><td class="ar">ضيف إيميل</td>
+        </tr>
+        <tr><td class="element-name">Heading</td><td class="en">Link your email account</td><td class="ar">اربط حساب الإيميل بتاعك</td></tr>
+        <tr><td class="element-name">Body</td><td class="en">Adding an email lets you sign in on future devices, even if you lose your phone.</td><td class="ar">لما تضيف إيميل تقدر تسجل دخول على أجهزة تانية، حتى لو ضاع تليفونك.</td></tr>
+        <tr><td class="element-name">SSO buttons</td><td class="en">Continue with Apple · Continue with Google</td><td class="ar">كمل بـ Apple · كمل بـ Google</td></tr>
+        <tr><td class="element-name">Already-linked error</td><td class="en">Couldn't link this email · It's already connected to another MoneyMore account.</td><td class="ar">ماقدرناش نربط الإيميل ده · مرتبط فعلاً بحساب MoneyMore تاني.</td></tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="2">Identity success toast</td>
+          <td class="element-name">Phone linked</td><td class="en">Phone linked. You can now sign in with phone or email.</td><td class="ar">الرقم اتربط. تقدر دلوقتي تسجل دخول بالتليفون أو الإيميل.</td>
+        </tr>
+        <tr><td class="element-name">Email linked</td><td class="en">Email linked. You can now sign in with email or phone.</td><td class="ar">الإيميل اتربط. تقدر دلوقتي تسجل دخول بالإيميل أو التليفون.</td></tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="6">Settings (Language + Theme)</td>
+          <td class="element-name">Screen title</td><td class="en">Settings</td><td class="ar">الإعدادات</td>
+        </tr>
+        <tr><td class="element-name">Language label + hint</td><td class="en">Select language · Selecting a language applies it immediately. The whole app flips, including layout direction.</td><td class="ar">اختار اللغة · اختيار اللغة يطبّق على طول. التطبيق كله هيتقلب، حتى اتجاه العرض.</td></tr>
+        <tr><td class="element-name">Theme label</td><td class="en">Theme</td><td class="ar">المظهر</td></tr>
+        <tr><td class="element-name">Theme options</td><td class="en">System · Dark · Light</td><td class="ar">النظام · داكن · فاتح</td></tr>
+        <tr><td class="element-name">Theme hint</td><td class="en">System matches your phone's appearance setting and switches automatically. Light or Dark always stays the same.</td><td class="ar">النظام بيمشي مع إعداد المظهر في تليفونك ويتبدّل تلقائياً. فاتح أو داكن بيفضلوا ثابتين.</td></tr>
+        <tr><td class="element-name">Save / Cancel</td><td class="en">Save / Cancel</td><td class="ar">احفظ / إلغاء</td></tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="3">Push permission</td>
+          <td class="element-name">Action sheet · explanation</td><td class="en">To enable push notifications, open Settings and turn them on for MoneyMore.</td><td class="ar">عشان تفعّل الإشعارات، افتح الإعدادات وشغّلها لـ MoneyMore.</td>
+        </tr>
+        <tr><td class="element-name">CTA</td><td class="en">Open Settings</td><td class="ar">افتح الإعدادات</td></tr>
+        <tr><td class="element-name">Cancel</td><td class="en">Cancel</td><td class="ar">إلغاء</td></tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="4">Automatic tracking</td>
+          <td class="element-name">Setup intro · heading</td><td class="en">Set up automatic tracking</td><td class="ar">عمل إعداد للتتبع التلقائي</td>
+        </tr>
+        <tr><td class="element-name">Setup intro · body</td><td class="en">A 9-step Shortcut so MoneyMore logs your bank transactions for you. Takes about 2 minutes.</td><td class="ar">اختصار من 9 خطوات عشان MoneyMore يسجّل معاملاتك بالنيابة عنك. بياخد حوالي دقيقتين.</td></tr>
+        <tr><td class="element-name">CTAs</td><td class="en">Start setup · Maybe later</td><td class="ar">ابدأ الإعداد · نشوف بعدين</td></tr>
+        <tr><td class="element-name">Setup complete toast</td><td class="en">Automatic tracking is on. We'll log transactions as they come in.</td><td class="ar">التتبع التلقائي شغّال. هنسجّل المعاملات أول ما توصل.</td></tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="6">Contact us</td>
+          <td class="element-name">Screen title</td><td class="en">Contact us</td><td class="ar">كلّمنا</td>
+        </tr>
+        <tr><td class="element-name">Intro</td><td class="en">Tell us what's going on. We reply by email within 24 hours.</td><td class="ar">قولنا فيه إيه. هنرد بالإيميل في خلال 24 ساعة.</td></tr>
+        <tr><td class="element-name">Field label · placeholder</td><td class="en">Your message · Type here…</td><td class="ar">رسالتك · اكتب هنا…</td></tr>
+        <tr><td class="element-name">Send / Try again</td><td class="en">Send · Try again</td><td class="ar">ابعت · حاول تاني</td></tr>
+        <tr><td class="element-name">Success heading + body</td><td class="en">Message sent · We'll reply to {email} within 24 hours. Check spam if you don't see it.</td><td class="ar">الرسالة اتبعتت · هنرد على {email} في خلال 24 ساعة. اتأكد من السبام لو ملقتش الرد.</td></tr>
+        <tr><td class="element-name">No internet error</td><td class="en">No internet. Check your connection and try again — your message is saved.</td><td class="ar">مفيش نت. اتأكد من الاتصال وحاول تاني — رسالتك محفوظة.</td></tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="3">Submit feedback</td>
+          <td class="element-name">Screen title</td><td class="en">Submit feedback</td><td class="ar">شاركنا رأيك</td>
+        </tr>
+        <tr><td class="element-name">Intro</td><td class="en">What's working, what's not, what you'd like to see. We read everything.</td><td class="ar">إيه اللي شغّال، إيه اللي مش شغّال، إيه اللي نفسك تشوفه. بنقرأ كل حاجة.</td></tr>
+        <tr><td class="element-name">Field label</td><td class="en">Your feedback</td><td class="ar">رأيك</td></tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="4">Sign out</td>
+          <td class="element-name">Action sheet title</td><td class="en">Sign out of MoneyMore?</td><td class="ar">تسجّل خروج من MoneyMore؟</td>
+        </tr>
+        <tr><td class="element-name">Action sheet body</td><td class="en">You'll need your phone, email, or Apple/Google to sign back in.</td><td class="ar">هتحتاج تليفونك، إيميلك، أو Apple/Google عشان تدخل تاني.</td></tr>
+        <tr><td class="element-name">Confirm / Cancel</td><td class="en">Sign out · Cancel</td><td class="ar">تسجيل خروج · إلغاء</td></tr>
+        <tr><td class="element-name">Network failure alert</td><td class="en">Couldn't sign out · Check your connection and try again. You're still signed in.</td><td class="ar">ماقدرناش نسجّل خروج · اتأكد من الاتصال وحاول تاني. لسه داخل بحسابك.</td></tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="11">Delete account</td>
+          <td class="element-name">Screen title</td><td class="en">Delete account</td><td class="ar">حذف الحساب</td>
+        </tr>
+        <tr><td class="element-name">Step 1 heading</td><td class="en">Before you go — what's the reason?</td><td class="ar">قبل ما تمشي — إيه السبب؟</td></tr>
+        <tr><td class="element-name">Step 1 body</td><td class="en">Helps us understand what to fix. One step left after this.</td><td class="ar">بيساعدنا نعرف نصلّح إيه. فاضل خطوة واحدة بعد دي.</td></tr>
+        <tr><td class="element-name">Reason 1</td><td class="en">Too many notifications</td><td class="ar">إشعارات كتير</td></tr>
+        <tr><td class="element-name">Reason 2</td><td class="en">Don't understand how to use it</td><td class="ar">مش فاهم استخدامه</td></tr>
+        <tr><td class="element-name">Reason 3</td><td class="en">Had a critical issue</td><td class="ar">حصلت مشكلة كبيرة</td></tr>
+        <tr><td class="element-name">Reason 4</td><td class="en">Don't find the app useful</td><td class="ar">التطبيق مش مفيد ليّ</td></tr>
+        <tr><td class="element-name">Reason 5</td><td class="en">Concerned about privacy</td><td class="ar">قلقان على الخصوصية</td></tr>
+        <tr><td class="element-name">Reason 6</td><td class="en">Don't feel safe using the app</td><td class="ar">مش حاسس إنه آمن</td></tr>
+        <tr><td class="element-name">Reason 7</td><td class="en">Other</td><td class="ar">سبب تاني</td></tr>
+        <tr><td class="element-name">Step 1 CTAs</td><td class="en">Continue · Cancel</td><td class="ar">كمل · إلغاء</td></tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="4">Delete · Step 2</td>
+          <td class="element-name">Heading</td><td class="en">This can't be undone</td><td class="ar">الخطوة دي مالهاش رجوع</td>
+        </tr>
+        <tr><td class="element-name">Body</td><td class="en">Deleting your account permanently removes your transactions, budgets, settings, and sign-in. There's no recovery.</td><td class="ar">حذف الحساب بيشيل معاملاتك وميزانياتك وإعداداتك وتسجيل دخولك للأبد. مفيش استرجاع.</td></tr>
+        <tr><td class="element-name">CTAs</td><td class="en">No, keep it · Yes, delete it</td><td class="ar">لا، خلّيه · أيوة، احذفه</td></tr>
+        <tr><td class="element-name">Backend failure alert</td><td class="en">Couldn't delete your account · Something went wrong on our end. Your account hasn't been deleted. Try again or contact support.</td><td class="ar">ماقدرناش نحذف حسابك · حصلت مشكلة عندنا. حسابك ما اتحذفش. حاول تاني أو كلّمنا.</td></tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <div class="handoff-sec">
+    <div class="handoff-h">Accessibility — what changes what you draw</div>
+    <ul class="handoff-list">
+      <li><strong>Touch targets — 44×44px minimum</strong> on every interactive element. Includes the gear icon in the hero, status pills (which are tappable to enter the relevant flow), the dashed Add row's tap area, the back chevron, and the SSO buttons.</li>
+      <li><strong>Contrast — 4.5:1 minimum for text</strong>, 7:1 for status pills (Granted / Denied / On / Not set up). The hero's white-on-navy passes; the rgba transparencies on hero subtext need a contrast check at the gradient's lightest point.</li>
+      <li><strong>Never colour-only for state.</strong> Push Denied row pairs red tint with explicit "Denied" pill text and a recovery-focused subtext. Disabled CTAs (Continue on Step 1, Send on empty Contact form) need text or opacity signal beyond the grey background.</li>
+      <li><strong>Focus order — hero gear → first row of each section, top-to-bottom.</strong> On Arabic layouts the visual direction flips to RTL but VoiceOver focus order stays top-to-bottom.</li>
+      <li><strong>Avatar VoiceOver label is not character-limited.</strong> Use the descriptive form "Profile photo, initials shown" — VoiceOver reads full sentences naturally.</li>
+      <li><strong>Status pill VoiceOver labels read as "{permission}, status {state}"</strong> — e.g. "Push notifications, status Denied. Tap to enable in Settings." Don't rely on the visual pill alone.</li>
+      <li><strong>Destructive actions get explicit VoiceOver hints</strong> — "Yes, delete it" reads "Deletes your account permanently. Double tap to confirm." The verbal asymmetry mirrors the visual asymmetry between the two CTAs.</li>
+    </ul>
+  </div>
+
+</div>
+
+</div>
+</body>
+</html>
