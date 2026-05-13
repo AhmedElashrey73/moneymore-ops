@@ -1,0 +1,2107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pulse — Audience Intelligence & Activation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    /* Core palette — refined B2B intelligence platform */
+    --ink:        #0E1419;        /* near-black, slightly cooled */
+    --graphite:   #1B2229;
+    --slate:      #4A5562;
+    --slate-soft: #6B7785;
+    --mute:       #8B95A1;
+    --rule:       #E2E5E8;
+    --rule-soft:  #EFF1F3;
+    --paper:      #FAFAF7;        /* warm off-white */
+    --surface:    #FFFFFF;
+    --canvas:     #F5F4EF;        /* warm sand for sidebar */
+
+    /* Accent — confident teal-cyan, "intelligence" feel */
+    --pulse:      #007A6E;
+    --pulse-deep: #00504A;
+    --pulse-soft: #E6F4F2;
+    --pulse-mid:  #4DA89F;
+
+    /* Functional */
+    --good:       #2A9D6B;
+    --warn:       #C97A2D;
+    --alert:      #B0382D;
+    --info:       #3A6FB0;
+
+    /* Data viz palette — muted, editorial */
+    --d1: #0E1419;
+    --d2: #007A6E;
+    --d3: #C97A2D;
+    --d4: #6B7785;
+    --d5: #A8B5C0;
+    --d6: #3A6FB0;
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter Tight', system-ui, sans-serif;
+    font-size: 13.5px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  .num, .mono { font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums; }
+  .serif { font-family: 'Fraunces', serif; }
+
+  /* ============ LAYOUT ============ */
+  .app {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    min-height: 100vh;
+  }
+
+  /* ============ SIDEBAR ============ */
+  aside.sidebar {
+    background: var(--canvas);
+    border-right: 1px solid var(--rule);
+    padding: 28px 22px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+  .brand {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+  .brand-mark {
+    font-family: 'Fraunces', serif;
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .brand-mark::after {
+    content: ".";
+    color: var(--pulse);
+  }
+  .brand-sub {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--slate-soft);
+    font-weight: 500;
+  }
+  .brand-by {
+    font-size: 10.5px;
+    color: var(--mute);
+    margin-bottom: 32px;
+    margin-top: 2px;
+  }
+
+  .nav-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--mute);
+    font-weight: 600;
+    margin: 18px 0 10px 4px;
+  }
+
+  .funnel {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    position: relative;
+  }
+  .funnel::before {
+    content: "";
+    position: absolute;
+    left: 19px;
+    top: 28px;
+    bottom: 28px;
+    width: 1px;
+    background: var(--rule);
+    z-index: 0;
+  }
+  .stage {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+    transition: background 0.12s ease;
+    background: transparent;
+    border: none;
+    text-align: left;
+    width: 100%;
+    font-family: inherit;
+    color: inherit;
+  }
+  .stage:hover { background: rgba(0,0,0,0.03); }
+  .stage.active { background: var(--surface); box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 0 0 1px var(--rule); }
+  .stage-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--mute);
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-weight: 500;
+  }
+  .stage.active .stage-num {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+  .stage-body { display: flex; flex-direction: column; gap: 1px; flex: 1; min-width: 0;}
+  .stage-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .stage-meta {
+    font-size: 10.5px;
+    color: var(--slate-soft);
+  }
+  .stage-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
+    vertical-align: 1px;
+  }
+  .dot-live { background: var(--good); box-shadow: 0 0 0 3px rgba(42, 157, 107, 0.15); }
+  .dot-draft { background: var(--warn); }
+  .dot-idle { background: var(--mute); }
+
+  .sidebar-foot {
+    margin-top: auto;
+    padding-top: 28px;
+    border-top: 1px solid var(--rule);
+    margin-top: 32px;
+  }
+  .org-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+  }
+  .org-avatar {
+    width: 30px; height: 30px;
+    border-radius: 6px;
+    background: linear-gradient(135deg, var(--ink), var(--graphite));
+    color: var(--paper);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .org-name { font-size: 12.5px; font-weight: 500; }
+  .org-plan { font-size: 10.5px; color: var(--slate-soft); }
+
+  /* ============ MAIN ============ */
+  main.content { padding: 0; }
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 22px 40px 22px 40px;
+    border-bottom: 1px solid var(--rule);
+    background: var(--paper);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .topbar-left { display: flex; align-items: baseline; gap: 16px; }
+  .crumb {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--mute);
+    font-weight: 500;
+  }
+  .crumb-sep { color: var(--rule); }
+  .topbar-actions { display: flex; gap: 10px; align-items: center; }
+  .pill {
+    font-size: 11px;
+    padding: 5px 10px;
+    border-radius: 100px;
+    background: var(--pulse-soft);
+    color: var(--pulse-deep);
+    font-weight: 500;
+  }
+  .icon-btn {
+    width: 32px; height: 32px;
+    border-radius: 6px;
+    border: 1px solid var(--rule);
+    background: var(--surface);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    color: var(--slate);
+  }
+  .icon-btn:hover { background: var(--rule-soft); }
+
+  .stage-view { padding: 0 40px 60px 40px; }
+  .stage-view.hidden { display: none; }
+
+  .stage-header {
+    padding: 36px 0 28px 0;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 32px;
+  }
+  .stage-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--pulse-deep);
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+  .stage-tag .stage-tag-num {
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 10px;
+    letter-spacing: 0.05em;
+  }
+  .stage-title {
+    font-family: 'Fraunces', serif;
+    font-size: 42px;
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    color: var(--ink);
+    margin: 0 0 12px 0;
+    max-width: 720px;
+  }
+  .stage-title em { font-style: italic; color: var(--pulse-deep); font-weight: 400; }
+  .stage-blurb {
+    font-size: 15px;
+    color: var(--slate);
+    max-width: 640px;
+    line-height: 1.55;
+  }
+
+  /* ============ EXEC OVERVIEW (stage 0) ============ */
+  .exec-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    margin-bottom: 32px;
+  }
+  .exec-card {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    padding: 18px;
+    position: relative;
+    overflow: hidden;
+    min-height: 138px;
+    display: flex;
+    flex-direction: column;
+  }
+  .exec-card .stage-num-big {
+    position: absolute;
+    top: 14px; right: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--mute);
+    font-weight: 500;
+  }
+  .exec-card-label {
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--slate-soft);
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+  .exec-card-value {
+    font-family: 'Fraunces', serif;
+    font-size: 30px;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 6px;
+  }
+  .exec-card-sub {
+    font-size: 11.5px;
+    color: var(--slate);
+    margin-top: auto;
+  }
+  .exec-card-link {
+    font-size: 11px;
+    color: var(--pulse-deep);
+    font-weight: 500;
+    margin-top: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+  }
+  .exec-card-link:hover { text-decoration: underline; }
+
+  .exec-narrative {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--pulse);
+    border-radius: 10px;
+    padding: 24px 28px;
+    margin-bottom: 32px;
+  }
+  .exec-narrative-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--pulse-deep);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .exec-narrative-text {
+    font-family: 'Fraunces', serif;
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--ink);
+    font-weight: 400;
+    letter-spacing: -0.005em;
+  }
+  .exec-narrative-text strong { font-weight: 600; }
+  .exec-narrative-text .accent { color: var(--pulse-deep); }
+
+  .exec-funnel-strip {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    padding: 26px 28px;
+    margin-bottom: 32px;
+  }
+  .exec-funnel-strip h3 {
+    margin: 0 0 22px 0;
+    font-family: 'Fraunces', serif;
+    font-size: 19px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .funnel-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    position: relative;
+  }
+  .funnel-step {
+    padding: 0 18px;
+    border-right: 1px solid var(--rule);
+    position: relative;
+  }
+  .funnel-step:last-child { border-right: none; }
+  .funnel-step:first-child { padding-left: 0; }
+  .funnel-step-label {
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--slate-soft);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .funnel-step-value {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .funnel-step-pct {
+    font-size: 11.5px;
+    color: var(--slate);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .funnel-step-pct .delta {
+    color: var(--good);
+    font-weight: 500;
+  }
+
+  /* ============ DISCOVER (stage 1) ============ */
+  .panel-grid-2 {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 18px;
+    margin-bottom: 18px;
+  }
+  .panel-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    padding: 22px 24px;
+  }
+  .panel-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 18px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .panel-head h3 {
+    margin: 0 0 4px 0;
+    font-family: 'Fraunces', serif;
+    font-size: 19px;
+    font-weight: 500;
+    letter-spacing: -0.012em;
+  }
+  .panel-head .sub {
+    font-size: 12px;
+    color: var(--slate-soft);
+  }
+  .panel-tag {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--pulse-deep);
+    font-weight: 600;
+    background: var(--pulse-soft);
+    padding: 4px 8px;
+    border-radius: 3px;
+  }
+
+  .kpi-stack { display: flex; flex-direction: column; gap: 18px; }
+  .kpi-row-tight {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .mini-kpi {
+    padding: 14px;
+    background: var(--paper);
+    border-radius: 8px;
+    border: 1px solid var(--rule-soft);
+  }
+  .mini-kpi-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--slate-soft);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .mini-kpi-value {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .mini-kpi-trend {
+    font-size: 11px;
+    color: var(--slate);
+    margin-top: 6px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .trend-up { color: var(--good); font-weight: 500; }
+  .trend-down { color: var(--alert); font-weight: 500; }
+
+  .share-bars { display: flex; flex-direction: column; gap: 12px; }
+  .share-bar-row {
+    display: grid;
+    grid-template-columns: 110px 1fr 80px;
+    align-items: center;
+    gap: 14px;
+    font-size: 12.5px;
+  }
+  .share-bar-name { font-weight: 500; }
+  .share-bar-name.you { color: var(--pulse-deep); }
+  .share-bar-name.you::after {
+    content: "YOU";
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    background: var(--pulse-deep);
+    color: var(--paper);
+    padding: 1px 5px;
+    border-radius: 3px;
+    margin-left: 6px;
+    vertical-align: 1px;
+    letter-spacing: 0.06em;
+  }
+  .share-bar-track {
+    height: 16px;
+    background: var(--rule-soft);
+    border-radius: 3px;
+    position: relative;
+    overflow: hidden;
+  }
+  .share-bar-fill {
+    height: 100%;
+    background: var(--mute);
+    border-radius: 3px;
+  }
+  .share-bar-fill.you { background: var(--pulse); }
+  .share-bar-pct {
+    font-family: 'JetBrains Mono', monospace;
+    text-align: right;
+    font-size: 12.5px;
+    color: var(--slate);
+  }
+
+  .insight-card {
+    background: linear-gradient(135deg, var(--ink) 0%, var(--graphite) 100%);
+    color: var(--paper);
+    border-radius: 10px;
+    padding: 28px;
+    margin-bottom: 18px;
+    position: relative;
+    overflow: hidden;
+  }
+  .insight-card::after {
+    content: "";
+    position: absolute;
+    right: -40px; top: -40px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0, 122, 110, 0.5) 0%, transparent 60%);
+  }
+  .insight-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--pulse-mid);
+    font-weight: 600;
+    margin-bottom: 12px;
+    position: relative;
+    z-index: 1;
+  }
+  .insight-headline {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    line-height: 1.3;
+    font-weight: 400;
+    letter-spacing: -0.012em;
+    margin-bottom: 12px;
+    max-width: 660px;
+    position: relative;
+    z-index: 1;
+  }
+  .insight-headline em { font-style: italic; color: var(--pulse-mid); }
+  .insight-meta {
+    font-size: 11.5px;
+    color: var(--mute);
+    font-family: 'JetBrains Mono', monospace;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ============ DEFINE (stage 2) ============ */
+  .builder-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 22px;
+  }
+  .filter-block {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .filter-block:last-child { border-bottom: none; }
+  .filter-label {
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--slate-soft);
+    font-weight: 600;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .filter-count {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--mute);
+    font-size: 10.5px;
+    font-weight: 400;
+  }
+  .chip-row { display: flex; flex-wrap: wrap; gap: 7px; }
+  .chip {
+    padding: 6px 12px;
+    border: 1px solid var(--rule);
+    border-radius: 100px;
+    font-size: 12px;
+    background: var(--surface);
+    color: var(--slate);
+    cursor: pointer;
+    transition: all 0.12s ease;
+  }
+  .chip:hover { border-color: var(--slate); }
+  .chip.selected {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--paper);
+  }
+  .range-block { display: flex; flex-direction: column; gap: 10px; }
+  .range-input {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 8px;
+    align-items: center;
+  }
+  .range-field {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 5px;
+    padding: 7px 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+  }
+  .range-dash { color: var(--mute); }
+
+  .cohort-panel {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    overflow: hidden;
+    position: sticky;
+    top: 96px;
+  }
+  .cohort-head {
+    padding: 22px 24px 18px;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .cohort-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--slate-soft);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .cohort-size {
+    font-family: 'Fraunces', serif;
+    font-size: 56px;
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 0.95;
+    margin-bottom: 6px;
+  }
+  .cohort-sub {
+    font-size: 12px;
+    color: var(--slate);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .cohort-reach {
+    padding: 20px 24px;
+    background: var(--paper);
+  }
+  .reach-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    font-size: 12.5px;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .reach-row:last-child { border-bottom: none; }
+  .reach-row .key { color: var(--slate); }
+  .reach-row .val { font-family: 'JetBrains Mono', monospace; font-weight: 500; }
+  .reach-row.final .val { color: var(--pulse-deep); font-weight: 600; }
+
+  .anonymity-banner {
+    margin: 20px 24px 0 24px;
+    padding: 12px 14px;
+    background: rgba(42, 157, 107, 0.07);
+    border: 1px solid rgba(42, 157, 107, 0.18);
+    border-radius: 6px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .anonymity-banner .check {
+    color: var(--good);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .anonymity-banner-text { font-size: 11.5px; color: var(--graphite); line-height: 1.45; }
+
+  .cohort-actions {
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  /* ============ ACTIVATE (stage 3) ============ */
+  .composer-grid {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 22px;
+  }
+  .form-block {
+    margin-bottom: 18px;
+  }
+  .form-label {
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--slate-soft);
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: block;
+  }
+  .form-input {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--ink);
+  }
+  textarea.form-input { resize: vertical; min-height: 70px; }
+  .form-help { font-size: 11px; color: var(--mute); margin-top: 5px; }
+
+  .seg-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: var(--pulse-soft);
+    color: var(--pulse-deep);
+    border-radius: 6px;
+    font-size: 12.5px;
+    font-weight: 500;
+  }
+  .seg-pill .seg-x {
+    color: var(--pulse-deep);
+    opacity: 0.5;
+    cursor: pointer;
+  }
+
+  .field-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  /* Phone preview */
+  .phone-shell {
+    background: var(--graphite);
+    border-radius: 26px;
+    padding: 14px;
+    width: 340px;
+    margin: 0 auto;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.05);
+  }
+  .phone-screen {
+    background: var(--paper);
+    border-radius: 16px;
+    padding: 18px 16px;
+    min-height: 540px;
+    font-family: 'Inter Tight', sans-serif;
+  }
+  .phone-statusbar {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--ink);
+    margin-bottom: 14px;
+    font-weight: 600;
+  }
+  .mm-app-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--rule-soft);
+    margin-bottom: 16px;
+  }
+  .mm-app-bar .mm-name {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 17px;
+    color: #ED1B2F;
+  }
+  .mm-section-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--slate-soft);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .offer-card {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 12px;
+    position: relative;
+  }
+  .offer-card.featured {
+    border-color: #ED1B2F;
+    background: linear-gradient(135deg, #fff 0%, #FFF5F6 100%);
+  }
+  .offer-card.featured::before {
+    content: "NEW · FOR YOU";
+    position: absolute;
+    top: -8px;
+    left: 14px;
+    background: #ED1B2F;
+    color: white;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    padding: 3px 7px;
+    border-radius: 3px;
+  }
+  .offer-merchant {
+    font-size: 10px;
+    color: var(--slate-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+  .offer-headline {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 6px;
+    color: var(--ink);
+  }
+  .offer-body { font-size: 11.5px; color: var(--slate); line-height: 1.4; margin-bottom: 10px; }
+  .offer-cta {
+    display: inline-block;
+    padding: 6px 12px;
+    background: var(--ink);
+    color: white;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 500;
+  }
+
+  .preview-toggle {
+    display: flex;
+    gap: 4px;
+    background: var(--rule-soft);
+    padding: 3px;
+    border-radius: 6px;
+    margin-bottom: 18px;
+  }
+  .preview-toggle button {
+    flex: 1;
+    padding: 6px 10px;
+    border-radius: 4px;
+    border: none;
+    background: transparent;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--slate);
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .preview-toggle button.active {
+    background: var(--surface);
+    color: var(--ink);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+  }
+
+  .push-card {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 14px;
+    padding: 14px;
+    margin-top: 20px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .push-icon {
+    width: 30px; height: 30px;
+    background: #ED1B2F;
+    border-radius: 6px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .push-body { flex: 1; }
+  .push-title { font-size: 12px; font-weight: 600; margin-bottom: 2px; }
+  .push-text { font-size: 11.5px; color: var(--slate); line-height: 1.35; }
+  .push-time { font-size: 10px; color: var(--mute); margin-top: 4px; }
+
+  /* ============ MEASURE (stage 4) ============ */
+  .funnel-viz {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 8px 0;
+  }
+  .funnel-bar-wrap {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 18px;
+    align-items: center;
+  }
+  .funnel-bar-label {
+    font-size: 12px;
+    color: var(--slate);
+  }
+  .funnel-bar-label strong {
+    display: block;
+    color: var(--ink);
+    font-weight: 600;
+    font-size: 13px;
+    margin-bottom: 2px;
+  }
+  .funnel-bar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .funnel-bar-fill {
+    height: 38px;
+    background: linear-gradient(90deg, var(--pulse-deep), var(--pulse));
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    padding-left: 14px;
+    color: var(--paper);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    min-width: 60px;
+  }
+  .funnel-bar-pct {
+    font-size: 11.5px;
+    color: var(--slate);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .attribution-headline {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    padding: 28px;
+    margin-bottom: 18px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 32px;
+  }
+  .att-stat-label {
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--slate-soft);
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+  .att-stat-value {
+    font-family: 'Fraunces', serif;
+    font-size: 44px;
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .att-stat-value.lift { color: var(--pulse-deep); }
+  .att-stat-sub { font-size: 12px; color: var(--slate); }
+
+  .moat-callout {
+    background: linear-gradient(135deg, #FDF8EE 0%, #F8F0DE 100%);
+    border: 1px solid #E8D8B2;
+    border-radius: 10px;
+    padding: 22px 26px;
+    margin-bottom: 18px;
+  }
+  .moat-tag {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: #8B6914;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .moat-text {
+    font-family: 'Fraunces', serif;
+    font-size: 19px;
+    line-height: 1.5;
+    color: var(--ink);
+    font-weight: 400;
+    letter-spacing: -0.005em;
+  }
+  .moat-text em { font-style: italic; }
+
+  /* ============ LEARN (stage 5) ============ */
+  .next-action-list { display: flex; flex-direction: column; gap: 12px; }
+  .next-action {
+    display: grid;
+    grid-template-columns: 32px 1fr auto;
+    gap: 16px;
+    align-items: center;
+    padding: 18px 20px;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    transition: all 0.12s;
+    cursor: pointer;
+  }
+  .next-action:hover {
+    border-color: var(--pulse);
+    box-shadow: 0 4px 12px rgba(0,122,110,0.08);
+  }
+  .next-action-num {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--pulse-deep);
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .next-action-title {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    font-weight: 500;
+    letter-spacing: -0.008em;
+    margin-bottom: 4px;
+  }
+  .next-action-desc { font-size: 12.5px; color: var(--slate); }
+  .next-action-arrow {
+    color: var(--mute);
+    font-size: 18px;
+  }
+  .next-action:hover .next-action-arrow { color: var(--pulse-deep); }
+
+  .report-preview {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+  }
+  .report-cover {
+    background: linear-gradient(160deg, var(--ink) 0%, var(--graphite) 100%);
+    padding: 32px 28px;
+    color: var(--paper);
+    position: relative;
+    overflow: hidden;
+  }
+  .report-cover::after {
+    content: "";
+    position: absolute;
+    right: -40px; bottom: -40px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0, 122, 110, 0.45) 0%, transparent 65%);
+  }
+  .report-month {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--pulse-mid);
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+  .report-title {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin-bottom: 12px;
+    position: relative;
+    z-index: 1;
+  }
+  .report-sub { font-size: 12.5px; color: var(--mute); position: relative; z-index: 1; }
+  .report-body { padding: 28px; }
+  .report-section {
+    padding: 14px 0;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .report-section:last-child { border-bottom: none; }
+  .report-section-head {
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--slate-soft);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .report-section-content {
+    font-family: 'Fraunces', serif;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+  .report-section-content strong { color: var(--pulse-deep); font-weight: 600; }
+
+  /* Buttons */
+  .btn {
+    border: none;
+    border-radius: 6px;
+    padding: 10px 16px;
+    font-family: inherit;
+    font-size: 12.5px;
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    justify-content: center;
+  }
+  .btn-primary {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .btn-primary:hover { background: var(--graphite); }
+  .btn-accent {
+    background: var(--pulse-deep);
+    color: var(--paper);
+  }
+  .btn-accent:hover { background: var(--pulse); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--slate);
+    border: 1px solid var(--rule);
+  }
+  .btn-ghost:hover { border-color: var(--slate); }
+
+  /* Charts */
+  .chart-wrap { position: relative; width: 100%; }
+  .h-220 { height: 220px; }
+  .h-260 { height: 260px; }
+  .h-280 { height: 280px; }
+  .h-300 { height: 300px; }
+
+  /* Misc */
+  .legend-row { display: flex; gap: 16px; font-size: 11.5px; margin-top: 14px; flex-wrap: wrap; }
+  .legend-dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; margin-right: 6px; vertical-align: 0px; }
+
+  /* Footer */
+  footer.foot {
+    padding: 32px 40px 28px;
+    border-top: 1px solid var(--rule);
+    font-size: 11.5px;
+    color: var(--slate-soft);
+    display: flex;
+    justify-content: space-between;
+    margin-top: 60px;
+  }
+  footer .foot-meta { font-family: 'JetBrains Mono', monospace; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-mark">Pulse</span>
+    </div>
+    <div class="brand-sub">Audience Intelligence</div>
+    <div class="brand-by">by MoneyMore · v0.1 preview</div>
+
+    <div class="nav-label">Journey</div>
+    <div class="funnel">
+      <button class="stage active" data-stage="overview">
+        <span class="stage-num">00</span>
+        <span class="stage-body">
+          <span class="stage-name">Overview</span>
+          <span class="stage-meta"><span class="stage-dot dot-live"></span>Q2 dashboard</span>
+        </span>
+      </button>
+      <button class="stage" data-stage="discover">
+        <span class="stage-num">01</span>
+        <span class="stage-body">
+          <span class="stage-name">Discover</span>
+          <span class="stage-meta">Category intelligence</span>
+        </span>
+      </button>
+      <button class="stage" data-stage="define">
+        <span class="stage-num">02</span>
+        <span class="stage-body">
+          <span class="stage-name">Define</span>
+          <span class="stage-meta">4 audiences saved</span>
+        </span>
+      </button>
+      <button class="stage" data-stage="activate">
+        <span class="stage-num">03</span>
+        <span class="stage-body">
+          <span class="stage-name">Activate</span>
+          <span class="stage-meta"><span class="stage-dot dot-draft"></span>1 draft</span>
+        </span>
+      </button>
+      <button class="stage" data-stage="measure">
+        <span class="stage-num">04</span>
+        <span class="stage-body">
+          <span class="stage-name">Measure</span>
+          <span class="stage-meta"><span class="stage-dot dot-live"></span>1 live · 2 closed</span>
+        </span>
+      </button>
+      <button class="stage" data-stage="learn">
+        <span class="stage-num">05</span>
+        <span class="stage-body">
+          <span class="stage-name">Learn</span>
+          <span class="stage-meta">Monthly report ready</span>
+        </span>
+      </button>
+    </div>
+
+    <div class="sidebar-foot">
+      <div class="org-card">
+        <div class="org-avatar">B</div>
+        <div>
+          <div class="org-name">Brand Co.</div>
+          <div class="org-plan">Pilot · Q2 2026</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main class="content">
+
+    <!-- ============ TOPBAR ============ -->
+    <div class="topbar">
+      <div class="topbar-left">
+        <span class="crumb">Pulse</span>
+        <span class="crumb-sep">/</span>
+        <span class="crumb" id="crumb-stage">Overview</span>
+      </div>
+      <div class="topbar-actions">
+        <span class="pill">Apr 2026 · Live data</span>
+        <button class="icon-btn" title="Export">↓</button>
+        <button class="icon-btn" title="Settings">⚙</button>
+      </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- STAGE 00 — OVERVIEW                                              -->
+    <!-- ============================================================== -->
+    <div class="stage-view" id="view-overview">
+      <div class="stage-header">
+        <div class="stage-tag"><span class="stage-tag-num">00</span> Executive Overview</div>
+        <h1 class="stage-title">Your category, your customers, your campaigns — <em>in one view</em>.</h1>
+        <p class="stage-blurb">A live snapshot of every stage in the Pulse funnel. Drill into any stage from the sidebar.</p>
+      </div>
+
+      <!-- Stage cards -->
+      <div class="exec-grid">
+        <div class="exec-card">
+          <span class="stage-num-big">01</span>
+          <div class="exec-card-label">Discover</div>
+          <div class="exec-card-value">23.4%</div>
+          <div class="exec-card-sub">Your share of category wallet</div>
+          <span class="exec-card-link" onclick="goStage('discover')">View intelligence →</span>
+        </div>
+        <div class="exec-card">
+          <span class="stage-num-big">02</span>
+          <div class="exec-card-label">Define</div>
+          <div class="exec-card-value">4</div>
+          <div class="exec-card-sub">Audiences saved · 12,840 total users</div>
+          <span class="exec-card-link" onclick="goStage('define')">Manage audiences →</span>
+        </div>
+        <div class="exec-card">
+          <span class="stage-num-big">03</span>
+          <div class="exec-card-label">Activate</div>
+          <div class="exec-card-value">3</div>
+          <div class="exec-card-sub">Campaigns · 1 draft · 1 live · 1 closed</div>
+          <span class="exec-card-link" onclick="goStage('activate')">Open composer →</span>
+        </div>
+        <div class="exec-card">
+          <span class="stage-num-big">04</span>
+          <div class="exec-card-label">Measure</div>
+          <div class="exec-card-value">+41%</div>
+          <div class="exec-card-sub">Post-redemption spend lift, 60 days</div>
+          <span class="exec-card-link" onclick="goStage('measure')">See attribution →</span>
+        </div>
+        <div class="exec-card">
+          <span class="stage-num-big">05</span>
+          <div class="exec-card-label">Learn</div>
+          <div class="exec-card-value">3</div>
+          <div class="exec-card-sub">Recommended next audiences</div>
+          <span class="exec-card-link" onclick="goStage('learn')">Read report →</span>
+        </div>
+      </div>
+
+      <!-- Narrative -->
+      <div class="exec-narrative">
+        <div class="exec-narrative-label">What we're seeing this month</div>
+        <div class="exec-narrative-text">
+          You hold <strong>23.4% of category wallet</strong> across MoneyMore's active spenders — second behind Competitor&nbsp;A. <span class="accent">Your most valuable segment is high-frequency, mid-basket regulars</span> who transact 3.2× a month. The campaign targeting lapsed Competitor&nbsp;A customers drove a <strong>41% spend lift</strong> over 60 days. Three audiences are recommended for next month's plan.
+        </div>
+      </div>
+
+      <!-- Funnel strip -->
+      <div class="exec-funnel-strip">
+        <h3>This month's activation funnel</h3>
+        <div class="funnel-row">
+          <div class="funnel-step">
+            <div class="funnel-step-label">Eligible cohort</div>
+            <div class="funnel-step-value">12,840</div>
+            <div class="funnel-step-pct">100%</div>
+          </div>
+          <div class="funnel-step">
+            <div class="funnel-step-label">Consented (Layer 2)</div>
+            <div class="funnel-step-value">8,710</div>
+            <div class="funnel-step-pct">67.8%</div>
+          </div>
+          <div class="funnel-step">
+            <div class="funnel-step-label">Reached (push + in-app)</div>
+            <div class="funnel-step-value">5,920</div>
+            <div class="funnel-step-pct">46.1%</div>
+          </div>
+          <div class="funnel-step">
+            <div class="funnel-step-label">Opened offer</div>
+            <div class="funnel-step-value">2,140</div>
+            <div class="funnel-step-pct">36.1% open</div>
+          </div>
+          <div class="funnel-step">
+            <div class="funnel-step-label">Redeemed</div>
+            <div class="funnel-step-value">684</div>
+            <div class="funnel-step-pct">31.9% redeem · <span class="delta">+18% vs avg</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- STAGE 01 — DISCOVER                                              -->
+    <!-- ============================================================== -->
+    <div class="stage-view hidden" id="view-discover">
+      <div class="stage-header">
+        <div class="stage-tag"><span class="stage-tag-num">01</span> Discover</div>
+        <h1 class="stage-title">What does your category <em>actually</em> look like in MoneyMore?</h1>
+        <p class="stage-blurb">Aggregated, anonymised category intelligence. Competitor identities are masked (A / B / C) — only you see your own brand.</p>
+      </div>
+
+      <!-- Insight card -->
+      <div class="insight-card">
+        <div class="insight-label">★ Behavioural insight · April 2026</div>
+        <div class="insight-headline">
+          Customers who shop your category between <em>8&nbsp;PM and midnight</em> spend 2.3× more per visit than morning customers — and they're the <em>least likely</em> to be reached by your current offers.
+        </div>
+        <div class="insight-meta">Based on 41,820 transactions · 1,604 active users · last 90 days</div>
+      </div>
+
+      <!-- Top KPI row -->
+      <div class="panel-grid-2">
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>Share of category wallet</h3>
+              <div class="sub">Distribution of total category spend across top 6 brands · last 90 days</div>
+            </div>
+            <span class="panel-tag">Aggregated</span>
+          </div>
+          <div class="share-bars">
+            <div class="share-bar-row">
+              <div class="share-bar-name">Competitor A</div>
+              <div class="share-bar-track"><div class="share-bar-fill" style="width: 100%"></div></div>
+              <div class="share-bar-pct">31.8%</div>
+            </div>
+            <div class="share-bar-row">
+              <div class="share-bar-name you">You</div>
+              <div class="share-bar-track"><div class="share-bar-fill you" style="width: 73.6%"></div></div>
+              <div class="share-bar-pct">23.4%</div>
+            </div>
+            <div class="share-bar-row">
+              <div class="share-bar-name">Competitor B</div>
+              <div class="share-bar-track"><div class="share-bar-fill" style="width: 56.3%"></div></div>
+              <div class="share-bar-pct">17.9%</div>
+            </div>
+            <div class="share-bar-row">
+              <div class="share-bar-name">Competitor C</div>
+              <div class="share-bar-track"><div class="share-bar-fill" style="width: 38.4%"></div></div>
+              <div class="share-bar-pct">12.2%</div>
+            </div>
+            <div class="share-bar-row">
+              <div class="share-bar-name">Competitor D</div>
+              <div class="share-bar-track"><div class="share-bar-fill" style="width: 26.4%"></div></div>
+              <div class="share-bar-pct">8.4%</div>
+            </div>
+            <div class="share-bar-row">
+              <div class="share-bar-name">Others</div>
+              <div class="share-bar-track"><div class="share-bar-fill" style="width: 19.8%"></div></div>
+              <div class="share-bar-pct">6.3%</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>Your customer profile</h3>
+              <div class="sub">Aggregated behavioural signals · all-time</div>
+            </div>
+            <span class="panel-tag">You</span>
+          </div>
+          <div class="kpi-stack">
+            <div class="kpi-row-tight">
+              <div class="mini-kpi">
+                <div class="mini-kpi-label">Active customers</div>
+                <div class="mini-kpi-value">1,604</div>
+                <div class="mini-kpi-trend"><span class="trend-up">↑ 8.4%</span> vs Q1</div>
+              </div>
+              <div class="mini-kpi">
+                <div class="mini-kpi-label">Avg basket</div>
+                <div class="mini-kpi-value">EGP 672</div>
+                <div class="mini-kpi-trend"><span class="trend-up">↑ 3.1%</span> vs Q1</div>
+              </div>
+            </div>
+            <div class="kpi-row-tight">
+              <div class="mini-kpi">
+                <div class="mini-kpi-label">Tx / user / month</div>
+                <div class="mini-kpi-value">3.2</div>
+                <div class="mini-kpi-trend"><span class="trend-up">↑ 0.4</span> vs Q1</div>
+              </div>
+              <div class="mini-kpi">
+                <div class="mini-kpi-label">Repeat rate (90d)</div>
+                <div class="mini-kpi-value">64.8%</div>
+                <div class="mini-kpi-trend"><span class="trend-down">↓ 2.1pp</span> vs Q1</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trend chart + competitor comparison -->
+      <div class="panel-grid-2">
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>Share-of-wallet · trend</h3>
+              <div class="sub">12-month moving share — you vs top 3 competitors</div>
+            </div>
+            <span class="panel-tag">Aggregated</span>
+          </div>
+          <div class="chart-wrap h-260"><canvas id="chartTrend"></canvas></div>
+        </div>
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>Reach × value map</h3>
+              <div class="sub">x: customers reached · y: avg spend per customer · bubble: total category spend</div>
+            </div>
+            <span class="panel-tag">Aggregated</span>
+          </div>
+          <div class="chart-wrap h-260"><canvas id="chartReach"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- STAGE 02 — DEFINE                                                -->
+    <!-- ============================================================== -->
+    <div class="stage-view hidden" id="view-define">
+      <div class="stage-header">
+        <div class="stage-tag"><span class="stage-tag-num">02</span> Define</div>
+        <h1 class="stage-title">Build the <em>exact</em> audience you want to reach.</h1>
+        <p class="stage-blurb">Define a segment from transactional behaviour. Audiences below 1,000 users cannot be activated — k-anonymity floor protects user privacy and PDPL compliance.</p>
+      </div>
+
+      <div class="builder-grid">
+
+        <!-- Filters -->
+        <div class="panel" style="padding: 0;">
+          <div class="panel-head" style="padding: 22px 24px 16px;">
+            <div>
+              <h3>Audience filters</h3>
+              <div class="sub">Working audience · "Lapsed competitor regulars"</div>
+            </div>
+            <span class="panel-tag">Draft</span>
+          </div>
+
+          <div class="filter-block">
+            <div class="filter-label">
+              Category
+              <span class="filter-count">1 selected</span>
+            </div>
+            <div class="chip-row">
+              <span class="chip selected">Your category</span>
+              <span class="chip">Adjacent · Telecom</span>
+              <span class="chip">Adjacent · Pharmacy</span>
+              <span class="chip">Adjacent · Auto-service</span>
+              <span class="chip">+ 3 more</span>
+            </div>
+          </div>
+
+          <div class="filter-block">
+            <div class="filter-label">
+              Competitor exposure
+              <span class="filter-count">Spent with A · last 90 days</span>
+            </div>
+            <div class="chip-row">
+              <span class="chip selected">Competitor A</span>
+              <span class="chip">Competitor B</span>
+              <span class="chip">Competitor C</span>
+              <span class="chip">Competitor D</span>
+            </div>
+            <div style="margin-top: 14px;" class="range-block">
+              <div class="filter-label" style="margin-bottom: 6px;">Spend with selected competitor</div>
+              <div class="range-input">
+                <input class="range-field" value="EGP 500" />
+                <span class="range-dash">—</span>
+                <input class="range-field" value="EGP 5,000" />
+              </div>
+            </div>
+          </div>
+
+          <div class="filter-block">
+            <div class="filter-label">
+              Spend tier with you
+              <span class="filter-count">Low + None</span>
+            </div>
+            <div class="chip-row">
+              <span class="chip selected">None (never spent)</span>
+              <span class="chip selected">Low (&lt; EGP 500)</span>
+              <span class="chip">Medium (EGP 500–2,500)</span>
+              <span class="chip">High (&gt; EGP 2,500)</span>
+            </div>
+          </div>
+
+          <div class="filter-block">
+            <div class="filter-label">
+              Recency · last activity in category
+              <span class="filter-count">Last 90 days</span>
+            </div>
+            <div class="chip-row">
+              <span class="chip">30d</span>
+              <span class="chip">60d</span>
+              <span class="chip selected">90d</span>
+              <span class="chip">180d</span>
+            </div>
+          </div>
+
+          <div class="filter-block">
+            <div class="filter-label">
+              Frequency · category transactions / month
+              <span class="filter-count">2 — 8</span>
+            </div>
+            <div class="range-input">
+              <input class="range-field" value="2 tx/mo" />
+              <span class="range-dash">—</span>
+              <input class="range-field" value="8 tx/mo" />
+            </div>
+          </div>
+
+          <div class="filter-block">
+            <div class="filter-label">
+              Geography
+              <span class="filter-count">Greater Cairo</span>
+            </div>
+            <div class="chip-row">
+              <span class="chip selected">Greater Cairo</span>
+              <span class="chip">Alexandria</span>
+              <span class="chip">Delta</span>
+              <span class="chip">Upper Egypt</span>
+              <span class="chip">Coastal</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cohort preview -->
+        <div>
+          <div class="cohort-panel">
+            <div class="cohort-head">
+              <div class="cohort-label">Cohort size · live</div>
+              <div class="cohort-size">2,847</div>
+              <div class="cohort-sub">users match your filters</div>
+            </div>
+
+            <div class="anonymity-banner">
+              <span class="check">✓</span>
+              <div class="anonymity-banner-text">
+                <strong>Above k-anonymity floor (1,000).</strong> This audience can be saved and activated.
+              </div>
+            </div>
+
+            <div class="cohort-reach">
+              <div class="reach-row">
+                <span class="key">Matching cohort</span>
+                <span class="val">2,847</span>
+              </div>
+              <div class="reach-row">
+                <span class="key">× Layer 2 consented</span>
+                <span class="val">1,930 · 68%</span>
+              </div>
+              <div class="reach-row">
+                <span class="key">× App-active (30d)</span>
+                <span class="val">1,154 · 60%</span>
+              </div>
+              <div class="reach-row final">
+                <span class="key">Estimated reachable</span>
+                <span class="val">~1,154</span>
+              </div>
+            </div>
+
+            <div class="cohort-actions">
+              <button class="btn btn-primary">Save audience →</button>
+              <button class="btn btn-ghost">Activate in campaign</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- STAGE 03 — ACTIVATE                                              -->
+    <!-- ============================================================== -->
+    <div class="stage-view hidden" id="view-activate">
+      <div class="stage-header">
+        <div class="stage-tag"><span class="stage-tag-num">03</span> Activate</div>
+        <h1 class="stage-title">Push a precise offer to your <em>exact</em> audience.</h1>
+        <p class="stage-blurb">Compose your campaign on the left. Preview how it appears to users on the right. All campaigns are reviewed by MoneyMore before going live.</p>
+      </div>
+
+      <div class="composer-grid">
+
+        <!-- Composer -->
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>New campaign</h3>
+              <div class="sub">Draft · auto-saved 2 min ago</div>
+            </div>
+            <span class="panel-tag">Draft</span>
+          </div>
+
+          <div class="form-block">
+            <label class="form-label">Campaign name</label>
+            <input class="form-input" value="Win-back: lapsed Competitor A customers — Cairo · April" />
+          </div>
+
+          <div class="form-block">
+            <label class="form-label">Target audience</label>
+            <span class="seg-pill">
+              Lapsed competitor regulars · 1,154 reachable
+              <span class="seg-x">✕</span>
+            </span>
+          </div>
+
+          <div class="form-block">
+            <label class="form-label">Offer headline · Arabic</label>
+            <input class="form-input" value="‫خصم 30% على أول طلب — وقت ما تجرب الجديد‬" dir="rtl" />
+            <div class="form-help">Will be reviewed by native Arabic speaker before going live.</div>
+          </div>
+
+          <div class="form-block">
+            <label class="form-label">Offer body</label>
+            <textarea class="form-input" dir="rtl">‫عرض حصري لعملاء MoneyMore — صالح للاستخدام مرة واحدة. صلاحية 14 يوم.‬</textarea>
+          </div>
+
+          <div class="field-grid">
+            <div class="form-block">
+              <label class="form-label">Redemption cap</label>
+              <input class="form-input mono" value="500 redemptions" />
+            </div>
+            <div class="form-block">
+              <label class="form-label">Budget (EGP)</label>
+              <input class="form-input mono" value="50,000" />
+            </div>
+          </div>
+
+          <div class="field-grid">
+            <div class="form-block">
+              <label class="form-label">Push window</label>
+              <input class="form-input" value="Tue 21 May, 6 PM — Sun 26 May" />
+            </div>
+            <div class="form-block">
+              <label class="form-label">Pricing model</label>
+              <input class="form-input" value="EGP 100 / redemption" readonly style="background: var(--paper); color: var(--slate);"/>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 10px; margin-top: 24px;">
+            <button class="btn btn-accent">Submit for review →</button>
+            <button class="btn btn-ghost">Save draft</button>
+          </div>
+        </div>
+
+        <!-- Preview -->
+        <div>
+          <div class="preview-toggle">
+            <button class="active">In-app offer</button>
+            <button>Push notification</button>
+          </div>
+
+          <div class="phone-shell">
+            <div class="phone-screen">
+              <div class="phone-statusbar">
+                <span>9:41</span>
+                <span>● ●●● ▮</span>
+              </div>
+              <div class="mm-app-bar">
+                <div class="mm-name">MoneyMore</div>
+                <div style="font-size: 18px;">⌃</div>
+              </div>
+              <div class="mm-section-label">For you</div>
+
+              <div class="offer-card featured">
+                <div class="offer-merchant">Brand Co.</div>
+                <div class="offer-headline" dir="rtl" style="text-align: right;">‫خصم 30%‬</div>
+                <div class="offer-body" dir="rtl" style="text-align: right;">‫على أول طلب — صلاحية 14 يوم‬</div>
+                <div class="offer-cta">احصل على العرض</div>
+              </div>
+
+              <div class="offer-card">
+                <div class="offer-merchant">Other partner</div>
+                <div class="offer-headline">15% cashback</div>
+                <div class="offer-body">On weekend orders only.</div>
+                <div class="offer-cta">View</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="push-card">
+            <div class="push-icon">M</div>
+            <div class="push-body">
+              <div class="push-title">MoneyMore</div>
+              <div class="push-text" dir="rtl" style="text-align: right;">‫عرض خصم 30% بانتظارك — مدته أسبوعين بس‬</div>
+              <div class="push-time">now</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- STAGE 04 — MEASURE                                               -->
+    <!-- ============================================================== -->
+    <div class="stage-view hidden" id="view-measure">
+      <div class="stage-header">
+        <div class="stage-tag"><span class="stage-tag-num">04</span> Measure</div>
+        <h1 class="stage-title">See <em>exactly</em> what your campaign did.</h1>
+        <p class="stage-blurb">Live activation funnel — and post-redemption spend tracked from real bank SMS. No other platform can show you this.</p>
+      </div>
+
+      <!-- Headline attribution -->
+      <div class="attribution-headline">
+        <div>
+          <div class="att-stat-label">Redeemed</div>
+          <div class="att-stat-value">684</div>
+          <div class="att-stat-sub">31.9% of openers · EGP 100 cost / redemption</div>
+        </div>
+        <div>
+          <div class="att-stat-label">Repeat customers · 60d</div>
+          <div class="att-stat-value">412</div>
+          <div class="att-stat-sub">60.2% of redeemers came back</div>
+        </div>
+        <div>
+          <div class="att-stat-label">Post-redemption spend lift</div>
+          <div class="att-stat-value lift">+41%</div>
+          <div class="att-stat-sub">EGP 247 → EGP 348 avg basket</div>
+        </div>
+      </div>
+
+      <!-- Moat callout -->
+      <div class="moat-callout">
+        <div class="moat-tag">★ Exclusive to Pulse</div>
+        <div class="moat-text">
+          Because MoneyMore reads bank SMS, we attribute <em>real downstream spend</em> with your brand — not just app clicks. Every figure above traces to a verified bank transaction in the 60 days after redemption.
+        </div>
+      </div>
+
+      <!-- Funnel -->
+      <div class="panel-grid-2">
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>Activation funnel</h3>
+              <div class="sub">Win-back: lapsed Competitor A customers · 21 May — 26 May</div>
+            </div>
+            <span class="panel-tag" style="background: rgba(42, 157, 107, 0.12); color: var(--good);">● Live</span>
+          </div>
+          <div class="funnel-viz">
+            <div class="funnel-bar-wrap">
+              <div class="funnel-bar-label"><strong>Eligible cohort</strong>Matched filters</div>
+              <div class="funnel-bar">
+                <div class="funnel-bar-fill" style="width: 100%">2,847</div>
+                <span class="funnel-bar-pct">100%</span>
+              </div>
+            </div>
+            <div class="funnel-bar-wrap">
+              <div class="funnel-bar-label"><strong>Consented</strong>Layer 2 opt-in</div>
+              <div class="funnel-bar">
+                <div class="funnel-bar-fill" style="width: 68%">1,930</div>
+                <span class="funnel-bar-pct">67.8%</span>
+              </div>
+            </div>
+            <div class="funnel-bar-wrap">
+              <div class="funnel-bar-label"><strong>Reached</strong>Push + in-app</div>
+              <div class="funnel-bar">
+                <div class="funnel-bar-fill" style="width: 60%">1,154</div>
+                <span class="funnel-bar-pct">59.8% of consented</span>
+              </div>
+            </div>
+            <div class="funnel-bar-wrap">
+              <div class="funnel-bar-label"><strong>Opened</strong>Tapped the offer</div>
+              <div class="funnel-bar">
+                <div class="funnel-bar-fill" style="width: 37%">2,140</div>
+                <span class="funnel-bar-pct">36.1% open rate</span>
+              </div>
+            </div>
+            <div class="funnel-bar-wrap">
+              <div class="funnel-bar-label"><strong>Redeemed</strong>Verified bank tx</div>
+              <div class="funnel-bar">
+                <div class="funnel-bar-fill" style="width: 24%">684</div>
+                <span class="funnel-bar-pct">31.9% redemption</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>Post-redemption spend · 60-day window</h3>
+              <div class="sub">Avg weekly spend with you — redeemers vs control cohort</div>
+            </div>
+            <span class="panel-tag">Attribution</span>
+          </div>
+          <div class="chart-wrap h-280"><canvas id="chartAttribution"></canvas></div>
+          <div class="legend-row">
+            <span><span class="legend-dot" style="background: var(--pulse-deep);"></span>Redeemers (n = 684)</span>
+            <span><span class="legend-dot" style="background: var(--mute);"></span>Control · matched non-redeemers</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- STAGE 05 — LEARN                                                 -->
+    <!-- ============================================================== -->
+    <div class="stage-view hidden" id="view-learn">
+      <div class="stage-header">
+        <div class="stage-tag"><span class="stage-tag-num">05</span> Learn</div>
+        <h1 class="stage-title">What to do <em>next</em>.</h1>
+        <p class="stage-blurb">Your monthly intelligence brief and three suggested next moves — derived from your category data and last month's campaign performance.</p>
+      </div>
+
+      <div class="panel-grid-2" style="grid-template-columns: 1.2fr 1fr;">
+
+        <!-- Report preview -->
+        <div class="report-preview">
+          <div class="report-cover">
+            <div class="report-month">Intelligence brief · April 2026</div>
+            <div class="report-title">The 8 PM customer is your fastest-growing segment.</div>
+            <div class="report-sub">Brand Co. · 12 pages · auto-delivered</div>
+          </div>
+          <div class="report-body">
+            <div class="report-section">
+              <div class="report-section-head">Headline</div>
+              <div class="report-section-content">Your <strong>23.4%</strong> category share held flat, but late-evening transactions grew <strong>+18%</strong> month-over-month.</div>
+            </div>
+            <div class="report-section">
+              <div class="report-section-head">What worked</div>
+              <div class="report-section-content">The Competitor A win-back campaign hit a <strong>31.9% redemption</strong> and drove <strong>+41% spend lift</strong>.</div>
+            </div>
+            <div class="report-section">
+              <div class="report-section-head">What to do next</div>
+              <div class="report-section-content">Build a late-evening audience. Test a higher basket-value offer. Expand to Alexandria.</div>
+            </div>
+            <div style="margin-top: 18px; display: flex; gap: 10px;">
+              <button class="btn btn-primary">Download PDF</button>
+              <button class="btn btn-ghost">Share with team</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Next actions -->
+        <div>
+          <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--slate-soft); font-weight: 600; margin-bottom: 14px;">Suggested next audiences</div>
+          <div class="next-action-list">
+            <div class="next-action" onclick="goStage('define')">
+              <div class="next-action-num">01</div>
+              <div>
+                <div class="next-action-title">Late-evening high-basket regulars</div>
+                <div class="next-action-desc">~1,840 users · category, 8 PM–12 AM, basket &gt; EGP 800</div>
+              </div>
+              <div class="next-action-arrow">→</div>
+            </div>
+            <div class="next-action" onclick="goStage('define')">
+              <div class="next-action-num">02</div>
+              <div>
+                <div class="next-action-title">Competitor B's loyal switchers</div>
+                <div class="next-action-desc">~1,210 users · 3+ Competitor B tx, low engagement with you</div>
+              </div>
+              <div class="next-action-arrow">→</div>
+            </div>
+            <div class="next-action" onclick="goStage('define')">
+              <div class="next-action-num">03</div>
+              <div>
+                <div class="next-action-title">Lapsed loyalists (90+ days)</div>
+                <div class="next-action-desc">~2,470 users · ex-customers with high prior spend</div>
+              </div>
+              <div class="next-action-arrow">→</div>
+            </div>
+          </div>
+
+          <div style="margin-top: 24px; padding: 18px 20px; background: var(--surface); border: 1px solid var(--rule); border-radius: 10px;">
+            <div style="font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--slate-soft); font-weight: 600; margin-bottom: 8px;">Account team</div>
+            <div style="font-size: 13px;">Your Pulse account manager is reviewing your Q2 plan.</div>
+            <div style="font-size: 11.5px; color: var(--mute); margin-top: 6px;">Next QBR: 4 June 2026 · 10:00</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="foot">
+      <div>Pulse v0.1 · Audience Intelligence by MoneyMore</div>
+      <div class="foot-meta">Preview build · brand-neutral mockup · 13 May 2026</div>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+  // -------- Stage navigation --------
+  const stages = document.querySelectorAll('.stage');
+  const views  = document.querySelectorAll('.stage-view');
+  const crumb  = document.getElementById('crumb-stage');
+
+  const stageNames = {
+    overview: 'Overview',
+    discover: 'Discover',
+    define:   'Define',
+    activate: 'Activate',
+    measure:  'Measure',
+    learn:    'Learn',
+  };
+
+  function goStage(key) {
+    stages.forEach(s => s.classList.toggle('active', s.dataset.stage === key));
+    views.forEach(v => v.classList.toggle('hidden', v.id !== `view-${key}`));
+    crumb.textContent = stageNames[key];
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  stages.forEach(s => s.addEventListener('click', () => goStage(s.dataset.stage)));
+
+  // -------- Charts --------
+  Chart.defaults.font.family = "'Inter Tight', sans-serif";
+  Chart.defaults.font.size = 11;
+  Chart.defaults.color = '#6B7785';
+  Chart.defaults.borderColor = '#EFF1F3';
+
+  const months = ['May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr'];
+
+  // Trend chart
+  new Chart(document.getElementById('chartTrend'), {
+    type: 'line',
+    data: {
+      labels: months,
+      datasets: [
+        { label: 'Competitor A', data: [33.8,33.2,32.9,32.7,32.5,32.1,32.0,31.8,31.6,31.7,31.6,31.8], borderColor:'#6B7785', backgroundColor:'transparent', tension:0.32, borderWidth:1.8, pointRadius:0 },
+        { label: 'You',          data: [20.1,20.6,21.0,21.4,21.9,22.2,22.5,22.8,23.0,23.2,23.3,23.4], borderColor:'#007A6E', backgroundColor:'rgba(0,122,110,0.07)', tension:0.32, borderWidth:2.4, pointRadius:0, fill:true },
+        { label: 'Competitor B', data: [18.4,18.6,18.5,18.2,18.0,17.9,17.8,17.9,17.8,17.7,17.8,17.9], borderColor:'#A8B5C0', backgroundColor:'transparent', tension:0.32, borderWidth:1.5, pointRadius:0 },
+        { label: 'Competitor C', data: [13.1,12.9,12.8,12.6,12.5,12.4,12.3,12.3,12.2,12.2,12.2,12.2], borderColor:'#C9D1D9', backgroundColor:'transparent', tension:0.32, borderWidth:1.5, pointRadius:0 },
+      ],
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins: { legend: { position:'bottom', labels:{ boxWidth:10, padding:12, font:{size:11}}}},
+      scales: {
+        x: { grid:{ display:false }, ticks:{font:{size:10.5}} },
+        y: { ticks:{ callback:v=>v+'%', font:{size:10.5} }, grid:{color:'#F2F2F2'}, beginAtZero:false, suggestedMin:10 },
+      },
+    },
+  });
+
+  // Reach × Value bubble
+  const dots = [
+    { label:'Competitor A', users:3120, avg:31200, total:97300000, c:'#6B7785' },
+    { label:'You',          users:1604, avg:27734, total:44485633, c:'#007A6E' },
+    { label:'Competitor B', users:1820, avg:18900, total:34398000, c:'#A8B5C0' },
+    { label:'Competitor C', users:1240, avg:18800, total:23312000, c:'#C9D1D9' },
+    { label:'Competitor D', users:980,  avg:16400, total:16072000, c:'#D8DEE3' },
+  ];
+  const maxSpend = Math.max(...dots.map(d=>d.total));
+  const r = s => 7 + 28 * Math.sqrt(s/maxSpend);
+  new Chart(document.getElementById('chartReach'), {
+    type:'bubble',
+    data:{
+      datasets: dots.map(d => ({
+        label: d.label,
+        data: [{ x:d.users, y:d.avg, r:r(d.total) }],
+        backgroundColor: d.c + 'BB',
+        borderColor: d.c, borderWidth:1.5,
+      })),
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'bottom', labels:{ boxWidth:9, padding:10, font:{size:11}}}},
+      scales:{
+        x:{ type:'linear', title:{display:true,text:'Customers reached',font:{size:11,weight:'600'},color:'#54595F'}, ticks:{font:{size:10.5}, callback:v=>v.toLocaleString()}, grid:{color:'#F2F2F2'} },
+        y:{ title:{display:true,text:'Avg spend / user',font:{size:11,weight:'600'},color:'#54595F'}, ticks:{font:{size:10.5}, callback:v=>'EGP '+(v/1000)+'K'}, grid:{color:'#F2F2F2'} },
+      },
+    },
+  });
+
+  // Attribution chart
+  new Chart(document.getElementById('chartAttribution'), {
+    type: 'line',
+    data: {
+      labels: ['W-4','W-3','W-2','W-1','Redeem','W+1','W+2','W+3','W+4','W+5','W+6','W+7','W+8'],
+      datasets: [
+        {
+          label:'Redeemers',
+          data: [245,238,251,247,null,348,361,358,355,351,348,346,348],
+          borderColor:'#00504A',
+          backgroundColor:'rgba(0,122,110,0.12)',
+          tension:0.28, borderWidth:2.6, pointRadius:0, fill:true, spanGaps:true,
+        },
+        {
+          label:'Control',
+          data: [251,245,248,243,null,246,251,247,253,249,247,251,248],
+          borderColor:'#8B95A1',
+          backgroundColor:'transparent',
+          tension:0.28, borderWidth:1.8, pointRadius:0, borderDash:[4,4], spanGaps:true,
+        },
+      ],
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins: { legend: { display:false } },
+      scales: {
+        x: { grid:{display:false}, ticks:{font:{size:10.5}} },
+        y: { ticks:{ callback:v=>'EGP '+v, font:{size:10.5} }, grid:{color:'#F2F2F2'}, beginAtZero:false },
+      },
+    },
+  });
+</script>
+</body>
+</html>
