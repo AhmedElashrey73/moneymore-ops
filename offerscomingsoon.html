@@ -252,6 +252,28 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
 .notify-confirmed-ttl{font-size:14px;font-weight:700;color:var(--green-d);letter-spacing:-0.01em;margin-bottom:3px;}
 .notify-confirmed-body{font-size:11px;color:var(--green-d);line-height:1.5;font-weight:500;opacity:0.9;}
 
+/* Inline permission prompt — appears above CTA when notify-me tapped without notification permission */
+.perm-prompt{
+  background:linear-gradient(135deg,#FFF7E0 0%,#FBF4DC 100%);
+  border:1.5px solid rgba(184,134,11,0.35);
+  border-radius:12px;
+  padding:12px 14px;
+  margin-bottom:10px;
+  display:flex;flex-direction:column;gap:10px;
+}
+.perm-prompt-top{display:flex;align-items:flex-start;gap:10px;}
+.perm-prompt-ico{
+  width:32px;height:32px;border-radius:50%;
+  background:var(--gold);color:white;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;flex-shrink:0;
+}
+.perm-prompt-body{flex:1;min-width:0;}
+.perm-prompt-ttl{font-size:12px;font-weight:700;color:var(--gold-d);letter-spacing:-0.01em;line-height:1.3;margin-bottom:2px;}
+.perm-prompt-desc{font-size:11px;color:var(--gold-d);line-height:1.45;opacity:0.85;}
+.perm-prompt-actions{display:flex;gap:8px;}
+.perm-prompt-actions .btn{height:36px;font-size:12px;}
+
 .toast{position:absolute;bottom:60px;left:14px;right:14px;background:#0F0E0C;color:white;border-radius:10px;padding:10px 14px;font-size:11px;font-weight:600;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,0.30);z-index:50;display:flex;align-items:center;justify-content:center;gap:6px;}
 
 .section-header{font-size:9px;font-weight:700;color:var(--t3);letter-spacing:0.1em;text-transform:uppercase;padding:6px 0 0;display:flex;align-items:center;gap:6px;}
@@ -301,7 +323,7 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
     <span class="doc-tag designer">Designer brief</span>
     <span class="doc-tag android">Android</span>
     <span class="doc-tag feature">Coming Soon</span>
-    <span class="doc-tag wip">Draft v1</span>
+    <span class="doc-tag wip">Draft v2</span>
     <span class="doc-tag version">DB · Coming Soon v1</span>
     <span class="doc-date">29 April 2026 · upcoming sprint</span>
   </div>
@@ -321,6 +343,7 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
       <div class="flow-list">
         <div class="flow-list-item">Browse Available with upcoming offers visible</div>
         <div class="flow-list-item">Opt in to notify-me</div>
+        <div class="flow-list-item">Opt in · no notification permission</div>
         <div class="flow-list-item">My Offers — Notifying you section</div>
         <div class="flow-list-item">Cancel notify-me</div>
         <div class="flow-list-item">Receive go-live push</div>
@@ -634,7 +657,211 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
 
 <div class="flow-section">
   <div class="flow-section-header">
-    <div class="flow-section-title">Flow 3 — My Offers · Notifying you section</div>
+    <div class="flow-section-title">Flow 3 — Opt in · no notification permission</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="phone-row">
+
+    <div class="screen-col">
+      <div class="screen-label">Sheet · pre-tap (same as Flow 2)</div>
+      <div class="state-badge upcoming">coming soon</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div style="opacity:0.25;flex:1;background:var(--screen-bg)"></div>
+          <div class="overlay">
+            <div class="bottom-sheet">
+              <div class="bs-handle"></div>
+              <div class="sheet-header">
+                <div class="sheet-merchant-logo" style="background:#fff;border-color:#000"><svg viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg"><text x="21" y="26" font-family="Plus Jakarta Sans" font-size="11" font-weight="800" fill="#000" text-anchor="middle" letter-spacing="0.05em">ZARA</text></svg></div>
+                <div class="sheet-merchant-info">
+                  <div class="sheet-merchant-name">Zara · coming soon</div>
+                  <div class="sheet-offer-title">30% off spring collection</div>
+                </div>
+                <div class="sheet-close">✕</div>
+              </div>
+              <div class="discount-hero upcoming">
+                <div class="discount-hero-label">Coming soon</div>
+                <div class="discount-hero-amount">30<span class="unit">%</span></div>
+                <div class="discount-hero-meta">⏳ Starts Friday · 12:00pm</div>
+              </div>
+              <div class="btn btn-upcoming btn-lg">🔔 Notify me when live</div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav" style="opacity:0.25"></div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">tap Notify me · perms off</div>
+    </div>
+
+    <div class="screen-col">
+      <div class="screen-label">Inline prompt appears above CTA</div>
+      <div class="state-badge interaction">permission prompt</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div style="opacity:0.25;flex:1;background:var(--screen-bg)"></div>
+          <div class="overlay">
+            <div class="bottom-sheet">
+              <div class="bs-handle"></div>
+              <div class="sheet-header">
+                <div class="sheet-merchant-logo" style="background:#fff;border-color:#000"><svg viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg"><text x="21" y="26" font-family="Plus Jakarta Sans" font-size="11" font-weight="800" fill="#000" text-anchor="middle" letter-spacing="0.05em">ZARA</text></svg></div>
+                <div class="sheet-merchant-info">
+                  <div class="sheet-merchant-name">Zara · coming soon</div>
+                  <div class="sheet-offer-title">30% off spring collection</div>
+                </div>
+                <div class="sheet-close">✕</div>
+              </div>
+              <div class="discount-hero upcoming">
+                <div class="discount-hero-label">Coming soon</div>
+                <div class="discount-hero-amount">30<span class="unit">%</span></div>
+                <div class="discount-hero-meta">⏳ Starts Friday · 12:00pm</div>
+              </div>
+              <div class="perm-prompt">
+                <div class="perm-prompt-top">
+                  <div class="perm-prompt-ico">🔔</div>
+                  <div class="perm-prompt-body">
+                    <div class="perm-prompt-ttl">Notifications are off</div>
+                    <div class="perm-prompt-desc">We need notifications on to tell you when this goes live. Turn them on?</div>
+                  </div>
+                </div>
+                <div class="perm-prompt-actions">
+                  <div class="btn btn-upcoming">Enable</div>
+                  <div class="btn btn-outline">Skip for now</div>
+                </div>
+              </div>
+              <div class="btn btn-disabled btn-lg">🔔 Notify me when live</div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav" style="opacity:0.25"></div>
+      </div>
+      <div class="flow-note new">Inline prompt slides in above the CTA when user taps Notify me without notification permission. Notify-me CTA below is disabled while the prompt is open — user must resolve the prompt first (either path).</div>
+    </div>
+
+  </div>
+
+  <div style="margin-top:36px;padding-top:24px;border-top:1px dashed var(--b2);">
+    <div style="font-family:var(--f-mono);font-size:10px;font-weight:600;color:var(--t3);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:18px;">Branch A · Enable</div>
+
+    <div class="phone-row">
+
+      <div class="screen-col">
+        <div class="screen-label">OS permission dialog</div>
+        <div class="state-badge os">OS-rendered</div>
+        <div class="phone">
+          <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+          <div class="screen">
+            <div style="opacity:0.25;flex:1;background:var(--screen-bg)"></div>
+            <div style="position:absolute;inset:0;background:rgba(10,10,10,0.55);display:flex;align-items:center;justify-content:center;padding:24px;z-index:50">
+              <div style="background:white;border-radius:18px;width:100%;padding:18px 16px 0;overflow:hidden">
+                <div style="text-align:center;padding-bottom:14px">
+                  <div style="font-size:14px;font-weight:700;color:var(--t1);margin-bottom:6px;letter-spacing:-0.01em;">Allow MoneyMore to send you notifications?</div>
+                  <div style="font-size:12px;color:var(--t3);line-height:1.4">We'll only notify you about offers you opted into.</div>
+                </div>
+                <div style="display:flex;flex-direction:column;border-top:0.5px solid var(--b1);margin:0 -16px">
+                  <div style="padding:12px;text-align:center;font-size:14px;color:var(--t3);font-weight:600;border-bottom:0.5px solid var(--b1)">Don't allow</div>
+                  <div style="padding:12px;text-align:center;font-size:14px;color:var(--navy);font-weight:700">Allow</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="a-nav" style="opacity:0.25"></div>
+        </div>
+        <div class="flow-note decision">System dialog — rendered by Android, not MoneyMore. Only the purpose string is ours. After user taps Allow, the opt-in goes through and the standard confirmation flow continues (same as Flow 2).</div>
+      </div>
+
+      <div class="flow-arrow">
+        <div class="arrow-line"></div>
+        <div class="arrow-label">tap Allow</div>
+      </div>
+
+      <div class="screen-col">
+        <div class="screen-label">Opt-in confirmed (same as Flow 2)</div>
+        <div class="state-badge success">opted in</div>
+        <div class="phone">
+          <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+          <div class="screen">
+            <div style="opacity:0.25;flex:1;background:var(--screen-bg)"></div>
+            <div class="overlay">
+              <div class="bottom-sheet">
+                <div class="bs-handle"></div>
+                <div class="sheet-header">
+                  <div class="sheet-merchant-logo" style="background:#fff;border-color:#000"><svg viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg"><text x="21" y="26" font-family="Plus Jakarta Sans" font-size="11" font-weight="800" fill="#000" text-anchor="middle" letter-spacing="0.05em">ZARA</text></svg></div>
+                  <div class="sheet-merchant-info">
+                    <div class="sheet-merchant-name">Zara · coming soon</div>
+                    <div class="sheet-offer-title">30% off spring collection</div>
+                  </div>
+                  <div class="sheet-close">✕</div>
+                </div>
+                <div class="notify-confirmed">
+                  <div class="notify-confirmed-ico">🔔</div>
+                  <div class="notify-confirmed-ttl">You're on the list</div>
+                  <div class="notify-confirmed-body">We'll send you a push the moment this offer goes live.</div>
+                </div>
+                <div class="btn btn-upcoming-confirmed btn-lg">✓ Notifying you</div>
+              </div>
+            </div>
+            <div class="toast" style="bottom:40px">🔔 You'll be notified</div>
+          </div>
+          <div class="a-nav" style="opacity:0.25"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div style="margin-top:36px;padding-top:24px;border-top:1px dashed var(--b2);">
+    <div style="font-family:var(--f-mono);font-size:10px;font-weight:600;color:var(--t3);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:18px;">Branch B · Skip for now (hard skip)</div>
+
+    <div class="phone-row">
+
+      <div class="screen-col">
+        <div class="screen-label">Sheet returns to original state</div>
+        <div class="state-badge upcoming">not opted in</div>
+        <div class="phone">
+          <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+          <div class="screen">
+            <div style="opacity:0.25;flex:1;background:var(--screen-bg)"></div>
+            <div class="overlay">
+              <div class="bottom-sheet">
+                <div class="bs-handle"></div>
+                <div class="sheet-header">
+                  <div class="sheet-merchant-logo" style="background:#fff;border-color:#000"><svg viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg"><text x="21" y="26" font-family="Plus Jakarta Sans" font-size="11" font-weight="800" fill="#000" text-anchor="middle" letter-spacing="0.05em">ZARA</text></svg></div>
+                  <div class="sheet-merchant-info">
+                    <div class="sheet-merchant-name">Zara · coming soon</div>
+                    <div class="sheet-offer-title">30% off spring collection</div>
+                  </div>
+                  <div class="sheet-close">✕</div>
+                </div>
+                <div class="discount-hero upcoming">
+                  <div class="discount-hero-label">Coming soon</div>
+                  <div class="discount-hero-amount">30<span class="unit">%</span></div>
+                  <div class="discount-hero-meta">⏳ Starts Friday · 12:00pm</div>
+                </div>
+                <div class="btn btn-upcoming btn-lg">🔔 Notify me when live</div>
+              </div>
+            </div>
+            <div class="toast" style="bottom:40px">No notification set</div>
+          </div>
+          <div class="a-nav" style="opacity:0.25"></div>
+        </div>
+        <div class="flow-note new">Hard skip — the user is NOT opted in. CTA stays in its original "Notify me when live" state, ready for the user to try again later. Toast confirms the action without false promise. Available card stays unchanged in Coming Soon state — no green "Notifying you" badge.</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 4 — My Offers · Notifying you section</div>
     <div class="flow-section-line"></div>
   </div>
 
@@ -763,7 +990,7 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
 
 <div class="flow-section">
   <div class="flow-section-header">
-    <div class="flow-section-title">Flow 4 — Cancel notify-me</div>
+    <div class="flow-section-title">Flow 5 — Cancel notify-me</div>
     <div class="flow-section-line"></div>
   </div>
 
@@ -902,7 +1129,7 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
 
 <div class="flow-section">
   <div class="flow-section-header">
-    <div class="flow-section-title">Flow 5 — Receive go-live push</div>
+    <div class="flow-section-title">Flow 6 — Receive go-live push</div>
     <div class="flow-section-line"></div>
   </div>
 
@@ -1026,6 +1253,16 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
         <tr><td class="element-name">Persistent CTA after opt-in</td><td class="en">✓ Notifying you</td><td class="ar">✓ هنبعتلك</td></tr>
         <tr><td class="element-name">Toast on opt-in</td><td class="en">🔔 You'll be notified</td><td class="ar">🔔 هنبعتلك إشعار</td></tr>
         <tr><td class="element-name">Status block in sheet (post-opt-in)</td><td class="en">You're on the list — we'll send you a push the moment this goes live.</td><td class="ar">إنت في القائمة — هنبعتلك إشعار أول ما يبدأ.</td></tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="6">Inline permission prompt</td>
+          <td class="element-name">Prompt headline</td><td class="en">Notifications are off</td><td class="ar">الإشعارات مقفولة</td>
+        </tr>
+        <tr><td class="element-name">Prompt body</td><td class="en">We need notifications on to tell you when this goes live. Turn them on?</td><td class="ar">محتاجين الإشعارات تكون مفتوحة عشان نبلّغك أول ما يبدأ. تفتحها؟</td></tr>
+        <tr><td class="element-name">Primary action — Enable</td><td class="en">Enable</td><td class="ar">افتحها</td></tr>
+        <tr><td class="element-name">Secondary action — Skip</td><td class="en">Skip for now</td><td class="ar">دلوقتي لأ</td></tr>
+        <tr><td class="element-name">OS dialog purpose string</td><td class="en">We'll only notify you about offers you opted into.</td><td class="ar">هنبعتلك إشعارات بس عن العروض اللي سجّلت فيها.</td></tr>
+        <tr><td class="element-name">Toast on Skip</td><td class="en">No notification set</td><td class="ar">مفيش إشعار اتظبط</td></tr>
 
         <tr class="group-start">
           <td class="screen-name" rowspan="4">My Offers — Notifying you section</td>
