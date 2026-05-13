@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoneyMore — Elgameya Partner Offer · Designer Prototype</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --navy:#1A3C5E; --green:#2E8B57; --green-l:#E8F5EE;
+  --gold:#B8860B; --gold-l:#FBF4DC; --red:#C0392B; --red-l:#FDECEA;
+  --elg:#7A2E8E; --elg-l:#F3E8F7;
+  --page-bg:#F9F8F5; --page-border:#E2DFD8;
+  --screen-bg:#FAFAF8; --screen-bg2:#F2F0EB; --screen-bg3:#E8E5DE;
+  --t1:#1A1714; --t2:#3D3A35; --t3:#7A7670; --t4:#ABA7A0;
+  --t-pos:#1A6E3C; --t-neg:#A82419; --t-inv:#FFFFFF;
+  --b1:#E8E5DF; --b2:#D4D0C8; --b3:#BCBAB2;
+  --frame-bg:#2A2724; --frame-border:#1A1614;
+  --f-body:'Plus Jakarta Sans',sans-serif; --f-mono:'DM Mono',monospace;
+  --s-xs:10px; --s-sm:12px; --s-base:14px; --s-md:16px;
+  --s-lg:18px; --s-xl:22px; --s-2xl:28px;
+  --r-sm:6px; --r-md:12px; --r-lg:16px; --r-xl:24px; --r-pill:999px;
+  --shadow-phone:0 8px 32px rgba(0,0,0,0.14),0 2px 8px rgba(0,0,0,0.08);
+  --shadow-card:0 1px 4px rgba(0,0,0,0.06);
+  --ph-w:280px; --ph-h:560px; --ph-r:32px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-size:var(--s-base);line-height:1.6;-webkit-font-smoothing:antialiased;}
+.page{max-width:1500px;margin:0 auto;padding:48px 40px 96px;}
+
+/* ── DOC HEADER ─────────────────────────────────────────── */
+.doc-header{padding-bottom:32px;margin-bottom:40px;border-bottom:2px solid var(--b1);}
+.doc-meta{display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap;}
+.doc-tag{font-family:var(--f-mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;padding:4px 11px;border-radius:3px;font-weight:600;}
+.doc-tag.prototype{background:var(--green-l);color:#0F5830;}
+.doc-tag.designer{background:#EAE8FF;color:#3A3288;}
+.doc-tag.android{background:#E8F4EA;color:#1F5E2A;}
+.doc-tag.ios{background:#E8F0FA;color:#103868;}
+.doc-tag.wip{background:var(--gold-l);color:#6B5210;}
+.doc-tag.version{background:var(--navy);color:#fff;}
+.doc-date{font-family:var(--f-mono);font-size:11px;color:var(--t2);margin-left:auto;font-weight:500;}
+.doc-title{font-size:34px;font-weight:700;color:var(--t1);letter-spacing:-0.02em;line-height:1.15;margin-bottom:10px;}
+.doc-subtitle{font-size:15px;color:var(--t1);font-weight:400;margin-bottom:30px;line-height:1.5;max-width:920px;}
+
+.doc-info{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--b1);border-radius:var(--r-md);overflow:hidden;background:white;}
+.doc-info-cell{padding:16px 20px;border-right:1px solid var(--b1);}
+.doc-info-cell:last-child{border-right:none;}
+.info-label{font-family:var(--f-mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--t2);margin-bottom:8px;font-weight:600;}
+.info-body{font-size:13px;color:var(--t1);line-height:1.55;}
+.info-body strong{color:var(--t1);font-weight:700;}
+
+.flow-list{display:flex;flex-direction:column;gap:4px;}
+.flow-list-item{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--t1);line-height:1.45;}
+.flow-list-item::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--b3);flex-shrink:0;}
+.flow-list-item.active::before{background:var(--green);}
+
+/* ── FLOW SECTION ──────────────────────────────────────── */
+.flow-section{margin-bottom:64px;}
+.flow-section-header{display:flex;align-items:center;gap:16px;margin-bottom:28px;}
+.flow-section-line{flex:1;height:1px;background:var(--b2);}
+.flow-section-title{font-family:var(--f-body);font-size:16px;font-weight:700;letter-spacing:-0.01em;color:#fff;background:var(--navy);padding:6px 14px;border-radius:4px;white-space:nowrap;}
+
+.phone-row{display:flex;align-items:flex-start;gap:0;overflow-x:auto;padding-bottom:12px;}
+.phone-row::-webkit-scrollbar{height:4px;}
+.phone-row::-webkit-scrollbar-track{background:var(--b1);border-radius:2px;}
+.phone-row::-webkit-scrollbar-thumb{background:var(--b3);border-radius:2px;}
+
+.screen-col{display:flex;flex-direction:column;align-items:center;gap:10px;flex-shrink:0;}
+.screen-label{font-family:var(--f-body);font-size:11px;font-weight:600;color:var(--t2);text-align:center;max-width:var(--ph-w);line-height:1.4;}
+
+.state-badge{font-family:var(--f-mono);font-size:10px;font-weight:500;padding:3px 9px;border-radius:3px;letter-spacing:0.04em;}
+.state-badge.happy{background:#EBF7F1;color:#1A6E3C;}
+.state-badge.empty{background:var(--gold-l);color:#8A6510;}
+.state-badge.error{background:var(--red-l);color:var(--red);}
+.state-badge.loading{background:#E8F0FA;color:#103868;}
+.state-badge.success{background:var(--green-l);color:#0F5830;}
+.state-badge.interaction{background:#EAE8FF;color:#3A3288;}
+
+.flow-arrow{display:flex;flex-direction:column;align-items:center;flex-shrink:0;padding-top:calc(var(--ph-h)/2 - 16px);padding-left:6px;padding-right:6px;}
+.arrow-line{width:32px;height:1px;background:var(--b2);position:relative;}
+.arrow-line::after{content:'';position:absolute;right:-1px;top:-3px;border-left:5px solid var(--b2);border-top:3px solid transparent;border-bottom:3px solid transparent;}
+.arrow-label{font-family:var(--f-body);font-size:10px;font-weight:600;color:var(--t2);text-align:center;max-width:70px;line-height:1.35;margin-top:6px;}
+
+/* ── PHONE FRAME ───────────────────────────────────────── */
+.phone{width:var(--ph-w);height:var(--ph-h);border-radius:var(--ph-r);background:var(--frame-bg);box-shadow:var(--shadow-phone);position:relative;overflow:hidden;border:2px solid var(--frame-border);flex-shrink:0;}
+.a-status{position:absolute;top:0;left:0;right:0;height:20px;background:var(--screen-bg);display:flex;align-items:center;justify-content:space-between;padding:0 14px;z-index:10;font-family:var(--f-mono);font-size:8px;color:var(--t1);}
+.a-nav{position:absolute;bottom:0;left:0;right:0;height:48px;background:var(--screen-bg);border-top:1px solid var(--b1);display:flex;align-items:center;z-index:10;}
+.a-nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 0;}
+.a-nav-icon{width:20px;height:20px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;}
+.a-nav-item.on .a-nav-icon{background:var(--green-l);}
+.a-nav-lbl{font-size:8px;color:var(--t4);font-weight:500;}
+.a-nav-item.on .a-nav-lbl{color:var(--green);}
+
+.screen{position:absolute;top:20px;bottom:48px;left:0;right:0;background:var(--screen-bg);overflow:hidden;display:flex;flex-direction:column;}
+.screen.no-nav{bottom:0;}
+
+/* ── SCREEN INNER PRIMITIVES ───────────────────────────── */
+.app-bar{height:46px;display:flex;align-items:center;padding:0 14px;background:var(--screen-bg);border-bottom:1px solid var(--b1);flex-shrink:0;gap:10px;}
+.app-bar-title{font-size:var(--s-md);font-weight:700;color:var(--t1);flex:1;}
+.app-bar-action{font-size:18px;color:var(--t2);line-height:1;}
+.back-btn{font-size:18px;color:var(--navy);line-height:1;}
+
+.sc-area{flex:1;overflow:hidden;display:flex;flex-direction:column;}
+.sc-pad{padding:14px;display:flex;flex-direction:column;gap:10px;}
+
+.t-title{font-size:var(--s-xl);font-weight:700;color:var(--t1);letter-spacing:-0.01em;line-height:1.2;}
+.t-heading{font-size:var(--s-lg);font-weight:600;color:var(--t1);line-height:1.25;}
+.t-body{font-size:var(--s-base);color:var(--t2);line-height:1.5;}
+.t-caption{font-size:var(--s-sm);color:var(--t3);line-height:1.5;}
+.t-xs{font-size:var(--s-xs);color:var(--t4);}
+.t-label{font-size:var(--s-xs);font-weight:700;color:var(--t3);letter-spacing:0.05em;text-transform:uppercase;}
+.rtl{direction:rtl;text-align:right;}
+
+/* Offers tab structure */
+.tab-strip{display:flex;border-bottom:1px solid var(--b1);background:var(--screen-bg);padding:0 14px;flex-shrink:0;}
+.tab-strip-item{padding:11px 4px;margin-right:18px;font-size:var(--s-sm);font-weight:600;color:var(--t3);border-bottom:2px solid transparent;margin-bottom:-1px;}
+.tab-strip-item.on{color:var(--navy);border-bottom-color:var(--navy);}
+
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;padding:0 2px;}
+.sec-ttl{font-size:var(--s-xs);font-weight:700;color:var(--t3);letter-spacing:0.06em;text-transform:uppercase;}
+
+/* Featured Elgameya card */
+.elg-card{background:linear-gradient(135deg,#3D1850 0%,#7A2E8E 100%);border-radius:var(--r-md);padding:14px;color:white;position:relative;overflow:hidden;box-shadow:var(--shadow-card);}
+.elg-card-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.elg-logo{width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;letter-spacing:-0.02em;color:white;flex-shrink:0;}
+.elg-partner{font-size:var(--s-xs);font-weight:600;opacity:0.75;letter-spacing:0.04em;text-transform:uppercase;}
+.elg-stamp{position:absolute;top:14px;right:14px;background:#FFD24A;color:#3D1850;font-weight:800;font-size:9px;padding:3px 8px;border-radius:3px;letter-spacing:0.04em;}
+.elg-title{font-size:var(--s-md);font-weight:700;line-height:1.3;margin-bottom:4px;}
+.elg-sub{font-size:var(--s-xs);opacity:0.8;line-height:1.4;margin-bottom:14px;}
+.elg-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.elg-exp{font-size:9px;opacity:0.7;display:flex;align-items:center;gap:4px;}
+.elg-cta{background:white;color:#3D1850;font-size:var(--s-xs);font-weight:700;padding:7px 14px;border-radius:var(--r-pill);}
+
+/* Capped / exhausted card */
+.elg-card.capped{background:#E8E5DE;color:var(--t3);}
+.elg-card.capped .elg-logo{background:rgba(0,0,0,0.06);color:var(--t3);}
+.elg-card.capped .elg-stamp{background:var(--t4);color:white;}
+.elg-card.capped .elg-cta{background:transparent;color:var(--t3);border:1px solid var(--b3);}
+
+/* Other-offer placeholder cards (context) */
+.offer-card-sm{background:white;border:1px solid var(--b1);border-radius:var(--r-md);padding:12px;display:flex;align-items:center;gap:10px;box-shadow:var(--shadow-card);}
+.offer-card-sm-logo{width:32px;height:32px;border-radius:7px;background:var(--screen-bg2);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.offer-card-sm-body{flex:1;min-width:0;}
+.offer-card-sm-ttl{font-size:var(--s-sm);font-weight:700;color:var(--t1);}
+.offer-card-sm-sub{font-size:var(--s-xs);color:var(--t3);}
+.offer-card-sm-cta{font-size:var(--s-xs);font-weight:700;color:var(--green);}
+
+/* ── BOTTOM SHEET ───────────────────────────────────────── */
+.overlay{position:absolute;inset:0;background:rgba(0,0,0,0.5);display:flex;align-items:flex-end;z-index:40;}
+.sheet{background:var(--screen-bg);border-radius:var(--r-xl) var(--r-xl) 0 0;width:100%;padding:14px 14px 24px;box-shadow:0 -4px 24px rgba(0,0,0,0.1);max-height:88%;overflow-y:auto;}
+.sheet-handle{width:36px;height:4px;background:var(--b2);border-radius:2px;margin:0 auto 12px;}
+.sheet-head{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.sheet-head .elg-logo{background:#3D1850;color:white;}
+.sheet-partner-name{font-size:var(--s-sm);font-weight:700;color:var(--t1);}
+.sheet-partner-cat{font-size:var(--s-xs);color:var(--t3);}
+.sheet-close{font-size:18px;color:var(--t3);line-height:1;width:24px;height:24px;display:flex;align-items:center;justify-content:center;}
+
+.save-hero{background:linear-gradient(135deg,#3D1850 0%,#7A2E8E 100%);border-radius:var(--r-md);padding:18px 16px;color:white;text-align:center;margin-bottom:14px;position:relative;overflow:hidden;}
+.save-hero-lbl{font-size:var(--s-xs);font-weight:600;opacity:0.8;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;}
+.save-hero-amt{font-size:32px;font-weight:800;letter-spacing:-0.02em;line-height:1;}
+.save-hero-cur{font-size:var(--s-sm);font-weight:600;opacity:0.85;margin-top:2px;}
+
+.sheet-headline{font-size:var(--s-md);font-weight:700;color:var(--t1);line-height:1.35;margin-bottom:10px;}
+.terms-box{background:var(--screen-bg2);border-radius:var(--r-sm);padding:11px 12px;font-size:var(--s-xs);color:var(--t2);line-height:1.55;margin-bottom:14px;}
+.terms-box-ar{font-size:9px;color:var(--t3);line-height:1.5;direction:rtl;text-align:right;margin-top:6px;padding-top:6px;border-top:1px dashed var(--b2);}
+
+/* Coupon ticket — code block */
+.coupon{background:#FBF4DC;border:2px dashed var(--gold);border-radius:var(--r-md);padding:14px 16px;margin-bottom:12px;position:relative;}
+.coupon::before,.coupon::after{content:'';position:absolute;top:50%;width:12px;height:12px;background:var(--screen-bg);border-radius:50%;transform:translateY(-50%);}
+.coupon::before{left:-7px;}
+.coupon::after{right:-7px;}
+.coupon-lbl{font-size:var(--s-xs);font-weight:700;color:#8A6510;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px;}
+.coupon-row{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.coupon-code{font-family:var(--f-mono);font-size:var(--s-lg);font-weight:700;color:#5A3D08;letter-spacing:0.04em;}
+.coupon-copy{display:flex;align-items:center;gap:5px;font-size:var(--s-xs);font-weight:700;color:var(--navy);background:white;padding:6px 11px;border-radius:var(--r-sm);border:1px solid var(--b2);}
+.coupon-copy-ico{font-size:12px;}
+
+.disclosure{display:flex;gap:7px;font-size:10px;color:var(--t3);line-height:1.5;padding:0 2px;margin-bottom:12px;}
+.disclosure-ico{font-size:11px;flex-shrink:0;margin-top:1px;}
+.disclosure-ar{font-size:9px;color:var(--t3);line-height:1.4;direction:rtl;text-align:right;margin-top:4px;}
+
+/* Buttons */
+.btn{height:44px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;gap:6px;font-family:var(--f-body);font-size:var(--s-sm);font-weight:700;border:none;width:100%;cursor:default;}
+.btn-primary{background:var(--navy);color:white;}
+.btn-accent{background:var(--green);color:white;}
+.btn-elg{background:#3D1850;color:white;}
+.btn-outline{background:transparent;border:1.5px solid var(--navy);color:var(--navy);}
+.btn-ghost{background:transparent;color:var(--navy);}
+.btn-disabled{background:var(--screen-bg3);color:var(--t4);}
+.btn-lg{height:48px;font-size:var(--s-base);}
+
+/* Toast */
+.toast{position:absolute;left:14px;right:14px;bottom:64px;background:var(--t1);color:white;padding:11px 14px;border-radius:var(--r-sm);font-size:var(--s-xs);font-weight:600;display:flex;align-items:center;gap:7px;box-shadow:0 4px 16px rgba(0,0,0,0.18);z-index:45;}
+.toast.err{background:#7A1810;}
+.toast-ico{font-size:13px;}
+
+/* Redirect splash */
+.redirect-splash{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:linear-gradient(180deg,#FAFAF8 0%,#F3E8F7 100%);}
+.redirect-logo{width:64px;height:64px;border-radius:14px;background:linear-gradient(135deg,#3D1850 0%,#7A2E8E 100%);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;color:white;letter-spacing:-0.02em;box-shadow:0 4px 16px rgba(61,24,80,0.3);}
+.redirect-txt{font-size:var(--s-sm);font-weight:600;color:var(--t2);}
+.redirect-spin{display:flex;gap:5px;}
+.redirect-spin span{width:5px;height:5px;border-radius:50%;background:var(--elg);opacity:0.4;}
+.redirect-spin span:nth-child(1){opacity:0.9;}
+.redirect-spin span:nth-child(2){opacity:0.7;}
+
+/* My Offers entry row */
+.my-offer-row{background:white;border:1px solid var(--b1);border-radius:var(--r-md);padding:12px;display:flex;align-items:center;gap:10px;box-shadow:var(--shadow-card);}
+.my-offer-body{flex:1;min-width:0;}
+.my-offer-ttl{font-size:var(--s-sm);font-weight:700;color:var(--t1);}
+.my-offer-sub{font-size:var(--s-xs);color:var(--t3);margin-top:1px;}
+.my-offer-chip{font-size:9px;font-weight:700;background:var(--green-l);color:#0F5830;padding:3px 7px;border-radius:3px;letter-spacing:0.04em;text-transform:uppercase;}
+.my-offer-chip.expired{background:var(--screen-bg2);color:var(--t3);}
+
+/* Empty unavailable in-sheet */
+.unavail-box{padding:28px 16px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:8px;}
+.unavail-ico{width:48px;height:48px;border-radius:50%;background:var(--screen-bg2);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:4px;}
+.unavail-ttl{font-size:var(--s-base);font-weight:700;color:var(--t1);}
+.unavail-desc{font-size:var(--s-xs);color:var(--t3);line-height:1.5;max-width:220px;}
+
+/* Flow notes */
+.flow-note{max-width:var(--ph-w);padding:9px 12px;border-radius:4px;font-family:var(--f-body);font-size:11px;font-weight:500;line-height:1.5;}
+.flow-note.decision{background:#FBF4DC;color:#6B5210;border-left:3px solid var(--gold);}
+.flow-note.new{background:var(--green-l);color:#0F5830;border-left:3px solid var(--green);}
+.flow-note.info{background:#EAF0FE;color:#103868;border-left:3px solid #4A80C0;}
+
+/* ── HANDOFF ───────────────────────────────────────────── */
+.handoff{margin-top:64px;padding:36px;background:white;border:1px solid var(--b1);border-radius:var(--r-md);}
+.handoff-title{font-size:26px;font-weight:700;color:var(--t1);margin-bottom:8px;letter-spacing:-0.01em;}
+.handoff-sub{font-size:14px;color:var(--t2);margin-bottom:28px;line-height:1.5;}
+.handoff-sec{margin-top:28px;padding-top:24px;border-top:1px solid var(--b1);}
+.handoff-sec:first-of-type{border-top:none;padding-top:0;margin-top:0;}
+.handoff-h{font-size:18px;font-weight:700;color:var(--t1);margin-bottom:12px;}
+.handoff-p{font-size:14px;color:var(--t1);line-height:1.6;margin-bottom:8px;}
+.handoff-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.handoff-list li{font-size:14px;color:var(--t1);line-height:1.6;padding-left:16px;position:relative;}
+.handoff-list li::before{content:'—';position:absolute;left:0;color:var(--t3);font-weight:700;}
+
+.copy-table{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed;}
+.copy-table col.col-screen{width:22%;}
+.copy-table col.col-element{width:20%;}
+.copy-table col.col-en{width:29%;}
+.copy-table col.col-ar{width:29%;}
+.copy-table th{text-align:left;padding:10px 12px;border-bottom:2px solid var(--b2);font-size:11px;color:var(--t2);text-transform:uppercase;letter-spacing:0.06em;font-weight:700;background:var(--screen-bg);}
+.copy-table td{padding:10px 12px;border-bottom:1px solid var(--b1);vertical-align:top;color:var(--t1);line-height:1.55;word-wrap:break-word;overflow-wrap:break-word;}
+.copy-table td.screen-name{font-weight:700;color:var(--t1);background:var(--screen-bg);}
+.copy-table td.element-name{color:var(--t2);font-weight:500;}
+.copy-table td.en{font-size:12px;color:var(--t1);}
+.copy-table td.ar{font-size:12px;color:var(--t1);direction:rtl;text-align:right;font-family:var(--f-body);}
+.copy-table tr.group-start td{border-top:2px solid var(--b2);}
+
+.callout{padding:12px 14px;border-radius:0 var(--r-sm) var(--r-sm) 0;font-size:13px;line-height:1.55;margin-top:12px;}
+.callout.info{background:#EAF0FE;border-left:3px solid #4A80C0;color:#103868;}
+.callout.warn{background:var(--gold-l);border-left:3px solid var(--gold);color:#6B5210;}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ═══════════════════════════════════════════════════════
+     DOC HEADER
+═══════════════════════════════════════════════════════════ -->
+<div class="doc-header">
+  <div class="doc-meta">
+    <span class="doc-tag prototype">Prototype</span>
+    <span class="doc-tag designer">Designer brief</span>
+    <span class="doc-tag android">Android</span>
+    <span class="doc-tag ios">iOS</span>
+    <span class="doc-tag wip">Draft v1</span>
+    <span class="doc-tag version">DB-040</span>
+    <span class="doc-date">First partner offer in Offers tab</span>
+  </div>
+
+  <div class="doc-title">Elgameya Partner Offer</div>
+  <div class="doc-subtitle">A user claims a one-time 300 EGP promo code for their first Elgameya circle installment, then opens the Elgameya app to redeem it. This is MoneyMore's first real partner offer — the design sets the pattern for every partner that comes after.</div>
+
+  <div class="doc-info">
+    <div class="doc-info-cell">
+      <div class="info-label">The problem</div>
+      <div class="info-body">
+        The Offers tab today is empty stagecraft. Elgameya is the first partner with real value to give a real user. The flow has to feel like a coupon worth keeping — not a generic banner ad. The moment of code reveal is where the offer earns its place: the code must feel tangible, the redirect must feel intentional, and the user must understand they're leaving MoneyMore without it feeling abrupt.
+      </div>
+    </div>
+    <div class="doc-info-cell">
+      <div class="info-label">Flows in this document</div>
+      <div class="flow-list">
+        <div class="flow-list-item active">Flow 1 — Claim Elgameya offer</div>
+        <div class="flow-list-item active">Flow 2 — Re-access claimed code from My Offers</div>
+        <div class="flow-list-item active">Flow 3 — Edge · Code pool exhausted</div>
+        <div class="flow-list-item active">Flow 4 — Edge · Redirect fails</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 1 — CLAIM
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 1 — Claim Elgameya offer</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="phone-row">
+
+    <!-- Phone 1: Offers tab — Available -->
+    <div class="screen-col">
+      <div class="screen-label">Offers tab · Available · Elgameya card</div>
+      <div class="state-badge happy">default</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="app-bar-title">Offers</div>
+            <div class="app-bar-action">🔍</div>
+          </div>
+          <div class="tab-strip">
+            <div class="tab-strip-item on">Available</div>
+            <div class="tab-strip-item">My offers</div>
+          </div>
+          <div class="sc-area">
+            <div class="sc-pad">
+
+              <div class="sec-hdr"><div class="sec-ttl">Featured</div></div>
+
+              <div class="elg-card">
+                <div class="elg-stamp">300 EGP OFF</div>
+                <div class="elg-card-row">
+                  <div class="elg-logo">ج</div>
+                  <div>
+                    <div class="elg-partner">Elgameya</div>
+                  </div>
+                </div>
+                <div class="elg-title">Join an Elgameya</div>
+                <div class="elg-sub">300 EGP off your first installment</div>
+                <div class="elg-foot">
+                  <div class="elg-exp">⏱ Ends in 18 days</div>
+                  <div class="elg-cta">Get code</div>
+                </div>
+              </div>
+
+              <div class="sec-hdr" style="margin-top:6px"><div class="sec-ttl">More offers</div></div>
+
+              <div class="offer-card-sm">
+                <div class="offer-card-sm-logo">🏦</div>
+                <div class="offer-card-sm-body">
+                  <div class="offer-card-sm-ttl">Bank cashback</div>
+                  <div class="offer-card-sm-sub">Up to 5% on groceries</div>
+                </div>
+                <div class="offer-card-sm-cta">View</div>
+              </div>
+              <div class="offer-card-sm">
+                <div class="offer-card-sm-logo">📱</div>
+                <div class="offer-card-sm-body">
+                  <div class="offer-card-sm-ttl">Bill discount</div>
+                  <div class="offer-card-sm-sub">10% off your mobile bill</div>
+                </div>
+                <div class="offer-card-sm-cta">View</div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕️</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Elgameya sits at the top of Available as a Featured card — bigger, branded with partner colours, distinct from the white "more offers" rows underneath. The whole card is tappable; the pill CTA is a visual anchor, not a separate target.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">tap card or CTA</div>
+    </div>
+
+    <!-- Phone 2: Offer detail sheet (before claim) -->
+    <div class="screen-col">
+      <div class="screen-label">Offer detail · before claim</div>
+      <div class="state-badge interaction">bottom sheet</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="sc-pad" style="opacity:0.25">
+            <div class="elg-card">
+              <div class="elg-stamp">300 EGP OFF</div>
+              <div class="elg-card-row"><div class="elg-logo">ج</div><div><div class="elg-partner">Elgameya</div></div></div>
+              <div class="elg-title">Join an Elgameya</div>
+              <div class="elg-sub">300 EGP off your first installment</div>
+            </div>
+          </div>
+          <div class="overlay">
+            <div class="sheet">
+              <div class="sheet-handle"></div>
+              <div class="sheet-head">
+                <div class="elg-logo">ج</div>
+                <div style="flex:1">
+                  <div class="sheet-partner-name">Elgameya</div>
+                  <div class="sheet-partner-cat">Savings · Partner offer</div>
+                </div>
+                <div class="sheet-close">✕</div>
+              </div>
+
+              <div class="save-hero">
+                <div class="save-hero-lbl">You save</div>
+                <div class="save-hero-amt">300</div>
+                <div class="save-hero-cur">EGP</div>
+              </div>
+
+              <div class="sheet-headline">300 EGP off your first Elgameya installment</div>
+
+              <div class="terms-box">
+                Valid on your first installment only, in the Elgameya circle of your choice. One-time use per MoneyMore user. Promo applied at checkout inside the Elgameya app.
+              </div>
+
+              <div class="btn btn-elg btn-lg">Get code</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note decision">Sheet covers most of the screen, but the Available list behind it stays dimmed and visible — the user always knows they can dismiss back to where they came from. Swipe-down, tap-outside, and ✕ all dismiss.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">tap Get code</div>
+    </div>
+
+    <!-- Phone 3: Code revealed -->
+    <div class="screen-col">
+      <div class="screen-label">Offer detail · code revealed</div>
+      <div class="state-badge success">code assigned</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="sc-pad" style="opacity:0.25">
+            <div class="elg-card">
+              <div class="elg-card-row"><div class="elg-logo">ج</div></div>
+              <div class="elg-title">Join an Elgameya</div>
+            </div>
+          </div>
+          <div class="overlay">
+            <div class="sheet">
+              <div class="sheet-handle"></div>
+              <div class="sheet-head">
+                <div class="elg-logo">ج</div>
+                <div style="flex:1">
+                  <div class="sheet-partner-name">Elgameya</div>
+                  <div class="sheet-partner-cat">Savings · Partner offer</div>
+                </div>
+                <div class="sheet-close">✕</div>
+              </div>
+
+              <div class="save-hero" style="padding:14px 16px">
+                <div class="save-hero-lbl">You save</div>
+                <div class="save-hero-amt" style="font-size:26px">300 <span style="font-size:13px;opacity:0.85">EGP</span></div>
+              </div>
+
+              <div class="coupon">
+                <div class="coupon-lbl">Your code</div>
+                <div class="coupon-row">
+                  <div class="coupon-code">MM-ELG-7K2P</div>
+                  <div class="coupon-copy"><span class="coupon-copy-ico">⧉</span>Copy</div>
+                </div>
+              </div>
+
+              <div class="disclosure">
+                <span class="disclosure-ico">ⓘ</span>
+                <div>
+                  You're leaving MoneyMore. Elgameya processes your data independently — their Privacy Policy and Terms apply.
+                </div>
+              </div>
+
+              <div class="btn btn-elg btn-lg">Open Elgameya</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note decision">Code uses a coupon-ticket shape with a dashed gold border and notch cutouts on the sides — it has to read as "a thing you keep," not as form output. Monospace for the code itself so digits and letters align cleanly.</div>
+      <div class="flow-note info">Disclosure sits directly above the redirect CTA, not under the code. It needs to be the last thing the user reads before tapping into another app.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">tap Copy</div>
+    </div>
+
+    <!-- Phone 4: Copied toast -->
+    <div class="screen-col">
+      <div class="screen-label">Code copied confirmation</div>
+      <div class="state-badge success">toast</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="overlay">
+            <div class="sheet">
+              <div class="sheet-handle"></div>
+              <div class="sheet-head">
+                <div class="elg-logo">ج</div>
+                <div style="flex:1">
+                  <div class="sheet-partner-name">Elgameya</div>
+                  <div class="sheet-partner-cat">Savings · Partner offer</div>
+                </div>
+                <div class="sheet-close">✕</div>
+              </div>
+
+              <div class="save-hero" style="padding:14px 16px">
+                <div class="save-hero-lbl">You save</div>
+                <div class="save-hero-amt" style="font-size:26px">300 <span style="font-size:13px;opacity:0.85">EGP</span></div>
+              </div>
+
+              <div class="coupon">
+                <div class="coupon-lbl">Your code</div>
+                <div class="coupon-row">
+                  <div class="coupon-code">MM-ELG-7K2P</div>
+                  <div class="coupon-copy" style="background:var(--green-l);border-color:var(--green);color:#0F5830"><span class="coupon-copy-ico">✓</span>Copied</div>
+                </div>
+              </div>
+
+              <div class="disclosure">
+                <span class="disclosure-ico">ⓘ</span>
+                <div>You're leaving MoneyMore. Elgameya processes your data independently — their Privacy Policy and Terms apply.</div>
+              </div>
+
+              <div class="btn btn-elg btn-lg">Open Elgameya</div>
+            </div>
+          </div>
+          <div class="toast"><span class="toast-ico">✓</span>Code copied</div>
+        </div>
+      </div>
+      <div class="flow-note decision">Two confirmations on copy: toast at the bottom and inline state change on the Copy button (✓ Copied, green). The toast disappears in 2 seconds; the inline state stays until the sheet closes.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">tap Open Elgameya</div>
+    </div>
+
+    <!-- Phone 5: Redirect transition -->
+    <div class="screen-col">
+      <div class="screen-label">Redirect transition</div>
+      <div class="state-badge loading">< 1 second</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="redirect-splash">
+            <div class="redirect-logo">ج</div>
+            <div class="redirect-txt">Opening Elgameya…</div>
+            <div class="redirect-spin"><span></span><span></span><span></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note info">Brief opening state — under 1 second. The user sees Elgameya branding, not a generic spinner, so the handoff feels intentional rather than like the app crashed.</div>
+      <div class="flow-note decision">Mechanism differs per platform but the user sees the same screen. Android: deep link to Elgameya package, Play Store fallback if not installed. iOS: universal link, App Store fallback if not installed.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 2 — RE-ACCESS
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 2 — Re-access claimed code from My Offers</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="phone-row">
+
+    <!-- Phone 1: My Offers tab -->
+    <div class="screen-col">
+      <div class="screen-label">My Offers · Still valid</div>
+      <div class="state-badge happy">default</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="app-bar-title">Offers</div>
+            <div class="app-bar-action">🔍</div>
+          </div>
+          <div class="tab-strip">
+            <div class="tab-strip-item">Available</div>
+            <div class="tab-strip-item on">My offers</div>
+          </div>
+          <div class="sc-area">
+            <div class="sc-pad">
+              <div class="sec-hdr"><div class="sec-ttl">Still valid</div></div>
+
+              <div class="my-offer-row">
+                <div class="elg-logo" style="background:#3D1850;color:white">ج</div>
+                <div class="my-offer-body">
+                  <div class="my-offer-ttl">Elgameya · 300 EGP off</div>
+                  <div class="my-offer-sub">Expires in 18 days · MM-ELG-7K2P</div>
+                </div>
+                <div class="my-offer-chip">Active</div>
+              </div>
+
+              <div class="sec-hdr" style="margin-top:6px"><div class="sec-ttl">Expired</div></div>
+              <div class="my-offer-row" style="opacity:0.65">
+                <div class="offer-card-sm-logo">🏦</div>
+                <div class="my-offer-body">
+                  <div class="my-offer-ttl">Bank cashback</div>
+                  <div class="my-offer-sub">Expired 2 days ago</div>
+                </div>
+                <div class="my-offer-chip expired">Expired</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕️</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">My Offers row shows the last 4 of the code as a preview — recognisable enough for the user to confirm it's the one they claimed, without committing the whole code to the list view.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">tap row</div>
+    </div>
+
+    <!-- Phone 2: Re-revealed sheet -->
+    <div class="screen-col">
+      <div class="screen-label">Re-revealed · same code</div>
+      <div class="state-badge happy">re-access</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="sc-pad" style="opacity:0.25">
+            <div class="my-offer-row"><div class="elg-logo" style="background:#3D1850;color:white">ج</div><div class="my-offer-body"><div class="my-offer-ttl">Elgameya · 300 EGP off</div></div></div>
+          </div>
+          <div class="overlay">
+            <div class="sheet">
+              <div class="sheet-handle"></div>
+              <div class="sheet-head">
+                <div class="elg-logo">ج</div>
+                <div style="flex:1">
+                  <div class="sheet-partner-name">Elgameya</div>
+                  <div class="sheet-partner-cat">Active · Expires in 18 days</div>
+                </div>
+                <div class="sheet-close">✕</div>
+              </div>
+
+              <div class="coupon">
+                <div class="coupon-lbl">Your code</div>
+                <div class="coupon-row">
+                  <div class="coupon-code">MM-ELG-7K2P</div>
+                  <div class="coupon-copy"><span class="coupon-copy-ico">⧉</span>Copy</div>
+                </div>
+              </div>
+
+              <div class="disclosure">
+                <span class="disclosure-ico">ⓘ</span>
+                <div>You're leaving MoneyMore. Elgameya processes your data independently — their Privacy Policy and Terms apply.</div>
+              </div>
+
+              <div class="btn btn-elg btn-lg">Open Elgameya</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note decision">Same code, same sheet — but the You save hero block is dropped on re-access. The user knows what they claimed; the priority on return is getting the code and opening Elgameya, not selling the offer again.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 3 — POOL EXHAUSTED
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 3 — Edge · Code pool exhausted</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="phone-row">
+
+    <!-- Phone 1: Capped card in Offers tab -->
+    <div class="screen-col">
+      <div class="screen-label">Offers tab · capped card</div>
+      <div class="state-badge empty">unavailable</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="app-bar-title">Offers</div>
+            <div class="app-bar-action">🔍</div>
+          </div>
+          <div class="tab-strip">
+            <div class="tab-strip-item on">Available</div>
+            <div class="tab-strip-item">My offers</div>
+          </div>
+          <div class="sc-area">
+            <div class="sc-pad">
+              <div class="sec-hdr"><div class="sec-ttl">Featured</div></div>
+
+              <div class="elg-card capped">
+                <div class="elg-stamp">Fully claimed</div>
+                <div class="elg-card-row">
+                  <div class="elg-logo">ج</div>
+                  <div><div class="elg-partner">Elgameya</div></div>
+                </div>
+                <div class="elg-title" style="color:var(--t2)">Join an Elgameya</div>
+                <div class="elg-sub" style="color:var(--t3)">300 EGP off your first installment</div>
+                <div class="elg-foot">
+                  <div class="elg-exp" style="color:var(--t3)">All codes claimed for now</div>
+                  <div class="elg-cta">View</div>
+                </div>
+              </div>
+
+              <div class="sec-hdr" style="margin-top:6px"><div class="sec-ttl">More offers</div></div>
+              <div class="offer-card-sm">
+                <div class="offer-card-sm-logo">🏦</div>
+                <div class="offer-card-sm-body">
+                  <div class="offer-card-sm-ttl">Bank cashback</div>
+                  <div class="offer-card-sm-sub">Up to 5% on groceries</div>
+                </div>
+                <div class="offer-card-sm-cta">View</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕️</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Same card shape, drained of colour. Recognisable as the Elgameya card the user might have seen yesterday — just clearly out of stock. Card is still tappable; tap opens the unavailable sheet on the right.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">tap card</div>
+    </div>
+
+    <!-- Phone 2: Unavailable in-sheet -->
+    <div class="screen-col">
+      <div class="screen-label">Sheet · offer unavailable</div>
+      <div class="state-badge empty">no codes left</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="sc-pad" style="opacity:0.25">
+            <div class="elg-card capped"><div class="elg-stamp">Fully claimed</div><div class="elg-card-row"><div class="elg-logo">ج</div></div></div>
+          </div>
+          <div class="overlay">
+            <div class="sheet">
+              <div class="sheet-handle"></div>
+              <div class="sheet-head">
+                <div class="elg-logo">ج</div>
+                <div style="flex:1">
+                  <div class="sheet-partner-name">Elgameya</div>
+                  <div class="sheet-partner-cat">Savings · Partner offer</div>
+                </div>
+                <div class="sheet-close">✕</div>
+              </div>
+
+              <div class="unavail-box">
+                <div class="unavail-ico">⏳</div>
+                <div class="unavail-ttl">This offer is fully claimed</div>
+                <div class="unavail-desc">Check back — we'll restock soon.</div>
+              </div>
+
+              <div class="btn btn-outline btn-lg">Close</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note decision">No Get code, no redirect — only a close action. The terms block and save hero are dropped; there's nothing to claim, so nothing to sell.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     FLOW 4 — REDIRECT FAILS
+═══════════════════════════════════════════════════════════ -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 4 — Edge · Redirect fails</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="phone-row">
+
+    <!-- Phone 1: Failed redirect back to sheet -->
+    <div class="screen-col">
+      <div class="screen-label">Sheet · redirect failed</div>
+      <div class="state-badge error">error toast</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="overlay">
+            <div class="sheet">
+              <div class="sheet-handle"></div>
+              <div class="sheet-head">
+                <div class="elg-logo">ج</div>
+                <div style="flex:1">
+                  <div class="sheet-partner-name">Elgameya</div>
+                  <div class="sheet-partner-cat">Savings · Partner offer</div>
+                </div>
+                <div class="sheet-close">✕</div>
+              </div>
+
+              <div class="coupon">
+                <div class="coupon-lbl">Your code</div>
+                <div class="coupon-row">
+                  <div class="coupon-code">MM-ELG-7K2P</div>
+                  <div class="coupon-copy"><span class="coupon-copy-ico">⧉</span>Copy</div>
+                </div>
+              </div>
+
+              <div class="disclosure">
+                <span class="disclosure-ico">ⓘ</span>
+                <div>You're leaving MoneyMore. Elgameya processes your data independently — their Privacy Policy and Terms apply.</div>
+              </div>
+
+              <div class="btn btn-elg btn-lg">Open Elgameya</div>
+            </div>
+          </div>
+          <div class="toast err"><span class="toast-ico">⚠</span>Couldn't open Elgameya. Try again.</div>
+        </div>
+      </div>
+      <div class="flow-note decision">Redirect attempt failed — neither the app nor the store opened. User lands back on the sheet with the code still visible, plus an error toast. Crucially, the code is not lost: it stays claimed and stays in My Offers.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     HANDOFF
+═══════════════════════════════════════════════════════════ -->
+<div class="handoff">
+  <div class="handoff-title">Handoff</div>
+  <div class="handoff-sub">Copy for every screen and accessibility rules that change what you draw. Nothing else.</div>
+
+  <div class="callout warn">All Arabic copy is draft and pending native Egyptian Arabic speaker review.</div>
+  <div class="callout info">All English copy is draft and pending UX Writer sign-off.</div>
+
+  <!-- ── Copy table ── -->
+  <div class="handoff-sec">
+    <div class="handoff-h">Copy · English + Arabic</div>
+    <div class="handoff-p">Every user-facing string in the flows above, grouped by screen.</div>
+
+    <table class="copy-table" style="margin-top:12px">
+      <colgroup>
+        <col class="col-screen">
+        <col class="col-element">
+        <col class="col-en">
+        <col class="col-ar">
+      </colgroup>
+      <thead>
+        <tr>
+          <th>Screen</th>
+          <th>Element</th>
+          <th>English</th>
+          <th>Arabic</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="5">Offers tab · Available</td>
+          <td class="element-name">Tab — Available</td>
+          <td class="en">Available</td>
+          <td class="ar">المتاحة</td>
+        </tr>
+        <tr>
+          <td class="element-name">Section header</td>
+          <td class="en">Featured</td>
+          <td class="ar">المميّز</td>
+        </tr>
+        <tr>
+          <td class="element-name">Card title</td>
+          <td class="en">Join an Elgameya</td>
+          <td class="ar">اشترك في جمعية</td>
+        </tr>
+        <tr>
+          <td class="element-name">Card subtitle</td>
+          <td class="en">300 EGP off your first installment</td>
+          <td class="ar">خصم 300 جنيه على أول قسط</td>
+        </tr>
+        <tr>
+          <td class="element-name">Card CTA</td>
+          <td class="en">Get code</td>
+          <td class="ar">هات الكود</td>
+        </tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="4">Offer detail · before claim</td>
+          <td class="element-name">Partner subtitle</td>
+          <td class="en">Savings · Partner offer</td>
+          <td class="ar">ادخار · عرض شريك</td>
+        </tr>
+        <tr>
+          <td class="element-name">You save hero label</td>
+          <td class="en">You save</td>
+          <td class="ar">إنت بتوفّر</td>
+        </tr>
+        <tr>
+          <td class="element-name">Sheet headline</td>
+          <td class="en">300 EGP off your first Elgameya installment</td>
+          <td class="ar">خصم 300 جنيه على أول قسط في جمعيتك</td>
+        </tr>
+        <tr>
+          <td class="element-name">Terms block</td>
+          <td class="en">Valid on your first installment only, in the Elgameya circle of your choice. One-time use per MoneyMore user. Promo applied at checkout inside the Elgameya app.</td>
+          <td class="ar">يسري على أول قسط بس، في الجمعية اللي تختارها. مرة واحدة لكل مستخدم على MoneyMore. الخصم يتطبّق عند الدفع في تطبيق الجمعية.</td>
+        </tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="2">Offer detail · before claim (cont.)</td>
+          <td class="element-name">Claim CTA</td>
+          <td class="en">Get code</td>
+          <td class="ar">هات الكود</td>
+        </tr>
+        <tr>
+          <td class="element-name">Expiry meta (card)</td>
+          <td class="en">Ends in 18 days</td>
+          <td class="ar">باقي 18 يوم</td>
+        </tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="5">Offer detail · code revealed</td>
+          <td class="element-name">Code reveal label</td>
+          <td class="en">Your code</td>
+          <td class="ar">الكود بتاعك</td>
+        </tr>
+        <tr>
+          <td class="element-name">Copy button (default)</td>
+          <td class="en">Copy</td>
+          <td class="ar">انسخ</td>
+        </tr>
+        <tr>
+          <td class="element-name">Copy button (after tap)</td>
+          <td class="en">Copied</td>
+          <td class="ar">اتنسخ</td>
+        </tr>
+        <tr>
+          <td class="element-name">Copied toast</td>
+          <td class="en">Code copied</td>
+          <td class="ar">اتنسخ</td>
+        </tr>
+        <tr>
+          <td class="element-name">Leaving-app disclosure</td>
+          <td class="en">You're leaving MoneyMore. Elgameya processes your data independently — their Privacy Policy and Terms apply.</td>
+          <td class="ar">إنت بتخرج من MoneyMore. الجمعية بتتعامل مع بياناتك باستقلالية — سياسة الخصوصية والشروط بتاعتهم هي اللي تسري.</td>
+        </tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="1">Offer detail · code revealed (cont.)</td>
+          <td class="element-name">Redirect CTA</td>
+          <td class="en">Open Elgameya</td>
+          <td class="ar">افتح الجمعية</td>
+        </tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="1">Redirect transition</td>
+          <td class="element-name">Opening text</td>
+          <td class="en">Opening Elgameya…</td>
+          <td class="ar">فتح الجمعية…</td>
+        </tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="5">My Offers</td>
+          <td class="element-name">Tab — My offers</td>
+          <td class="en">My offers</td>
+          <td class="ar">عروضي</td>
+        </tr>
+        <tr>
+          <td class="element-name">Section — Still valid</td>
+          <td class="en">Still valid</td>
+          <td class="ar">سارية</td>
+        </tr>
+        <tr>
+          <td class="element-name">Row title</td>
+          <td class="en">Elgameya · 300 EGP off</td>
+          <td class="ar">الجمعية · خصم 300 جنيه</td>
+        </tr>
+        <tr>
+          <td class="element-name">Row meta</td>
+          <td class="en">Expires in 18 days · MM-ELG-7K2P</td>
+          <td class="ar">تنتهي خلال 18 يوم · MM-ELG-7K2P</td>
+        </tr>
+        <tr>
+          <td class="element-name">Status chip</td>
+          <td class="en">Active</td>
+          <td class="ar">سارية</td>
+        </tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="2">My Offers · re-reveal sheet</td>
+          <td class="element-name">Partner subtitle</td>
+          <td class="en">Active · Expires in 18 days</td>
+          <td class="ar">سارية · تنتهي خلال 18 يوم</td>
+        </tr>
+        <tr>
+          <td class="element-name">Code, copy, disclosure, redirect CTA</td>
+          <td class="en">Reuse strings from "code revealed" screen above</td>
+          <td class="ar">نفس النصوص من شاشة "الكود ظاهر"</td>
+        </tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="5">Pool exhausted · card + sheet</td>
+          <td class="element-name">Card stamp</td>
+          <td class="en">Fully claimed</td>
+          <td class="ar">اتاخد بالكامل</td>
+        </tr>
+        <tr>
+          <td class="element-name">Card meta line</td>
+          <td class="en">All codes claimed for now</td>
+          <td class="ar">كل الأكواد اتاخدت دلوقتي</td>
+        </tr>
+        <tr>
+          <td class="element-name">Card CTA</td>
+          <td class="en">View</td>
+          <td class="ar">شوف</td>
+        </tr>
+        <tr>
+          <td class="element-name">Sheet unavailable headline</td>
+          <td class="en">This offer is fully claimed</td>
+          <td class="ar">العرض ده اتاخد بالكامل</td>
+        </tr>
+        <tr>
+          <td class="element-name">Sheet unavailable body</td>
+          <td class="en">Check back — we'll restock soon.</td>
+          <td class="ar">شوف تاني قريب — هنزوّد كميات.</td>
+        </tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="2">Redirect failed</td>
+          <td class="element-name">Error toast</td>
+          <td class="en">Couldn't open Elgameya. Try again.</td>
+          <td class="ar">معرفناش نفتح الجمعية. حاول تاني.</td>
+        </tr>
+        <tr>
+          <td class="element-name">Close CTA (sheet · unavailable)</td>
+          <td class="en">Close</td>
+          <td class="ar">إغلاق</td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── Accessibility ── -->
+  <div class="handoff-sec">
+    <div class="handoff-h">Accessibility — what changes what you draw</div>
+    <ul class="handoff-list">
+      <li><strong>Touch targets — 44×44px minimum</strong> on every interactive element. Copy button, sheet dismiss ✕, card CTA pill, redirect CTA.</li>
+      <li><strong>Contrast — 4.5:1 minimum for text</strong>, 7:1 for the 300 EGP amount in the You save hero. The white-on-purple gradient needs to meet 7:1 on the darker end of the gradient, not just the lighter end.</li>
+      <li><strong>Never colour-only for state.</strong> Copied confirmation uses ✓ + "Copied" text, not just a green button. Capped card uses "Fully claimed" stamp + greyed styling, not greyed styling alone.</li>
+      <li><strong>Focus order — sheet head → code → Copy → disclosure → Open Elgameya.</strong> The disclosure must sit in the focus order before the redirect CTA, not after. On Arabic RTL, visual flips but focus order stays the same.</li>
+      <li><strong>The code itself must be selectable text</strong>, not an image or styled background — screen readers must read out "M M dash E L G dash 7 K 2 P" character by character.</li>
+    </ul>
+  </div>
+
+</div>
+
+</div>
+</body>
+</html>
