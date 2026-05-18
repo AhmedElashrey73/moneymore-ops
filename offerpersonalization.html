@@ -1,0 +1,1522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoneyMore — Offers Personalization v2 · Designer Prototype</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --navy:#1A3C5E; --navy-d:#0F2942; --navy-l:#2C5685; --navy-xd:#081A2E;
+  --green:#2E8B57; --green-l:#E8F5EE; --green-d:#1A6E3C;
+  --gold:#D4A017; --gold-l:#FBF4DC; --gold-d:#8A6A10;
+  --red:#C0392B; --red-l:#FDECEA;
+  --purple:#5B3A8E; --purple-l:#EFE8F8; --purple-d:#3D2466;
+  --page-bg:#EFEAE0;
+  --screen-bg:#F7F4ED; --screen-bg2:#EDEAE0; --screen-bg3:#E0DCD0;
+  --t1:#0F0E0C; --t2:#3D3A35; --t3:#7A7670; --t4:#ABA7A0;
+  --t-pos:#1A6E3C; --t-neg:#A82419;
+  --b1:#E8E5DF; --b2:#D4D0C8; --b3:#BCBAB2;
+  --frame-bg:#0A0808; --frame-border:#000;
+
+  --f-body:'Plus Jakarta Sans',sans-serif;
+  --f-mono:'DM Mono',monospace;
+  --r-sm:6px; --r-md:12px; --r-lg:16px; --r-xl:24px; --r-pill:999px;
+  --shadow-phone:0 16px 48px rgba(0,0,0,0.20),0 4px 12px rgba(0,0,0,0.12);
+  --shadow-card:0 1px 2px rgba(20,20,20,0.04);
+  --shadow-hero:0 8px 24px rgba(15,41,66,0.30),0 2px 6px rgba(15,41,66,0.20);
+  --ph-w:288px; --ph-h:608px; --ph-r:38px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+.page{max-width:1500px;margin:0 auto;padding:48px 40px 96px;}
+
+.doc-header{padding-bottom:32px;margin-bottom:40px;border-bottom:2px solid var(--b1);}
+.doc-meta{display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap;}
+.doc-tag{font-family:var(--f-mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;padding:4px 11px;border-radius:3px;font-weight:600;}
+.doc-tag.prototype{background:var(--green-l);color:#0F5830;}
+.doc-tag.designer{background:#EAE8FF;color:#3A3288;}
+.doc-tag.android{background:#E8F4EA;color:#1F5E2A;}
+.doc-tag.wip{background:var(--gold-l);color:#6B5210;}
+.doc-tag.version{background:var(--navy);color:#fff;}
+.doc-tag.feature{background:#FFF0F5;color:#A0185E;}
+.doc-tag.copy-note{background:var(--red-l);color:var(--red);}
+.doc-date{font-family:var(--f-mono);font-size:11px;color:var(--t2);margin-left:auto;font-weight:500;}
+.doc-title{font-size:34px;font-weight:700;color:var(--t1);letter-spacing:-0.025em;line-height:1.15;margin-bottom:10px;}
+.doc-subtitle{font-size:15px;color:var(--t1);font-weight:400;margin-bottom:30px;line-height:1.5;max-width:920px;}
+
+.doc-info{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--b1);border-radius:var(--r-md);overflow:hidden;background:white;}
+.doc-info-cell{padding:16px 20px;border-right:1px solid var(--b1);}
+.doc-info-cell:last-child{border-right:none;}
+.info-label{font-family:var(--f-mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--t2);margin-bottom:8px;font-weight:600;}
+.info-body{font-size:13px;color:var(--t1);line-height:1.55;}
+.flow-list{display:flex;flex-direction:column;gap:4px;}
+.flow-list-item{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--t1);line-height:1.45;}
+.flow-list-item::before{content:'';width:6px;height:6px;border-radius:50%;background:#A0185E;flex-shrink:0;}
+
+.flow-section{margin-bottom:64px;}
+.flow-section-header{display:flex;align-items:center;gap:16px;margin-bottom:28px;}
+.flow-section-line{flex:1;height:1px;background:var(--b2);}
+.flow-section-title{font-family:var(--f-body);font-size:16px;font-weight:700;letter-spacing:-0.01em;color:#fff;background:#A0185E;padding:6px 14px;border-radius:4px;white-space:nowrap;}
+
+.phone-row{display:flex;align-items:flex-start;gap:0;overflow-x:auto;padding-bottom:12px;}
+.phone-row::-webkit-scrollbar{height:4px;}
+.phone-row::-webkit-scrollbar-track{background:var(--b1);border-radius:2px;}
+.phone-row::-webkit-scrollbar-thumb{background:var(--b3);border-radius:2px;}
+
+.screen-col{display:flex;flex-direction:column;align-items:center;gap:10px;flex-shrink:0;}
+.screen-label{font-family:var(--f-body);font-size:11px;font-weight:600;color:var(--t2);text-align:center;max-width:var(--ph-w);line-height:1.4;}
+
+.state-badge{font-family:var(--f-mono);font-size:10px;font-weight:500;padding:3px 9px;border-radius:3px;letter-spacing:0.04em;}
+.state-badge.happy{background:#EBF7F1;color:#1A6E3C;}
+.state-badge.locked{background:var(--screen-bg3);color:var(--t2);}
+.state-badge.consent{background:#FFE5F0;color:#A0185E;}
+.state-badge.error{background:var(--red-l);color:var(--red);}
+.state-badge.loading{background:#E8F0FA;color:#103868;}
+.state-badge.success{background:var(--green-l);color:#0F5830;}
+.state-badge.os{background:#ECECEC;color:#555;}
+.state-badge.interaction{background:#EAE8FF;color:#3A3288;}
+.state-badge.banner{background:var(--gold-l);color:var(--gold-d);}
+.state-badge.disabled{background:#F0EDE6;color:var(--t3);}
+
+.flow-arrow{display:flex;flex-direction:column;align-items:center;flex-shrink:0;padding-top:calc(var(--ph-h)/2 - 16px);padding-left:6px;padding-right:6px;}
+.arrow-line{width:32px;height:1px;background:var(--b2);position:relative;}
+.arrow-line::after{content:'';position:absolute;right:-1px;top:-3px;border-left:5px solid var(--b2);border-top:3px solid transparent;border-bottom:3px solid transparent;}
+.arrow-label{font-family:var(--f-body);font-size:10px;font-weight:600;color:var(--t2);text-align:center;max-width:80px;line-height:1.35;margin-top:6px;}
+.arrow-label.deny{color:var(--red);}
+
+.phone{width:var(--ph-w);height:var(--ph-h);border-radius:var(--ph-r);background:var(--frame-bg);box-shadow:var(--shadow-phone);position:relative;overflow:hidden;border:2px solid var(--frame-border);flex-shrink:0;}
+.a-status{position:absolute;top:0;left:0;right:0;height:22px;background:var(--screen-bg);display:flex;align-items:center;justify-content:space-between;padding:0 16px;z-index:10;font-family:var(--f-body);font-size:9px;font-weight:600;color:var(--t1);}
+.a-nav{position:absolute;bottom:0;left:0;right:0;height:48px;background:white;border-top:1px solid var(--b1);display:flex;align-items:center;z-index:10;}
+.a-nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:5px 0;}
+.a-nav-icon{width:20px;height:20px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;}
+.a-nav-item.on .a-nav-icon{background:var(--green-l);}
+.a-nav-lbl{font-size:7px;color:var(--t4);font-weight:600;}
+.a-nav-item.on .a-nav-lbl{color:var(--green);}
+
+.screen{position:absolute;top:22px;bottom:48px;left:0;right:0;background:var(--screen-bg);overflow:hidden;display:flex;flex-direction:column;}
+.screen.no-nav{bottom:0;}
+
+.app-bar{padding:10px 16px 6px;background:var(--screen-bg);flex-shrink:0;display:flex;align-items:center;gap:10px;}
+.app-bar-back{font-size:18px;color:var(--t2);font-weight:600;line-height:1;}
+.app-bar-text{flex:1;}
+.app-bar-eyebrow{font-size:8px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:1px;line-height:1;}
+.app-bar-title{font-size:20px;font-weight:800;color:var(--t1);letter-spacing:-0.025em;line-height:1.05;}
+
+/* LOCKED STATE */
+.locked-state{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:24px 20px 60px;text-align:center;gap:14px;
+}
+.locked-ico{
+  width:64px;height:64px;border-radius:50%;
+  background:linear-gradient(135deg,#FFE5F0 0%,#FFD4E0 100%);
+  display:flex;align-items:center;justify-content:center;font-size:28px;
+  border:2px solid #FFB8C8;
+  margin-bottom:6px;
+}
+.locked-ttl{font-size:18px;font-weight:800;color:var(--t1);letter-spacing:-0.02em;line-height:1.2;}
+.locked-body{font-size:12px;color:var(--t2);line-height:1.55;max-width:240px;}
+.locked-actions{width:100%;max-width:240px;display:flex;flex-direction:column;gap:8px;margin-top:8px;}
+
+/* CONSENT SCREEN */
+.consent-screen{
+  flex:1;display:flex;flex-direction:column;
+  padding:16px;gap:14px;overflow-y:auto;
+}
+.consent-title-block{margin-top:8px;}
+.consent-ttl{font-size:20px;font-weight:800;color:var(--t1);letter-spacing:-0.02em;line-height:1.2;margin-bottom:6px;}
+.consent-body{font-size:12px;color:var(--t2);line-height:1.55;}
+
+.consent-checkbox-card{
+  background:white;border:1.5px solid var(--b1);border-radius:12px;
+  padding:12px 14px;display:flex;gap:10px;align-items:flex-start;
+  transition:none;
+}
+.consent-checkbox-card.checked{border-color:var(--green);background:#F5FBF8;}
+.consent-checkbox{
+  width:18px;height:18px;border-radius:5px;
+  border:2px solid var(--b2);background:white;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;margin-top:1px;
+  font-size:12px;color:transparent;font-weight:800;
+}
+.consent-checkbox-card.checked .consent-checkbox{
+  background:var(--green);border-color:var(--green);color:white;
+}
+.consent-checkbox-body{flex:1;min-width:0;}
+.consent-checkbox-label{font-size:12px;font-weight:700;color:var(--t1);line-height:1.3;letter-spacing:-0.005em;}
+.consent-checkbox-detail{font-size:10.5px;color:var(--t3);line-height:1.45;margin-top:3px;font-weight:500;}
+
+.privacy-link{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:11px;font-weight:700;color:var(--navy);
+  text-decoration:underline;text-decoration-color:rgba(26,60,94,0.3);text-underline-offset:2px;
+}
+.privacy-link::after{content:'↗';font-size:10px;text-decoration:none;display:inline-block;}
+
+.consent-footer{
+  margin-top:auto;display:flex;flex-direction:column;gap:8px;
+  padding-top:8px;
+}
+
+/* BUTTONS */
+.btn{height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:var(--f-body);font-size:13px;font-weight:700;border:none;width:100%;gap:6px;letter-spacing:-0.01em;}
+.btn-primary{background:var(--navy);color:white;}
+.btn-accent{background:var(--green);color:white;}
+.btn-outline{background:white;border:1.5px solid var(--b2);color:var(--t1);}
+.btn-ghost{background:transparent;color:var(--t2);font-weight:600;}
+.btn-disabled{background:var(--screen-bg3);color:var(--t4);}
+.btn-lg{height:46px;font-size:14px;}
+
+/* SMS PRE-EXPLANATION SHEET */
+.overlay{position:absolute;inset:0;background:rgba(10,10,10,0.55);display:flex;align-items:flex-end;z-index:40;backdrop-filter:blur(3px);}
+.bottom-sheet{background:var(--screen-bg);border-radius:24px 24px 0 0;width:100%;padding:14px 16px 22px;box-shadow:0 -10px 36px rgba(0,0,0,0.25);max-height:88%;overflow-y:auto;}
+.bs-handle{width:36px;height:3px;background:var(--b2);border-radius:2px;margin:0 auto 14px;}
+
+.sms-sheet-ico{
+  width:48px;height:48px;border-radius:14px;
+  background:linear-gradient(135deg,#E8F0FA 0%,#D4E2F4 100%);
+  display:flex;align-items:center;justify-content:center;font-size:22px;
+  margin-bottom:10px;
+}
+.sms-sheet-ttl{font-size:17px;font-weight:800;color:var(--t1);letter-spacing:-0.015em;line-height:1.25;margin-bottom:6px;}
+.sms-sheet-body{font-size:12px;color:var(--t2);line-height:1.55;margin-bottom:12px;}
+
+.sms-bullet{
+  display:flex;align-items:flex-start;gap:8px;
+  padding:8px 10px;
+  background:white;border:1px solid var(--b1);border-radius:8px;
+  margin-bottom:6px;
+}
+.sms-bullet-ico{
+  width:22px;height:22px;border-radius:50%;
+  background:var(--green-l);color:var(--green-d);
+  display:flex;align-items:center;justify-content:center;font-size:11px;
+  flex-shrink:0;margin-top:1px;
+}
+.sms-bullet-text{font-size:11px;color:var(--t1);line-height:1.4;font-weight:500;flex:1;}
+
+/* OS PERMISSION DIALOG */
+.perm-overlay{position:absolute;inset:0;background:rgba(10,10,10,0.55);display:flex;align-items:center;justify-content:center;padding:24px;z-index:50;}
+.perm-box{background:white;border-radius:18px;width:100%;padding:18px 16px 0;overflow:hidden;}
+.perm-head{text-align:center;padding-bottom:14px;}
+.perm-title{font-size:14px;font-weight:700;color:var(--t1);margin-bottom:6px;letter-spacing:-0.01em;}
+.perm-desc{font-size:12px;color:var(--t3);line-height:1.4;}
+.perm-acts{display:flex;flex-direction:column;border-top:0.5px solid var(--b1);margin:0 -16px;}
+.perm-btn{padding:12px;text-align:center;font-size:14px;font-weight:600;}
+.perm-btn.deny{color:var(--t3);border-bottom:0.5px solid var(--b1);}
+.perm-btn.allow{color:var(--navy);font-weight:700;}
+
+/* GRANDFATHER BANNER */
+.gf-banner{
+  background:linear-gradient(135deg,#FFE5F0 0%,#FFD4E0 50%,#FFC0D0 100%);
+  border-radius:14px;padding:14px;
+  position:relative;overflow:hidden;
+  border:1px solid rgba(160,24,94,0.2);
+  margin-bottom:8px;
+}
+.gf-banner::before{
+  content:'';position:absolute;top:-20px;right:-20px;
+  width:80px;height:80px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,0.5) 0%,transparent 70%);
+}
+.gf-banner-eyebrow{
+  display:inline-flex;align-items:center;gap:4px;
+  background:rgba(160,24,94,0.15);color:#A0185E;
+  padding:2px 7px;border-radius:var(--r-pill);
+  font-size:8px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+  margin-bottom:6px;position:relative;z-index:2;
+}
+.gf-banner-eyebrow::before{content:'✨';font-size:9px;}
+.gf-banner-ttl{font-size:14px;font-weight:800;color:var(--t1);letter-spacing:-0.015em;line-height:1.25;margin-bottom:4px;position:relative;z-index:2;}
+.gf-banner-body{font-size:11px;color:var(--t2);line-height:1.4;margin-bottom:10px;position:relative;z-index:2;font-weight:500;}
+.gf-banner-actions{display:flex;align-items:center;gap:10px;position:relative;z-index:2;}
+.gf-banner-cta{
+  flex:1;height:34px;border-radius:8px;
+  background:var(--navy);color:white;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;
+}
+.gf-banner-skip{
+  font-size:11px;font-weight:700;color:var(--t3);
+  padding:4px 8px;
+}
+
+/* OFFERS LIST (light reuse from v7) */
+.offers-list{padding:0 16px 12px;display:flex;flex-direction:column;gap:8px;flex:1;overflow-y:auto;}
+.seg-control{display:flex;background:#E0DCD0;border-radius:var(--r-pill);padding:3px;margin:8px 16px 10px;flex-shrink:0;}
+.seg-item{flex:1;padding:6px 8px;border-radius:var(--r-pill);font-size:11px;font-weight:600;color:var(--t3);text-align:center;display:flex;align-items:center;justify-content:center;gap:5px;}
+.seg-item.on{background:white;color:var(--t1);box-shadow:0 1px 2px rgba(0,0,0,0.10);}
+.seg-badge{background:var(--navy);color:white;font-size:8px;font-weight:700;padding:1px 5px;border-radius:var(--r-pill);min-width:16px;text-align:center;}
+.seg-item:not(.on) .seg-badge{background:var(--b3);color:white;}
+
+.offer-hero{
+  background:linear-gradient(135deg,var(--navy-xd) 0%,var(--navy) 55%,var(--navy-l) 100%);
+  border-radius:14px;padding:12px 14px;position:relative;overflow:hidden;
+  color:white;box-shadow:var(--shadow-hero);
+  display:flex;flex-direction:column;gap:8px;min-height:128px;
+}
+.offer-hero::before{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(212,160,23,0.18) 0%,transparent 70%);}
+.hero-top{display:flex;align-items:center;justify-content:space-between;position:relative;z-index:2;}
+.hero-featured-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(212,160,23,0.22);border:1px solid rgba(212,160,23,0.45);color:#FFE5A8;padding:3px 8px;border-radius:var(--r-pill);font-size:8px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;}
+.hero-featured-badge::before{content:'★';font-size:9px;}
+.hero-merchant-pill{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);padding:3px 8px 3px 3px;border-radius:var(--r-pill);font-size:10px;font-weight:600;color:white;}
+.hero-merchant-logo{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0;}
+.hero-merchant-logo.talabat{background:#FF5A00;color:white;}
+.hero-discount{position:relative;z-index:2;display:flex;align-items:baseline;gap:6px;letter-spacing:-0.04em;flex:1;}
+.hero-discount-num{font-size:44px;font-weight:800;line-height:0.9;color:white;text-shadow:0 2px 8px rgba(0,0,0,0.15);}
+.hero-discount-unit{font-size:14px;font-weight:700;color:#FFE5A8;line-height:1;}
+.hero-bottom{display:flex;align-items:center;justify-content:space-between;position:relative;z-index:2;gap:8px;border-top:1px solid rgba(255,255,255,0.10);padding-top:8px;}
+.hero-offer-title{font-size:11px;font-weight:600;opacity:0.95;line-height:1.3;flex:1;min-width:0;}
+.hero-expiration{display:inline-flex;align-items:center;gap:3px;background:rgba(255,80,80,0.18);border:1px solid rgba(255,120,120,0.35);color:#FFB8B8;padding:2px 7px;border-radius:var(--r-pill);font-size:9px;font-weight:700;flex-shrink:0;}
+
+.offer-card{background:white;border:1px solid var(--b1);border-radius:12px;box-shadow:var(--shadow-card);display:flex;align-items:stretch;min-height:74px;}
+.card-left{background:var(--screen-bg);border-right:1px dashed var(--b2);padding:8px 12px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:68px;position:relative;border-radius:12px 0 0 12px;}
+.card-discount-num{font-size:18px;font-weight:800;color:var(--navy);letter-spacing:-0.03em;line-height:1;}
+.card-discount-unit{font-size:8px;font-weight:700;color:var(--navy);letter-spacing:0.05em;text-transform:uppercase;margin-top:2px;}
+.card-right{flex:1;padding:8px 12px;display:flex;flex-direction:column;justify-content:center;gap:3px;min-width:0;}
+.card-merchant{display:flex;align-items:center;gap:5px;font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:0.05em;}
+.card-merchant-dot{width:12px;height:12px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:800;flex-shrink:0;}
+.card-merchant-dot.uber{background:#000;color:white;}
+.card-merchant-dot.carrefour{background:#004E9F;color:white;}
+.card-title{font-size:12px;font-weight:700;color:var(--t1);letter-spacing:-0.01em;line-height:1.25;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden;}
+.card-foot{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:1px;}
+.card-expiration{font-size:9px;color:var(--t3);font-weight:600;}
+.card-cta-link{font-size:10px;font-weight:700;color:var(--navy);}
+.card-cta-link::after{content:'→';font-size:11px;margin-left:3px;}
+
+/* PROFILE SCREENS */
+.profile-screen{flex:1;display:flex;flex-direction:column;overflow-y:auto;padding-bottom:16px;}
+.profile-section{margin:14px 16px 0;}
+.profile-section-label{
+  font-size:9px;font-weight:700;color:var(--t3);
+  letter-spacing:0.1em;text-transform:uppercase;
+  margin-bottom:6px;padding-left:2px;
+}
+.profile-list{
+  background:white;border:1px solid var(--b1);border-radius:12px;
+  overflow:hidden;
+}
+.profile-row{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 14px;
+  border-bottom:1px solid var(--b1);
+  background:white;
+}
+.profile-row:last-child{border-bottom:none;}
+.profile-row-ico{
+  width:30px;height:30px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;flex-shrink:0;
+}
+.profile-row-ico.sms{background:var(--green-l);}
+.profile-row-ico.push{background:#E8F0FA;}
+.profile-row-ico.offer{background:#FFE5F0;}
+.profile-row-body{flex:1;min-width:0;}
+.profile-row-ttl{font-size:13px;font-weight:600;color:var(--t1);line-height:1.25;letter-spacing:-0.005em;}
+.profile-row-sub{font-size:10.5px;color:var(--t3);margin-top:1px;line-height:1.4;}
+.profile-row-chev{font-size:16px;color:var(--t4);line-height:1;}
+.profile-row-status{font-size:11px;font-weight:600;color:var(--t3);}
+.profile-row-status.on{color:var(--green-d);}
+.profile-row-status.off{color:var(--t4);}
+
+/* TOGGLE */
+.toggle{
+  width:40px;height:24px;border-radius:var(--r-pill);
+  background:var(--b3);position:relative;flex-shrink:0;
+  border:none;
+}
+.toggle.on{background:var(--green);}
+.toggle.disabled{background:#E0DCD0;}
+.toggle::after{
+  content:'';position:absolute;
+  top:2px;left:2px;width:20px;height:20px;
+  border-radius:50%;background:white;
+  box-shadow:0 1px 3px rgba(0,0,0,0.15);
+}
+.toggle.on::after{left:18px;}
+.toggle.disabled::after{background:#F0EDE6;}
+
+.toggle-row{
+  display:flex;align-items:center;gap:12px;
+  padding:13px 14px;border-bottom:1px solid var(--b1);
+}
+.toggle-row:last-child{border-bottom:none;}
+.toggle-row-body{flex:1;min-width:0;}
+.toggle-row-ttl{font-size:13px;font-weight:600;color:var(--t1);letter-spacing:-0.005em;line-height:1.3;}
+.toggle-row-sub{font-size:10.5px;color:var(--t3);margin-top:2px;line-height:1.4;}
+.toggle-row.disabled .toggle-row-ttl{color:var(--t3);}
+.toggle-row.disabled .toggle-row-sub{color:var(--t4);}
+
+.inline-disabled-msg{
+  background:var(--gold-l);
+  border:1px solid rgba(212,160,23,0.3);
+  border-radius:8px;
+  padding:10px 12px;
+  margin:0 14px 12px;
+  display:flex;align-items:flex-start;gap:8px;
+}
+.inline-disabled-ico{
+  color:var(--gold-d);font-size:13px;flex-shrink:0;margin-top:1px;
+}
+.inline-disabled-body{flex:1;}
+.inline-disabled-text{font-size:11px;color:var(--gold-d);line-height:1.45;font-weight:500;}
+.inline-disabled-link{
+  font-size:11px;font-weight:700;color:var(--gold-d);
+  text-decoration:underline;text-decoration-color:rgba(138,106,16,0.4);
+  margin-top:5px;display:inline-block;
+}
+
+/* TOAST */
+.toast{position:absolute;bottom:60px;left:14px;right:14px;background:#0F0E0C;color:white;border-radius:10px;padding:10px 14px;font-size:11px;font-weight:600;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,0.30);z-index:50;display:flex;align-items:center;justify-content:center;gap:6px;}
+
+/* FLOW NOTES */
+.flow-note{max-width:var(--ph-w);padding:10px 13px;border-radius:6px;font-family:var(--f-body);font-size:11px;font-weight:500;line-height:1.5;}
+.flow-note.decision{background:#FBF4DC;color:#6B5210;border-left:3px solid var(--gold);}
+.flow-note.new{background:#FFE5F0;color:#A0185E;border-left:3px solid #A0185E;}
+
+/* HANDOFF */
+.handoff{margin-top:64px;padding:36px;background:white;border:1px solid var(--b1);border-radius:var(--r-md);}
+.handoff-title{font-size:26px;font-weight:700;color:var(--t1);margin-bottom:8px;letter-spacing:-0.015em;}
+.handoff-sub{font-size:14px;color:var(--t2);margin-bottom:28px;line-height:1.5;}
+.handoff-sec{margin-top:28px;padding-top:24px;border-top:1px solid var(--b1);}
+.handoff-sec:first-of-type{border-top:none;padding-top:0;margin-top:0;}
+.handoff-h{font-size:18px;font-weight:700;color:var(--t1);margin-bottom:12px;}
+.handoff-p{font-size:14px;color:var(--t1);line-height:1.6;margin-bottom:8px;}
+.handoff-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.handoff-list li{font-size:14px;color:var(--t1);line-height:1.6;padding-left:16px;position:relative;}
+.handoff-list li::before{content:'—';position:absolute;left:0;color:var(--t3);font-weight:700;}
+
+.copy-table{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed;}
+.copy-table col.col-screen{width:25%;}
+.copy-table col.col-element{width:28%;}
+.copy-table col.col-en{width:35%;}
+.copy-table col.col-meta{width:12%;}
+.copy-table th{text-align:left;padding:10px 12px;border-bottom:2px solid var(--b2);font-size:11px;color:var(--t2);text-transform:uppercase;letter-spacing:0.06em;font-weight:700;background:var(--screen-bg);}
+.copy-table td{padding:10px 12px;border-bottom:1px solid var(--b1);vertical-align:top;color:var(--t1);line-height:1.55;word-wrap:break-word;}
+.copy-table td.screen-name{font-weight:700;color:var(--t1);background:var(--screen-bg);}
+.copy-table td.element-name{color:var(--t2);font-weight:500;}
+.copy-table td.en{font-size:12px;color:var(--t1);}
+.copy-table td.meta{font-family:var(--f-mono);font-size:10px;color:var(--t3);}
+.copy-table tr.group-start td{border-top:2px solid var(--b2);}
+
+.callout{padding:12px 14px;border-radius:0 var(--r-sm) var(--r-sm) 0;font-size:13px;line-height:1.55;margin-top:12px;}
+.callout.info{background:#EAF0FE;border-left:3px solid #4A80C0;color:#103868;}
+.callout.warn{background:var(--red-l);border-left:3px solid var(--red);color:#7A1810;}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="doc-header">
+  <div class="doc-meta">
+    <span class="doc-tag prototype">Prototype</span>
+    <span class="doc-tag designer">Designer brief</span>
+    <span class="doc-tag android">Android</span>
+    <span class="doc-tag feature">Personalization v2</span>
+    <span class="doc-tag wip">Draft v1</span>
+    <span class="doc-tag version">DB · Personalization v2</span>
+    <span class="doc-tag copy-note">EN copy only</span>
+    <span class="doc-date">18 May 2026</span>
+  </div>
+
+  <div class="doc-title">Offers Personalization v2</div>
+  <div class="doc-subtitle">A consent gate on the Offers tab where users opt into personalization from spending patterns and partner push notifications, with preferences managed from Profile. Two independent preferences, single consent surface used by all entry points, full state management for grandfathered v1 users.</div>
+
+  <div class="doc-info">
+    <div class="doc-info-cell">
+      <div class="info-label">The problem</div>
+      <div class="info-body">
+        v1 shows the same offer feed to everyone. v2 introduces personalization based on spending patterns (read from SMS) and partner push opt-in — but both require explicit user consent. The design challenge is making consent feel like a clear, fair trade rather than a wall, while supporting four distinct entry contexts: new user first visit, existing v1 user, Profile-driven activation, and Profile-driven disable.
+      </div>
+    </div>
+    <div class="doc-info-cell">
+      <div class="info-label">Flows in this document</div>
+      <div class="flow-list">
+        <div class="flow-list-item">New user · accept (full happy path)</div>
+        <div class="flow-list-item">New user · decline (Not now)</div>
+        <div class="flow-list-item">Existing v1 user · grandfather banner</div>
+        <div class="flow-list-item">Activate later from Profile</div>
+        <div class="flow-list-item">Disable from Profile</div>
+        <div class="flow-list-item">Partner-push OS-blocked · Profile edge</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- FLOW 1 — NEW USER HAPPY PATH -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 1 — New user · accept (happy path)</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="phone-row">
+
+    <div class="screen-col">
+      <div class="screen-label">Offers tab · locked state</div>
+      <div class="state-badge locked">locked</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="app-bar-text">
+              <div class="app-bar-eyebrow">Curated for you</div>
+              <div class="app-bar-title">Offers</div>
+            </div>
+          </div>
+          <div class="locked-state">
+            <div class="locked-ico">🎁</div>
+            <div class="locked-ttl">Curated offers, just for you</div>
+            <div class="locked-body">Turn on personalization to see offers picked from your spending habits, plus partner deals you'll actually use.</div>
+            <div class="locked-actions">
+              <div class="btn btn-primary btn-lg">Get started</div>
+              <div style="text-align:center;margin-top:4px"><span class="privacy-link">Privacy Policy</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note new">Empty-but-purposeful state — no segment pill, no feed content, just the consent invitation. Gift icon signals what's behind the gate. Privacy Policy link sits below the CTA, not buried below the fold — important since legal review will scrutinize placement.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">tap Get started</div>
+    </div>
+
+    <div class="screen-col">
+      <div class="screen-label">Consent · both unticked, Confirm disabled</div>
+      <div class="state-badge consent">consent</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="app-bar">
+            <div class="app-bar-back">‹</div>
+            <div class="app-bar-text">
+              <div class="app-bar-title" style="font-size:16px">Set up offers</div>
+            </div>
+          </div>
+          <div class="consent-screen">
+            <div class="consent-title-block">
+              <div class="consent-ttl">Pick what you'd like</div>
+              <div class="consent-body">Both are optional. You can change either later from Profile → Permissions.</div>
+            </div>
+
+            <div class="consent-checkbox-card">
+              <div class="consent-checkbox"></div>
+              <div class="consent-checkbox-body">
+                <div class="consent-checkbox-label">Personalize my offers</div>
+                <div class="consent-checkbox-detail">Uses SMS access to read transaction texts and match offers to your spending.</div>
+              </div>
+            </div>
+
+            <div class="consent-checkbox-card">
+              <div class="consent-checkbox"></div>
+              <div class="consent-checkbox-body">
+                <div class="consent-checkbox-label">Notify me about partner offers I might want</div>
+              </div>
+            </div>
+
+            <div style="margin-top:4px"><span class="privacy-link">Privacy Policy</span></div>
+
+            <div class="consent-footer">
+              <div class="btn btn-disabled btn-lg">Confirm</div>
+              <div class="btn btn-ghost">Not now</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note decision">Confirm CTA stays disabled until at least one box is ticked — prevents accidental "confirm nothing" submissions. Both checkboxes are independent: user can tick either, both, or neither.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">tick both, tap Confirm</div>
+    </div>
+
+    <div class="screen-col">
+      <div class="screen-label">Consent · both ticked, Confirm active</div>
+      <div class="state-badge happy">ready</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="app-bar">
+            <div class="app-bar-back">‹</div>
+            <div class="app-bar-text">
+              <div class="app-bar-title" style="font-size:16px">Set up offers</div>
+            </div>
+          </div>
+          <div class="consent-screen">
+            <div class="consent-title-block">
+              <div class="consent-ttl">Pick what you'd like</div>
+              <div class="consent-body">Both are optional. You can change either later from Profile → Permissions.</div>
+            </div>
+
+            <div class="consent-checkbox-card checked">
+              <div class="consent-checkbox">✓</div>
+              <div class="consent-checkbox-body">
+                <div class="consent-checkbox-label">Personalize my offers</div>
+                <div class="consent-checkbox-detail">Uses SMS access to read transaction texts and match offers to your spending.</div>
+              </div>
+            </div>
+
+            <div class="consent-checkbox-card checked">
+              <div class="consent-checkbox">✓</div>
+              <div class="consent-checkbox-body">
+                <div class="consent-checkbox-label">Notify me about partner offers I might want</div>
+              </div>
+            </div>
+
+            <div style="margin-top:4px"><span class="privacy-link">Privacy Policy</span></div>
+
+            <div class="consent-footer">
+              <div class="btn btn-primary btn-lg">Confirm</div>
+              <div class="btn btn-ghost">Not now</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note decision">Ticked state — green border, green check, lightly tinted background. Confirms the action visually before they tap Confirm. CTA flips from disabled grey to active navy.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">SMS not granted yet</div>
+    </div>
+
+    <div class="screen-col">
+      <div class="screen-label">SMS pre-explanation sheet</div>
+      <div class="state-badge interaction">pre-prompt</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div style="opacity:0.25;flex:1;background:var(--screen-bg)"></div>
+          <div class="overlay">
+            <div class="bottom-sheet">
+              <div class="bs-handle"></div>
+              <div class="sms-sheet-ico">💬</div>
+              <div class="sms-sheet-ttl">Next we'll ask for SMS access</div>
+              <div class="sms-sheet-body">We read transaction texts from your banks to figure out where you spend. Nothing leaves your phone.</div>
+
+              <div class="sms-bullet">
+                <div class="sms-bullet-ico">✓</div>
+                <div class="sms-bullet-text">Only messages from banks are read</div>
+              </div>
+              <div class="sms-bullet">
+                <div class="sms-bullet-ico">✓</div>
+                <div class="sms-bullet-text">Personal texts are never accessed</div>
+              </div>
+              <div class="sms-bullet">
+                <div class="sms-bullet-ico">✓</div>
+                <div class="sms-bullet-text">Processing happens on-device</div>
+              </div>
+
+              <div class="btn btn-primary btn-lg" style="margin-top:12px">Continue</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note new">In-app pre-explanation always shown before the OS SMS prompt — gives us a chance to frame the request before the system dialog appears with its cold language. Three bullets address the three concerns: scope, privacy, locality of processing.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">tap Continue</div>
+    </div>
+
+    <div class="screen-col">
+      <div class="screen-label">OS SMS permission dialog</div>
+      <div class="state-badge os">OS-rendered</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div style="opacity:0.25;flex:1;background:var(--screen-bg)"></div>
+          <div class="perm-overlay">
+            <div class="perm-box">
+              <div class="perm-head">
+                <div class="perm-title">Allow MoneyMore to access SMS messages?</div>
+                <div class="perm-desc">MoneyMore needs this to read transaction texts from your banks.</div>
+              </div>
+              <div class="perm-acts">
+                <div class="perm-btn deny">Don't allow</div>
+                <div class="perm-btn allow">Allow</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note decision">System dialog — Android-rendered. Only the purpose string (the second line) is authored by MoneyMore. If the user denies here, spending-patterns preference stays ticked but personalization stays off until SMS is granted later.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">tap Allow</div>
+    </div>
+
+    <div class="screen-col">
+      <div class="screen-label">Offers tab unlocked · catalog loaded</div>
+      <div class="state-badge success">unlocked</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="app-bar-text">
+              <div class="app-bar-eyebrow">Curated for you</div>
+              <div class="app-bar-title">Offers</div>
+            </div>
+          </div>
+          <div class="seg-control">
+            <div class="seg-item on">Available</div>
+            <div class="seg-item">My Offers <span class="seg-badge">0</span></div>
+          </div>
+          <div class="offers-list">
+
+            <div class="offer-hero">
+              <div class="hero-top">
+                <div class="hero-featured-badge">Featured</div>
+                <div class="hero-merchant-pill">
+                  <div class="hero-merchant-logo talabat">T</div>
+                  Talabat
+                </div>
+              </div>
+              <div class="hero-discount">
+                <div class="hero-discount-num">25</div>
+                <div class="hero-discount-unit">% OFF</div>
+              </div>
+              <div class="hero-bottom">
+                <div class="hero-offer-title">Your next order, any cuisine</div>
+                <div class="hero-expiration">⏱ 6h left</div>
+              </div>
+            </div>
+
+            <div class="offer-card">
+              <div class="card-left">
+                <div class="card-discount-num">15</div>
+                <div class="card-discount-unit">% off</div>
+              </div>
+              <div class="card-right">
+                <div class="card-merchant"><div class="card-merchant-dot carrefour">C</div>Carrefour</div>
+                <div class="card-title">Groceries & household</div>
+                <div class="card-foot">
+                  <div class="card-expiration">9 days left</div>
+                  <div class="card-cta-link">Get code</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="offer-card">
+              <div class="card-left">
+                <div class="card-discount-num">20</div>
+                <div class="card-discount-unit">EGP off</div>
+              </div>
+              <div class="card-right">
+                <div class="card-merchant"><div class="card-merchant-dot uber">U</div>Uber</div>
+                <div class="card-title">Ride to the airport</div>
+                <div class="card-foot">
+                  <div class="card-expiration">3 days left</div>
+                  <div class="card-cta-link">Open</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="toast" style="bottom:60px">✨ Personalization on</div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Tab is now fully unlocked — same chrome as v1 with segment pill and feed. Toast confirms the personalization is active. From here the user is in standard Offers v2 territory.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- FLOW 2 — DECLINE -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 2 — New user · decline (Not now)</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="phone-row">
+
+    <div class="screen-col">
+      <div class="screen-label">Consent · user taps Not now</div>
+      <div class="state-badge consent">consent</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="app-bar">
+            <div class="app-bar-back">‹</div>
+            <div class="app-bar-text">
+              <div class="app-bar-title" style="font-size:16px">Set up offers</div>
+            </div>
+          </div>
+          <div class="consent-screen">
+            <div class="consent-title-block">
+              <div class="consent-ttl">Pick what you'd like</div>
+              <div class="consent-body">Both are optional. You can change either later from Profile → Permissions.</div>
+            </div>
+
+            <div class="consent-checkbox-card">
+              <div class="consent-checkbox"></div>
+              <div class="consent-checkbox-body">
+                <div class="consent-checkbox-label">Personalize my offers</div>
+                <div class="consent-checkbox-detail">Uses SMS access to read transaction texts and match offers to your spending.</div>
+              </div>
+            </div>
+
+            <div class="consent-checkbox-card">
+              <div class="consent-checkbox"></div>
+              <div class="consent-checkbox-body">
+                <div class="consent-checkbox-label">Notify me about partner offers I might want</div>
+              </div>
+            </div>
+
+            <div style="margin-top:4px"><span class="privacy-link">Privacy Policy</span></div>
+
+            <div class="consent-footer">
+              <div class="btn btn-disabled btn-lg">Confirm</div>
+              <div class="btn btn-ghost" style="background:rgba(0,0,0,0.04)">Not now</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label deny">Not now</div>
+    </div>
+
+    <div class="screen-col">
+      <div class="screen-label">Returns to locked state</div>
+      <div class="state-badge locked">locked</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="app-bar-text">
+              <div class="app-bar-eyebrow">Curated for you</div>
+              <div class="app-bar-title">Offers</div>
+            </div>
+          </div>
+          <div class="locked-state">
+            <div class="locked-ico">🎁</div>
+            <div class="locked-ttl">Curated offers, just for you</div>
+            <div class="locked-body">Turn on personalization to see offers picked from your spending habits, plus partner deals you'll actually use.</div>
+            <div class="locked-actions">
+              <div class="btn btn-primary btn-lg">Get started</div>
+              <div style="text-align:center;margin-top:4px"><span class="privacy-link">Privacy Policy</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note new">No toast, no message. User remains in locked state and can try again later. System back from consent screen has the same outcome — both routes (Not now and back) treated identically.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- FLOW 3 — GRANDFATHER BANNER -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 3 — Existing v1 user · grandfather banner</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="phone-row">
+
+    <div class="screen-col">
+      <div class="screen-label">Offers tab · banner above featured</div>
+      <div class="state-badge banner">grandfather</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="app-bar-text">
+              <div class="app-bar-eyebrow">Curated for you</div>
+              <div class="app-bar-title">Offers</div>
+            </div>
+          </div>
+          <div class="seg-control">
+            <div class="seg-item on">Available</div>
+            <div class="seg-item">My Offers <span class="seg-badge">2</span></div>
+          </div>
+          <div class="offers-list">
+
+            <div class="gf-banner">
+              <div class="gf-banner-eyebrow">New in v2</div>
+              <div class="gf-banner-ttl">Now with personalization</div>
+              <div class="gf-banner-body">Pick offers tuned to your spending, and we'll notify you when partner deals drop.</div>
+              <div class="gf-banner-actions">
+                <div class="gf-banner-cta">Set preferences</div>
+                <div class="gf-banner-skip">Skip</div>
+              </div>
+            </div>
+
+            <div class="offer-hero">
+              <div class="hero-top">
+                <div class="hero-featured-badge">Featured</div>
+                <div class="hero-merchant-pill">
+                  <div class="hero-merchant-logo talabat">T</div>
+                  Talabat
+                </div>
+              </div>
+              <div class="hero-discount">
+                <div class="hero-discount-num">25</div>
+                <div class="hero-discount-unit">% OFF</div>
+              </div>
+              <div class="hero-bottom">
+                <div class="hero-offer-title">Your next order, any cuisine</div>
+                <div class="hero-expiration">⏱ 6h left</div>
+              </div>
+            </div>
+
+            <div class="offer-card">
+              <div class="card-left">
+                <div class="card-discount-num">15</div>
+                <div class="card-discount-unit">% off</div>
+              </div>
+              <div class="card-right">
+                <div class="card-merchant"><div class="card-merchant-dot carrefour">C</div>Carrefour</div>
+                <div class="card-title">Groceries & household</div>
+                <div class="card-foot">
+                  <div class="card-expiration">9 days left</div>
+                  <div class="card-cta-link">Get code</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note new">Banner sits above featured but below the segment pill. Pink gradient distinguishes from offer cards. "New in v2" eyebrow signals it's an announcement, not an offer. Skip is a deliberately small text link — not visually equal to the CTA.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">tap Skip</div>
+    </div>
+
+    <div class="screen-col">
+      <div class="screen-label">Banner dismissed permanently</div>
+      <div class="state-badge happy">default</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="app-bar-text">
+              <div class="app-bar-eyebrow">Curated for you</div>
+              <div class="app-bar-title">Offers</div>
+            </div>
+          </div>
+          <div class="seg-control">
+            <div class="seg-item on">Available</div>
+            <div class="seg-item">My Offers <span class="seg-badge">2</span></div>
+          </div>
+          <div class="offers-list">
+
+            <div class="offer-hero">
+              <div class="hero-top">
+                <div class="hero-featured-badge">Featured</div>
+                <div class="hero-merchant-pill">
+                  <div class="hero-merchant-logo talabat">T</div>
+                  Talabat
+                </div>
+              </div>
+              <div class="hero-discount">
+                <div class="hero-discount-num">25</div>
+                <div class="hero-discount-unit">% OFF</div>
+              </div>
+              <div class="hero-bottom">
+                <div class="hero-offer-title">Your next order, any cuisine</div>
+                <div class="hero-expiration">⏱ 6h left</div>
+              </div>
+            </div>
+
+            <div class="offer-card">
+              <div class="card-left">
+                <div class="card-discount-num">15</div>
+                <div class="card-discount-unit">% off</div>
+              </div>
+              <div class="card-right">
+                <div class="card-merchant"><div class="card-merchant-dot carrefour">C</div>Carrefour</div>
+                <div class="card-title">Groceries & household</div>
+                <div class="card-foot">
+                  <div class="card-expiration">9 days left</div>
+                  <div class="card-cta-link">Get code</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="offer-card">
+              <div class="card-left">
+                <div class="card-discount-num">20</div>
+                <div class="card-discount-unit">EGP off</div>
+              </div>
+              <div class="card-right">
+                <div class="card-merchant"><div class="card-merchant-dot uber">U</div>Uber</div>
+                <div class="card-title">Ride to the airport</div>
+                <div class="card-foot">
+                  <div class="card-expiration">3 days left</div>
+                  <div class="card-cta-link">Open</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Skip is permanent — banner does not return across sessions. User can still activate later via Profile → Permissions → Offer preferences. System back leaves banner visible for next session (transient dismiss) — that branch isn't shown but matches the brief.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- FLOW 4 — ACTIVATE LATER FROM PROFILE -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 4 — Activate later from Profile</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="phone-row">
+
+    <div class="screen-col">
+      <div class="screen-label">Profile · Permissions section</div>
+      <div class="state-badge happy">default</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="app-bar-text">
+              <div class="app-bar-title">Profile</div>
+            </div>
+          </div>
+          <div class="profile-screen">
+
+            <div class="profile-section">
+              <div class="profile-section-label">Account</div>
+              <div class="profile-list">
+                <div class="profile-row">
+                  <div class="profile-row-ico" style="background:var(--screen-bg2)">👤</div>
+                  <div class="profile-row-body">
+                    <div class="profile-row-ttl">Personal info</div>
+                  </div>
+                  <div class="profile-row-chev">›</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="profile-section">
+              <div class="profile-section-label">Permissions</div>
+              <div class="profile-list">
+                <div class="profile-row">
+                  <div class="profile-row-ico sms">💬</div>
+                  <div class="profile-row-body">
+                    <div class="profile-row-ttl">SMS access</div>
+                    <div class="profile-row-sub">For transaction tracking</div>
+                  </div>
+                  <div class="profile-row-status off">Off</div>
+                </div>
+                <div class="profile-row">
+                  <div class="profile-row-ico push">🔔</div>
+                  <div class="profile-row-body">
+                    <div class="profile-row-ttl">Push notifications</div>
+                    <div class="profile-row-sub">For alerts and offers</div>
+                  </div>
+                  <div class="profile-row-status on">On</div>
+                </div>
+                <div class="profile-row" style="background:#FFE5F0;">
+                  <div class="profile-row-ico offer">🎁</div>
+                  <div class="profile-row-body">
+                    <div class="profile-row-ttl">Offer preferences</div>
+                    <div class="profile-row-sub">Personalization · partner push</div>
+                  </div>
+                  <div class="profile-row-chev">›</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note new">"Offer preferences" sits at the bottom of the Permissions section, below the two OS-level permissions (SMS, push). Pink tint distinguishes it as an app-level preference, not a system one. Order matters per the brief: OS permissions first, then this.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">tap Offer preferences</div>
+    </div>
+
+    <div class="screen-col">
+      <div class="screen-label">Offer preferences · both off</div>
+      <div class="state-badge happy">default</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="app-bar-back">‹</div>
+            <div class="app-bar-text">
+              <div class="app-bar-title" style="font-size:18px">Offer preferences</div>
+            </div>
+          </div>
+          <div class="profile-screen">
+
+            <div class="profile-section">
+              <div class="profile-list">
+                <div class="toggle-row">
+                  <div class="toggle-row-body">
+                    <div class="toggle-row-ttl">Personalize my offers</div>
+                    <div class="toggle-row-sub">Uses SMS access to read transaction texts and match offers to your spending.</div>
+                  </div>
+                  <div class="toggle"></div>
+                </div>
+                <div class="toggle-row">
+                  <div class="toggle-row-body">
+                    <div class="toggle-row-ttl">Partner offer notifications</div>
+                    <div class="toggle-row-sub">Get push alerts for partner deals you might want.</div>
+                  </div>
+                  <div class="toggle on"></div>
+                </div>
+              </div>
+            </div>
+
+            <div style="padding:16px;font-size:11px;color:var(--t3);line-height:1.5;">
+              You can change these at any time. <span class="privacy-link" style="font-size:11px">Privacy Policy</span>
+            </div>
+
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Two toggles with helper text below each. Partner-push is on by default for grandfathered users since they already had push permission granted from v1; spending-patterns is off until explicit opt-in. Privacy Policy link sits at the bottom of the screen.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">toggle spending on</div>
+    </div>
+
+    <div class="screen-col">
+      <div class="screen-label">SMS pre-explanation triggered</div>
+      <div class="state-badge interaction">pre-prompt</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div style="opacity:0.25;flex:1;background:var(--screen-bg)"></div>
+          <div class="overlay">
+            <div class="bottom-sheet">
+              <div class="bs-handle"></div>
+              <div class="sms-sheet-ico">💬</div>
+              <div class="sms-sheet-ttl">Next we'll ask for SMS access</div>
+              <div class="sms-sheet-body">We read transaction texts from your banks to figure out where you spend. Nothing leaves your phone.</div>
+
+              <div class="sms-bullet">
+                <div class="sms-bullet-ico">✓</div>
+                <div class="sms-bullet-text">Only messages from banks are read</div>
+              </div>
+              <div class="sms-bullet">
+                <div class="sms-bullet-ico">✓</div>
+                <div class="sms-bullet-text">Personal texts are never accessed</div>
+              </div>
+              <div class="sms-bullet">
+                <div class="sms-bullet-ico">✓</div>
+                <div class="sms-bullet-text">Processing happens on-device</div>
+              </div>
+
+              <div class="btn btn-primary btn-lg" style="margin-top:12px">Continue</div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav" style="opacity:0.25"></div>
+      </div>
+      <div class="flow-note decision">Same pre-explanation sheet as Flow 1 — single source of truth, reused across all entry points. Triggered any time spending-patterns flips on and SMS hasn't been granted yet.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">Continue → Allow</div>
+    </div>
+
+    <div class="screen-col">
+      <div class="screen-label">Both toggles on · personalization active</div>
+      <div class="state-badge success">activated</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="app-bar-back">‹</div>
+            <div class="app-bar-text">
+              <div class="app-bar-title" style="font-size:18px">Offer preferences</div>
+            </div>
+          </div>
+          <div class="profile-screen">
+
+            <div class="profile-section">
+              <div class="profile-list">
+                <div class="toggle-row">
+                  <div class="toggle-row-body">
+                    <div class="toggle-row-ttl">Personalize my offers</div>
+                    <div class="toggle-row-sub">Uses SMS access to read transaction texts and match offers to your spending.</div>
+                  </div>
+                  <div class="toggle on"></div>
+                </div>
+                <div class="toggle-row">
+                  <div class="toggle-row-body">
+                    <div class="toggle-row-ttl">Partner offer notifications</div>
+                    <div class="toggle-row-sub">Get push alerts for partner deals you might want.</div>
+                  </div>
+                  <div class="toggle on"></div>
+                </div>
+              </div>
+            </div>
+
+            <div style="padding:16px;font-size:11px;color:var(--t3);line-height:1.5;">
+              You can change these at any time. <span class="privacy-link" style="font-size:11px">Privacy Policy</span>
+            </div>
+
+          </div>
+          <div class="toast" style="bottom:60px">✨ Personalization on</div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note new">Toggle flips on after SMS granted. Toast confirms activation. If user denied SMS at OS dialog, this toggle would stay in OFF state (the brief specifies preference state and SMS permission are independent — preference can be ticked while SMS denied, but personalization activates only when both are true).</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- FLOW 5 — DISABLE FROM PROFILE -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 5 — Disable from Profile</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="phone-row">
+
+    <div class="screen-col">
+      <div class="screen-label">Offer preferences · both on</div>
+      <div class="state-badge happy">active</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="app-bar-back">‹</div>
+            <div class="app-bar-text">
+              <div class="app-bar-title" style="font-size:18px">Offer preferences</div>
+            </div>
+          </div>
+          <div class="profile-screen">
+
+            <div class="profile-section">
+              <div class="profile-list">
+                <div class="toggle-row">
+                  <div class="toggle-row-body">
+                    <div class="toggle-row-ttl">Personalize my offers</div>
+                    <div class="toggle-row-sub">Uses SMS access to read transaction texts and match offers to your spending.</div>
+                  </div>
+                  <div class="toggle on"></div>
+                </div>
+                <div class="toggle-row">
+                  <div class="toggle-row-body">
+                    <div class="toggle-row-ttl">Partner offer notifications</div>
+                    <div class="toggle-row-sub">Get push alerts for partner deals you might want.</div>
+                  </div>
+                  <div class="toggle on"></div>
+                </div>
+              </div>
+            </div>
+
+            <div style="padding:16px;font-size:11px;color:var(--t3);line-height:1.5;">
+              You can change these at any time. <span class="privacy-link" style="font-size:11px">Privacy Policy</span>
+            </div>
+
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">toggle spending off</div>
+    </div>
+
+    <div class="screen-col">
+      <div class="screen-label">Spending off · immediate deactivation</div>
+      <div class="state-badge success">deactivated</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="app-bar-back">‹</div>
+            <div class="app-bar-text">
+              <div class="app-bar-title" style="font-size:18px">Offer preferences</div>
+            </div>
+          </div>
+          <div class="profile-screen">
+
+            <div class="profile-section">
+              <div class="profile-list">
+                <div class="toggle-row">
+                  <div class="toggle-row-body">
+                    <div class="toggle-row-ttl">Personalize my offers</div>
+                    <div class="toggle-row-sub">Uses SMS access to read transaction texts and match offers to your spending.</div>
+                  </div>
+                  <div class="toggle"></div>
+                </div>
+                <div class="toggle-row">
+                  <div class="toggle-row-body">
+                    <div class="toggle-row-ttl">Partner offer notifications</div>
+                    <div class="toggle-row-sub">Get push alerts for partner deals you might want.</div>
+                  </div>
+                  <div class="toggle on"></div>
+                </div>
+              </div>
+            </div>
+
+            <div style="padding:16px;font-size:11px;color:var(--t3);line-height:1.5;">
+              You can change these at any time. <span class="privacy-link" style="font-size:11px">Privacy Policy</span>
+            </div>
+
+          </div>
+          <div class="toast" style="bottom:60px">Personalization off</div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">No confirmation dialog on disable — the brief specifies immediate deactivation, and the action is reversible (user can toggle back on). Toast confirms the change. Data retention on disable is an open question for legal — flagged in handoff.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- FLOW 6 — PARTNER PUSH OS BLOCKED EDGE -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 6 — Partner-push OS-blocked · edge state</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="phone-row">
+
+    <div class="screen-col">
+      <div class="screen-label">Offer preferences · push OS-blocked</div>
+      <div class="state-badge disabled">OS-blocked</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="app-bar-back">‹</div>
+            <div class="app-bar-text">
+              <div class="app-bar-title" style="font-size:18px">Offer preferences</div>
+            </div>
+          </div>
+          <div class="profile-screen">
+
+            <div class="profile-section">
+              <div class="profile-list">
+                <div class="toggle-row">
+                  <div class="toggle-row-body">
+                    <div class="toggle-row-ttl">Personalize my offers</div>
+                    <div class="toggle-row-sub">Uses SMS access to read transaction texts and match offers to your spending.</div>
+                  </div>
+                  <div class="toggle on"></div>
+                </div>
+                <div class="toggle-row disabled">
+                  <div class="toggle-row-body">
+                    <div class="toggle-row-ttl">Partner offer notifications</div>
+                    <div class="toggle-row-sub">Get push alerts for partner deals you might want.</div>
+                  </div>
+                  <div class="toggle disabled"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="inline-disabled-msg">
+              <div class="inline-disabled-ico">⚠</div>
+              <div class="inline-disabled-body">
+                <div class="inline-disabled-text">Notifications are off for MoneyMore. Turn them on in system settings to enable this.</div>
+                <span class="inline-disabled-link">Open system settings ↗</span>
+              </div>
+            </div>
+
+            <div style="padding:0 16px 16px;font-size:11px;color:var(--t3);line-height:1.5;">
+              You can change these at any time. <span class="privacy-link" style="font-size:11px">Privacy Policy</span>
+            </div>
+
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note new">When OS-level push permission is denied, the partner-push toggle is rendered inert (grey, won't toggle), with an inline warning explaining why and a link that routes to system settings via deep-link. The toggle is visually distinct from "off" state — disabled grey is clearly different from active grey.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- HANDOFF -->
+<div class="handoff">
+  <div class="handoff-title">Handoff</div>
+  <div class="handoff-sub">Designer reference for Personalization v2 (Android). All 21 copy moments from the brief are drafted in English only — Arabic to follow once UX Writer reviews EN copy.</div>
+
+  <div class="handoff-sec">
+    <div class="handoff-h">Copy · English only (AR deferred)</div>
+    <div class="callout warn">EN copy authored during prototyping. AR translation deferred until UX Writer signs off on EN versions. Numbers below match the brief's Copy Moments table for traceability.</div>
+
+    <table class="copy-table" style="margin-top:12px">
+      <colgroup>
+        <col class="col-screen"><col class="col-element"><col class="col-en"><col class="col-meta">
+      </colgroup>
+      <thead><tr><th>Screen</th><th>Element</th><th>English</th><th>Char / Limit</th></tr></thead>
+      <tbody>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="4">Locked state (#1–4)</td>
+          <td class="element-name">Headline</td><td class="en">Curated offers, just for you</td><td class="meta">28 / 40</td>
+        </tr>
+        <tr><td class="element-name">Body</td><td class="en">Turn on personalization to see offers picked from your spending habits, plus partner deals you'll actually use.</td><td class="meta">112 / 200</td></tr>
+        <tr><td class="element-name">Get started CTA</td><td class="en">Get started</td><td class="meta">11 / 14</td></tr>
+        <tr><td class="element-name">Privacy Policy link</td><td class="en">Privacy Policy</td><td class="meta">14 / 20</td></tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="6">Consent screen (#5–10)</td>
+          <td class="element-name">Headline</td><td class="en">Pick what you'd like</td><td class="meta">20 / 40</td>
+        </tr>
+        <tr><td class="element-name">Body</td><td class="en">Both are optional. You can change either later from Profile → Permissions.</td><td class="meta">74 / 200</td></tr>
+        <tr><td class="element-name">Spending-patterns checkbox</td><td class="en">Personalize my offers — uses SMS access to read transaction texts and match offers to your spending.</td><td class="meta">102 / 120</td></tr>
+        <tr><td class="element-name">Partner-push checkbox</td><td class="en">Notify me about partner offers I might want</td><td class="meta">43 / 80</td></tr>
+        <tr><td class="element-name">Confirm CTA</td><td class="en">Confirm</td><td class="meta">7 / 14</td></tr>
+        <tr><td class="element-name">Not now CTA</td><td class="en">Not now</td><td class="meta">7 / 14</td></tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="1">SMS pre-explanation (#11)</td>
+          <td class="element-name">Sheet body</td><td class="en">We read transaction texts from your banks to figure out where you spend. Nothing leaves your phone.</td><td class="meta">99 / 250</td>
+        </tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="4">Grandfather banner (#12–15)</td>
+          <td class="element-name">Headline</td><td class="en">Now with personalization</td><td class="meta">24 / 40</td>
+        </tr>
+        <tr><td class="element-name">Body</td><td class="en">Pick offers tuned to your spending, and we'll notify you when partner deals drop.</td><td class="meta">81 / 140</td></tr>
+        <tr><td class="element-name">Primary CTA</td><td class="en">Set preferences</td><td class="meta">15 / 18</td></tr>
+        <tr><td class="element-name">Skip action</td><td class="en">Skip</td><td class="meta">4 / 12</td></tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="6">Offer preferences (#16–21)</td>
+          <td class="element-name">Profile entry label</td><td class="en">Offer preferences</td><td class="meta">17 / 24</td>
+        </tr>
+        <tr><td class="element-name">Screen headline</td><td class="en">Offer preferences</td><td class="meta">17 / 30</td></tr>
+        <tr><td class="element-name">Spending toggle label</td><td class="en">Personalize my offers</td><td class="meta">21 / 40</td></tr>
+        <tr><td class="element-name">Partner-push toggle label</td><td class="en">Partner offer notifications</td><td class="meta">27 / 40</td></tr>
+        <tr><td class="element-name">Partner-push disabled message</td><td class="en">Notifications are off for MoneyMore. Turn them on in system settings to enable this.</td><td class="meta">84 / 100</td></tr>
+        <tr><td class="element-name">System settings link</td><td class="en">Open system settings</td><td class="meta">20 / 24</td></tr>
+
+      </tbody>
+    </table>
+
+    <div class="callout info">
+      <strong>Additional copy drafted (not in brief's 21):</strong> Pre-explanation sheet title "Next we'll ask for SMS access", three pre-explanation bullets, OS SMS dialog purpose string "MoneyMore needs this to read transaction texts from your banks.", consent screen title bar "Set up offers", grandfather eyebrow "New in v2", Profile sub-labels under each row, toggle helper text below partner-push, footer text "You can change these at any time." Toasts: "Personalization on" / "Personalization off". Send these to UX Writer alongside the 21 for review.
+    </div>
+  </div>
+
+  <div class="handoff-sec">
+    <div class="handoff-h">Accessibility — what changes what you draw</div>
+    <ul class="handoff-list">
+      <li><strong>Locked state — gift icon must have a text label</strong> for screen readers. The headline serves this purpose; ensure the icon is marked decorative in the implementation.</li>
+      <li><strong>Checkbox state needs both visual and announced cues.</strong> Green border + checkmark + tinted background = visual. Screen reader must announce "checked" / "unchecked" on tap.</li>
+      <li><strong>Toggle state announcements.</strong> "Personalize my offers, on" / "Personalize my offers, off" — full label spoken with state.</li>
+      <li><strong>Disabled toggle must be announced as such.</strong> "Partner offer notifications, off, dimmed, double-tap to learn why" or equivalent. The inline warning below carries the explanation.</li>
+      <li><strong>Touch targets 44×44px</strong> on all CTAs, checkboxes, toggles, the Skip action in the banner, and the system settings link.</li>
+      <li><strong>Privacy Policy link uses underline + arrow icon</strong> — not colour alone. Important since legal compliance often requires the link to be visually distinct from body text.</li>
+      <li><strong>Confirm CTA disabled state.</strong> Must use both colour change (grey) and announced state (button, dimmed, disabled) — not colour alone.</li>
+    </ul>
+  </div>
+
+</div>
+
+</div>
+</body>
+</html>
