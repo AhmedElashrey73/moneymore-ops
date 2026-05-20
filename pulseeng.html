@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pulse — Engineering Briefing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink:        #0E1419;
+    --graphite:   #1B2229;
+    --slate:      #4A5562;
+    --slate-soft: #6B7785;
+    --mute:       #8B95A1;
+    --rule:       #E2E5E8;
+    --rule-soft:  #EFF1F3;
+    --paper:      #FAFAF7;
+    --surface:    #FFFFFF;
+    --canvas:     #F5F4EF;
+    --pulse:      #007A6E;
+    --pulse-deep: #00504A;
+    --pulse-mid:  #4DA89F;
+    --pulse-soft: #E6F4F2;
+    --warn:       #C97A2D;
+    --warn-soft:  #FBF1E5;
+    --info:       #3A6FB0;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 14px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+  .serif { font-family: 'Fraunces', serif; }
+
+  .shell { max-width: 960px; margin: 0 auto; padding: 48px 40px 80px; }
+
+  /* ---- header ---- */
+  .head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    border-bottom: 2px solid var(--ink); padding-bottom: 18px; margin-bottom: 12px;
+  }
+  .brand-mark { font-family: 'Fraunces', serif; font-size: 30px; font-weight: 600; letter-spacing: -0.02em; }
+  .brand-mark::after { content: "."; color: var(--pulse); }
+  .head-right { font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--slate-soft); font-weight: 600; text-align: right; }
+
+  .doc-title {
+    font-family: 'Fraunces', serif; font-size: 34px; font-weight: 500;
+    letter-spacing: -0.02em; line-height: 1.1; margin: 26px 0 10px;
+  }
+  .doc-sub { font-size: 15px; color: var(--slate); max-width: 680px; }
+
+  /* ---- section label ---- */
+  .sec-label {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--pulse-deep); font-weight: 700; margin: 48px 0 16px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .sec-label::before {
+    content: ""; width: 22px; height: 2px; background: var(--pulse); display: inline-block;
+  }
+
+  /* ---- what is pulse (engineer framing) ---- */
+  .frame {
+    background: var(--surface); border: 1px solid var(--rule);
+    border-left: 3px solid var(--pulse); border-radius: 10px;
+    padding: 22px 26px; font-size: 14.5px; line-height: 1.65;
+  }
+  .frame p { margin: 0 0 12px; }
+  .frame p:last-child { margin-bottom: 0; }
+  .frame strong { color: var(--pulse-deep); font-weight: 600; }
+  .frame .term { font-family: 'JetBrains Mono', monospace; font-size: 13px; background: var(--pulse-soft); color: var(--pulse-deep); padding: 1px 6px; border-radius: 4px; }
+
+  /* ---- architecture diagram ---- */
+  .diagram {
+    background: var(--surface); border: 1px solid var(--rule); border-radius: 12px;
+    padding: 32px 28px;
+  }
+  .diag-cols { display: grid; grid-template-columns: 1fr 56px 1fr; gap: 0; align-items: stretch; }
+  .diag-side-label {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em;
+    font-weight: 700; margin-bottom: 14px; text-align: center;
+  }
+  .diag-side-label.pulse-side { color: var(--pulse-deep); }
+  .diag-side-label.app-side { color: var(--info); }
+
+  .node {
+    border-radius: 9px; padding: 13px 15px; margin-bottom: 10px;
+    border: 1px solid var(--rule); background: var(--paper); position: relative;
+  }
+  .node-title { font-weight: 600; font-size: 13.5px; margin-bottom: 2px; }
+  .node-desc { font-size: 11.5px; color: var(--slate-soft); line-height: 1.4; }
+  .node-q {
+    position: absolute; top: -8px; right: -8px;
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--warn); color: white; font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; font-weight: 600; display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+  }
+
+  .node.foundation { background: var(--ink); border-color: var(--ink); }
+  .node.foundation .node-title { color: var(--paper); }
+  .node.foundation .node-desc { color: var(--mute); }
+  .node.foundation .crit {
+    display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    background: var(--warn); color: white; padding: 1px 6px; border-radius: 3px;
+    letter-spacing: 0.05em; margin-top: 8px;
+  }
+
+  .node.insights { border-color: var(--pulse-mid); background: var(--pulse-soft); }
+  .node.activation { border-color: var(--pulse-mid); background: #fff; }
+  .node.measure { border-color: var(--rule); background: var(--paper); }
+  .node.auth { border-color: var(--rule); background: var(--canvas); border-style: dashed; }
+
+  .app-node { background: #EEF3F9; border-color: #C5D6E8; }
+  .app-node .node-title { color: var(--info); }
+
+  .diag-arrow-v { text-align: center; color: var(--mute); font-size: 16px; margin: 2px 0; }
+  .diag-mid { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .diag-handoff {
+    writing-mode: vertical-rl; text-orientation: mixed; font-size: 9.5px;
+    text-transform: uppercase; letter-spacing: 0.12em; color: var(--info); font-weight: 600;
+    margin: 8px 0;
+  }
+  .diag-arrow-h { color: var(--info); font-size: 22px; }
+
+  .diag-foot {
+    margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--rule-soft);
+    font-size: 12px; color: var(--slate); display: flex; gap: 22px; flex-wrap: wrap;
+  }
+  .diag-foot .key { display: flex; align-items: center; gap: 7px; }
+  .diag-foot .swatch { width: 12px; height: 12px; border-radius: 3px; }
+
+  /* ---- questions ---- */
+  .q-intro { font-size: 14px; color: var(--slate); margin-bottom: 8px; max-width: 720px; }
+  .q-list { display: flex; flex-direction: column; gap: 16px; }
+  .q-card {
+    background: var(--surface); border: 1px solid var(--rule); border-radius: 10px;
+    padding: 22px 24px; position: relative; overflow: hidden;
+  }
+  .q-card::before {
+    content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--pulse);
+  }
+  .q-top { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 12px; }
+  .q-num {
+    flex-shrink: 0; width: 30px; height: 30px; border-radius: 50%;
+    background: var(--ink); color: var(--paper); font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center;
+  }
+  .q-num.priority { background: var(--warn); }
+  .q-head { flex: 1; }
+  .q-layer {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--pulse-deep); font-weight: 700; margin-bottom: 4px;
+  }
+  .q-ask { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 500; line-height: 1.3; letter-spacing: -0.01em; }
+  .q-body { padding-left: 46px; }
+  .q-why { font-size: 13px; color: var(--slate); margin-bottom: 12px; }
+  .q-why strong { color: var(--ink); font-weight: 600; }
+  .q-good {
+    font-size: 12.5px; color: var(--pulse-deep); background: var(--pulse-soft);
+    border-radius: 6px; padding: 10px 13px; line-height: 1.5;
+  }
+  .q-good .lbl { font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; font-size: 10px; display: block; margin-bottom: 3px; }
+  .priority-flag {
+    display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    background: var(--warn-soft); color: var(--warn); border: 1px solid var(--warn);
+    padding: 2px 7px; border-radius: 3px; letter-spacing: 0.05em; margin-left: 8px; vertical-align: 2px;
+  }
+
+  /* ---- close ---- */
+  .close {
+    margin-top: 40px; background: var(--ink); color: var(--paper);
+    border-radius: 12px; padding: 26px 30px; position: relative; overflow: hidden;
+  }
+  .close::after {
+    content: ""; position: absolute; right: -50px; top: -50px; width: 200px; height: 200px;
+    border-radius: 50%; background: radial-gradient(circle, rgba(0,122,110,0.4) 0%, transparent 65%);
+  }
+  .close-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em; color: var(--pulse-mid); font-weight: 700; margin-bottom: 10px; position: relative; z-index: 1; }
+  .close-text { font-family: 'Fraunces', serif; font-size: 17px; line-height: 1.5; position: relative; z-index: 1; }
+  .close-text strong { color: var(--pulse-mid); }
+
+  footer.foot {
+    margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--rule);
+    font-size: 11px; color: var(--mute); display: flex; justify-content: space-between;
+  }
+  .foot .mono { font-family: 'JetBrains Mono', monospace; }
+
+  @media print {
+    body { background: white; }
+    .q-card, .diagram, .frame { break-inside: avoid; }
+  }
+  @media (max-width: 720px) {
+    .shell { padding: 28px 20px 60px; }
+    .diag-cols { grid-template-columns: 1fr; }
+    .diag-mid { flex-direction: row; padding: 8px 0; }
+    .diag-handoff { writing-mode: horizontal-tb; }
+    .q-body { padding-left: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <div class="head">
+    <div class="brand-mark">Pulse</div>
+    <div class="head-right">Engineering Briefing<br/>Pre-build scoping · May 2026</div>
+  </div>
+
+  <div class="doc-title">What Pulse is, and the five things I need from you.</div>
+  <div class="doc-sub">A new B2B product built on our existing transaction data. This page explains the system shape, then asks five technical questions that determine how we scope the build. Skim the diagram first — the questions map to it.</div>
+
+  <!-- ===== WHAT IS PULSE ===== -->
+  <div class="sec-label">What Pulse is — the system, not the pitch</div>
+  <div class="frame">
+    <p><strong>Pulse turns the bank-SMS spend data we already parse into intelligence and campaigns for brand partners.</strong> A brand (say a telco) logs in and sees how their category behaves on MoneyMore — their revenue, their customers, where those customers spend elsewhere. Then they run a targeted offer to a slice of those users and we measure whether it actually moved spend.</p>
+    <p>Architecturally: <strong>Pulse is the brain, the MoneyMore app is the surface.</strong> Pulse owns all the logic — computing cohorts, resolving audiences, deciding campaigns, measuring results. When a campaign fires, Pulse hands a payload to the app, and the app just <em>renders</em> it (Offers tab + push). No Pulse logic lives inside the app.</p>
+    <p>Everything rests on two cohorts: the <span class="term">payer cohort</span> (users who pay a given merchant) and the <span class="term">category cohort</span> (where those same users spend everywhere else). We compute these from transaction data — which is exactly where most of my questions are.</p>
+  </div>
+
+  <!-- ===== ARCHITECTURE ===== -->
+  <div class="sec-label">The architecture — and where my questions land (●)</div>
+  <div class="diagram">
+    <div class="diag-cols">
+
+      <!-- PULSE side -->
+      <div>
+        <div class="diag-side-label pulse-side">Pulse · the brain (system of record)</div>
+
+        <div class="node foundation">
+          <div class="node-q">2</div>
+          <div class="node-title">Layer 0 · Data Foundation</div>
+          <div class="node-desc">Cohort engine · share-of-wallet · attribution methodology. Everything reads from here.</div>
+          <span class="crit">CRITICAL PATH · Q1 · Q2 · Q3</span>
+        </div>
+
+        <div class="diag-arrow-v">↓</div>
+
+        <div class="node insights">
+          <div class="node-q">1</div>
+          <div class="node-title">Layer 1 · Insights</div>
+          <div class="node-desc">Discover + Learn + the brief. Read-only on Layer 0.</div>
+        </div>
+
+        <div class="node activation">
+          <div class="node-q">4</div>
+          <div class="node-title">Layer 2 · Activation</div>
+          <div class="node-desc">Define a cohort → compose a campaign → hand payload to the app.</div>
+        </div>
+
+        <div class="diag-arrow-v">↓</div>
+
+        <div class="node measure">
+          <div class="node-q">3</div>
+          <div class="node-title">Layer 3 · Measure</div>
+          <div class="node-desc">Attribution vs matched control. Reads redemptions + later spend. Closes the loop.</div>
+        </div>
+
+        <div class="node auth">
+          <div class="node-q">5</div>
+          <div class="node-title">Cross-cutting · Access &amp; Auth</div>
+          <div class="node-desc">External brand login. Strict data-scoping — a brand sees only their own data.</div>
+        </div>
+      </div>
+
+      <!-- middle / handoff -->
+      <div class="diag-mid">
+        <div class="diag-handoff">campaign payload →</div>
+        <div class="diag-arrow-h">→</div>
+        <div class="diag-handoff">← redemptions</div>
+      </div>
+
+      <!-- APP side -->
+      <div>
+        <div class="diag-side-label app-side">MoneyMore app · the surface</div>
+        <div class="app-node node" style="margin-top: 0;">
+          <div class="node-title">Offers tab</div>
+          <div class="node-desc">Receives the campaign payload from Pulse and renders the offer card.</div>
+        </div>
+        <div class="diag-arrow-v" style="color:var(--info)">↓</div>
+        <div class="app-node node">
+          <div class="node-title">Push notification</div>
+          <div class="node-desc">Fires to the targeted cohort. In-app first; SMS as a later channel.</div>
+        </div>
+        <div class="diag-arrow-v" style="color:var(--info)">↓</div>
+        <div class="app-node node">
+          <div class="node-q">4</div>
+          <div class="node-title">User redeems</div>
+          <div class="node-desc">Redemption captured and sent back to Pulse for attribution.</div>
+        </div>
+        <div style="margin-top:14px; padding:12px 14px; background:var(--canvas); border-radius:8px; font-size:11.5px; color:var(--slate); line-height:1.45;">
+          The app's only new job: <strong style="color:var(--ink)">receive a payload, render it, report redemptions.</strong> Everything else is Pulse.
+        </div>
+      </div>
+
+    </div>
+
+    <div class="diag-foot">
+      <div class="key"><span class="swatch" style="background:var(--ink)"></span> Critical path — gates everything</div>
+      <div class="key"><span class="swatch" style="background:var(--pulse-soft); border:1px solid var(--pulse-mid)"></span> Pulse layers</div>
+      <div class="key"><span class="swatch" style="background:#EEF3F9; border:1px solid #C5D6E8"></span> App surface</div>
+      <div class="key"><span class="swatch" style="background:var(--warn)"></span> ● = a question below</div>
+    </div>
+  </div>
+
+  <!-- ===== QUESTIONS ===== -->
+  <div class="sec-label">The five questions</div>
+  <div class="q-intro">For each: what I'm asking, why it matters for the build, and what a useful answer sounds like. I don't need perfect answers — I need to know whether each is <em>easy</em>, <em>real work</em>, or <em>unknown</em>. That tells me where the timeline risk sits. <strong>Questions 1 and 3 matter most</strong> — if we only get through two, those.</div>
+
+  <div class="q-list">
+
+    <!-- Q1 -->
+    <div class="q-card">
+      <div class="q-top">
+        <div class="q-num priority">1</div>
+        <div class="q-head">
+          <div class="q-layer">Layer 0 · Data Foundation <span class="priority-flag">HIGHEST PRIORITY</span></div>
+          <div class="q-ask">Of all the transaction volume we parse, what % is mapped to a known merchant and category — versus sitting in "Other"? And is coverage even across categories?</div>
+        </div>
+      </div>
+      <div class="q-body">
+        <div class="q-why"><strong>Why it matters:</strong> share-of-wallet, the category tabs, "top merchants your customers pay" — all of it is only as good as this number. If 40% of spend is "Other," our category breakdowns show less than two-thirds of reality. This caps how impressive the product can look.</div>
+        <div class="q-good"><span class="lbl">A useful answer sounds like</span>"About X% of transaction value is categorised; telecom and food delivery are well-mapped, groceries and small merchants are weak." A non-answer is "most of it" — I'll need a number.</div>
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="q-card">
+      <div class="q-top">
+        <div class="q-num">2</div>
+        <div class="q-head">
+          <div class="q-layer">Layer 0 · Cohort engine</div>
+          <div class="q-ask">Can the cohorts and category data run as a scheduled batch job — nightly or weekly — or does anything need to be real-time? Where would real-time actually be required?</div>
+        </div>
+      </div>
+      <div class="q-body">
+        <div class="q-why"><strong>Why it matters:</strong> batch is dramatically cheaper and simpler. For a monthly-cadence insights product, batch is almost certainly fine — but resolving an audience at the moment a campaign sends might want fresher data. I want to know where the line is.</div>
+        <div class="q-good"><span class="lbl">A useful answer sounds like</span>"Cohorts and insights can be nightly batch; the only thing that might need to be fresher is the audience size at campaign-send time." Push for which parts, not just "it depends."</div>
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="q-card">
+      <div class="q-top">
+        <div class="q-num priority">3</div>
+        <div class="q-head">
+          <div class="q-layer">Layer 0 → Layer 3 · Attribution <span class="priority-flag">HIGHEST PRIORITY</span></div>
+          <div class="q-ask">To measure whether a campaign drove spend — how do we build a fair "control group" of similar users who didn't get the offer, and compare later spend? Have we done matched comparison before, or is it from scratch?</div>
+        </div>
+      </div>
+      <div class="q-body">
+        <div class="q-why"><strong>Why it matters:</strong> this is the moat. A "+41% lift" claim is only credible if the control group is genuinely comparable. It's statistics, not just a query — the analytical heart of Measure. We should agree the approach on paper before anyone codes it.</div>
+        <div class="q-good"><span class="lbl">A useful answer sounds like</span>"We'd match on prior spend, frequency and recency, hold out a similar group, compare 60-day spend — we have / haven't done matching before." We may not fully resolve this in one sitting; the goal is to know if it's "adapt something" or "design from zero."</div>
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="q-card">
+      <div class="q-top">
+        <div class="q-num">4</div>
+        <div class="q-head">
+          <div class="q-layer">Layer 2 · The app handoff</div>
+          <div class="q-ask">When Pulse decides to send a campaign, how should it hand the offer to the app — webhook, shared queue, an API the app polls? And whose time on the app side do we need to build the receiving end?</div>
+        </div>
+      </div>
+      <div class="q-body">
+        <div class="q-why"><strong>Why it matters:</strong> this is the one cross-team dependency. The integration can be small but still stall if no one on the app side is assigned. I need both the technical shape <em>and</em> the human commitment.</div>
+        <div class="q-good"><span class="lbl">A useful answer sounds like</span>"Pulse posts to an endpoint the app exposes — needs ~X days from whoever owns the Offers tab." If I only get the mechanism and not the person/time, the dependency isn't closed.</div>
+      </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="q-card">
+      <div class="q-top">
+        <div class="q-num">5</div>
+        <div class="q-head">
+          <div class="q-layer">Cross-cutting · Data location &amp; access</div>
+          <div class="q-ask">Should Pulse run on the same infrastructure as the consumer app, or be isolated on its own? Given external brand users will log in to see data derived from our users' transactions — what's safest?</div>
+        </div>
+      </div>
+      <div class="q-body">
+        <div class="q-why"><strong>Why it matters:</strong> external people accessing data derived from our users' bank transactions is a privacy surface the app doesn't have. Isolation usually means a bug in Pulse can't touch live user data — but feasibility is your call.</div>
+        <div class="q-good"><span class="lbl">A useful answer sounds like</span>"Isolated, reading from a derived/copied dataset, so external access never touches the live app DB" — or a reasoned case for shared. I want the reasoning, not just a preference.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== CLOSE ===== -->
+  <div class="close">
+    <div class="close-label">What I actually need out of this</div>
+    <div class="close-text">For each question: is it <strong>easy</strong>, <strong>real work</strong>, or <strong>unknown</strong>? That alone tells me where the timeline risk sits and lets us start writing build tickets against reality instead of guesses. <strong>The categorisation-coverage number (Q1) is the single most valuable thing</strong> — it determines how good the product can be before we write a line of code.</div>
+  </div>
+
+  <footer class="foot">
+    <div>Pulse · Engineering Briefing · for the pre-build scoping conversation</div>
+    <div class="mono">MoneyMore · confidential</div>
+  </footer>
+
+</div>
+</body>
+</html>
