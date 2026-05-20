@@ -1308,6 +1308,64 @@
   }
   .moat-text em { font-style: italic; }
 
+  /* ---- Measure: wallet-shift hero (Block C, the killer view) ---- */
+  .wallet-shift {
+    background: linear-gradient(135deg, var(--ink) 0%, var(--graphite) 100%);
+    color: var(--paper);
+    border-radius: 12px;
+    padding: 30px 32px;
+    margin-bottom: 18px;
+    position: relative;
+    overflow: hidden;
+  }
+  .wallet-shift::after {
+    content: "";
+    position: absolute; right: -60px; top: -60px;
+    width: 280px; height: 280px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,122,110,0.4) 0%, transparent 65%);
+  }
+  .ws-tag {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--pulse-mid); font-weight: 700; margin-bottom: 16px;
+    position: relative; z-index: 1;
+  }
+  .ws-grid {
+    display: grid; grid-template-columns: 1fr auto 1fr auto 1fr;
+    align-items: center; gap: 24px; position: relative; z-index: 1;
+    margin-bottom: 18px;
+  }
+  .ws-node { text-align: center; }
+  .ws-node-label { font-size: 11px; color: var(--mute); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.08em; }
+  .ws-node-value { font-family: 'Fraunces', serif; font-size: 46px; font-weight: 500; letter-spacing: -0.03em; line-height: 1; }
+  .ws-node-value.before { color: var(--slate-soft); }
+  .ws-node-value.after { color: var(--paper); }
+  .ws-node-value.delta { color: var(--pulse-mid); }
+  .ws-arrow { font-size: 28px; color: var(--pulse-mid); }
+  .ws-foot {
+    font-size: 13px; color: var(--mute); position: relative; z-index: 1;
+    border-top: 1px solid rgba(255,255,255,0.12); padding-top: 16px; line-height: 1.5;
+  }
+  .ws-foot strong { color: var(--pulse-mid); }
+  .ws-foot em { font-style: italic; color: var(--paper); }
+
+  /* ---- Measure: ROI cards (Block B) ---- */
+  .roi-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 14px; margin-bottom: 18px;
+  }
+  .roi-card {
+    background: var(--surface); border: 1px solid var(--rule);
+    border-radius: 10px; padding: 18px 20px;
+  }
+  .roi-card.hero {
+    background: var(--pulse-soft);
+    border-color: var(--pulse-mid);
+  }
+  .roi-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--slate-soft); font-weight: 600; margin-bottom: 12px; }
+  .roi-value { font-family: 'Fraunces', serif; font-size: 34px; font-weight: 500; letter-spacing: -0.02em; line-height: 1; color: var(--ink); }
+  .roi-card.hero .roi-value { color: var(--pulse-deep); }
+  .roi-foot { font-size: 11px; color: var(--slate); margin-top: 8px; }
+
   /* ============ LEARN (stage 5) ============ */
   .next-action-list { display: flex; flex-direction: column; gap: 12px; }
   .next-action {
@@ -2148,50 +2206,71 @@
     <div class="stage-view hidden" id="view-measure">
       <div class="stage-header">
         <div class="stage-tag"><span class="stage-tag-num">04</span> Measure</div>
-        <h1 class="stage-title">See <em>exactly</em> what your campaign did.</h1>
-        <p class="stage-blurb">Live activation funnel — and post-redemption spend tracked from real bank SMS. No other platform can show you this.</p>
+        <h1 class="stage-title">Did it move the <em>wallet</em>?</h1>
+        <p class="stage-blurb">Win-back campaign · lapsed Competitor A payers · launched 21 May. Every figure traces to a verified bank transaction — and ties back to the leakage you saw in Discover.</p>
       </div>
 
-      <!-- Headline attribution -->
-      <div class="attribution-headline">
-        <div>
-          <div class="att-stat-label">Redeemed</div>
-          <div class="att-stat-value">684</div>
-          <div class="att-stat-sub">31.9% of openers · EGP 100 cost / redemption</div>
+      <!-- ===== BLOCK C (lead) — WALLET SHIFT · the killer view ===== -->
+      <div class="wallet-shift">
+        <div class="ws-tag">★ The loop closed · share of re-activated cohort's wallet</div>
+        <div class="ws-grid">
+          <div class="ws-node">
+            <div class="ws-node-label">Before · from Discover</div>
+            <div class="ws-node-value before">9.8%</div>
+          </div>
+          <div class="ws-arrow">→</div>
+          <div class="ws-node">
+            <div class="ws-node-label">After · 60 days post-campaign</div>
+            <div class="ws-node-value after">13.2%</div>
+          </div>
+          <div class="ws-arrow">+</div>
+          <div class="ws-node">
+            <div class="ws-node-label">Wallet clawed back</div>
+            <div class="ws-node-value delta">EGP 4.1M</div>
+          </div>
         </div>
-        <div>
-          <div class="att-stat-label">Repeat customers · 60d</div>
-          <div class="att-stat-value">412</div>
-          <div class="att-stat-sub">60.2% of redeemers came back</div>
-        </div>
-        <div>
-          <div class="att-stat-label">Post-redemption spend lift</div>
-          <div class="att-stat-value lift">+41%</div>
-          <div class="att-stat-sub">EGP 247 → EGP 348 avg basket</div>
-        </div>
-      </div>
-
-      <!-- Moat callout -->
-      <div class="moat-callout">
-        <div class="moat-tag">★ Exclusive to Pulse</div>
-        <div class="moat-text">
-          Because MoneyMore reads bank SMS, we attribute <em>real downstream spend</em> with your brand — not just app clicks. Every figure above traces to a verified bank transaction in the 60 days after redemption.
+        <div class="ws-foot">
+          Discover showed your customers spent <strong>EGP 18.9M with Competitor A</strong> while you captured just <strong>9.8%</strong> of their wallet. After the win-back, your share of the re-activated payer cohort's wallet rose to <em>13.2%</em> — and <em>EGP 4.1M</em> of that came directly at Competitor A's expense. <strong>This is the same metric Discover used to find the opportunity — now proven moved.</strong>
         </div>
       </div>
 
-      <!-- Funnel -->
+      <!-- ===== BLOCK B — ROI · the CFO view ===== -->
+      <div class="roi-grid">
+        <div class="roi-card hero">
+          <div class="roi-label">Return on spend</div>
+          <div class="roi-value">4.2×</div>
+          <div class="roi-foot">incremental revenue per EGP spent</div>
+        </div>
+        <div class="roi-card">
+          <div class="roi-label">Net incremental EGP</div>
+          <div class="roi-value">EGP 219K</div>
+          <div class="roi-foot">revenue above matched control, minus cost</div>
+        </div>
+        <div class="roi-card">
+          <div class="roi-label">Campaign cost</div>
+          <div class="roi-value">EGP 68K</div>
+          <div class="roi-foot">684 redemptions × EGP 100</div>
+        </div>
+        <div class="roi-card">
+          <div class="roi-label">Gross incremental EGP</div>
+          <div class="roi-value">EGP 287K</div>
+          <div class="roi-foot">verified spend lift vs control · 60d</div>
+        </div>
+      </div>
+
+      <!-- ===== BLOCK A — FUNNEL + BLOCK D — PROOF ===== -->
       <div class="panel-grid-2">
         <div class="panel">
           <div class="panel-head">
             <div>
               <h3>Activation funnel</h3>
-              <div class="sub">Win-back: lapsed Competitor A customers · 21 May — 26 May</div>
+              <div class="sub">Payer cohort · lapsed Competitor A · 21 May — 26 May</div>
             </div>
             <span class="panel-tag" style="background: rgba(42, 157, 107, 0.12); color: var(--good);">● Live</span>
           </div>
           <div class="funnel-viz">
             <div class="funnel-bar-wrap">
-              <div class="funnel-bar-label"><strong>Eligible cohort</strong>Matched filters</div>
+              <div class="funnel-bar-label"><strong>Eligible cohort</strong>Matched payer filters</div>
               <div class="funnel-bar">
                 <div class="funnel-bar-fill" style="width: 100%">2,847</div>
                 <span class="funnel-bar-pct">100%</span>
@@ -2222,7 +2301,7 @@
               <div class="funnel-bar-label"><strong>Redeemed</strong>Verified bank tx</div>
               <div class="funnel-bar">
                 <div class="funnel-bar-fill" style="width: 24%">684</div>
-                <span class="funnel-bar-pct">31.9% redemption</span>
+                <span class="funnel-bar-pct">31.9% redemption · 412 repeat in 60d</span>
               </div>
             </div>
           </div>
@@ -2231,16 +2310,24 @@
         <div class="panel">
           <div class="panel-head">
             <div>
-              <h3>Post-redemption spend · 60-day window</h3>
-              <div class="sub">Avg weekly spend with you — redeemers vs control cohort</div>
+              <h3>Verified spend · 60-day window</h3>
+              <div class="sub">Avg weekly spend with you — re-activated payers vs matched control</div>
             </div>
-            <span class="panel-tag">Attribution</span>
+            <span class="panel-tag">Payer cohort</span>
           </div>
           <div class="chart-wrap h-280"><canvas id="chartAttribution"></canvas></div>
           <div class="legend-row">
-            <span><span class="legend-dot" style="background: var(--pulse-deep);"></span>Redeemers (n = 684)</span>
-            <span><span class="legend-dot" style="background: var(--mute);"></span>Control · matched non-redeemers</span>
+            <span><span class="legend-dot" style="background: var(--pulse-deep);"></span>Re-activated payers (n = 684)</span>
+            <span><span class="legend-dot" style="background: var(--mute);"></span>Matched control · non-redeemers</span>
           </div>
+        </div>
+      </div>
+
+      <!-- Moat callout -->
+      <div class="moat-callout">
+        <div class="moat-tag">★ Exclusive to Pulse</div>
+        <div class="moat-text">
+          Most platforms stop at the click. Because MoneyMore reads bank SMS, every figure above — the wallet shift, the ROAS, the spend lift — traces to a <em>verified bank transaction</em> in the 60 days after redemption. No survey, no self-report, no attribution model. Real spend.
         </div>
       </div>
     </div>
