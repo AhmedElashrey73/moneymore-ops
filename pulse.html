@@ -620,6 +620,249 @@
     z-index: 1;
   }
 
+  /* ---- Discover block headers (cohort spine) ---- */
+  .block-head {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin: 36px 0 16px 0;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--ink);
+  }
+  .block-head:first-of-type { margin-top: 8px; }
+  .block-letter {
+    font-family: 'Fraunces', serif;
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .block-title-wrap { flex: 1; }
+  .block-title {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    line-height: 1.1;
+  }
+  .block-q {
+    font-size: 12.5px;
+    color: var(--slate);
+    font-style: italic;
+    margin-top: 2px;
+  }
+  .cohort-chip {
+    font-size: 9.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    padding: 4px 9px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+  .cohort-payer { background: var(--pulse-soft); color: var(--pulse-deep); }
+  .cohort-sim   { background: #EEF2F7; color: var(--info); }
+
+  /* ---- Block A: hero economics ---- */
+  .econ-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 18px;
+    margin-bottom: 18px;
+  }
+  .econ-hero {
+    background: linear-gradient(135deg, var(--ink) 0%, var(--graphite) 100%);
+    color: var(--paper);
+    border-radius: 10px;
+    padding: 24px 26px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .econ-hero::after {
+    content: "";
+    position: absolute; right: -50px; top: -50px;
+    width: 200px; height: 200px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,122,110,0.45) 0%, transparent 65%);
+  }
+  .econ-hero-label {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--pulse-mid); font-weight: 600; margin-bottom: 12px;
+    position: relative; z-index: 1;
+  }
+  .econ-hero-value {
+    font-family: 'Fraunces', serif; font-size: 48px; font-weight: 500;
+    letter-spacing: -0.03em; line-height: 1; margin-bottom: 6px;
+    position: relative; z-index: 1;
+  }
+  .econ-hero-sub { font-size: 12px; color: var(--mute); position: relative; z-index: 1; margin-bottom: 18px; }
+  .econ-hero-chart { flex: 1; min-height: 90px; position: relative; z-index: 1; }
+
+  .econ-kpis {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .econ-kpi {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 9px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+  }
+  .econ-kpi-label {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--slate-soft); font-weight: 600; margin-bottom: 10px;
+  }
+  .econ-kpi-value {
+    font-family: 'Fraunces', serif; font-size: 28px; font-weight: 500;
+    letter-spacing: -0.02em; line-height: 1; color: var(--ink);
+  }
+  .econ-kpi-unit { font-size: 13px; color: var(--slate-soft); font-weight: 400; }
+  .econ-kpi-foot { font-size: 10.5px; color: var(--mute); margin-top: 8px; }
+
+  /* ---- Distribution histogram ---- */
+  .dist-panel { margin-bottom: 8px; }
+  .dist-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 5px;
+    height: 150px;
+    padding-top: 10px;
+    position: relative;
+  }
+  .dist-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+    position: relative;
+  }
+  .dist-col-bar {
+    width: 100%;
+    background: var(--pulse-mid);
+    border-radius: 3px 3px 0 0;
+    transition: background 0.15s;
+    min-height: 2px;
+  }
+  .dist-col:hover .dist-col-bar { background: var(--pulse-deep); }
+  .dist-col-label {
+    font-size: 9px; color: var(--mute); margin-top: 6px;
+    font-family: 'JetBrains Mono', monospace; text-align: center;
+    line-height: 1.2;
+  }
+  .dist-marker {
+    position: absolute; top: 0; bottom: 22px;
+    border-left: 1.5px dashed var(--ink);
+  }
+  .dist-marker-label {
+    position: absolute; top: -2px; left: 4px;
+    font-size: 9px; color: var(--ink); font-weight: 600;
+    background: var(--paper); padding: 0 3px; white-space: nowrap;
+  }
+  .dist-legend {
+    display: flex; gap: 18px; margin-top: 16px;
+    font-size: 11px; color: var(--slate); flex-wrap: wrap;
+  }
+
+  /* ---- Block B: comparison ---- */
+  .compare-metric { margin-bottom: 20px; }
+  .compare-metric:last-child { margin-bottom: 0; }
+  .compare-metric-label {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--slate-soft); font-weight: 600; margin-bottom: 10px;
+    display: flex; justify-content: space-between;
+  }
+  .compare-metric-label .unit { color: var(--mute); font-weight: 400; text-transform: none; letter-spacing: 0; }
+  .compare-row {
+    display: grid; grid-template-columns: 90px 1fr 64px;
+    align-items: center; gap: 12px; margin-bottom: 7px;
+    font-size: 12px;
+  }
+  .compare-row:last-child { margin-bottom: 0; }
+  .compare-name { color: var(--slate); }
+  .compare-name.you { color: var(--pulse-deep); font-weight: 600; }
+  .compare-track { height: 14px; background: var(--rule-soft); border-radius: 3px; overflow: hidden; }
+  .compare-fill { height: 100%; background: var(--mute); border-radius: 3px; }
+  .compare-fill.you { background: var(--pulse); }
+  .compare-val { font-family: 'JetBrains Mono', monospace; text-align: right; color: var(--slate); }
+  .compare-val.you { color: var(--pulse-deep); font-weight: 600; }
+
+  /* ---- Block C: top merchants ---- */
+  .merch-tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .merch-tab {
+    font-size: 11.5px;
+    padding: 6px 12px;
+    border-radius: 100px;
+    border: 1px solid var(--rule);
+    background: var(--surface);
+    color: var(--slate);
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.12s;
+    white-space: nowrap;
+  }
+  .merch-tab:hover { border-color: var(--slate); }
+  .merch-tab.active {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--paper);
+  }
+  .merch-table { width: 100%; border-collapse: collapse; }
+  .merch-table th {
+    text-align: left; font-size: 10px; text-transform: uppercase;
+    letter-spacing: 0.1em; color: var(--slate-soft); font-weight: 600;
+    padding: 0 0 12px 0; border-bottom: 1px solid var(--rule);
+  }
+  .merch-table th.r, .merch-table td.r { text-align: right; }
+  .merch-table td {
+    padding: 11px 0; border-bottom: 1px solid var(--rule-soft);
+    font-size: 13px; vertical-align: middle;
+  }
+  .merch-table tr:last-child td { border-bottom: none; }
+  .merch-rank {
+    font-family: 'JetBrains Mono', monospace; color: var(--mute);
+    font-size: 12px; width: 28px;
+  }
+  .merch-name { font-weight: 500; color: var(--ink); }
+  .merch-name .you-tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 8.5px;
+    background: var(--pulse-deep); color: var(--paper);
+    padding: 1px 5px; border-radius: 3px; margin-left: 7px;
+    letter-spacing: 0.05em; vertical-align: 1px;
+  }
+  .merch-row-you td { background: var(--pulse-soft); }
+  .merch-cat { font-size: 11px; color: var(--slate-soft); }
+  .merch-bar-cell { width: 130px; }
+  .merch-bar-track { height: 7px; background: var(--rule-soft); border-radius: 4px; overflow: hidden; }
+  .merch-bar-fill { height: 100%; background: var(--mute); border-radius: 4px; }
+  .merch-bar-fill.you { background: var(--pulse); }
+  .merch-val { font-family: 'JetBrains Mono', monospace; color: var(--slate); font-size: 12px; }
+
+  /* ---- Block C: wallet leakage donut/bar ---- */
+  .leak-wrap { display: flex; flex-direction: column; gap: 14px; }
+  .leak-headline {
+    font-family: 'Fraunces', serif; font-size: 40px; font-weight: 500;
+    letter-spacing: -0.02em; line-height: 1; color: var(--pulse-deep);
+  }
+  .leak-sub { font-size: 12.5px; color: var(--slate); line-height: 1.45; }
+  .leak-bar {
+    height: 30px; border-radius: 5px; overflow: hidden; display: flex;
+    margin-top: 6px;
+  }
+  .leak-seg-you { background: var(--pulse); height: 100%; display: flex; align-items: center; padding-left: 10px; color: var(--paper); font-size: 11px; font-weight: 600; font-family: 'JetBrains Mono', monospace; }
+  .leak-seg-rest { background: var(--rule); height: 100%; display: flex; align-items: center; padding-left: 10px; color: var(--slate); font-size: 11px; font-family: 'JetBrains Mono', monospace; }
+
   /* ============ DEFINE (stage 2) ============ */
   .builder-grid {
     display: grid;
@@ -1396,121 +1639,230 @@
       <div class="stage-header">
         <div class="stage-tag"><span class="stage-tag-num">01</span> Discover</div>
         <h1 class="stage-title">What does your category <em>actually</em> look like in MoneyMore?</h1>
-        <p class="stage-blurb">Aggregated, anonymised category intelligence. Competitor identities are masked (A / B / C) — only you see your own brand.</p>
+        <p class="stage-blurb">Two cohorts, four questions. Your <strong>payer cohort</strong> = users who pay you as a merchant. Your <strong>category cohort</strong> = where those same customers spend everywhere else. Competitors are masked (A / B / C).</p>
+      </div>
+
+      <!-- ===== BLOCK A — YOUR ECONOMICS ===== -->
+      <div class="block-head">
+        <span class="block-letter">A</span>
+        <div class="block-title-wrap">
+          <div class="block-title">Your business on MoneyMore</div>
+          <div class="block-q">What is my revenue and per-customer economics?</div>
+        </div>
+        <span class="cohort-chip cohort-payer">Payer cohort · 1,604 users</span>
+      </div>
+
+      <div class="econ-grid">
+        <div class="econ-hero">
+          <div class="econ-hero-label">Total EGP paid to you · trailing 12 months</div>
+          <div class="econ-hero-value">EGP 44.5M</div>
+          <div class="econ-hero-sub">↑ 11.2% vs prior 12 months · 1,604 paying customers</div>
+          <div class="econ-hero-chart"><canvas id="chartRevTrend"></canvas></div>
+        </div>
+        <div class="econ-kpis">
+          <div class="econ-kpi">
+            <div class="econ-kpi-label">Avg ticket</div>
+            <div class="econ-kpi-value">EGP 672</div>
+            <div class="econ-kpi-foot">per paid transaction</div>
+          </div>
+          <div class="econ-kpi">
+            <div class="econ-kpi-label">Payment frequency</div>
+            <div class="econ-kpi-value">3.2<span class="econ-kpi-unit"> /mo</span></div>
+            <div class="econ-kpi-foot">payments per paying customer</div>
+          </div>
+          <div class="econ-kpi">
+            <div class="econ-kpi-label">Observed LTV</div>
+            <div class="econ-kpi-value">EGP 27.7K</div>
+            <div class="econ-kpi-foot">total paid across observed window</div>
+          </div>
+          <div class="econ-kpi">
+            <div class="econ-kpi-label">Customer lifetime</div>
+            <div class="econ-kpi-value">18.4<span class="econ-kpi-unit"> mo</span></div>
+            <div class="econ-kpi-foot">mean observed activity span</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Distribution histogram -->
+      <div class="panel dist-panel">
+        <div class="panel-head">
+          <div>
+            <h3>Your customers aren't average — see their shape</h3>
+            <div class="sub">Per-customer lifetime spend with you, binned · payer cohort</div>
+          </div>
+          <span class="panel-tag">Payer cohort</span>
+        </div>
+        <div class="dist-bars" id="distBars"></div>
+        <div class="dist-legend">
+          <span>Dashed lines: <strong style="color:var(--ink)">median EGP 14.2K</strong> · <strong style="color:var(--ink)">mean EGP 27.7K</strong> · <strong style="color:var(--ink)">p90 EGP 71K</strong></span>
+          <span style="color:var(--mute)">Mean sits well above median — a small group of heavy payers carries your revenue.</span>
+        </div>
+      </div>
+
+      <!-- ===== BLOCK B — YOU vs THE FIELD ===== -->
+      <div class="block-head">
+        <span class="block-letter">B</span>
+        <div class="block-title-wrap">
+          <div class="block-title">You versus the field</div>
+          <div class="block-q">How do my economics compare to direct competitors?</div>
+        </div>
+        <span class="cohort-chip cohort-payer">Payer cohort · comparative</span>
+      </div>
+
+      <div class="panel-grid-2">
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>Four-metric comparison</h3>
+              <div class="sub">You vs the 3 largest competitors in-category · each metric scaled independently</div>
+            </div>
+            <span class="panel-tag">vs A / B / C</span>
+          </div>
+
+          <div class="compare-metric">
+            <div class="compare-metric-label">Avg ticket <span class="unit">EGP</span></div>
+            <div class="compare-row"><span class="compare-name">Competitor A</span><div class="compare-track"><div class="compare-fill" style="width:100%"></div></div><span class="compare-val">812</span></div>
+            <div class="compare-row"><span class="compare-name you">You</span><div class="compare-track"><div class="compare-fill you" style="width:82.8%"></div></div><span class="compare-val you">672</span></div>
+            <div class="compare-row"><span class="compare-name">Competitor B</span><div class="compare-track"><div class="compare-fill" style="width:72.3%"></div></div><span class="compare-val">587</span></div>
+            <div class="compare-row"><span class="compare-name">Competitor C</span><div class="compare-track"><div class="compare-fill" style="width:54.1%"></div></div><span class="compare-val">439</span></div>
+          </div>
+
+          <div class="compare-metric">
+            <div class="compare-metric-label">Payment frequency <span class="unit">per month</span></div>
+            <div class="compare-row"><span class="compare-name you">You</span><div class="compare-track"><div class="compare-fill you" style="width:100%"></div></div><span class="compare-val you">3.2</span></div>
+            <div class="compare-row"><span class="compare-name">Competitor A</span><div class="compare-track"><div class="compare-fill" style="width:84.4%"></div></div><span class="compare-val">2.7</span></div>
+            <div class="compare-row"><span class="compare-name">Competitor B</span><div class="compare-track"><div class="compare-fill" style="width:75%"></div></div><span class="compare-val">2.4</span></div>
+            <div class="compare-row"><span class="compare-name">Competitor C</span><div class="compare-track"><div class="compare-fill" style="width:59.4%"></div></div><span class="compare-val">1.9</span></div>
+          </div>
+
+          <div class="compare-metric">
+            <div class="compare-metric-label">Observed LTV <span class="unit">EGP</span></div>
+            <div class="compare-row"><span class="compare-name">Competitor A</span><div class="compare-track"><div class="compare-fill" style="width:100%"></div></div><span class="compare-val">31.2K</span></div>
+            <div class="compare-row"><span class="compare-name you">You</span><div class="compare-track"><div class="compare-fill you" style="width:88.8%"></div></div><span class="compare-val you">27.7K</span></div>
+            <div class="compare-row"><span class="compare-name">Competitor B</span><div class="compare-track"><div class="compare-fill" style="width:60.6%"></div></div><span class="compare-val">18.9K</span></div>
+            <div class="compare-row"><span class="compare-name">Competitor C</span><div class="compare-track"><div class="compare-fill" style="width:52.6%"></div></div><span class="compare-val">16.4K</span></div>
+          </div>
+
+          <div class="compare-metric">
+            <div class="compare-metric-label">Customer lifetime <span class="unit">months</span></div>
+            <div class="compare-row"><span class="compare-name">Competitor A</span><div class="compare-track"><div class="compare-fill" style="width:100%"></div></div><span class="compare-val">21.5</span></div>
+            <div class="compare-row"><span class="compare-name you">You</span><div class="compare-track"><div class="compare-fill you" style="width:85.6%"></div></div><span class="compare-val you">18.4</span></div>
+            <div class="compare-row"><span class="compare-name">Competitor B</span><div class="compare-track"><div class="compare-fill" style="width:79.5%"></div></div><span class="compare-val">17.1</span></div>
+            <div class="compare-row"><span class="compare-name">Competitor C</span><div class="compare-track"><div class="compare-fill" style="width:68.8%"></div></div><span class="compare-val">14.8</span></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>Share of category revenue</h3>
+              <div class="sub">Your slice of total EGP flowing to the category · trailing 12 months</div>
+            </div>
+            <span class="panel-tag">Payer cohort</span>
+          </div>
+          <div class="chart-wrap h-220" style="margin-bottom:18px;"><canvas id="chartShareTrend"></canvas></div>
+          <div class="share-bars">
+            <div class="share-bar-row">
+              <div class="share-bar-name">Competitor A</div>
+              <div class="share-bar-track"><div class="share-bar-fill" style="width:100%"></div></div>
+              <div class="share-bar-pct">31.8%</div>
+            </div>
+            <div class="share-bar-row">
+              <div class="share-bar-name you">You</div>
+              <div class="share-bar-track"><div class="share-bar-fill you" style="width:73.6%"></div></div>
+              <div class="share-bar-pct">23.4%</div>
+            </div>
+            <div class="share-bar-row">
+              <div class="share-bar-name">Competitor B</div>
+              <div class="share-bar-track"><div class="share-bar-fill" style="width:56.3%"></div></div>
+              <div class="share-bar-pct">17.9%</div>
+            </div>
+            <div class="share-bar-row">
+              <div class="share-bar-name">Competitor C</div>
+              <div class="share-bar-track"><div class="share-bar-fill" style="width:38.4%"></div></div>
+              <div class="share-bar-pct">12.2%</div>
+            </div>
+            <div class="share-bar-row">
+              <div class="share-bar-name">Others</div>
+              <div class="share-bar-track"><div class="share-bar-fill" style="width:45.3%"></div></div>
+              <div class="share-bar-pct">14.7%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== BLOCK C — WHERE YOUR CUSTOMERS LIVE ===== -->
+      <div class="block-head">
+        <span class="block-letter">C</span>
+        <div class="block-title-wrap">
+          <div class="block-title">Where your customers spend everywhere else</div>
+          <div class="block-q">My customers' full wallet — what do I capture, what leaks out?</div>
+        </div>
+        <span class="cohort-chip cohort-sim">Category cohort · 1,604 users</span>
+      </div>
+
+      <div class="panel-grid-2">
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>Top merchants your customers pay</h3>
+              <div class="sub" id="merchSub">Where your 1,604 customers spend across all of MoneyMore · by EGP · last 90 days</div>
+            </div>
+            <span class="panel-tag">Category cohort</span>
+          </div>
+          <div class="merch-tabs" id="merchTabs"></div>
+          <table class="merch-table">
+            <thead>
+              <tr><th>#</th><th>Merchant</th><th>Category</th><th class="r">Share of their spend</th></tr>
+            </thead>
+            <tbody id="merchBody"></tbody>
+          </table>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>Your share of their total wallet</h3>
+              <div class="sub">Of every EGP your customers spend on MoneyMore, how much reaches you</div>
+            </div>
+            <span class="panel-tag">Category cohort</span>
+          </div>
+          <div class="leak-wrap">
+            <div>
+              <div class="leak-headline">9.8%</div>
+              <div class="leak-sub">of your customers' total tracked spend goes to you. The other 90% goes elsewhere — and a third of <em>that</em> goes to your two direct competitors.</div>
+            </div>
+            <div class="leak-bar">
+              <div class="leak-seg-you" style="width:9.8%">9.8%</div>
+              <div class="leak-seg-rest" style="width:90.2%">90.2% spent elsewhere</div>
+            </div>
+            <div style="border-top:1px solid var(--rule-soft); padding-top:14px; margin-top:4px;">
+              <div style="font-size:10.5px; text-transform:uppercase; letter-spacing:0.1em; color:var(--slate-soft); font-weight:600; margin-bottom:10px;">Of the spend that leaks to rivals</div>
+              <div class="compare-row"><span class="compare-name">Competitor A</span><div class="compare-track"><div class="compare-fill" style="width:100%"></div></div><span class="compare-val">EGP 18.9M</span></div>
+              <div class="compare-row"><span class="compare-name">Competitor B</span><div class="compare-track"><div class="compare-fill" style="width:56%"></div></div><span class="compare-val">EGP 10.6M</span></div>
+              <div class="compare-row"><span class="compare-name">Competitor C</span><div class="compare-track"><div class="compare-fill" style="width:38%"></div></div><span class="compare-val">EGP 7.2M</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== BLOCK D — ANALYST INSIGHT ===== -->
+      <div class="block-head">
+        <span class="block-letter">D</span>
+        <div class="block-title-wrap">
+          <div class="block-title">This month's analyst insight</div>
+          <div class="block-q">The one thing worth acting on right now.</div>
+        </div>
+        <span class="cohort-chip cohort-payer">Curated · monthly</span>
       </div>
 
       <!-- Insight card -->
       <div class="insight-card">
         <div class="insight-label">★ Monthly insight · curated by your analyst · April 2026</div>
         <div class="insight-headline">
-          Customers who shop your category between <em>8&nbsp;PM and midnight</em> spend 2.3× more per visit than morning customers — and they're the <em>least likely</em> to be reached by your current offers.
+          Your customers spend <em>EGP 18.9M with Competitor A</em> — yet 41% of them haven't paid you in 60 days. They're not lost to price; they're lost to <em>habit</em>. A timed win-back is the single highest-value move this quarter.
         </div>
-        <div class="insight-meta">Based on 41,820 transactions · 1,604 active users · last 90 days · next refresh 1 May</div>
-      </div>
-
-      <!-- Top KPI row -->
-      <div class="panel-grid-2">
-        <div class="panel">
-          <div class="panel-head">
-            <div>
-              <h3>Share of category wallet</h3>
-              <div class="sub">Distribution of total category spend across top 6 brands · last 90 days</div>
-            </div>
-            <span class="panel-tag">Aggregated</span>
-          </div>
-          <div class="share-bars">
-            <div class="share-bar-row">
-              <div class="share-bar-name">Competitor A</div>
-              <div class="share-bar-track"><div class="share-bar-fill" style="width: 100%"></div></div>
-              <div class="share-bar-pct">31.8%</div>
-            </div>
-            <div class="share-bar-row">
-              <div class="share-bar-name you">You</div>
-              <div class="share-bar-track"><div class="share-bar-fill you" style="width: 73.6%"></div></div>
-              <div class="share-bar-pct">23.4%</div>
-            </div>
-            <div class="share-bar-row">
-              <div class="share-bar-name">Competitor B</div>
-              <div class="share-bar-track"><div class="share-bar-fill" style="width: 56.3%"></div></div>
-              <div class="share-bar-pct">17.9%</div>
-            </div>
-            <div class="share-bar-row">
-              <div class="share-bar-name">Competitor C</div>
-              <div class="share-bar-track"><div class="share-bar-fill" style="width: 38.4%"></div></div>
-              <div class="share-bar-pct">12.2%</div>
-            </div>
-            <div class="share-bar-row">
-              <div class="share-bar-name">Competitor D</div>
-              <div class="share-bar-track"><div class="share-bar-fill" style="width: 26.4%"></div></div>
-              <div class="share-bar-pct">8.4%</div>
-            </div>
-            <div class="share-bar-row">
-              <div class="share-bar-name">Others</div>
-              <div class="share-bar-track"><div class="share-bar-fill" style="width: 19.8%"></div></div>
-              <div class="share-bar-pct">6.3%</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="panel">
-          <div class="panel-head">
-            <div>
-              <h3>Your customer profile</h3>
-              <div class="sub">Aggregated behavioural signals · all-time</div>
-            </div>
-            <span class="panel-tag">You</span>
-          </div>
-          <div class="kpi-stack">
-            <div class="kpi-row-tight">
-              <div class="mini-kpi">
-                <div class="mini-kpi-label">Active customers</div>
-                <div class="mini-kpi-value">1,604</div>
-                <div class="mini-kpi-trend"><span class="trend-up">↑ 8.4%</span> vs Q1</div>
-              </div>
-              <div class="mini-kpi">
-                <div class="mini-kpi-label">Avg basket</div>
-                <div class="mini-kpi-value">EGP 672</div>
-                <div class="mini-kpi-trend"><span class="trend-up">↑ 3.1%</span> vs Q1</div>
-              </div>
-            </div>
-            <div class="kpi-row-tight">
-              <div class="mini-kpi">
-                <div class="mini-kpi-label">Tx / user / month</div>
-                <div class="mini-kpi-value">3.2</div>
-                <div class="mini-kpi-trend"><span class="trend-up">↑ 0.4</span> vs Q1</div>
-              </div>
-              <div class="mini-kpi">
-                <div class="mini-kpi-label">Repeat rate (90d)</div>
-                <div class="mini-kpi-value">64.8%</div>
-                <div class="mini-kpi-trend"><span class="trend-down">↓ 2.1pp</span> vs Q1</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Trend chart + competitor comparison -->
-      <div class="panel-grid-2">
-        <div class="panel">
-          <div class="panel-head">
-            <div>
-              <h3>Share-of-wallet · trend</h3>
-              <div class="sub">12-month moving share — you vs top 3 competitors</div>
-            </div>
-            <span class="panel-tag">Aggregated</span>
-          </div>
-          <div class="chart-wrap h-260"><canvas id="chartTrend"></canvas></div>
-        </div>
-        <div class="panel">
-          <div class="panel-head">
-            <div>
-              <h3>Reach × value map</h3>
-              <div class="sub">x: customers reached · y: avg spend per customer · bubble: total category spend</div>
-            </div>
-            <span class="panel-tag">Aggregated</span>
-          </div>
-          <div class="chart-wrap h-260"><canvas id="chartReach"></canvas></div>
-        </div>
+        <div class="insight-meta">Based on 1,604 payer-cohort users · cross-referenced with category cohort · next refresh 1 May</div>
       </div>
     </div>
 
@@ -2003,7 +2355,150 @@
 
   stages.forEach(s => s.addEventListener('click', () => goStage(s.dataset.stage)));
 
-  // -------- Charts --------
+  // -------- Block A distribution histogram (no Chart.js dependency) --------
+  (function buildDist() {
+    const el = document.getElementById('distBars');
+    if (!el) return;
+    const buckets = [
+      {l:'0–5K', v:18}, {l:'5–10', v:21}, {l:'10–15', v:17}, {l:'15–20', v:12},
+      {l:'20–30', v:11}, {l:'30–45', v:8}, {l:'45–60', v:5}, {l:'60–80', v:4},
+      {l:'80–120', v:2.5}, {l:'120K+', v:1.5},
+    ];
+    const max = Math.max(...buckets.map(b=>b.v));
+    let html = '';
+    buckets.forEach(b => {
+      const h = (b.v / max) * 100;
+      html += `<div class="dist-col"><div class="dist-col-bar" style="height:${h}%"></div><div class="dist-col-label">${b.l}</div></div>`;
+    });
+    el.innerHTML = html;
+    const med = document.createElement('div');
+    med.className = 'dist-marker'; med.style.left = '27%';
+    med.innerHTML = '<span class="dist-marker-label">median 14.2K</span>';
+    el.appendChild(med);
+    const mean = document.createElement('div');
+    mean.className = 'dist-marker'; mean.style.left = '47%';
+    mean.innerHTML = '<span class="dist-marker-label">mean 27.7K</span>';
+    el.appendChild(mean);
+  })();
+
+  // -------- Block C tabbed top-merchants (no Chart.js dependency) --------
+  (function buildMerch() {
+    const tabsEl = document.getElementById('merchTabs');
+    const bodyEl = document.getElementById('merchBody');
+    const subEl  = document.getElementById('merchSub');
+    if (!tabsEl || !bodyEl) return;
+
+    // Each row: [name, category, sharePct(of cohort spend in that view), isYou]
+    const data = {
+      'All': {
+        sub: 'Where your 1,604 customers spend across all of MoneyMore · by EGP · last 90 days',
+        rows: [
+          ['Competitor A','Your category',100,false],
+          ['You','Your category',81,true],
+          ['Major Supermarket Chain','Groceries',74,false],
+          ['Leading Food-Delivery App','Food delivery',66,false],
+          ['Competitor B','Your category',58,false],
+          ['National Telco','Telecom',49,false],
+          ['Ride-Hailing App','Transport',41,false],
+          ['Pharmacy Chain','Pharmacy',33,false],
+        ],
+      },
+      'Your category': {
+        sub: 'Spend within your own category · how you rank against direct rivals · by EGP',
+        rows: [
+          ['Competitor A','Your category',100,false],
+          ['You','Your category',73,true],
+          ['Competitor B','Your category',56,false],
+          ['Competitor C','Your category',38,false],
+          ['Competitor D','Your category',26,false],
+          ['Long-tail / others','Your category',19,false],
+        ],
+      },
+      'Groceries': {
+        sub: 'Where your customers buy groceries · by EGP · last 90 days',
+        rows: [
+          ['Major Supermarket Chain','Groceries',100,false],
+          ['Hypermarket Group','Groceries',71,false],
+          ['Neighbourhood Mini-Market','Groceries',54,false],
+          ['Online Grocery App','Groceries',39,false],
+          ['Wholesale Club','Groceries',22,false],
+        ],
+      },
+      'Food delivery': {
+        sub: 'Where your customers order food · by EGP · last 90 days',
+        rows: [
+          ['Leading Food-Delivery App','Food delivery',100,false],
+          ['Second Delivery App','Food delivery',62,false],
+          ['Direct Restaurant Orders','Food delivery',44,false],
+          ['Cloud-Kitchen Brand','Food delivery',28,false],
+        ],
+      },
+      'Telecom': {
+        sub: 'Where your customers pay for mobile & internet · by EGP · last 90 days',
+        rows: [
+          ['National Telco','Telecom',100,false],
+          ['Second Operator','Telecom',77,false],
+          ['Third Operator','Telecom',51,false],
+          ['Home Internet Provider','Telecom',34,false],
+        ],
+      },
+      'Transport': {
+        sub: 'Where your customers spend on getting around · by EGP · last 90 days',
+        rows: [
+          ['Ride-Hailing App','Transport',100,false],
+          ['Second Ride App','Transport',58,false],
+          ['Fuel Stations','Transport',46,false],
+          ['Public Transport Top-ups','Transport',21,false],
+        ],
+      },
+      'Pharmacy': {
+        sub: 'Where your customers buy health & pharmacy · by EGP · last 90 days',
+        rows: [
+          ['Pharmacy Chain','Pharmacy',100,false],
+          ['Second Pharmacy Chain','Pharmacy',64,false],
+          ['Independent Pharmacies','Pharmacy',43,false],
+          ['Online Pharmacy','Pharmacy',25,false],
+        ],
+      },
+    };
+
+    const cats = Object.keys(data);
+    let active = 'All';
+
+    function render() {
+      const view = data[active];
+      if (subEl) subEl.textContent = view.sub;
+      bodyEl.innerHTML = view.rows.map((r, i) => {
+        const [name, cat, pct, isYou] = r;
+        const youTag = isYou ? '<span class="you-tag">YOU</span>' : '';
+        return `<tr class="${isYou ? 'merch-row-you' : ''}">
+          <td class="merch-rank">${i + 1}</td>
+          <td><span class="merch-name">${name}${youTag}</span></td>
+          <td class="merch-cat">${cat}</td>
+          <td class="r"><div class="merch-bar-cell"><div class="merch-bar-track"><div class="merch-bar-fill ${isYou ? 'you' : ''}" style="width:${pct}%"></div></div></div></td>
+        </tr>`;
+      }).join('');
+    }
+
+    tabsEl.innerHTML = cats.map(c =>
+      `<button class="merch-tab ${c === active ? 'active' : ''}" data-cat="${c}">${c}</button>`
+    ).join('');
+
+    tabsEl.querySelectorAll('.merch-tab').forEach(btn => {
+      btn.addEventListener('click', () => {
+        active = btn.dataset.cat;
+        tabsEl.querySelectorAll('.merch-tab').forEach(b => b.classList.toggle('active', b === btn));
+        render();
+      });
+    });
+
+    render();
+  })();
+
+  // -------- Charts (guarded — degrade gracefully if CDN blocked) --------
+  if (typeof Chart === 'undefined') {
+    console.warn('Chart.js not loaded — charts skipped, rest of dashboard intact.');
+  } else {
   Chart.defaults.font.family = "'Inter Tight', sans-serif";
   Chart.defaults.font.size = 11;
   Chart.defaults.color = '#6B7785';
@@ -2011,8 +2506,28 @@
 
   const months = ['May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr'];
 
-  // Trend chart
-  new Chart(document.getElementById('chartTrend'), {
+  // Block A — Revenue trend (sparkline on dark hero)
+  new Chart(document.getElementById('chartRevTrend'), {
+    type: 'line',
+    data: {
+      labels: months,
+      datasets: [{
+        data: [3.1,3.2,3.35,3.4,3.55,3.6,3.7,3.75,3.85,3.9,4.0,4.1],
+        borderColor:'#4DA89F', backgroundColor:'rgba(77,168,159,0.18)',
+        tension:0.34, borderWidth:2.2, pointRadius:0, fill:true,
+      }],
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false}, tooltip:{enabled:true, callbacks:{label:c=>'EGP '+c.parsed.y+'M'}} },
+      scales:{
+        x:{ display:false }, y:{ display:false },
+      },
+    },
+  });
+
+  // Block B — share of category revenue trend
+  new Chart(document.getElementById('chartShareTrend'), {
     type: 'line',
     data: {
       labels: months,
@@ -2020,45 +2535,14 @@
         { label: 'Competitor A', data: [33.8,33.2,32.9,32.7,32.5,32.1,32.0,31.8,31.6,31.7,31.6,31.8], borderColor:'#6B7785', backgroundColor:'transparent', tension:0.32, borderWidth:1.8, pointRadius:0 },
         { label: 'You',          data: [20.1,20.6,21.0,21.4,21.9,22.2,22.5,22.8,23.0,23.2,23.3,23.4], borderColor:'#007A6E', backgroundColor:'rgba(0,122,110,0.07)', tension:0.32, borderWidth:2.4, pointRadius:0, fill:true },
         { label: 'Competitor B', data: [18.4,18.6,18.5,18.2,18.0,17.9,17.8,17.9,17.8,17.7,17.8,17.9], borderColor:'#A8B5C0', backgroundColor:'transparent', tension:0.32, borderWidth:1.5, pointRadius:0 },
-        { label: 'Competitor C', data: [13.1,12.9,12.8,12.6,12.5,12.4,12.3,12.3,12.2,12.2,12.2,12.2], borderColor:'#C9D1D9', backgroundColor:'transparent', tension:0.32, borderWidth:1.5, pointRadius:0 },
       ],
     },
     options: {
       responsive:true, maintainAspectRatio:false,
-      plugins: { legend: { position:'bottom', labels:{ boxWidth:10, padding:12, font:{size:11}}}},
+      plugins: { legend: { position:'bottom', labels:{ boxWidth:10, padding:10, font:{size:10.5}}}},
       scales: {
-        x: { grid:{ display:false }, ticks:{font:{size:10.5}} },
-        y: { ticks:{ callback:v=>v+'%', font:{size:10.5} }, grid:{color:'#F2F2F2'}, beginAtZero:false, suggestedMin:10 },
-      },
-    },
-  });
-
-  // Reach × Value bubble
-  const dots = [
-    { label:'Competitor A', users:3120, avg:31200, total:97300000, c:'#6B7785' },
-    { label:'You',          users:1604, avg:27734, total:44485633, c:'#007A6E' },
-    { label:'Competitor B', users:1820, avg:18900, total:34398000, c:'#A8B5C0' },
-    { label:'Competitor C', users:1240, avg:18800, total:23312000, c:'#C9D1D9' },
-    { label:'Competitor D', users:980,  avg:16400, total:16072000, c:'#D8DEE3' },
-  ];
-  const maxSpend = Math.max(...dots.map(d=>d.total));
-  const r = s => 7 + 28 * Math.sqrt(s/maxSpend);
-  new Chart(document.getElementById('chartReach'), {
-    type:'bubble',
-    data:{
-      datasets: dots.map(d => ({
-        label: d.label,
-        data: [{ x:d.users, y:d.avg, r:r(d.total) }],
-        backgroundColor: d.c + 'BB',
-        borderColor: d.c, borderWidth:1.5,
-      })),
-    },
-    options: {
-      responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{ position:'bottom', labels:{ boxWidth:9, padding:10, font:{size:11}}}},
-      scales:{
-        x:{ type:'linear', title:{display:true,text:'Customers reached',font:{size:11,weight:'600'},color:'#54595F'}, ticks:{font:{size:10.5}, callback:v=>v.toLocaleString()}, grid:{color:'#F2F2F2'} },
-        y:{ title:{display:true,text:'Avg spend / user',font:{size:11,weight:'600'},color:'#54595F'}, ticks:{font:{size:10.5}, callback:v=>'EGP '+(v/1000)+'K'}, grid:{color:'#F2F2F2'} },
+        x: { grid:{ display:false }, ticks:{font:{size:10}} },
+        y: { ticks:{ callback:v=>v+'%', font:{size:10} }, grid:{color:'#F2F2F2'}, beginAtZero:false, suggestedMin:15 },
       },
     },
   });
@@ -2094,6 +2578,7 @@
       },
     },
   });
+  } // end Chart guard
 </script>
 </body>
 </html>
