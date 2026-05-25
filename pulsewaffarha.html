@@ -421,6 +421,45 @@
     font-weight: 600; margin-left: 8px;
   }
 
+  /* ===== Customer Intelligence screen ===== */
+  .ci-seed-banner {
+    display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: center;
+    background: linear-gradient(135deg, var(--ink), var(--graphite)); color: var(--paper);
+    border-radius: 12px; padding: 24px 28px; margin-bottom: 22px; position: relative; overflow: hidden;
+  }
+  .ci-seed-banner::after {
+    content: ""; position: absolute; right: -50px; top: -50px; width: 220px; height: 220px;
+    border-radius: 50%; background: radial-gradient(circle, rgba(0,122,110,0.35) 0%, transparent 65%);
+  }
+  .ci-seed-num { position: relative; z-index: 1; }
+  .ci-seed-value { font-family: 'Fraunces', serif; font-size: 52px; font-weight: 500; letter-spacing: -0.03em; line-height: 0.95; color: var(--paper); }
+  .ci-seed-label { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--pulse-mid); font-weight: 600; margin-top: 8px; }
+  .ci-seed-text { position: relative; z-index: 1; font-size: 13.5px; color: var(--d5); line-height: 1.55; }
+  .ci-seed-text strong { color: var(--paper); font-weight: 600; }
+  .ci-seed-text em { color: var(--pulse-mid); font-style: normal; font-weight: 600; }
+
+  .ci-caveat {
+    display: flex; gap: 12px; align-items: flex-start; background: rgba(201,122,45,0.08);
+    border: 1px solid rgba(201,122,45,0.28); border-left: 3px solid var(--warn);
+    border-radius: 8px; padding: 14px 18px; margin-bottom: 28px;
+  }
+  .ci-caveat .cc-icon { color: var(--warn); font-weight: 700; font-family: 'JetBrains Mono', monospace; flex-shrink: 0; }
+  .ci-caveat-text { font-size: 12.5px; color: var(--graphite); line-height: 1.5; }
+  .ci-caveat-text strong { color: var(--warn); }
+
+  .index-row { display: grid; grid-template-columns: 150px 1fr 1fr 70px; align-items: center; gap: 14px; padding: 13px 0; border-bottom: 1px solid var(--rule-soft); font-size: 13px; }
+  .index-row:last-child { border-bottom: none; }
+  .index-row.head { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--slate-soft); font-weight: 600; border-bottom: 1px solid var(--rule); padding-bottom: 12px; }
+  .index-cat { font-weight: 500; color: var(--ink); }
+  .index-track { height: 18px; background: var(--rule-soft); border-radius: 3px; position: relative; overflow: hidden; }
+  .index-track .seg-conf { position: absolute; height: 100%; background: var(--pulse); border-radius: 3px; left: 0; }
+  .index-track .seg-base { position: absolute; height: 100%; top: 0; border-left: 2px dashed var(--ink); }
+  .index-val { font-family: 'JetBrains Mono', monospace; text-align: right; font-size: 12.5px; }
+  .index-multiple { font-family: 'JetBrains Mono', monospace; text-align: right; font-weight: 600; font-size: 13px; }
+  .over { color: var(--good); }
+  .under { color: var(--alert); }
+  .even { color: var(--slate-soft); }
+
   /* ===== chart helpers ===== */
   .chart-wrap { position: relative; width: 100%; }
   .h-220 { height: 220px; }
@@ -498,6 +537,11 @@
         <span class="stage-num">01</span>
         <span class="stage-body"><span class="stage-name">Discover</span>
         <span class="stage-meta">Category intelligence</span></span>
+      </button>
+      <button class="stage" data-stage="customers">
+        <span class="stage-num" style="background:var(--pulse-soft); color:var(--pulse-deep); border-color:var(--pulse-mid);">C</span>
+        <span class="stage-body"><span class="stage-name">Customer Intelligence</span>
+        <span class="stage-meta"><span class="stage-dot dot-draft"></span>Confirmed seed · at floor</span></span>
       </button>
       <button class="stage" data-stage="define">
         <span class="stage-num">02</span>
@@ -732,6 +776,104 @@
       <div class="seg-callout">
         <div class="seg-tag">★ Monthly insight · curated by your analyst</div>
         <div style="font-family:'Fraunces',serif; font-size:23px; line-height:1.4; font-weight:400; letter-spacing:-0.01em; position:relative; z-index:1; max-width:720px;" id="dInsight"></div>
+      </div>
+    </div>
+
+    <!-- =================== CUSTOMER INTELLIGENCE =================== -->
+    <div class="stage-view hidden" id="view-customers">
+      <div class="stage-header">
+        <div class="stage-tag"><span class="stage-tag-num" style="background:var(--pulse-deep);">C</span> Customer Intelligence</div>
+        <h1 class="stage-title">A verified window into <em>your actual customers</em>.</h1>
+        <p class="stage-blurb">Separately from the category view, MoneyMore can identify a seed of <strong>confirmed Waffarha customers</strong> — people whose Waffarha payment surfaced in bank SMS — and then profile their <strong>full spending behaviour</strong> across the open economy. Small today, designed to deepen as coverage grows.</p>
+      </div>
+
+      <!-- seed banner — identification, not revenue -->
+      <div class="ci-seed-banner">
+        <div class="ci-seed-num">
+          <div class="ci-seed-value">~1,000</div>
+          <div class="ci-seed-label">confirmed customers identified</div>
+        </div>
+        <div class="ci-seed-text">
+          We detect roughly <strong>EGP 500K</strong> of Waffarha-attributable payments in bank SMS. That figure isn't the prize — it's the <em>key</em>. It lets us identify a verified seed of people we <em>know</em> are your customers, then read their entire lifestyle wallet with MoneyMore's full view. <strong>The value is everything else these confirmed customers do</strong> — not what they spent with Waffarha.
+        </div>
+      </div>
+
+      <!-- the honesty caveat — bias + floor, named not hidden -->
+      <div class="ci-caveat">
+        <span class="cc-icon">!</span>
+        <div class="ci-caveat-text">
+          <strong>Read this as directional.</strong> This seed sits right at our 1,000-user k-anonymity floor, and it's a <strong>biased slice</strong> — skewed toward customers whose Waffarha payment left a bank-SMS trace, not a random sample of your base. So these are whole-cohort patterns, not drill-downs: we deliberately don't slice this group into sub-segments, because that would fall below the floor and manufacture noise. It's a proof of method that sharpens as coverage grows.
+        </div>
+      </div>
+
+      <!-- whole-cohort profile -->
+      <div class="block-head">
+        <span class="block-letter">1</span>
+        <div class="block-title-wrap">
+          <div class="block-title">Who they are — the confirmed-customer profile</div>
+          <div class="block-q">What does this verified seed look like, financially?</div>
+        </div>
+        <span class="cohort-chip cohort-payer">Confirmed cohort · ~1,000 · at floor</span>
+      </div>
+
+      <div class="metric-band">
+        <div class="metric-card hero">
+          <div class="metric-label">Monthly ARPU · whole cohort</div>
+          <div class="metric-value">EGP 1,460<span class="unit"> /mo</span></div>
+          <div class="metric-vs"><span class="vs-up">▲ +24%</span><span class="base">vs all-lifestyle baseline</span></div>
+          <div class="metric-sotag">Your confirmed customers spend <b>above the lifestyle average</b> — a higher-value base than the typical spender.</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Observed LTV · whole cohort</div>
+          <div class="metric-value">EGP 22.4K</div>
+          <div class="metric-foot">Total verified lifestyle spend across the observed window</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Cross-category breadth</div>
+          <div class="metric-value">2.8<span class="unit"> cats</span></div>
+          <div class="metric-foot">Mean lifestyle categories active in — a multi-category, engaged base</div>
+        </div>
+      </div>
+
+      <!-- category mix / indexing -->
+      <div class="block-head">
+        <span class="block-letter">2</span>
+        <div class="block-title-wrap">
+          <div class="block-title">Where their money goes — vs the average spender</div>
+          <div class="block-q">Which categories do confirmed customers over- and under-index on?</div>
+        </div>
+        <span class="cohort-chip cohort-sim">Whole cohort vs baseline</span>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div><h3>Category indexing</h3>
+          <div class="sub">Confirmed cohort's share of spend per category vs the all-lifestyle baseline · the bar is the cohort, the dashed line is the average</div></div>
+          <span class="panel-tag">Computed · not modelled</span>
+        </div>
+        <div>
+          <div class="index-row head"><span>Category</span><span>Confirmed cohort</span><span>Baseline (avg)</span><span class="index-val">Index</span></div>
+          <div id="ciIndexRows"></div>
+        </div>
+        <div class="dist-legend" style="margin-top:16px;">
+          <span style="color:var(--mute)">Index = cohort share ÷ baseline share. Above 1.0× = over-indexed (lean here). Below = under-indexed (whitespace). The numbers say it — no interpretation layer.</span>
+        </div>
+      </div>
+
+      <!-- where the opportunity reads -->
+      <div class="block-head">
+        <span class="block-letter">3</span>
+        <div class="block-title-wrap">
+          <div class="block-title">What the indexing implies</div>
+          <div class="block-q">Read directly from the numbers above — analyst-framed, not machine-written.</div>
+        </div>
+        <span class="cohort-chip cohort-payer">★ Curated · monthly</span>
+      </div>
+      <div class="seg-callout">
+        <div class="seg-tag">★ Analyst read · April 2026</div>
+        <div style="font-family:'Fraunces',serif; font-size:22px; line-height:1.4; font-weight:400; letter-spacing:-0.01em; position:relative; z-index:1; max-width:730px;">
+          Your confirmed customers over-index hard on <em>beauty &amp; spa (1.6×)</em> and <em>dining (1.3×)</em>, but under-index on <em>entertainment (0.7×)</em>. They're a premium, grooming-and-dining base — the entertainment gap is the clearest whitespace. <span style="color:var(--pulse-mid);">Read straight from the indexing table; framed by your analyst, computed from real spend.</span>
+        </div>
       </div>
     </div>
 
@@ -1302,7 +1444,7 @@
   const stages = document.querySelectorAll('.stage');
   const views  = document.querySelectorAll('.stage-view');
   const crumb  = document.getElementById('crumb-stage');
-  const stageNames = { overview:'Overview', discover:'Discover', define:'Define', activate:'Activate', measure:'Measure', learn:'Learn' };
+  const stageNames = { overview:'Overview', discover:'Discover', customers:'Customer Intelligence', define:'Define', activate:'Activate', measure:'Measure', learn:'Learn' };
   function goStage(key){
     stages.forEach(s => s.classList.toggle('active', s.dataset.stage === key));
     views.forEach(v => v.classList.toggle('hidden', v.id !== `view-${key}`));
@@ -1314,6 +1456,32 @@
   // overview picker jumps to discover
   buildPicker('ovPicker', (k)=>{ renderDiscover(k); goStage('discover'); }, null);
   renderDiscover('dining');
+
+  // ---------- Customer Intelligence indexing table ----------
+  (function buildCIIndex(){
+    const el = document.getElementById('ciIndexRows');
+    if (!el) return;
+    // [category, cohort share %, baseline share %]  — index = cohort/baseline
+    const rows = [
+      ['Beauty & spa', 29, 18],
+      ['Dining', 41, 32],
+      ['Hotels & travel', 7, 6],
+      ['Fitness', 12, 13],
+      ['Entertainment', 14, 21],
+    ];
+    const maxShare = Math.max(...rows.flatMap(r=>[r[1],r[2]]));
+    el.innerHTML = rows.map(([cat, coh, base])=>{
+      const idx = (coh/base);
+      const cls = idx > 1.1 ? 'over' : idx < 0.9 ? 'under' : 'even';
+      const arrow = idx > 1.1 ? '▲' : idx < 0.9 ? '▼' : '▬';
+      return `<div class="index-row">
+        <span class="index-cat">${cat}</span>
+        <div class="index-track"><div class="seg-conf" style="width:${(coh/maxShare)*100}%"></div><div class="seg-base" style="left:${(base/maxShare)*100}%"></div></div>
+        <span class="index-val">${coh}% <span style="color:var(--mute)">vs ${base}%</span></span>
+        <span class="index-multiple ${cls}">${arrow} ${idx.toFixed(1)}×</span>
+      </div>`;
+    }).join('');
+  })();
 
   // ---------- charts ----------
   if (typeof Chart !== 'undefined') {
