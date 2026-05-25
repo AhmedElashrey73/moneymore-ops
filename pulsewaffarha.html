@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pulse — Lifestyle Category Intelligence · for Waffarha</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --ink:        #0E1419;
+    --graphite:   #1B2229;
+    --slate:      #4A5562;
+    --slate-soft: #6B7785;
+    --mute:       #8B95A1;
+    --rule:       #E2E5E8;
+    --rule-soft:  #EFF1F3;
+    --paper:      #FAFAF7;
+    --surface:    #FFFFFF;
+    --canvas:     #F5F4EF;
+
+    --pulse:      #007A6E;
+    --pulse-deep: #00504A;
+    --pulse-soft: #E6F4F2;
+    --pulse-mid:  #4DA89F;
+
+    --good:       #2A9D6B;
+    --warn:       #C97A2D;
+    --alert:      #B0382D;
+    --info:       #3A6FB0;
+
+    --d4: #6B7785;
+    --d5: #A8B5C0;
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter Tight', system-ui, sans-serif;
+    font-size: 13.5px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  .num, .mono { font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums; }
+  .serif { font-family: 'Fraunces', serif; }
+
+  .app { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; }
+
+  /* ===== SIDEBAR ===== */
+  aside.sidebar {
+    background: var(--canvas);
+    border-right: 1px solid var(--rule);
+    padding: 28px 22px;
+    position: sticky; top: 0; height: 100vh; overflow-y: auto;
+    display: flex; flex-direction: column;
+  }
+  .brand { display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px; }
+  .brand-mark {
+    font-family: 'Fraunces', serif; font-size: 26px; font-weight: 600;
+    letter-spacing: -0.02em; color: var(--ink);
+  }
+  .brand-mark::after { content: "."; color: var(--pulse); }
+  .brand-sub {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em;
+    color: var(--slate-soft); font-weight: 500;
+  }
+  .brand-by { font-size: 10.5px; color: var(--mute); margin-bottom: 32px; margin-top: 2px; }
+
+  .nav-label {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em;
+    color: var(--mute); font-weight: 600; margin: 18px 0 10px 4px;
+  }
+  .funnel { display: flex; flex-direction: column; gap: 2px; position: relative; }
+  .funnel::before {
+    content: ""; position: absolute; left: 19px; top: 28px; bottom: 28px;
+    width: 1px; background: var(--rule); z-index: 0;
+  }
+  .stage {
+    display: flex; align-items: flex-start; gap: 12px; padding: 10px 8px;
+    border-radius: 6px; cursor: pointer; position: relative; z-index: 1;
+    transition: background 0.12s ease; background: transparent; border: none;
+    text-align: left; width: 100%; font-family: inherit; color: inherit;
+  }
+  .stage:hover { background: rgba(0,0,0,0.03); }
+  .stage.active { background: var(--surface); box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 0 0 1px var(--rule); }
+  .stage-num {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--mute);
+    background: var(--paper); border: 1px solid var(--rule); border-radius: 50%;
+    width: 22px; height: 22px; display: inline-flex; align-items: center;
+    justify-content: center; flex-shrink: 0; font-weight: 500;
+  }
+  .stage.active .stage-num { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .stage-body { display: flex; flex-direction: column; gap: 1px; flex: 1; min-width: 0; }
+  .stage-name { font-size: 13px; font-weight: 500; color: var(--ink); }
+  .stage-meta { font-size: 10.5px; color: var(--slate-soft); }
+  .stage-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; margin-right: 5px; vertical-align: 1px; }
+  .dot-live { background: var(--good); box-shadow: 0 0 0 3px rgba(42, 157, 107, 0.15); }
+  .dot-draft { background: var(--warn); }
+  .dot-illus { background: var(--info); }
+
+  .sidebar-foot { margin-top: auto; padding-top: 28px; border-top: 1px solid var(--rule); }
+  .org-card {
+    display: flex; align-items: center; gap: 10px; padding: 10px;
+    background: var(--surface); border: 1px solid var(--rule); border-radius: 8px;
+  }
+  .org-avatar {
+    width: 30px; height: 30px; border-radius: 6px;
+    background: linear-gradient(135deg, #E8590C, #F08C00);
+    color: var(--paper); display: flex; align-items: center; justify-content: center;
+    font-family: 'Fraunces', serif; font-weight: 600; font-size: 14px;
+  }
+  .org-name { font-size: 12.5px; font-weight: 500; }
+  .org-plan { font-size: 10.5px; color: var(--slate-soft); }
+
+  /* ===== MAIN ===== */
+  main.content { padding: 0; }
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 22px 40px; border-bottom: 1px solid var(--rule);
+    background: var(--paper); position: sticky; top: 0; z-index: 10;
+  }
+  .topbar-left { display: flex; align-items: baseline; gap: 16px; }
+  .crumb { font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--mute); font-weight: 500; }
+  .crumb-sep { color: var(--rule); }
+  .topbar-actions { display: flex; gap: 10px; align-items: center; }
+  .pill {
+    font-size: 11px; padding: 5px 10px; border-radius: 100px;
+    background: var(--pulse-soft); color: var(--pulse-deep); font-weight: 500;
+  }
+  .icon-btn {
+    width: 32px; height: 32px; border-radius: 6px; border: 1px solid var(--rule);
+    background: var(--surface); display: flex; align-items: center; justify-content: center;
+    cursor: pointer; color: var(--slate);
+  }
+  .icon-btn:hover { background: var(--rule-soft); }
+
+  .stage-view { padding: 0 40px 60px; }
+  .stage-view.hidden { display: none; }
+
+  .stage-header { padding: 36px 0 28px; border-bottom: 1px solid var(--rule); margin-bottom: 32px; }
+  .stage-tag {
+    display: inline-flex; align-items: center; gap: 8px; font-size: 11px;
+    text-transform: uppercase; letter-spacing: 0.16em; color: var(--pulse-deep);
+    font-weight: 600; margin-bottom: 14px;
+  }
+  .stage-tag .stage-tag-num {
+    font-family: 'JetBrains Mono', monospace; background: var(--ink); color: var(--paper);
+    padding: 2px 6px; border-radius: 3px; font-size: 10px; letter-spacing: 0.05em;
+  }
+  .stage-title {
+    font-family: 'Fraunces', serif; font-size: 42px; font-weight: 500;
+    letter-spacing: -0.025em; line-height: 1.05; color: var(--ink);
+    margin: 0 0 12px; max-width: 760px;
+  }
+  .stage-title em { font-style: italic; color: var(--pulse-deep); font-weight: 400; }
+  .stage-blurb { font-size: 15px; color: var(--slate); max-width: 680px; line-height: 1.55; }
+  .stage-blurb strong { color: var(--ink); font-weight: 600; }
+
+  /* ===== ILLUSTRATIVE banner ===== */
+  .illus-banner {
+    display: flex; gap: 12px; align-items: flex-start;
+    background: #EEF2F7; border: 1px solid #C9D6E5; border-left: 3px solid var(--info);
+    border-radius: 8px; padding: 14px 18px; margin-bottom: 28px;
+  }
+  .illus-banner .ib-icon {
+    font-size: 14px; color: var(--info); flex-shrink: 0; font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .illus-banner-text { font-size: 12.5px; color: var(--graphite); line-height: 1.5; }
+  .illus-banner-text strong { color: var(--info); }
+
+  /* ===== CATEGORY PICKER ===== */
+  .cat-picker-wrap { margin-bottom: 28px; }
+  .cat-picker-label {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em;
+    color: var(--slate-soft); font-weight: 600; margin-bottom: 12px;
+  }
+  .cat-picker { display: flex; gap: 8px; flex-wrap: wrap; }
+  .cat-btn {
+    display: flex; flex-direction: column; gap: 3px; align-items: flex-start;
+    padding: 12px 16px; border-radius: 9px; border: 1px solid var(--rule);
+    background: var(--surface); cursor: pointer; font-family: inherit;
+    transition: all 0.12s ease; min-width: 116px;
+  }
+  .cat-btn:hover { border-color: var(--slate); }
+  .cat-btn.active { background: var(--ink); border-color: var(--ink); }
+  .cat-btn-name { font-size: 13px; font-weight: 600; color: var(--ink); }
+  .cat-btn.active .cat-btn-name { color: var(--paper); }
+  .cat-btn-meta { font-size: 10.5px; color: var(--slate-soft); font-family: 'JetBrains Mono', monospace; }
+  .cat-btn.active .cat-btn-meta { color: var(--pulse-mid); }
+  .cat-btn-conf {
+    font-size: 9px; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600;
+    padding: 1px 6px; border-radius: 3px; margin-top: 2px;
+  }
+  .conf-high { background: rgba(42,157,107,0.12); color: var(--good); }
+  .conf-med  { background: rgba(201,122,45,0.14); color: var(--warn); }
+  .conf-low  { background: rgba(176,56,45,0.12); color: var(--alert); }
+  .cat-btn.active .cat-btn-conf { filter: brightness(1.25); }
+
+  /* confidence note strip */
+  .conf-note {
+    display: flex; gap: 10px; align-items: center; padding: 11px 16px;
+    background: var(--surface); border: 1px solid var(--rule); border-radius: 8px;
+    margin-bottom: 24px; font-size: 12px; color: var(--slate);
+  }
+  .conf-note .cn-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .conf-note strong { color: var(--ink); }
+
+  /* ===== block headers ===== */
+  .block-head {
+    display: flex; align-items: baseline; gap: 14px; margin: 36px 0 16px;
+    padding-bottom: 12px; border-bottom: 2px solid var(--ink);
+  }
+  .block-head:first-of-type { margin-top: 8px; }
+  .block-letter { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 600; color: var(--ink); line-height: 1; }
+  .block-title-wrap { flex: 1; }
+  .block-title { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 500; letter-spacing: -0.01em; color: var(--ink); line-height: 1.1; }
+  .block-q { font-size: 12.5px; color: var(--slate); font-style: italic; margin-top: 2px; }
+  .cohort-chip {
+    font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600;
+    padding: 4px 9px; border-radius: 4px; white-space: nowrap;
+  }
+  .cohort-payer { background: var(--pulse-soft); color: var(--pulse-deep); }
+  .cohort-sim   { background: #EEF2F7; color: var(--info); }
+  .cohort-decision {
+    font-size: 9.5px; text-transform: none; letter-spacing: 0.01em; font-weight: 500;
+    padding: 4px 10px; border-radius: 4px; white-space: nowrap;
+    background: #FDF8EE; color: #8B6914; border: 1px solid #E8D8B2; font-style: italic;
+  }
+
+  .panel-grid-2 { display: grid; grid-template-columns: 1.4fr 1fr; gap: 18px; margin-bottom: 18px; }
+  .panel-grid-2.even { grid-template-columns: 1fr 1fr; }
+  .panel {
+    background: var(--surface); border: 1px solid var(--rule);
+    border-radius: 10px; padding: 22px 24px;
+  }
+  .panel-head {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 18px; padding-bottom: 16px; border-bottom: 1px solid var(--rule-soft);
+  }
+  .panel-head h3 { margin: 0 0 4px; font-family: 'Fraunces', serif; font-size: 19px; font-weight: 500; letter-spacing: -0.012em; }
+  .panel-head .sub { font-size: 12px; color: var(--slate-soft); }
+  .panel-tag {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--pulse-deep);
+    font-weight: 600; background: var(--pulse-soft); padding: 4px 8px; border-radius: 3px; white-space: nowrap;
+  }
+
+  /* ===== Tier 1: attractiveness scatter-ish KPI band ===== */
+  .lens-label {
+    display: flex; align-items: center; gap: 10px;
+    margin: 30px 0 14px; font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.14em; color: var(--slate-soft); font-weight: 600;
+  }
+  .lens-label .ll-num {
+    font-family: 'JetBrains Mono', monospace; background: var(--pulse-soft);
+    color: var(--pulse-deep); padding: 2px 7px; border-radius: 3px; font-size: 10px;
+  }
+  .lens-label .ll-q { text-transform: none; letter-spacing: 0; font-style: italic; color: var(--mute); font-weight: 400; }
+
+  .metric-band { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 18px; }
+  .metric-card {
+    background: var(--surface); border: 1px solid var(--rule); border-radius: 10px;
+    padding: 18px 20px; position: relative; display: flex; flex-direction: column;
+  }
+  .metric-card.hero { background: linear-gradient(135deg, var(--ink), var(--graphite)); border: none; }
+  .metric-label {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--slate-soft); font-weight: 600; margin-bottom: 12px;
+  }
+  .metric-card.hero .metric-label { color: var(--pulse-mid); }
+  .metric-value {
+    font-family: 'Fraunces', serif; font-size: 32px; font-weight: 500;
+    letter-spacing: -0.02em; line-height: 1; color: var(--ink);
+  }
+  .metric-card.hero .metric-value { color: var(--paper); }
+  .metric-value .unit { font-size: 14px; color: var(--slate-soft); font-weight: 400; }
+  .metric-card.hero .metric-value .unit { color: var(--mute); }
+  .metric-vs {
+    font-size: 11px; margin-top: 10px; font-family: 'JetBrains Mono', monospace;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .metric-vs .base { color: var(--mute); }
+  .vs-up { color: var(--good); font-weight: 500; }
+  .vs-down { color: var(--alert); font-weight: 500; }
+  .vs-flat { color: var(--slate-soft); font-weight: 500; }
+  .metric-card.hero .metric-vs .base { color: var(--mute); }
+  .metric-foot { font-size: 11px; color: var(--slate); margin-top: auto; padding-top: 10px; }
+  .metric-card.hero .metric-foot { color: var(--mute); }
+  .metric-sotag {
+    font-size: 10.5px; color: var(--slate); margin-top: 8px; padding-top: 8px;
+    border-top: 1px dashed var(--rule); line-height: 1.4;
+  }
+  .metric-card.hero .metric-sotag { color: var(--d5); border-top-color: rgba(255,255,255,0.15); }
+  .metric-sotag b { color: var(--pulse-deep); font-weight: 600; }
+  .metric-card.hero .metric-sotag b { color: var(--pulse-mid); }
+
+  /* positioning quadrant note */
+  .position-note {
+    background: var(--pulse-soft); border: 1px solid var(--pulse-mid); border-radius: 10px;
+    padding: 18px 22px; margin-bottom: 18px; display: flex; gap: 14px; align-items: flex-start;
+  }
+  .position-note .pn-mark { font-family: 'Fraunces', serif; font-size: 22px; color: var(--pulse-deep); line-height: 1; }
+  .position-note-text { font-size: 13.5px; color: var(--graphite); line-height: 1.5; }
+  .position-note-text strong { color: var(--pulse-deep); font-weight: 600; }
+
+  /* ===== histogram ===== */
+  .dist-bars { display: flex; align-items: flex-end; gap: 5px; height: 150px; padding-top: 10px; position: relative; }
+  .dist-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; position: relative; }
+  .dist-col-bar { width: 100%; background: var(--pulse-mid); border-radius: 3px 3px 0 0; transition: background 0.15s; min-height: 2px; }
+  .dist-col:hover .dist-col-bar { background: var(--pulse-deep); }
+  .dist-col-label { font-size: 9px; color: var(--mute); margin-top: 6px; font-family: 'JetBrains Mono', monospace; text-align: center; line-height: 1.2; }
+  .dist-marker { position: absolute; top: 0; bottom: 22px; border-left: 1.5px dashed var(--ink); }
+  .dist-marker-label { position: absolute; top: -2px; left: 4px; font-size: 9px; color: var(--ink); font-weight: 600; background: var(--paper); padding: 0 3px; white-space: nowrap; }
+  .dist-legend { display: flex; gap: 18px; margin-top: 16px; font-size: 11px; color: var(--slate); flex-wrap: wrap; }
+  .dist-legend strong { color: var(--ink); }
+
+  /* ===== merchant table ===== */
+  .merch-table { width: 100%; border-collapse: collapse; }
+  .merch-table th { text-align: left; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--slate-soft); font-weight: 600; padding: 0 0 12px; border-bottom: 1px solid var(--rule); }
+  .merch-table th.r, .merch-table td.r { text-align: right; }
+  .merch-table td { padding: 11px 0; border-bottom: 1px solid var(--rule-soft); font-size: 13px; vertical-align: middle; }
+  .merch-table tr:last-child td { border-bottom: none; }
+  .merch-rank { font-family: 'JetBrains Mono', monospace; color: var(--mute); font-size: 12px; width: 28px; }
+  .merch-name { font-weight: 500; color: var(--ink); }
+  .merch-cat { font-size: 11px; color: var(--slate-soft); }
+  .merch-bar-cell { width: 130px; }
+  .merch-bar-track { height: 7px; background: var(--rule-soft); border-radius: 4px; overflow: hidden; }
+  .merch-bar-fill { height: 100%; background: var(--mute); border-radius: 4px; }
+  .merch-val { font-family: 'JetBrains Mono', monospace; color: var(--slate); font-size: 12px; }
+
+  /* ===== cross-category map ===== */
+  .cross-wrap { display: flex; flex-direction: column; gap: 12px; }
+  .cross-row { display: grid; grid-template-columns: 130px 1fr 64px; align-items: center; gap: 12px; font-size: 12.5px; }
+  .cross-name { color: var(--slate); font-weight: 500; }
+  .cross-track { height: 16px; background: var(--rule-soft); border-radius: 3px; overflow: hidden; }
+  .cross-fill { height: 100%; border-radius: 3px; background: var(--pulse-mid); }
+  .cross-val { font-family: 'JetBrains Mono', monospace; text-align: right; font-size: 12px; color: var(--slate); }
+  .cross-foot { font-size: 11.5px; color: var(--slate); margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--rule-soft); line-height: 1.45; }
+  .cross-foot strong { color: var(--pulse-deep); }
+
+  /* leakage */
+  .leak-headline { font-family: 'Fraunces', serif; font-size: 40px; font-weight: 500; letter-spacing: -0.02em; line-height: 1; color: var(--pulse-deep); }
+  .leak-sub { font-size: 12.5px; color: var(--slate); line-height: 1.45; margin-top: 8px; }
+
+  /* ===== deals-consumer segment callout ===== */
+  .seg-callout {
+    background: linear-gradient(135deg, var(--ink), var(--graphite)); color: var(--paper);
+    border-radius: 12px; padding: 28px 30px; margin-bottom: 18px; position: relative; overflow: hidden;
+  }
+  .seg-callout::after {
+    content: ""; position: absolute; right: -50px; top: -50px; width: 220px; height: 220px;
+    border-radius: 50%; background: radial-gradient(circle, rgba(0,122,110,0.4) 0%, transparent 65%);
+  }
+  .seg-tag { font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em; color: var(--pulse-mid); font-weight: 600; margin-bottom: 14px; position: relative; z-index: 1; }
+  .seg-grid { display: grid; grid-template-columns: 1.1fr 1fr 1fr 1fr; gap: 26px; position: relative; z-index: 1; align-items: end; }
+  .seg-node-label { font-size: 11px; color: var(--mute); margin-bottom: 8px; }
+  .seg-node-value { font-family: 'Fraunces', serif; font-size: 34px; font-weight: 500; letter-spacing: -0.025em; line-height: 1; color: var(--paper); }
+  .seg-node-value.accent { color: var(--pulse-mid); }
+  .seg-node-sub { font-size: 10.5px; color: var(--mute); margin-top: 6px; font-family: 'JetBrains Mono', monospace; }
+  .seg-foot { font-size: 12.5px; color: var(--d5); margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.12); line-height: 1.5; position: relative; z-index: 1; }
+  .seg-foot em { font-style: italic; color: var(--paper); }
+
+  /* ===== cross-category FLOW map (hero) ===== */
+  .flow-hero {
+    background: linear-gradient(135deg, var(--ink), var(--graphite)); color: var(--paper);
+    border-radius: 12px; padding: 28px 30px 24px; margin-bottom: 18px; position: relative; overflow: hidden;
+  }
+  .flow-hero::after {
+    content: ""; position: absolute; right: -60px; top: -60px; width: 260px; height: 260px;
+    border-radius: 50%; background: radial-gradient(circle, rgba(0,122,110,0.35) 0%, transparent 65%);
+  }
+  .flow-hero-head { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 20px; position: relative; z-index: 1; }
+  .flow-hero-tag { font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em; color: var(--pulse-mid); font-weight: 600; margin-bottom: 8px; }
+  .flow-hero-title { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 500; letter-spacing: -0.015em; color: var(--paper); line-height: 1.2; }
+  .flow-svg-wrap { position: relative; z-index: 1; }
+  .flow-node-label { font-family: 'Inter Tight', sans-serif; font-size: 12.5px; font-weight: 600; fill: var(--paper); }
+  .flow-node-sub { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; fill: var(--mute); }
+  .flow-link { transition: opacity 0.15s; cursor: pointer; }
+  .flow-link:hover { opacity: 1 !important; }
+  .flow-node-circle { cursor: pointer; transition: all 0.15s; }
+  .flow-legend { display:flex; gap: 22px; margin-top: 16px; font-size: 11px; color: var(--d5); position: relative; z-index: 1; flex-wrap: wrap; }
+  .flow-legend strong { color: var(--pulse-mid); }
+
+  /* ===== opportunity sizing ===== */
+  .opp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 18px; }
+  .opp-card {
+    background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 20px 22px;
+    position: relative; cursor: default; transition: all 0.15s; display: flex; flex-direction: column;
+  }
+  .opp-card.lead { border-color: var(--pulse-mid); background: var(--pulse-soft); }
+  .opp-card-route { font-size: 11px; color: var(--slate-soft); font-weight: 600; margin-bottom: 12px; display:flex; align-items:center; gap:6px; }
+  .opp-card-route .arr { color: var(--pulse); }
+  .opp-card-route .to { color: var(--pulse-deep); }
+  .opp-value { font-family: 'Fraunces', serif; font-size: 30px; font-weight: 500; letter-spacing: -0.02em; line-height: 1; color: var(--pulse-deep); }
+  .opp-value .unit { font-size: 13px; color: var(--slate-soft); font-weight: 400; }
+  .opp-detail { font-size: 11.5px; color: var(--slate); margin-top: 10px; line-height: 1.45; }
+  .opp-detail b { color: var(--ink); font-weight: 600; }
+  .opp-assumes { font-size: 10px; color: var(--mute); margin-top: 10px; padding-top: 9px; border-top: 1px dashed var(--rule); font-family: 'JetBrains Mono', monospace; }
+  .opp-banner {
+    display:flex; gap: 11px; align-items:flex-start; background: #FDF8EE; border: 1px solid #E8D8B2;
+    border-radius: 8px; padding: 12px 16px; margin-bottom: 18px; font-size: 11.5px; color: var(--graphite); line-height: 1.5;
+  }
+  .opp-banner .ob-icon { color: #8B6914; font-weight: 700; font-family: 'JetBrains Mono', monospace; flex-shrink: 0; }
+
+  /* ===== seasonality ===== */
+  .season-panel { margin-bottom: 18px; }
+  .season-thin {
+    background: var(--surface); border: 1px dashed var(--rule); border-radius: 10px;
+    padding: 28px; text-align: center; color: var(--mute); font-size: 13px; margin-bottom: 18px;
+    display: flex; flex-direction: column; gap: 6px; align-items: center;
+  }
+  .season-thin .st-mark { font-size: 20px; opacity: 0.5; }
+  .season-peak-tag {
+    display: inline-block; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em;
+    background: var(--pulse-soft); color: var(--pulse-deep); padding: 3px 8px; border-radius: 3px;
+    font-weight: 600; margin-left: 8px;
+  }
+
+  /* ===== chart helpers ===== */
+  .chart-wrap { position: relative; width: 100%; }
+  .h-220 { height: 220px; }
+  .h-260 { height: 260px; }
+  .h-280 { height: 280px; }
+  .legend-row { display: flex; gap: 16px; font-size: 11.5px; margin-top: 14px; flex-wrap: wrap; }
+  .legend-dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+
+  /* ===== Define / Activate / Measure reused-light ===== */
+  .builder-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 22px; }
+  .filter-block { padding: 18px 20px; border-bottom: 1px solid var(--rule-soft); }
+  .filter-block:last-child { border-bottom: none; }
+  .filter-label { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--slate-soft); font-weight: 600; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+  .filter-count { font-family: 'JetBrains Mono', monospace; color: var(--mute); font-size: 10.5px; font-weight: 400; }
+  .chip-row { display: flex; flex-wrap: wrap; gap: 7px; }
+  .chip { padding: 6px 12px; border: 1px solid var(--rule); border-radius: 100px; font-size: 12px; background: var(--surface); color: var(--slate); cursor: pointer; transition: all 0.12s ease; }
+  .chip:hover { border-color: var(--slate); }
+  .chip.selected { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+  .range-input { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: center; }
+  .range-field { background: var(--paper); border: 1px solid var(--rule); border-radius: 5px; padding: 7px 10px; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  .range-dash { color: var(--mute); }
+  .cohort-panel { background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; overflow: hidden; position: sticky; top: 96px; }
+  .cohort-head { padding: 22px 24px 18px; border-bottom: 1px solid var(--rule-soft); }
+  .cohort-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em; color: var(--slate-soft); font-weight: 600; margin-bottom: 10px; }
+  .cohort-size { font-family: 'Fraunces', serif; font-size: 56px; font-weight: 500; letter-spacing: -0.03em; line-height: 0.95; margin-bottom: 6px; }
+  .cohort-sub { font-size: 12px; color: var(--slate); font-family: 'JetBrains Mono', monospace; }
+  .cohort-reach { padding: 20px 24px; background: var(--paper); }
+  .reach-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; font-size: 12.5px; border-bottom: 1px solid var(--rule-soft); }
+  .reach-row:last-child { border-bottom: none; }
+  .reach-row .key { color: var(--slate); }
+  .reach-row .val { font-family: 'JetBrains Mono', monospace; font-weight: 500; }
+  .reach-row.final .val { color: var(--pulse-deep); font-weight: 600; }
+  .anonymity-banner { margin: 20px 24px 0; padding: 12px 14px; background: rgba(42, 157, 107, 0.07); border: 1px solid rgba(42, 157, 107, 0.18); border-radius: 6px; display: flex; gap: 10px; align-items: flex-start; }
+  .anonymity-banner .check { color: var(--good); flex-shrink: 0; margin-top: 1px; }
+  .anonymity-banner-text { font-size: 11.5px; color: var(--graphite); line-height: 1.45; }
+  .cohort-actions { padding: 20px 24px; display: flex; flex-direction: column; gap: 10px; }
+
+  .attribution-headline { background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 28px; margin-bottom: 18px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 32px; }
+  .att-stat-label { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--slate-soft); font-weight: 600; margin-bottom: 14px; }
+  .att-stat-value { font-family: 'Fraunces', serif; font-size: 44px; font-weight: 500; letter-spacing: -0.025em; line-height: 1; margin-bottom: 6px; }
+  .att-stat-value.lift { color: var(--pulse-deep); }
+  .att-stat-sub { font-size: 12px; color: var(--slate); }
+  .moat-callout { background: linear-gradient(135deg, #FDF8EE 0%, #F8F0DE 100%); border: 1px solid #E8D8B2; border-radius: 10px; padding: 22px 26px; margin-bottom: 18px; }
+  .moat-tag { font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em; color: #8B6914; font-weight: 700; margin-bottom: 10px; }
+  .moat-text { font-family: 'Fraunces', serif; font-size: 19px; line-height: 1.5; color: var(--ink); font-weight: 400; letter-spacing: -0.005em; }
+  .moat-text em { font-style: italic; }
+
+  .btn { border: none; border-radius: 6px; padding: 10px 16px; font-family: inherit; font-size: 12.5px; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; justify-content: center; }
+  .btn-primary { background: var(--ink); color: var(--paper); }
+  .btn-primary:hover { background: var(--graphite); }
+  .btn-ghost { background: transparent; color: var(--slate); border: 1px solid var(--rule); }
+  .btn-ghost:hover { border-color: var(--slate); }
+
+  footer.foot { padding: 32px 40px 28px; border-top: 1px solid var(--rule); font-size: 11.5px; color: var(--slate-soft); display: flex; justify-content: space-between; margin-top: 60px; }
+  footer .foot-meta { font-family: 'JetBrains Mono', monospace; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar">
+    <div class="brand"><span class="brand-mark">Pulse</span></div>
+    <div class="brand-sub">Lifestyle Category Intelligence</div>
+    <div class="brand-by">by MoneyMore · prepared for Waffarha</div>
+
+    <div class="nav-label">Journey</div>
+    <div class="funnel">
+      <button class="stage active" data-stage="overview">
+        <span class="stage-num">00</span>
+        <span class="stage-body"><span class="stage-name">Overview</span>
+        <span class="stage-meta"><span class="stage-dot dot-live"></span>Category landscape</span></span>
+      </button>
+      <button class="stage" data-stage="discover">
+        <span class="stage-num">01</span>
+        <span class="stage-body"><span class="stage-name">Discover</span>
+        <span class="stage-meta">Category intelligence</span></span>
+      </button>
+      <button class="stage" data-stage="define">
+        <span class="stage-num">02</span>
+        <span class="stage-body"><span class="stage-name">Define</span>
+        <span class="stage-meta">Segment builder</span></span>
+      </button>
+      <button class="stage" data-stage="activate">
+        <span class="stage-num">03</span>
+        <span class="stage-body"><span class="stage-name">Activate</span>
+        <span class="stage-meta"><span class="stage-dot dot-illus"></span>Illustrative</span></span>
+      </button>
+      <button class="stage" data-stage="measure">
+        <span class="stage-num">04</span>
+        <span class="stage-body"><span class="stage-name">Measure</span>
+        <span class="stage-meta"><span class="stage-dot dot-illus"></span>Illustrative</span></span>
+      </button>
+      <button class="stage" data-stage="learn">
+        <span class="stage-num">05</span>
+        <span class="stage-body"><span class="stage-name">Learn</span>
+        <span class="stage-meta">Monthly brief</span></span>
+      </button>
+    </div>
+
+    <div class="sidebar-foot">
+      <div class="org-card">
+        <div class="org-avatar">W</div>
+        <div><div class="org-name">Waffarha</div><div class="org-plan">Exploratory · 2026</div></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ===== MAIN ===== -->
+  <main class="content">
+
+    <div class="topbar">
+      <div class="topbar-left">
+        <span class="crumb">Pulse</span><span class="crumb-sep">/</span>
+        <span class="crumb" id="crumb-stage">Overview</span>
+      </div>
+      <div class="topbar-actions">
+        <span class="pill">Trailing 12 months · verified bank-SMS spend</span>
+        <button class="icon-btn" title="Export">↓</button>
+        <button class="icon-btn" title="Settings">⚙</button>
+      </div>
+    </div>
+
+    <!-- =================== OVERVIEW =================== -->
+    <div class="stage-view" id="view-overview">
+      <div class="stage-header">
+        <div class="stage-tag"><span class="stage-tag-num">00</span> The lifestyle wallet, measured</div>
+        <h1 class="stage-title">The Egyptian deals consumer — <em>seen through real spend</em>, not stated intent.</h1>
+        <p class="stage-blurb">MoneyMore reads bank SMS at scale. For every lifestyle category Waffarha operates in, that means <strong>verified financial behaviour</strong> — what people actually spend, how often, how loyally, and where else their money goes. Pick a category in <strong>Discover</strong> to see its full economics.</p>
+      </div>
+
+      <div class="cat-picker-wrap">
+        <div class="cat-picker-label">Categories covered · trailing 12 months</div>
+        <div class="cat-picker" id="ovPicker"></div>
+      </div>
+
+      <div class="conf-note">
+        <span class="cn-dot" style="background: var(--good);"></span>
+        <span><strong>On confidence:</strong> every metric is computed off active spenders only (thresholded per category), and each category carries a confidence flag tied to its panel size. Where the sample is thin, we say so — thin-panel categories are marked, not dressed up.</span>
+      </div>
+
+      <div class="block-head">
+        <span class="block-letter">A</span>
+        <div class="block-title-wrap">
+          <div class="block-title">The lifestyle wallet at a glance</div>
+          <div class="block-q">Across all six categories, what is the deals consumer worth?</div>
+        </div>
+        <span class="cohort-chip cohort-payer">All-lifestyle baseline</span>
+      </div>
+
+      <div class="metric-band">
+        <div class="metric-card hero">
+          <div class="metric-label">Active lifestyle spenders</div>
+          <div class="metric-value">38,400</div>
+          <div class="metric-foot">MoneyMore users with verified, repeat spend in ≥1 lifestyle category</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Blended ARPU · monthly</div>
+          <div class="metric-value">EGP 1,180<span class="unit"> /mo</span></div>
+          <div class="metric-foot">Mean verified lifestyle spend per active spender</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Multi-category spenders</div>
+          <div class="metric-value">61<span class="unit">%</span></div>
+          <div class="metric-foot">Active in 2+ lifestyle categories — the core deals audience</div>
+        </div>
+      </div>
+
+      <div class="position-note">
+        <span class="pn-mark">↗</span>
+        <div class="position-note-text">The strategic read for a marketplace: <strong>61% of active lifestyle spenders cross categories.</strong> Your dining customer is very likely also your beauty and entertainment customer — which is the entire logic of a multi-category deals platform. Discover quantifies that overlap category by category.</div>
+      </div>
+
+      <div class="block-head">
+        <span class="block-letter">B</span>
+        <div class="block-title-wrap">
+          <div class="block-title">Category comparison · pick where to lean in</div>
+          <div class="block-q">Which categories have the deepest wallets and the highest stickiness?</div>
+        </div>
+        <span class="cohort-chip cohort-sim">6 categories · active spenders</span>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div><h3>Attractiveness map · ARPU × penetration</h3>
+          <div class="sub">Bubble size = active-spender cohort · position = monthly ARPU vs category reach</div></div>
+          <span class="panel-tag">All categories</span>
+        </div>
+        <div class="chart-wrap h-280"><canvas id="ovScatter"></canvas></div>
+        <div class="legend-row">
+          <span style="color:var(--slate)">Top-right = deep wallet + broad reach (volume play) · Top-left = deep wallet, niche (premium play) · bubble area ∝ cohort size</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- =================== DISCOVER =================== -->
+    <div class="stage-view hidden" id="view-discover">
+      <div class="stage-header">
+        <div class="stage-tag"><span class="stage-tag-num">01</span> Discover</div>
+        <h1 class="stage-title">What does <em id="dTitleCat">dining</em> actually look like in real spend?</h1>
+        <p class="stage-blurb">Two cohorts, three lenses. Your <strong>category cohort</strong> = active spenders in the selected category. Their <strong>cross-category cohort</strong> = where those same people spend across all of lifestyle. Specific merchants are masked for this preview.</p>
+      </div>
+
+      <div class="cat-picker-wrap">
+        <div class="cat-picker-label">Select category</div>
+        <div class="cat-picker" id="dPicker"></div>
+      </div>
+
+      <div class="conf-note" id="dConfNote">
+        <span class="cn-dot" id="dConfDot" style="background: var(--good);"></span>
+        <span id="dConfText"></span>
+      </div>
+
+      <!-- LENS 1 — ATTRACTIVENESS -->
+      <div class="lens-label">
+        <span class="ll-num">Lens 1</span> Attractiveness
+        <span class="ll-q">— should this category be a priority?</span>
+      </div>
+      <div class="metric-band" id="dLens1"></div>
+
+      <div class="position-note" id="dPosition"></div>
+
+      <!-- LENS 2 — DEPTH -->
+      <div class="lens-label">
+        <span class="ll-num">Lens 2</span> Customer value depth
+        <span class="ll-q">— who in this category is worth winning?</span>
+      </div>
+      <div class="metric-band" id="dLens2"></div>
+
+      <div class="panel" style="margin-bottom:18px;">
+        <div class="panel-head">
+          <div><h3>Spend isn't evenly spread — see the shape</h3>
+          <div class="sub" id="dDistSub">Per-customer annual spend in category, binned · active spenders</div></div>
+          <span class="panel-tag">Category cohort</span>
+        </div>
+        <div class="dist-bars" id="dDistBars"></div>
+        <div class="dist-legend" id="dDistLegend"></div>
+      </div>
+
+      <!-- LENS 3 — STICKINESS, FLOW & OPPORTUNITY -->
+      <div class="lens-label">
+        <span class="ll-num">Lens 3</span> Stickiness, flow &amp; opportunity
+        <span class="ll-q">— is it loyal, where does the money move, and what's on the table?</span>
+      </div>
+
+      <!-- seasonality (fat cohorts only) -->
+      <div id="dSeasonSlot"></div>
+
+      <!-- merchants + retention strip -->
+      <div class="panel-grid-2">
+        <div class="panel">
+          <div class="panel-head">
+            <div><h3>Top merchants in category</h3>
+            <div class="sub" id="dMerchSub">Where active spenders concentrate · by verified EGP · trailing 12 months</div></div>
+            <span class="panel-tag">Category cohort</span>
+          </div>
+          <table class="merch-table">
+            <thead><tr><th>#</th><th>Merchant</th><th>Sub-type</th><th class="r">Share of category spend</th></tr></thead>
+            <tbody id="dMerchBody"></tbody>
+          </table>
+        </div>
+        <div class="panel">
+          <div class="panel-head">
+            <div><h3>Your share of their total wallet</h3>
+            <div class="sub">Of this category cohort's full lifestyle spend, how much stays in-category</div></div>
+            <span class="panel-tag">Cross-category</span>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:14px;">
+            <div><div class="leak-headline" id="dLeakPct"></div>
+            <div class="leak-sub" id="dLeakSub"></div></div>
+            <div class="cross-wrap" id="dCrossWrap" style="margin-top:6px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- THE HERO: cross-category flow map -->
+      <div class="flow-hero">
+        <div class="flow-hero-head">
+          <div>
+            <div class="flow-hero-tag">★ The lifestyle wallet, interconnected</div>
+            <div class="flow-hero-title" id="dFlowTitle"></div>
+          </div>
+        </div>
+        <div class="flow-svg-wrap"><div id="dFlowSvg"></div></div>
+        <div class="flow-legend">
+          <span>Node size ∝ <strong>active-spender cohort</strong></span>
+          <span>Link thickness ∝ <strong>% overlap</strong> between categories</span>
+          <span id="dFlowHighlight"></span>
+        </div>
+      </div>
+
+      <!-- opportunity sizing -->
+      <div style="font-size:11px; text-transform:uppercase; letter-spacing:0.14em; color:var(--slate-soft); font-weight:600; margin:28px 0 12px;">Opportunity on the table · untapped cross-sell wallet</div>
+      <div class="opp-banner">
+        <span class="ob-icon">~</span>
+        <span><strong>Modelled estimates.</strong> Each figure sizes the wallet of category spenders who are <em>not yet</em> active in the target category, at a stated conversion and wallet-capture assumption. Directional planning numbers, not guarantees — the assumptions are shown on each card.</span>
+      </div>
+      <div class="opp-grid" id="dOppGrid"></div>
+
+      <!-- analyst insight -->
+      <div class="block-head" style="margin-top:36px;">
+        <span class="block-letter">D</span>
+        <div class="block-title-wrap">
+          <div class="block-title">This month's analyst insight</div>
+          <div class="block-q">The one strategic read worth acting on.</div>
+        </div>
+        <span class="cohort-chip cohort-payer">Curated · monthly</span>
+      </div>
+      <div class="seg-callout">
+        <div class="seg-tag">★ Monthly insight · curated by your analyst</div>
+        <div style="font-family:'Fraunces',serif; font-size:23px; line-height:1.4; font-weight:400; letter-spacing:-0.01em; position:relative; z-index:1; max-width:720px;" id="dInsight"></div>
+      </div>
+    </div>
+
+    <!-- =================== DEFINE =================== -->
+    <div class="stage-view hidden" id="view-define">
+      <div class="stage-header">
+        <div class="stage-tag"><span class="stage-tag-num">02</span> Define</div>
+        <h1 class="stage-title">Isolate the <em>deals consumer</em> you care about.</h1>
+        <p class="stage-blurb">Build a segment from real lifestyle spend behaviour — the multi-category, discount-responsive spender is exactly who a deals marketplace monetises. Segments below 1,000 users cannot be saved or activated; the k-anonymity floor protects user privacy and PDPL compliance.</p>
+      </div>
+
+      <div class="builder-grid">
+        <div class="panel" style="padding:0;">
+          <div class="panel-head" style="padding:22px 24px 16px;">
+            <div><h3>Segment filters</h3><div class="sub">Working segment · "Multi-category lifestyle regulars"</div></div>
+            <span class="panel-tag">Draft</span>
+          </div>
+
+          <div class="filter-block">
+            <div class="filter-label">Lifestyle categories active in <span class="filter-count">3 selected</span></div>
+            <div class="chip-row">
+              <span class="chip selected">Dining</span><span class="chip selected">Beauty &amp; spa</span>
+              <span class="chip selected">Entertainment</span><span class="chip">Hotels &amp; travel</span>
+              <span class="chip">Fitness</span>
+            </div>
+          </div>
+          <div class="filter-block">
+            <div class="filter-label">Cross-category breadth <span class="filter-count">2+ categories</span></div>
+            <div class="chip-row">
+              <span class="chip">Any (1+)</span><span class="chip selected">Multi-category (2+)</span>
+              <span class="chip">Broad (3+)</span>
+            </div>
+          </div>
+          <div class="filter-block">
+            <div class="filter-label">Monthly lifestyle spend (ARPU band) <span class="filter-count">EGP 800 – 3,000</span></div>
+            <div class="range-input">
+              <input class="range-field" value="EGP 800" /><span class="range-dash">—</span><input class="range-field" value="EGP 3,000" />
+            </div>
+          </div>
+          <div class="filter-block">
+            <div class="filter-label">Frequency · lifestyle tx / month <span class="filter-count">3 — 12</span></div>
+            <div class="range-input">
+              <input class="range-field" value="3 tx/mo" /><span class="range-dash">—</span><input class="range-field" value="12 tx/mo" />
+            </div>
+          </div>
+          <div class="filter-block">
+            <div class="filter-label">Recency · last lifestyle activity <span class="filter-count">Last 60 days</span></div>
+            <div class="chip-row">
+              <span class="chip">30d</span><span class="chip selected">60d</span><span class="chip">90d</span><span class="chip">180d</span>
+            </div>
+          </div>
+          <div class="filter-block">
+            <div class="filter-label">Geography <span class="filter-count">Greater Cairo + Alexandria</span></div>
+            <div class="chip-row">
+              <span class="chip selected">Greater Cairo</span><span class="chip selected">Alexandria</span>
+              <span class="chip">Delta</span><span class="chip">Upper Egypt</span><span class="chip">Coastal</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="cohort-panel">
+            <div class="cohort-head">
+              <div class="cohort-label">Segment size · live</div>
+              <div class="cohort-size">6,420</div>
+              <div class="cohort-sub">active spenders match your filters</div>
+            </div>
+            <div class="anonymity-banner">
+              <span class="check">✓</span>
+              <div class="anonymity-banner-text"><strong>Above k-anonymity floor (1,000).</strong> This segment can be saved and used for intelligence or activation.</div>
+            </div>
+            <div class="cohort-reach">
+              <div class="reach-row"><span class="key">Matching segment</span><span class="val">6,420</span></div>
+              <div class="reach-row"><span class="key">× Layer 2 consented</span><span class="val">4,360 · 68%</span></div>
+              <div class="reach-row"><span class="key">× App-active (30d)</span><span class="val">2,790 · 64%</span></div>
+              <div class="reach-row final"><span class="key">Estimated reachable</span><span class="val">~2,790</span></div>
+            </div>
+            <div class="cohort-actions">
+              <button class="btn btn-primary">Save segment →</button>
+              <button class="btn btn-ghost">Use in illustrative campaign</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =================== ACTIVATE (illustrative) =================== -->
+    <div class="stage-view hidden" id="view-activate">
+      <div class="stage-header">
+        <div class="stage-tag"><span class="stage-tag-num">03</span> Activate</div>
+        <h1 class="stage-title">If we ran a category campaign together — <em>here's the shape</em>.</h1>
+        <p class="stage-blurb">Activation is how an intelligence finding becomes a reach-able offer inside MoneyMore. For Waffarha this is a <strong>future option</strong>, not part of the intelligence pitch.</p>
+      </div>
+
+      <div class="illus-banner">
+        <span class="ib-icon">i</span>
+        <div class="illus-banner-text"><strong>Illustrative.</strong> Pulse does not see Waffarha's own redemptions in bank SMS, so nothing on this screen reflects a real Waffarha campaign. This is the activation mechanism shown generically — a thing we could build toward together, kept deliberately separate from the verified category intelligence in Discover.</div>
+      </div>
+
+      <div class="builder-grid">
+        <div class="panel">
+          <div class="panel-head"><div><h3>Illustrative campaign</h3><div class="sub">Example only · not live</div></div><span class="panel-tag" style="background:#EEF2F7; color:var(--info);">Illustrative</span></div>
+          <div class="filter-block" style="border:none; padding:0;">
+            <div class="filter-label" style="margin-bottom:8px;">Campaign concept</div>
+            <div style="font-family:'Fraunces',serif; font-size:18px; line-height:1.35; color:var(--ink); margin-bottom:18px;">Cross-sell dining regulars into beauty &amp; spa — the category with the highest overlap and the deepest untapped wallet.</div>
+            <div class="reach-row" style="border-top:1px solid var(--rule-soft);"><span class="key">Target segment</span><span class="val">Multi-category lifestyle regulars</span></div>
+            <div class="reach-row"><span class="key">Reachable (illustrative)</span><span class="val">~2,790</span></div>
+            <div class="reach-row"><span class="key">Offer type</span><span class="val">[COPY: category cross-sell offer]</span></div>
+            <div class="reach-row"><span class="key">Channel</span><span class="val">In-app card + push</span></div>
+          </div>
+        </div>
+        <div class="panel" style="display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; background:var(--canvas);">
+          <div style="font-family:'Fraunces',serif; font-size:20px; color:var(--slate); max-width:300px; line-height:1.4;">The activation surface would mirror the live Pulse composer — offer copy, caps, budget, push window, and a MoneyMore review gate before anything fires.</div>
+          <div style="margin-top:18px; font-size:12px; color:var(--mute);">Shown in full in the production product.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =================== MEASURE (illustrative) =================== -->
+    <div class="stage-view hidden" id="view-measure">
+      <div class="stage-header">
+        <div class="stage-tag"><span class="stage-tag-num">04</span> Measure</div>
+        <h1 class="stage-title">What closed-loop attribution <em>would</em> prove.</h1>
+        <p class="stage-blurb">This is the half of Pulse no survey or platform-internal report can replicate: tracking <strong>verified downstream spend</strong> after an intervention, against a matched control. Shown here illustratively, because there's no real Waffarha campaign in the data to measure.</p>
+      </div>
+
+      <div class="illus-banner">
+        <span class="ib-icon">i</span>
+        <div class="illus-banner-text"><strong>Illustrative figures.</strong> The numbers below are modelled examples, not a real result. They show the <strong>kind</strong> of attribution Pulse runs when an intervention is tracked end-to-end. A real version requires a live campaign and a matched control group built from the spend data — a genuine analytical exercise, not a dashboard readout.</div>
+      </div>
+
+      <div class="attribution-headline">
+        <div><div class="att-stat-label">Redeemed (illustrative)</div><div class="att-stat-value">612</div><div class="att-stat-sub">of a reached segment</div></div>
+        <div><div class="att-stat-label">Returned · 60d (illustrative)</div><div class="att-stat-value">58%</div><div class="att-stat-sub">verified repeat spend in category</div></div>
+        <div><div class="att-stat-label">Post-spend lift (illustrative)</div><div class="att-stat-value lift">+33%</div><div class="att-stat-sub">vs matched control</div></div>
+      </div>
+
+      <div class="moat-callout">
+        <div class="moat-tag">★ Why this is exclusive to Pulse</div>
+        <div class="moat-text">Because MoneyMore reads bank SMS, we can follow <em>real downstream spend</em> after any intervention — not app clicks, not redemptions a platform sees internally. For a deals marketplace, this is the missing answer to <em>"did the deal build a customer, or just discount one?"</em></div>
+      </div>
+
+      <div class="panel-grid-2">
+        <div class="panel">
+          <div class="panel-head"><div><h3>Illustrative funnel</h3><div class="sub">How an intervention would track end-to-end</div></div><span class="panel-tag" style="background:#EEF2F7; color:var(--info);">Illustrative</span></div>
+          <div style="display:flex; flex-direction:column; gap:10px; padding-top:6px;">
+            <div class="reach-row"><span class="key">Eligible segment</span><span class="val">6,420</span></div>
+            <div class="reach-row"><span class="key">Consented (Layer 2)</span><span class="val">4,360 · 68%</span></div>
+            <div class="reach-row"><span class="key">Reached</span><span class="val">2,790 · 64%</span></div>
+            <div class="reach-row"><span class="key">Opened</span><span class="val">1,010 · 36%</span></div>
+            <div class="reach-row final"><span class="key">Acted (verified)</span><span class="val">612 · 22%</span></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><div><h3>Post-intervention spend · 60-day window</h3><div class="sub">Illustrative: acted segment vs matched control</div></div><span class="panel-tag" style="background:#EEF2F7; color:var(--info);">Illustrative</span></div>
+          <div class="chart-wrap h-280"><canvas id="mChart"></canvas></div>
+          <div class="legend-row">
+            <span><span class="legend-dot" style="background:var(--pulse-deep);"></span>Acted segment</span>
+            <span><span class="legend-dot" style="background:var(--mute);"></span>Matched control</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =================== LEARN =================== -->
+    <div class="stage-view hidden" id="view-learn">
+      <div class="stage-header">
+        <div class="stage-tag"><span class="stage-tag-num">05</span> Learn</div>
+        <h1 class="stage-title">The monthly <em>category intelligence brief</em>.</h1>
+        <p class="stage-blurb">The marquee deliverable: a hand-written monthly read on the lifestyle wallet — which categories are heating up, where the cross-sell opportunities sit, and what a deals marketplace should prioritise next.</p>
+      </div>
+
+      <div class="panel-grid-2" style="grid-template-columns:1.2fr 1fr;">
+        <div class="panel" style="padding:0; overflow:hidden;">
+          <div style="background:linear-gradient(160deg, var(--ink), var(--graphite)); padding:32px 28px; color:var(--paper); position:relative; overflow:hidden;">
+            <div style="font-size:11px; text-transform:uppercase; letter-spacing:0.18em; color:var(--pulse-mid); font-weight:600; margin-bottom:16px;">Category intelligence brief · April 2026</div>
+            <div style="font-family:'Fraunces',serif; font-size:27px; font-weight:500; letter-spacing:-0.02em; line-height:1.15; margin-bottom:12px;">Beauty &amp; spa is the fastest-deepening lifestyle wallet — and it's full of your dining customers.</div>
+            <div style="font-size:12.5px; color:var(--mute);">Waffarha · 12 pages · prepared by your analyst</div>
+          </div>
+          <div style="padding:28px;">
+            <div style="padding:14px 0; border-bottom:1px solid var(--rule-soft);">
+              <div style="font-size:10.5px; text-transform:uppercase; letter-spacing:0.12em; color:var(--slate-soft); font-weight:600; margin-bottom:6px;">Headline</div>
+              <div style="font-family:'Fraunces',serif; font-size:15px; line-height:1.5;">Beauty &amp; spa ARPU grew <strong style="color:var(--pulse-deep);">+19%</strong> over the trailing year — the steepest of any lifestyle category — and <strong style="color:var(--pulse-deep);">54%</strong> of its spenders also dine actively.</div>
+            </div>
+            <div style="padding:14px 0; border-bottom:1px solid var(--rule-soft);">
+              <div style="font-size:10.5px; text-transform:uppercase; letter-spacing:0.12em; color:var(--slate-soft); font-weight:600; margin-bottom:6px;">What it means for Waffarha</div>
+              <div style="font-family:'Fraunces',serif; font-size:15px; line-height:1.5;">A dining-to-beauty cross-sell is the highest-overlap, deepest-wallet move available this quarter.</div>
+            </div>
+            <div style="padding:14px 0;">
+              <div style="font-size:10.5px; text-transform:uppercase; letter-spacing:0.12em; color:var(--slate-soft); font-weight:600; margin-bottom:6px;">Watch next</div>
+              <div style="font-family:'Fraunces',serif; font-size:15px; line-height:1.5;">Hotels &amp; travel is thin-panel today — flag, don't act, until coverage improves.</div>
+            </div>
+            <div style="margin-top:18px; display:flex; gap:10px;">
+              <button class="btn btn-primary">Download PDF</button>
+              <button class="btn btn-ghost">Share with team</button>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:11px; text-transform:uppercase; letter-spacing:0.14em; color:var(--slate-soft); font-weight:600; margin-bottom:14px;">Recommended focus areas</div>
+          <div style="display:flex; flex-direction:column; gap:12px;">
+            <div class="panel" style="padding:18px 20px;">
+              <div style="font-family:'Fraunces',serif; font-size:17px; font-weight:500; margin-bottom:4px;">Lean into beauty &amp; spa</div>
+              <div style="font-size:12.5px; color:var(--slate);">Deepest-growing wallet · highest dining overlap · <span style="color:var(--mute);">auto-derived from category data</span></div>
+            </div>
+            <div class="panel" style="padding:18px 20px;">
+              <div style="font-family:'Fraunces',serif; font-size:17px; font-weight:500; margin-bottom:4px;">Bundle dining + entertainment</div>
+              <div style="font-size:12.5px; color:var(--slate);">High co-spend, weekend-concentrated · <span style="color:var(--mute);">auto-derived from cross-category map</span></div>
+            </div>
+            <div class="panel" style="padding:18px 20px; border-color:var(--pulse-mid);">
+              <div style="font-family:'Fraunces',serif; font-size:17px; font-weight:500; margin-bottom:4px;">★ Analyst pick · the EGP 3K+ lifestyle whale</div>
+              <div style="font-size:12.5px; color:var(--slate);">Small cohort, outsize wallet — court directly, don't discount · <span style="color:var(--pulse-deep); font-weight:500;">curated this month</span></div>
+            </div>
+          </div>
+          <div style="margin-top:24px; padding:18px 20px; background:var(--surface); border:1px solid var(--rule); border-radius:10px;">
+            <div style="font-size:10.5px; text-transform:uppercase; letter-spacing:0.12em; color:var(--slate-soft); font-weight:600; margin-bottom:8px;">Account team</div>
+            <div style="font-size:13px;">Your Pulse analyst is preparing the next category deep-dive.</div>
+            <div style="font-size:11.5px; color:var(--mute); margin-top:6px;">Next review: 4 June 2026 · 10:00</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="foot">
+      <div>Pulse · Lifestyle Category Intelligence by MoneyMore</div>
+      <div class="foot-meta">Exploratory build · prepared for Waffarha · verified bank-SMS spend · May 2026</div>
+    </footer>
+  </main>
+</div>
+
+<script>
+  // ---------- category data model ----------
+  // threshold = active-spender definition; conf = panel confidence
+  const CATS = {
+    dining: {
+      name: 'Dining', icon: '🍽', threshold: '2+ tx / 90d',
+      conf: 'high', cohort: 14200, penetration: 37,
+      arpu: 1340, arpuVsBase: +14, ltv: 18600, ticket: 285, freq: 4.7,
+      retention: 64, walletConc: 38, growth: +8,
+      dist: [{l:'0–2K',v:16},{l:'2–5',v:23},{l:'5–8',v:19},{l:'8–12',v:14},{l:'12–18',v:11},{l:'18–25',v:8},{l:'25–35',v:5},{l:'35–50',v:2.5},{l:'50K+',v:1.5}],
+      median: 6800, mean: 11200, p90: 31000,
+      merchants: [['Casual-Dining Chain','Restaurants',100],['Coffee Major','Café',82],['Fast-Food Group','QSR',71],['Premium Restaurant','Fine dining',54],['Bakery Chain','Bakery',41],['Cloud Kitchen','Delivery',29]],
+      cross: [['Beauty & spa',54],['Entertainment',47],['Hotels & travel',31],['Fitness',22],['Retail / other',68]],
+      crossFoot: 'Your dining spenders are <strong>most overlapped with beauty & spa (54%)</strong> — the single strongest cross-sell signal in the lifestyle wallet.',
+      inCatShare: 22, leakSub: 'of this cohort\'s total lifestyle wallet stays in dining. The rest spreads across beauty, entertainment and travel — a broad, leaky wallet that\'s ideal for cross-sell.',
+      season: [82,80,79,88,96,100,94,90,85,83,81,86], seasonPeak: 'Ramadan + summer',
+      opp: [
+        {to:'Beauty & spa', untapped:6500, egp:4.2, conv:18, lead:true},
+        {to:'Entertainment', untapped:7500, egp:2.1, conv:22, lead:false},
+        {to:'Hotels & travel', untapped:9800, egp:3.4, conv:6, lead:false}
+      ],
+      insight: 'Dining is the broadest lifestyle category — 37% of all active spenders touch it — but its wallet is mid-depth. The opportunity isn\'t dining itself; it\'s that <em>54% of diners also spend on beauty</em>. Dining is the front door; beauty is where the wallet deepens.'
+    },
+    beauty: {
+      name: 'Beauty & spa', icon: '💆', threshold: '2+ tx / 180d',
+      conf: 'high', cohort: 8900, penetration: 23,
+      arpu: 1620, arpuVsBase: +37, ltv: 24800, ticket: 540, freq: 3.0,
+      retention: 71, walletConc: 44, growth: +19,
+      dist: [{l:'0–2K',v:11},{l:'2–5',v:18},{l:'5–8',v:20},{l:'8–12',v:17},{l:'12–18',v:13},{l:'18–25',v:9},{l:'25–35',v:6},{l:'35–50',v:4},{l:'50K+',v:2}],
+      median: 9100, mean: 14200, p90: 42000,
+      merchants: [['Salon Group','Salon',100],['Spa Chain','Spa',76],['Beauty Clinic','Aesthetics',63],['Nail Bar Chain','Nails',44],['Independent Salons','Salon',33],['Wellness Center','Wellness',24]],
+      cross: [['Dining',61],['Entertainment',38],['Hotels & travel',34],['Fitness',29],['Retail / other',64]],
+      crossFoot: 'Beauty spenders are <strong>highly cross-active with dining (61%)</strong> and the deepest-wallet category overall — court them through the dining front door.',
+      inCatShare: 31, leakSub: 'of this cohort\'s lifestyle wallet stays in beauty — a stickier, more concentrated wallet than dining. These are committed category customers, not dabblers.',
+      season: [78,84,82,90,98,88,80,79,85,92,100,95], seasonPeak: 'Eid + winter season',
+      opp: [
+        {to:'Hotels & travel', untapped:5900, egp:3.8, conv:8, lead:false},
+        {to:'Fitness', untapped:6300, egp:1.6, conv:20, lead:false},
+        {to:'Entertainment', untapped:5500, egp:1.2, conv:24, lead:false}
+      ],
+      insight: 'Beauty & spa is the standout: <em>highest ARPU (+37% vs baseline), fastest growth (+19%), strongest retention (71%)</em> — yet only 23% penetration. This is a premium, deepening, sticky category that\'s still niche. For a deals marketplace, that\'s the textbook "lean in" quadrant.'
+    },
+    entertainment: {
+      name: 'Entertainment', icon: '🎬', threshold: '2+ tx / 90d',
+      conf: 'high', cohort: 11600, penetration: 30,
+      arpu: 940, arpuVsBase: -20, ltv: 11200, ticket: 210, freq: 4.5,
+      retention: 52, walletConc: 31, growth: +6,
+      dist: [{l:'0–2K',v:21},{l:'2–5',v:26},{l:'5–8',v:18},{l:'8–12',v:12},{l:'12–18',v:9},{l:'18–25',v:6},{l:'25–35',v:4},{l:'35–50',v:2.5},{l:'50K+',v:1.5}],
+      median: 4400, mean: 7300, p90: 19500,
+      merchants: [['Cinema Chain','Cinema',100],['Activity Park','Activities',64],['Gaming Lounge','Gaming',48],['Event Ticketing','Events',39],['Bowling / Arcade','Arcade',27],['Live Venue','Live',18]],
+      cross: [['Dining',58],['Beauty & spa',33],['Fitness',26],['Hotels & travel',21],['Retail / other',59]],
+      crossFoot: 'Entertainment is <strong>weekend-concentrated and dining-adjacent (58%)</strong> — best sold as a bundle, not standalone.',
+      inCatShare: 16, leakSub: 'of this cohort\'s lifestyle wallet stays in entertainment — the leakiest category. These customers spend mostly elsewhere; entertainment is a touchpoint, not a home.',
+      season: [88,84,86,92,90,82,79,81,94,90,87,100], seasonPeak: 'School holidays + Dec',
+      opp: [
+        {to:'Dining', untapped:4900, egp:1.9, conv:26, lead:true},
+        {to:'Beauty & spa', untapped:7800, egp:2.4, conv:12, lead:false},
+        {to:'Fitness', untapped:8600, egp:0.9, conv:14, lead:false}
+      ],
+      insight: 'Entertainment has broad reach (30%) but the shallowest wallet (-20% vs baseline) and weakest retention (52%). It\'s a <em>traffic driver, not a margin driver</em> — high frequency, low depth. Use it to acquire, then cross-sell into deeper categories.'
+    },
+    hotels: {
+      name: 'Hotels & travel', icon: '🏨', threshold: '1+ tx / 365d',
+      conf: 'low', cohort: 980, penetration: 3,
+      arpu: 2380, arpuVsBase: +102, ltv: 34000, ticket: 4200, freq: 0.6,
+      retention: 41, walletConc: 58, growth: +11,
+      dist: [{l:'0–5K',v:8},{l:'5–15',v:14},{l:'15–30',v:19},{l:'30–50',v:17},{l:'50–80',v:14},{l:'80–120',v:11},{l:'120–180',v:8},{l:'180–250',v:5},{l:'250K+',v:4}],
+      median: 38000, mean: 61000, p90: 168000,
+      merchants: [['Resort Group','Resort',100],['City Hotel Chain','Hotel',71],['Travel Agency','Travel',58],['Coastal Resort','Resort',44],['Boutique Hotel','Hotel',31],['Online Travel','OTA',26]],
+      cross: [['Dining',49],['Beauty & spa',37],['Entertainment',34],['Fitness',19],['Retail / other',71]],
+      crossFoot: 'Hotels spenders have the <strong>deepest wallets but the thinnest panel</strong> — read these numbers as directional, not precise.',
+      inCatShare: 28, leakSub: 'of this cohort\'s lifestyle wallet stays in travel — but on a sub-1,000 panel, treat this as directional only.',
+      season: null, seasonOmit: 'Hotels & travel sits on a 980-spender panel — below our 1,000 floor. A 12-month seasonality curve on this sample would imply precision the data can\'t support, so we don\'t show one. Travel is intensely seasonal in reality; we\'ll model it once coverage is robust.',
+      opp: [
+        {to:'Beauty & spa', untapped:780, egp:1.1, conv:14, lead:false, thin:true},
+        {to:'Dining', untapped:520, egp:0.6, conv:22, lead:false, thin:true}
+      ],
+      insight: 'Hotels & travel has the deepest wallet by far (ARPU +102% vs baseline) — but on a <em>980-spender panel below our 1,000 floor</em>. The signal is real and tantalising; the sample is not yet robust. Flag as high-potential, gather more coverage before building a strategy on it.'
+    },
+    fitness: {
+      name: 'Fitness', icon: '🏋', threshold: '2+ tx / 180d',
+      conf: 'med', cohort: 4100, penetration: 11,
+      arpu: 760, arpuVsBase: -36, ltv: 13400, ticket: 380, freq: 1.7,
+      retention: 68, walletConc: 49, growth: +4,
+      dist: [{l:'0–2K',v:14},{l:'2–5',v:22},{l:'5–8',v:21},{l:'8–12',v:16},{l:'12–18',v:12},{l:'18–25',v:8},{l:'25–35',v:4},{l:'35–50',v:2},{l:'50K+',v:1}],
+      median: 6200, mean: 9400, p90: 24000,
+      merchants: [['Gym Chain','Gym',100],['Boutique Studio','Studio',62],['Sports Club','Club',51],['Yoga / Pilates','Studio',34],['Independent Gyms','Gym',28],['Online Fitness','Digital',16]],
+      cross: [['Dining',47],['Beauty & spa',41],['Entertainment',29],['Hotels & travel',18],['Retail / other',55]],
+      crossFoot: 'Fitness has <strong>strong retention (68%) but a medium panel</strong> — reliable directionally, with subscription-style loyalty worth noting.',
+      inCatShare: 34, leakSub: 'of this cohort\'s lifestyle wallet stays in fitness — high in-category share reflects its subscription-shaped, committed spend pattern.',
+      season: [96,98,100,94,88,82,79,80,85,90,92,90], seasonPeak: 'New-year + spring', seasonCaveat: true,
+      opp: [
+        {to:'Beauty & spa', untapped:2400, egp:1.4, conv:18, lead:false},
+        {to:'Dining', untapped:2200, egp:0.7, conv:24, lead:false}
+      ],
+      insight: 'Fitness is low-ARPU but high-retention (68%) — a <em>subscription-shaped category</em>. People commit and stay. Lower per-spender value, but predictable, and 41% also spend on beauty. A loyalty-deal category, not a discount-acquisition one.'
+    },
+    all: {
+      name: 'All lifestyle', icon: '✦', threshold: 'active in 1+ category',
+      conf: 'high', cohort: 38400, penetration: 100,
+      arpu: 1180, arpuVsBase: 0, ltv: 17800, ticket: 310, freq: 4.0,
+      retention: 61, walletConc: 40, growth: +9,
+      dist: [{l:'0–2K',v:15},{l:'2–5',v:22},{l:'5–8',v:19},{l:'8–12',v:15},{l:'12–18',v:11},{l:'18–25',v:8},{l:'25–35',v:5},{l:'35–50',v:3},{l:'50K+',v:2}],
+      median: 7100, mean: 11800, p90: 33000,
+      merchants: [['Casual-Dining Chain','Dining',100],['Salon Group','Beauty',74],['Cinema Chain','Entertainment',66],['Coffee Major','Dining',61],['Gym Chain','Fitness',43],['Resort Group','Hotels',38]],
+      cross: [['Dining',74],['Beauty & spa',48],['Entertainment',52],['Hotels & travel',19],['Fitness',24]],
+      crossFoot: 'Across all lifestyle, <strong>61% of active spenders cross 2+ categories</strong> — the structural reason a multi-category marketplace works.',
+      inCatShare: 100, leakSub: 'this is the full lifestyle wallet — the question for each category is how much of it stays in-category vs leaks across. Pick a category to see its share.',
+      season: [84,85,84,90,96,92,86,84,88,91,94,97], seasonPeak: 'Ramadan/Eid + year-end',
+      opp: [
+        {to:'Beauty & spa', untapped:6500, egp:4.2, conv:18, lead:true},
+        {to:'Hotels & travel', untapped:5900, egp:3.8, conv:8, lead:false},
+        {to:'Entertainment', untapped:7500, egp:2.1, conv:22, lead:false}
+      ],
+      insight: 'The lifestyle wallet as a whole: 38,400 active spenders, blended ARPU EGP 1,180, and 61% cross-category. The strategic spine is overlap — every category is a door into the others. Beauty deepens, dining broadens, entertainment acquires.'
+    }
+  };
+
+  const ORDER = ['all','dining','beauty','entertainment','hotels','fitness'];
+  const confColor = { high:'var(--good)', med:'var(--warn)', low:'var(--alert)' };
+  const confLabel = { high:'High confidence', med:'Medium · interpret with care', low:'Low · thin panel' };
+
+  function fmtEGP(n){ return n >= 1000 ? 'EGP ' + (n/1000).toFixed(n%1000===0?0:1) + 'K' : 'EGP ' + n; }
+  function vsClass(v){ return v > 3 ? 'vs-up' : v < -3 ? 'vs-down' : 'vs-flat'; }
+  function vsArrow(v){ return v > 3 ? '▲' : v < -3 ? '▼' : '▬'; }
+
+  // ---------- pickers ----------
+  function buildPicker(elId, onClick, activeKey){
+    const el = document.getElementById(elId);
+    el.innerHTML = ORDER.map(k => {
+      const c = CATS[k];
+      const confCls = c.conf === 'high' ? 'conf-high' : c.conf === 'med' ? 'conf-med' : 'conf-low';
+      return `<button class="cat-btn ${k===activeKey?'active':''}" data-cat="${k}">
+        <span class="cat-btn-name">${c.name}</span>
+        <span class="cat-btn-meta">${c.cohort.toLocaleString()} spenders</span>
+        <span class="cat-btn-conf ${confCls}">${c.conf}</span>
+      </button>`;
+    }).join('');
+    el.querySelectorAll('.cat-btn').forEach(b => b.addEventListener('click', () => onClick(b.dataset.cat)));
+  }
+
+  // ---------- Discover render ----------
+  let dActive = 'dining';
+  function renderDiscover(key){
+    dActive = key;
+    const c = CATS[key];
+    document.getElementById('dTitleCat').textContent = c.name.toLowerCase();
+    buildPicker('dPicker', renderDiscover, key);
+
+    // confidence note
+    document.getElementById('dConfDot').style.background = confColor[c.conf];
+    document.getElementById('dConfText').innerHTML =
+      `<strong>${confLabel[c.conf]}.</strong> Active spender = <strong>${c.threshold}</strong>. Cohort of <strong>${c.cohort.toLocaleString()}</strong> active spenders` +
+      (c.conf === 'low' ? ' — <strong style="color:var(--alert)">below the 1,000 floor; numbers are directional only.</strong>' :
+       c.conf === 'med' ? ' — adequate but not deep; treat fine detail with care.' : '.');
+
+    // Lens 1 — attractiveness
+    document.getElementById('dLens1').innerHTML = `
+      <div class="metric-card hero">
+        <div class="metric-label">Monthly ARPU</div>
+        <div class="metric-value">${fmtEGP(c.arpu)}<span class="unit"> /mo</span></div>
+        <div class="metric-vs"><span class="${vsClass(c.arpuVsBase)}">${vsArrow(c.arpuVsBase)} ${c.arpuVsBase>0?'+':''}${c.arpuVsBase}%</span><span class="base">vs all-lifestyle baseline</span></div>
+        <div class="metric-sotag">Depth of wallet. <b>${c.arpuVsBase>15?'Premium-depth — justifies higher-value deals':c.arpuVsBase<-15?'Shallow — a volume/acquisition play':'Mid-depth — balanced'}</b></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Category penetration</div>
+        <div class="metric-value">${c.penetration}<span class="unit">%</span></div>
+        <div class="metric-vs"><span class="base">of all active lifestyle spenders</span></div>
+        <div class="metric-sotag">Reach. <b>${c.penetration>=30?'Broad — mass reach':c.penetration<=12?'Niche — targeted reach':'Mid — selective reach'}</b></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Category growth · TTM</div>
+        <div class="metric-value">${c.growth>0?'+':''}${c.growth}<span class="unit">%</span></div>
+        <div class="metric-vs"><span class="${vsClass(c.growth)}">${vsArrow(c.growth)} trailing 12 months</span></div>
+        <div class="metric-sotag">Momentum. <b>${c.growth>=15?'Heating fast — lean in now':c.growth<=5?'Flat — hold':'Steady growth'}</b></div>
+      </div>`;
+
+    // positioning note
+    const deep = c.arpuVsBase > 15, broad = c.penetration >= 30;
+    let quad = deep && broad ? 'a <strong>deep wallet with broad reach</strong> — the volume play: scale deals here.'
+      : deep && !broad ? 'a <strong>deep wallet but niche reach</strong> — the premium play: high-value, targeted deals.'
+      : !deep && broad ? 'a <strong>broad but shallow</strong> category — a traffic/acquisition driver, not a margin driver.'
+      : 'a <strong>niche, shallow</strong> category — useful for loyalty, not headline acquisition.';
+    document.getElementById('dPosition').innerHTML =
+      `<span class="pn-mark">${deep?'↗':'→'}</span><div class="position-note-text">Attractiveness read: ${c.name} is ${quad} Retention sits at <strong>${c.retention}%</strong>${c.growth>=15?', and it\'s the fastest-growing category in the set.':'.'}</div>`;
+
+    // Lens 2 — depth
+    document.getElementById('dLens2').innerHTML = `
+      <div class="metric-card">
+        <div class="metric-label">Observed LTV</div>
+        <div class="metric-value">${fmtEGP(c.ltv)}</div>
+        <div class="metric-foot">Total verified spend across the observed window — the ceiling of a category customer's worth</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Avg ticket × frequency</div>
+        <div class="metric-value">${fmtEGP(c.ticket)}<span class="unit"> × ${c.freq}/mo</span></div>
+        <div class="metric-sotag">${c.ticket>1000?'High-ticket, low-frequency':c.freq>=4?'Low-ticket, high-frequency':'Balanced'} — <b>${c.ticket>1000?'wants a considered, high-value deal':c.freq>=4?'wants frequency rewards / punch-cards':'flexible deal mechanic'}</b></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Heavy-spender concentration</div>
+        <div class="metric-value">${c.walletConc}<span class="unit">%</span></div>
+        <div class="metric-foot">Share of category spend from the top decile — ${c.walletConc>=45?'whale-carried: court the heavy spenders':'broad-based: mass deals work'}</div>
+      </div>`;
+
+    // distribution histogram
+    const distEl = document.getElementById('dDistBars');
+    const max = Math.max(...c.dist.map(b=>b.v));
+    distEl.innerHTML = c.dist.map(b => `<div class="dist-col"><div class="dist-col-bar" style="height:${(b.v/max)*100}%"></div><div class="dist-col-label">${b.l}</div></div>`).join('');
+    document.getElementById('dDistLegend').innerHTML =
+      `<span>Dashed: <strong>median ${fmtEGP(c.median)}</strong> · <strong>mean ${fmtEGP(c.mean)}</strong> · <strong>p90 ${fmtEGP(c.p90)}</strong></span><span style="color:var(--mute)">Mean above median — a heavy-spender minority carries the category.</span>`;
+    // markers
+    const medM = document.createElement('div'); medM.className='dist-marker'; medM.style.left='24%';
+    medM.innerHTML='<span class="dist-marker-label">median</span>'; distEl.appendChild(medM);
+    const meanM = document.createElement('div'); meanM.className='dist-marker'; meanM.style.left='42%';
+    meanM.innerHTML='<span class="dist-marker-label">mean</span>'; distEl.appendChild(meanM);
+
+    // merchants
+    document.getElementById('dMerchBody').innerHTML = c.merchants.map((m,i)=>
+      `<tr><td class="merch-rank">${i+1}</td><td><span class="merch-name">${m[0]}</span></td><td class="merch-cat">${m[1]}</td><td class="r"><div class="merch-bar-cell"><div class="merch-bar-track"><div class="merch-bar-fill" style="width:${m[2]}%"></div></div></div></td></tr>`
+    ).join('');
+
+    // cross-category (now in the wallet-share panel)
+    const maxCross = Math.max(...c.cross.map(x=>x[1]));
+    document.getElementById('dCrossWrap').innerHTML = c.cross.map(x=>
+      `<div class="cross-row"><span class="cross-name">${x[0]}</span><div class="cross-track"><div class="cross-fill" style="width:${(x[1]/maxCross)*100}%"></div></div><span class="cross-val">${x[1]}%</span></div>`
+    ).join('');
+    document.getElementById('dLeakPct').textContent = c.inCatShare + '%';
+    document.getElementById('dLeakSub').innerHTML = c.leakSub;
+
+    // seasonality (fat cohorts only)
+    const seasonSlot = document.getElementById('dSeasonSlot');
+    if (c.season) {
+      const caveat = c.seasonCaveat ? ' <span style="color:var(--warn); font-style:italic;">(medium panel — read the shape, not the fine detail)</span>' : '';
+      seasonSlot.innerHTML = `<div class="panel season-panel">
+        <div class="panel-head"><div><h3>Seasonality — when this category spends<span class="season-peak-tag">peak · ${c.seasonPeak}</span></h3>
+        <div class="sub">Monthly index of verified category spend · 100 = annual peak${caveat}</div></div>
+        <span class="panel-tag">Category cohort</span></div>
+        <div class="chart-wrap h-220"><canvas id="dSeasonChart"></canvas></div>
+        <div class="dist-legend" style="margin-top:14px;"><span style="color:var(--mute)">A deals calendar should front-load offers into the climb toward each peak, not chase it after.</span></div>
+      </div>`;
+      drawSeason(c.season);
+    } else {
+      seasonSlot.innerHTML = `<div class="season-thin"><span class="st-mark">⊘</span><div style="max-width:560px; line-height:1.5;">${c.seasonOmit}</div></div>`;
+    }
+
+    // flow map (hero)
+    document.getElementById('dFlowTitle').textContent =
+      key === 'all' ? 'Every category is a door into the others' : `Where ${c.name} sits in the wallet`;
+    buildFlowMap(key);
+
+    // opportunity sizing
+    document.getElementById('dOppGrid').innerHTML = c.opp.map(o => `
+      <div class="opp-card ${o.lead?'lead':''}">
+        <div class="opp-card-route">${c.name} <span class="arr">→</span> <span class="to">${o.to}</span>${o.lead?' &nbsp;★ lead move':''}</div>
+        <div class="opp-value">EGP ${o.egp}<span class="unit">M / yr</span></div>
+        <div class="opp-detail"><b>${o.untapped.toLocaleString()}</b> ${c.name.toLowerCase()} spenders not yet active in ${o.to.toLowerCase()}${o.thin?' <span style="color:var(--alert)">· thin panel</span>':''}</div>
+        <div class="opp-assumes">assumes ${o.conv}% convert · captured at category ARPU</div>
+      </div>`).join('');
+
+    // insight
+    document.getElementById('dInsight').innerHTML = c.insight;
+  }
+
+  // seasonality chart
+  let seasonChartRef = null;
+  function drawSeason(data){
+    if (typeof Chart === 'undefined') return;
+    const ctx = document.getElementById('dSeasonChart');
+    if (!ctx) return;
+    if (seasonChartRef) seasonChartRef.destroy();
+    seasonChartRef = new Chart(ctx, {
+      type:'line',
+      data:{ labels:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+        datasets:[{ data, borderColor:'#007A6E', backgroundColor:'rgba(0,122,110,0.10)', tension:0.36, borderWidth:2.4, pointRadius:0, fill:true }] },
+      options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>'index '+c.parsed.y}}},
+        scales:{ x:{grid:{display:false}, ticks:{font:{size:10}}}, y:{ grid:{color:'#F2F2F2'}, beginAtZero:false, suggestedMin:70, ticks:{font:{size:10}} } } }
+    });
+  }
+
+  // cross-category FLOW map — SVG nodes + weighted links
+  function buildFlowMap(activeKey){
+    const cats = ['dining','beauty','entertainment','hotels','fitness'];
+    const W = 920, H = 300, cx = W/2, cy = H/2 + 6, R = 110;
+    // node positions on an arc/circle
+    const pos = {};
+    cats.forEach((k,i)=>{
+      const ang = (-Math.PI/2) + (i * 2*Math.PI/cats.length);
+      pos[k] = { x: cx + R*Math.cos(ang), y: cy + R*Math.sin(ang) };
+    });
+    const radius = k => Math.max(16, Math.sqrt(CATS[k].cohort)/8);
+    // links: use the 'all' overlap matrix proxied via each cat's cross to others
+    // build symmetric-ish links from each cat's cross array
+    const links = [];
+    cats.forEach(k=>{
+      CATS[k].cross.forEach(([toName, pct])=>{
+        const to = cats.find(x=>CATS[x].name === toName);
+        if(to && cats.indexOf(k) < cats.indexOf(to)){
+          links.push({a:k, b:to, pct});
+        }
+      });
+    });
+    const focus = (activeKey !== 'all' && cats.includes(activeKey)) ? activeKey : null;
+    let svg = `<svg viewBox="0 0 ${W} ${H}" width="100%" preserveAspectRatio="xMidYMid meet">`;
+    // links first
+    links.forEach(l=>{
+      const involved = !focus || l.a===focus || l.b===focus;
+      const op = involved ? Math.min(0.85, 0.18 + l.pct/110) : 0.06;
+      const sw = Math.max(1, l.pct/9);
+      const col = involved ? '#4DA89F' : '#4DA89F';
+      svg += `<line class="flow-link" x1="${pos[l.a].x}" y1="${pos[l.a].y}" x2="${pos[l.b].x}" y2="${pos[l.b].y}" stroke="${col}" stroke-width="${sw}" opacity="${op}"><title>${CATS[l.a].name} ↔ ${CATS[l.b].name}: ${l.pct}% overlap</title></line>`;
+    });
+    // nodes
+    cats.forEach(k=>{
+      const isFocus = focus===k;
+      const r = radius(k);
+      const fill = isFocus ? '#007A6E' : (focus ? 'rgba(255,255,255,0.10)' : 'rgba(0,122,110,0.45)');
+      const stroke = isFocus ? '#4DA89F' : 'rgba(255,255,255,0.4)';
+      svg += `<circle class="flow-node-circle" cx="${pos[k].x}" cy="${pos[k].y}" r="${r}" fill="${fill}" stroke="${stroke}" stroke-width="${isFocus?2.5:1.2}"/>`;
+      const labelY = pos[k].y < cy ? pos[k].y - r - 10 : pos[k].y + r + 16;
+      svg += `<text class="flow-node-label" x="${pos[k].x}" y="${labelY}" text-anchor="middle">${CATS[k].name}</text>`;
+      svg += `<text class="flow-node-sub" x="${pos[k].x}" y="${labelY+13}" text-anchor="middle">${(CATS[k].cohort/1000).toFixed(1)}K</text>`;
+    });
+    svg += `</svg>`;
+    document.getElementById('dFlowSvg').innerHTML = svg;
+    // highlight legend line
+    const hl = document.getElementById('dFlowHighlight');
+    if (focus){
+      const strongest = [...CATS[focus].cross].filter(x=>cats.find(c=>CATS[c].name===x[0])).sort((a,b)=>b[1]-a[1])[0];
+      hl.innerHTML = strongest ? `Strongest tie: <strong>${CATS[focus].name} ↔ ${strongest[0]} (${strongest[1]}%)</strong>` : '';
+    } else {
+      hl.innerHTML = `<strong>61%</strong> of spenders cross 2+ categories`;
+    }
+  }
+
+
+  // ---------- stage nav ----------
+  const stages = document.querySelectorAll('.stage');
+  const views  = document.querySelectorAll('.stage-view');
+  const crumb  = document.getElementById('crumb-stage');
+  const stageNames = { overview:'Overview', discover:'Discover', define:'Define', activate:'Activate', measure:'Measure', learn:'Learn' };
+  function goStage(key){
+    stages.forEach(s => s.classList.toggle('active', s.dataset.stage === key));
+    views.forEach(v => v.classList.toggle('hidden', v.id !== `view-${key}`));
+    crumb.textContent = stageNames[key];
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  stages.forEach(s => s.addEventListener('click', () => goStage(s.dataset.stage)));
+
+  // overview picker jumps to discover
+  buildPicker('ovPicker', (k)=>{ renderDiscover(k); goStage('discover'); }, null);
+  renderDiscover('dining');
+
+  // ---------- charts ----------
+  if (typeof Chart !== 'undefined') {
+    Chart.defaults.font.family = "'Inter Tight', sans-serif";
+    Chart.defaults.font.size = 11;
+    Chart.defaults.color = '#6B7785';
+    Chart.defaults.borderColor = '#EFF1F3';
+
+    // overview attractiveness scatter
+    const pts = ORDER.filter(k=>k!=='all').map(k=>{
+      const c = CATS[k];
+      return { x: c.penetration, y: c.arpu, r: Math.max(6, Math.sqrt(c.cohort)/13), label: c.name, conf: c.conf };
+    });
+    new Chart(document.getElementById('ovScatter'), {
+      type:'bubble',
+      data:{ datasets:[{
+        data: pts,
+        backgroundColor: pts.map(p=> p.conf==='low' ? 'rgba(176,56,45,0.22)' : p.conf==='med' ? 'rgba(201,122,45,0.25)' : 'rgba(0,122,110,0.28)'),
+        borderColor: pts.map(p=> p.conf==='low' ? '#B0382D' : p.conf==='med' ? '#C97A2D' : '#007A6E'),
+        borderWidth: 1.6
+      }]},
+      options:{
+        responsive:true, maintainAspectRatio:false,
+        plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label:(ctx)=>{ const p=ctx.raw; return `${p.label}: ARPU EGP ${p.y} · ${p.x}% reach`; } } } },
+        scales:{
+          x:{ title:{display:true, text:'Category penetration (% of active spenders)'}, grid:{color:'#F2F2F2'}, ticks:{callback:v=>v+'%'} },
+          y:{ title:{display:true, text:'Monthly ARPU (EGP)'}, grid:{color:'#F2F2F2'}, beginAtZero:false }
+        }
+      }
+    });
+
+    // measure illustrative chart
+    new Chart(document.getElementById('mChart'), {
+      type:'line',
+      data:{
+        labels:['W-4','W-3','W-2','W-1','Act','W+1','W+2','W+3','W+4','W+5','W+6','W+7','W+8'],
+        datasets:[
+          { label:'Acted', data:[280,272,285,278,null,372,388,381,379,375,372,370,373], borderColor:'#00504A', backgroundColor:'rgba(0,122,110,0.12)', tension:0.28, borderWidth:2.6, pointRadius:0, fill:true, spanGaps:true },
+          { label:'Control', data:[284,278,281,276,null,279,285,280,287,282,279,284,281], borderColor:'#8B95A1', backgroundColor:'transparent', tension:0.28, borderWidth:1.8, pointRadius:0, borderDash:[4,4], spanGaps:true }
+        ]
+      },
+      options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}},
+        scales:{ x:{grid:{display:false}}, y:{ ticks:{callback:v=>'EGP '+v}, grid:{color:'#F2F2F2'}, beginAtZero:false } } }
+    });
+  }
+</script>
+</body>
+</html>
