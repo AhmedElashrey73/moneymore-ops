@@ -460,6 +460,125 @@
   .under { color: var(--alert); }
   .even { color: var(--slate-soft); }
 
+  /* ===== merchant-rank table (Customer Intelligence) ===== */
+  .mrank-row {
+    display: grid; grid-template-columns: 24px 1fr 110px 110px 100px; align-items: center;
+    gap: 14px; padding: 13px 0; border-bottom: 1px solid var(--rule-soft); font-size: 13px;
+  }
+  .mrank-row:last-child { border-bottom: none; }
+  .mrank-row.head {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--slate-soft); font-weight: 600; border-bottom: 1px solid var(--rule);
+    padding-bottom: 12px;
+  }
+  .mrank-row.lead { background: var(--pulse-soft); border-radius: 6px; padding-left: 8px; padding-right: 8px; }
+  .mrank-num { font-family: 'JetBrains Mono', monospace; color: var(--mute); font-size: 12px; }
+  .mrank-name { font-weight: 500; color: var(--ink); }
+  .mrank-cat { font-size: 11px; color: var(--slate-soft); margin-top: 2px; }
+  .mrank-val { font-family: 'JetBrains Mono', monospace; text-align: right; font-size: 12.5px; color: var(--slate); }
+  .mrank-score { font-family: 'JetBrains Mono', monospace; text-align: right; font-weight: 600; font-size: 13px; color: var(--pulse-deep); }
+  .mrank-meta-strip {
+    display: flex; gap: 18px; padding: 14px 18px; background: var(--paper);
+    border: 1px solid var(--rule); border-radius: 8px; margin-bottom: 18px;
+    font-size: 11.5px; color: var(--slate); line-height: 1.5;
+  }
+  .mrank-meta-strip strong { color: var(--ink); }
+
+  /* ===== Together stage ===== */
+  .tog-banner {
+    background: linear-gradient(135deg, #2A1810, #4A2818); color: #FDF8EE;
+    border-radius: 14px; padding: 32px 36px; margin-bottom: 28px; position: relative; overflow: hidden;
+  }
+  .tog-banner::after {
+    content: ""; position: absolute; right: -80px; top: -80px; width: 320px; height: 320px;
+    border-radius: 50%; background: radial-gradient(circle, rgba(201,122,45,0.35) 0%, transparent 65%);
+  }
+  .tog-tag {
+    font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.18em;
+    color: #E8B470; font-weight: 600; margin-bottom: 14px; position: relative; z-index: 1;
+  }
+  .tog-headline {
+    font-family: 'Fraunces', serif; font-size: 30px; font-weight: 500; letter-spacing: -0.02em;
+    line-height: 1.2; max-width: 760px; position: relative; z-index: 1; margin-bottom: 14px;
+  }
+  .tog-headline em { font-style: italic; color: #E8B470; font-weight: 400; }
+  .tog-sub {
+    font-size: 14px; color: #D4B896; line-height: 1.55; max-width: 720px;
+    position: relative; z-index: 1;
+  }
+  .tog-sub strong { color: #FDF8EE; font-weight: 600; }
+
+  .tog-value-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px;
+  }
+  .tog-value-card {
+    background: var(--surface); border: 1px solid var(--rule); border-left: 3px solid var(--warn);
+    border-radius: 10px; padding: 22px 24px;
+  }
+  .tog-value-tag {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em;
+    color: var(--warn); font-weight: 600; margin-bottom: 10px;
+  }
+  .tog-value-title {
+    font-family: 'Fraunces', serif; font-size: 18px; font-weight: 500;
+    letter-spacing: -0.01em; margin-bottom: 10px; line-height: 1.3;
+  }
+  .tog-value-body { font-size: 12.5px; color: var(--slate); line-height: 1.55; }
+  .tog-value-body strong { color: var(--ink); font-weight: 600; }
+
+  .tog-capability {
+    background: var(--surface); border: 1px solid var(--rule); border-radius: 12px;
+    overflow: hidden; margin-bottom: 18px;
+  }
+  .tog-cap-head {
+    padding: 22px 26px 18px; border-bottom: 1px solid var(--rule-soft);
+    display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;
+  }
+  .tog-cap-title {
+    font-family: 'Fraunces', serif; font-size: 22px; font-weight: 500;
+    letter-spacing: -0.012em; margin-bottom: 4px;
+  }
+  .tog-cap-sub { font-size: 12.5px; color: var(--slate-soft); max-width: 560px; line-height: 1.5; }
+  .tog-cap-flag {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em; font-weight: 600;
+    padding: 5px 10px; border-radius: 4px; background: #FDF8EE; color: #8B6914;
+    border: 1px solid #E8D8B2; white-space: nowrap;
+  }
+  .tog-cap-body { padding: 22px 26px; }
+
+  .tog-flow {
+    display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: 16px; align-items: stretch;
+  }
+  .tog-flow-node {
+    padding: 16px 18px; border-radius: 8px; background: var(--paper);
+    border: 1px solid var(--rule); display: flex; flex-direction: column; justify-content: center;
+  }
+  .tog-flow-node.you { background: var(--pulse-soft); border-color: var(--pulse-mid); }
+  .tog-flow-node.them { background: #FDF8EE; border-color: #E8D8B2; }
+  .tog-flow-node-label {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--slate-soft); font-weight: 600; margin-bottom: 6px;
+  }
+  .tog-flow-node.you .tog-flow-node-label { color: var(--pulse-deep); }
+  .tog-flow-node.them .tog-flow-node-label { color: #8B6914; }
+  .tog-flow-node-title { font-size: 13.5px; font-weight: 600; margin-bottom: 6px; color: var(--ink); }
+  .tog-flow-node-body { font-size: 11.5px; color: var(--slate); line-height: 1.45; }
+  .tog-flow-arrow {
+    display: flex; align-items: center; font-size: 22px; color: var(--mute);
+  }
+
+  .tog-honesty {
+    background: rgba(176,56,45,0.06); border: 1px solid rgba(176,56,45,0.22);
+    border-left: 3px solid var(--alert); border-radius: 8px; padding: 16px 20px;
+    margin-top: 14px;
+  }
+  .tog-honesty-tag {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em;
+    color: var(--alert); font-weight: 700; margin-bottom: 8px;
+  }
+  .tog-honesty-text { font-size: 12.5px; color: var(--graphite); line-height: 1.55; }
+  .tog-honesty-text strong { color: var(--alert); }
+
   /* ===== chart helpers ===== */
   .chart-wrap { position: relative; width: 100%; }
   .h-220 { height: 220px; }
@@ -562,6 +681,11 @@
         <span class="stage-num">05</span>
         <span class="stage-body"><span class="stage-name">Learn</span>
         <span class="stage-meta">Monthly brief</span></span>
+      </button>
+      <button class="stage" data-stage="together" style="margin-top:14px; border-top:1px dashed var(--rule); padding-top:14px;">
+        <span class="stage-num" style="background:#FDF8EE; color:#8B6914; border-color:#E8D8B2;">→</span>
+        <span class="stage-body"><span class="stage-name">Together</span>
+        <span class="stage-meta">Future · requires data join</span></span>
       </button>
     </div>
 
@@ -860,12 +984,44 @@
         </div>
       </div>
 
-      <!-- where the opportunity reads -->
+      <!-- merchant-level opportunity (the new grain) -->
       <div class="block-head">
         <span class="block-letter">3</span>
         <div class="block-title-wrap">
-          <div class="block-title">What the indexing implies</div>
-          <div class="block-q">Read directly from the numbers above — analyst-framed, not machine-written.</div>
+          <div class="block-title">Merchants worth pursuing — ranked from real overlap</div>
+          <div class="block-q">Which specific merchants over-index with your confirmed customers, and what's their open-economy wallet?</div>
+        </div>
+        <span class="cohort-chip cohort-sim">Computed · merchant grain</span>
+      </div>
+      <div class="mrank-meta-strip">
+        <span><strong>How this is computed:</strong> non-trivial merchants in the lifestyle categories your confirmed cohort over-indexes on, ranked by audience overlap (% of your confirmed customers who spend with them) × open-economy spend volume.</span>
+      </div>
+      <div class="panel">
+        <div class="panel-head">
+          <div><h3>Top merchant opportunities</h3>
+          <div class="sub">Ranked by overlap-weighted opportunity · all numbers are computed, no AI scoring</div></div>
+          <span class="panel-tag">Computed · not modelled</span>
+        </div>
+        <div>
+          <div class="mrank-row head">
+            <span>#</span><span>Merchant</span>
+            <span style="text-align:right;">Cohort overlap</span>
+            <span style="text-align:right;">Open-economy ARPU</span>
+            <span style="text-align:right;">Opportunity</span>
+          </div>
+          <div id="ciMerchRank"></div>
+        </div>
+        <div class="dist-legend" style="margin-top:16px;">
+          <span style="color:var(--mute)">Overlap = % of confirmed cohort with verified spend at this merchant in the trailing 12 months. Opportunity = overlap × annual ARPU, expressed in EGP per confirmed customer. The buyer reads the ranking; no machine recommendation.</span>
+        </div>
+      </div>
+
+      <!-- where the opportunity reads -->
+      <div class="block-head">
+        <span class="block-letter">4</span>
+        <div class="block-title-wrap">
+          <div class="block-title">What the numbers imply</div>
+          <div class="block-q">Read directly from the indexing and merchant tables — analyst-framed, not machine-written.</div>
         </div>
         <span class="cohort-chip cohort-payer">★ Curated · monthly</span>
       </div>
@@ -1094,6 +1250,160 @@
             <div style="font-size:13px;">Your Pulse analyst is preparing the next category deep-dive.</div>
             <div style="font-size:11.5px; color:var(--mute); margin-top:6px;">Next review: 4 June 2026 · 10:00</div>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =================== TOGETHER (future · requires data join) =================== -->
+    <div class="stage-view hidden" id="view-together">
+      <div class="stage-header">
+        <div class="stage-tag" style="color:#8B6914;"><span class="stage-tag-num" style="background:#8B6914;">→</span> Together — future, requires data join</div>
+        <h1 class="stage-title">What becomes possible <em>if we join data</em>.</h1>
+        <p class="stage-blurb">Everything in the rest of Pulse runs on what MoneyMore sees today, with no Waffarha data required. <strong>This stage shows a different tier</strong> — what unlocks if Waffarha's redemption data and Pulse's open-economy spend data are joined. It's a closing pitch for a deeper partnership, not part of what's being offered today.</p>
+      </div>
+
+      <!-- the banner — frame the value on Waffarha's side -->
+      <div class="tog-banner">
+        <div class="tog-tag">★ The deeper relationship</div>
+        <div class="tog-headline">
+          The join doesn't make <em>our</em> product better — it makes <em>yours</em> better.
+        </div>
+        <div class="tog-sub">
+          Today Waffarha can tell a merchant <strong>"X people redeemed your voucher."</strong> After the join, Waffarha can tell that same merchant: <strong>"X people redeemed, Y came back at full price, the cohort spent EGP Z above control over 60 days — your real ROI was 4.2×."</strong> That last sentence is the thing every Waffarha merchant wants and that no deals platform in Egypt can currently deliver. It's not a feature for us. It's a pitch upgrade for you.
+        </div>
+      </div>
+
+      <!-- two value cards: what Waffarha can sell after the join -->
+      <div style="font-size:11px; text-transform:uppercase; letter-spacing:0.14em; color:var(--slate-soft); font-weight:600; margin-bottom:12px;">What the join unlocks — for Waffarha's merchant conversations</div>
+      <div class="tog-value-grid">
+        <div class="tog-value-card">
+          <div class="tog-value-tag">For Waffarha's existing merchants</div>
+          <div class="tog-value-title">Closed-loop voucher ROI — the moat your merchants can't get anywhere else</div>
+          <div class="tog-value-body">
+            Today: <strong>"500 people redeemed."</strong> After the join: <strong>"500 redeemed → 290 came back at full price → cohort spent EGP 1.4M above matched control over 60 days → real ROI 4.1×."</strong> Move the merchant relationship from <em>traffic vendor</em> to <em>customer builder</em> — the difference between commodity pricing and premium pricing.
+          </div>
+        </div>
+        <div class="tog-value-card">
+          <div class="tog-value-tag">For Waffarha's new merchant pitches</div>
+          <div class="tog-value-title">Evidence-based audience targeting — proven, not claimed</div>
+          <div class="tog-value-body">
+            Today: <strong>"We have 5M users."</strong> After the join: <strong>"We have 5M users, and we can prove which 80K of them are your highest-propensity acquirable customers — from real verified spend, not stated intent."</strong> Replace category-level pitching with cohort-level evidence.
+          </div>
+        </div>
+      </div>
+
+      <!-- capability 1: user-level offer matching, shown as feasibility -->
+      <div class="tog-capability">
+        <div class="tog-cap-head">
+          <div>
+            <div class="tog-cap-title">Capability 1 · User-level offer matching</div>
+            <div class="tog-cap-sub">Take a Waffarha offer, match it to the precise sub-cohort within MoneyMore's confirmed customers whose verified open-economy behaviour predicts the highest conversion. Today this is category-level; with the join it becomes user-level.</div>
+          </div>
+          <span class="tog-cap-flag">→ Requires join</span>
+        </div>
+        <div class="tog-cap-body">
+          <div class="tog-flow">
+            <div class="tog-flow-node them">
+              <div class="tog-flow-node-label">Waffarha brings</div>
+              <div class="tog-flow-node-title">Offer catalogue + redemption logs</div>
+              <div class="tog-flow-node-body">Which deals are live, who's redeemed what, voucher-side behaviour.</div>
+            </div>
+            <div class="tog-flow-arrow">+</div>
+            <div class="tog-flow-node you">
+              <div class="tog-flow-node-label">Pulse brings</div>
+              <div class="tog-flow-node-title">Verified open-economy spend</div>
+              <div class="tog-flow-node-body">Full lifestyle wallet behaviour of the matched users — what they actually do.</div>
+            </div>
+            <div class="tog-flow-arrow">→</div>
+            <div class="tog-flow-node" style="border-color:var(--ink); background:var(--ink); color:var(--paper);">
+              <div class="tog-flow-node-label" style="color:var(--pulse-mid);">Together</div>
+              <div class="tog-flow-node-title" style="color:var(--paper);">High-propensity offer → user match</div>
+              <div class="tog-flow-node-body" style="color:var(--d5);">Offers shown to the people whose real behaviour says they'll act.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- capability 2: closed-loop attribution per merchant -->
+      <div class="tog-capability">
+        <div class="tog-cap-head">
+          <div>
+            <div class="tog-cap-title">Capability 2 · Closed-loop merchant attribution</div>
+            <div class="tog-cap-sub">The Measure logic from Pulse, applied per Waffarha merchant. Voucher redemption is the trigger event; verified post-redemption spend against a matched control is the outcome. The number Waffarha can hand its merchants.</div>
+          </div>
+          <span class="tog-cap-flag">→ Requires join</span>
+        </div>
+        <div class="tog-cap-body">
+          <div class="tog-flow">
+            <div class="tog-flow-node them">
+              <div class="tog-flow-node-label">Waffarha brings</div>
+              <div class="tog-flow-node-title">Redemption events</div>
+              <div class="tog-flow-node-body">Who redeemed which voucher, when. The trigger.</div>
+            </div>
+            <div class="tog-flow-arrow">+</div>
+            <div class="tog-flow-node you">
+              <div class="tog-flow-node-label">Pulse brings</div>
+              <div class="tog-flow-node-title">Matched-control attribution engine</div>
+              <div class="tog-flow-node-body">Verified post-redemption spend vs control — the same Measure logic, productised.</div>
+            </div>
+            <div class="tog-flow-arrow">→</div>
+            <div class="tog-flow-node" style="border-color:var(--ink); background:var(--ink); color:var(--paper);">
+              <div class="tog-flow-node-label" style="color:var(--pulse-mid);">Together</div>
+              <div class="tog-flow-node-title" style="color:var(--paper);">Per-merchant ROI Waffarha can sell</div>
+              <div class="tog-flow-node-body" style="color:var(--d5);">"Your voucher built 290 customers worth EGP 1.4M over 60 days." The merchant-facing number.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- capability 3: targeted campaigns -->
+      <div class="tog-capability">
+        <div class="tog-cap-head">
+          <div>
+            <div class="tog-cap-title">Capability 3 · Evidence-based campaign targeting</div>
+            <div class="tog-cap-sub">When Waffarha pitches a new merchant — say Sephora — Pulse can identify the precise sub-cohort of MoneyMore users whose verified beauty spend predicts highest acquisition probability for that specific merchant. Category-to-merchant becomes user-to-merchant.</div>
+          </div>
+          <span class="tog-cap-flag">→ Requires join</span>
+        </div>
+        <div class="tog-cap-body">
+          <div class="tog-flow">
+            <div class="tog-flow-node them">
+              <div class="tog-flow-node-label">Waffarha brings</div>
+              <div class="tog-flow-node-title">Target merchant + offer design</div>
+              <div class="tog-flow-node-body">The pitch context — who they're trying to win.</div>
+            </div>
+            <div class="tog-flow-arrow">+</div>
+            <div class="tog-flow-node you">
+              <div class="tog-flow-node-label">Pulse brings</div>
+              <div class="tog-flow-node-title">Verified high-propensity sub-cohort</div>
+              <div class="tog-flow-node-body">Users whose real spend pattern predicts conversion for this merchant.</div>
+            </div>
+            <div class="tog-flow-arrow">→</div>
+            <div class="tog-flow-node" style="border-color:var(--ink); background:var(--ink); color:var(--paper);">
+              <div class="tog-flow-node-label" style="color:var(--pulse-mid);">Together</div>
+              <div class="tog-flow-node-title" style="color:var(--paper);">Evidence-grounded merchant pitch</div>
+              <div class="tog-flow-node-body" style="color:var(--d5);">"Here are 80K verified high-propensity acquirable customers for you" — not category claims.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- the honesty section — what this actually requires -->
+      <div style="font-size:11px; text-transform:uppercase; letter-spacing:0.14em; color:var(--slate-soft); font-weight:600; margin:28px 0 12px;">What this actually requires — said plainly</div>
+      <div class="panel" style="margin-bottom:14px;">
+        <div style="font-size:13px; color:var(--slate); line-height:1.65;">
+          Three things have to happen, in order, before any of the above is real. None of them are technical first — they're <strong style="color:var(--ink);">governance and partnership</strong>, then engineering.
+          <ul style="margin:14px 0 0; padding-left:22px; line-height:1.7;">
+            <li><strong style="color:var(--ink);">A privacy-preserving match</strong> between Waffarha user IDs and MoneyMore user IDs — likely on hashed phone numbers, since that's the common key in Egypt. This is a DPO and PDPL conversation on both sides, with explicit user consent on at least one side.</li>
+            <li><strong style="color:var(--ink);">A data-sharing agreement</strong> that defines what flows which way, retention rules, k-anonymity floors (still 1,000), and how derived intelligence is used. Pulse's own integrity rules apply with more force here, not less.</li>
+            <li><strong style="color:var(--ink);">A commercial structure</strong> for who pays what and how value is split — because this stops being "Waffarha buys intelligence from Pulse" and starts being a joint product layer. That's a different conversation than the one this prototype is pitching.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tog-honesty">
+        <div class="tog-honesty-tag">Honest about the cost</div>
+        <div class="tog-honesty-text">
+          This stage exists in the prototype because <strong>the ambition is worth naming</strong>, not because the join is on the table today. The disciplined path is to start with the intelligence pitch (everything else in Pulse), prove the relationship, and earn into this conversation. Showing it here without doing it would be exactly the overpromise the rest of the product is built to avoid.
         </div>
       </div>
     </div>
@@ -1444,7 +1754,7 @@
   const stages = document.querySelectorAll('.stage');
   const views  = document.querySelectorAll('.stage-view');
   const crumb  = document.getElementById('crumb-stage');
-  const stageNames = { overview:'Overview', discover:'Discover', customers:'Customer Intelligence', define:'Define', activate:'Activate', measure:'Measure', learn:'Learn' };
+  const stageNames = { overview:'Overview', discover:'Discover', customers:'Customer Intelligence', define:'Define', activate:'Activate', measure:'Measure', learn:'Learn', together:'Together' };
   function goStage(key){
     stages.forEach(s => s.classList.toggle('active', s.dataset.stage === key));
     views.forEach(v => v.classList.toggle('hidden', v.id !== `view-${key}`));
@@ -1481,6 +1791,39 @@
         <span class="index-multiple ${cls}">${arrow} ${idx.toFixed(1)}×</span>
       </div>`;
     }).join('');
+  })();
+
+  // ---------- merchant-level opportunity ranking (the new grain) ----------
+  (function buildMerchRank(){
+    const el = document.getElementById('ciMerchRank');
+    if (!el) return;
+    // [name, category, overlap%, open-economy ARPU/yr in EGP, lead?]
+    // Opportunity = overlap × ARPU (a simple, defensible composite — explained in the strip)
+    const rows = [
+      ['Sephora Egypt', 'Beauty & spa', 34, 19400, true],
+      ['Salon Group A', 'Beauty & spa', 41, 14200, false],
+      ['Casual-Dining Chain', 'Dining', 58, 8600, false],
+      ['Spa Chain B', 'Beauty & spa', 22, 17800, false],
+      ['Coffee Major', 'Dining', 51, 5200, false],
+      ['Cinema Chain', 'Entertainment', 28, 6900, false],
+      ['Fitness Boutique', 'Fitness', 19, 9100, false],
+      ['Premium Restaurant', 'Dining', 16, 12400, false],
+    ];
+    // compute opportunity = overlap% × ARPU / 100 (gives EGP per confirmed customer)
+    const withOpp = rows.map(r => {
+      const [name, cat, ov, arpu, lead] = r;
+      return { name, cat, ov, arpu, opp: Math.round(ov * arpu / 100), lead };
+    }).sort((a,b)=>b.opp-a.opp);
+
+    el.innerHTML = withOpp.map((r,i) => `
+      <div class="mrank-row ${r.lead?'lead':''}">
+        <span class="mrank-num">${i+1}</span>
+        <div><div class="mrank-name">${r.name}${r.lead?' &nbsp;<span style="font-family:JetBrains Mono,monospace; font-size:9px; background:var(--pulse-deep); color:var(--paper); padding:1px 6px; border-radius:3px; letter-spacing:0.05em;">LEAD</span>':''}</div><div class="mrank-cat">${r.cat}</div></div>
+        <span class="mrank-val">${r.ov}%</span>
+        <span class="mrank-val">EGP ${r.arpu.toLocaleString()}</span>
+        <span class="mrank-score">EGP ${r.opp.toLocaleString()}</span>
+      </div>
+    `).join('');
   })();
 
   // ---------- charts ----------
