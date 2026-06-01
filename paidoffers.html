@@ -1,0 +1,1556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoneyMore — Paid Offers · Designer Prototype</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --navy:#1A3C5E; --navy-d:#0F2942; --navy-l:#2C5685; --navy-xd:#081A2E;
+  --green:#2E8B57; --green-l:#E8F5EE; --green-d:#1A6E3C;
+  --gold:#D4A017; --gold-l:#FBF4DC; --gold-d:#8A6A10;
+  --red:#C0392B; --red-l:#FDECEA; --red-d:#7A1810;
+  --paid:#7A1FBF; --paid-l:#F1E6FB; --paid-d:#4D0D80;
+  --paymob:#F26F25; --paymob-d:#000033;
+  --vodafone:#E60000;
+  --page-bg:#EFEAE0;
+  --screen-bg:#F7F4ED; --screen-bg2:#EDEAE0; --screen-bg3:#E0DCD0;
+  --t1:#0F0E0C; --t2:#3D3A35; --t3:#7A7670; --t4:#ABA7A0;
+  --t-pos:#1A6E3C; --t-neg:#A82419;
+  --b1:#E8E5DF; --b2:#D4D0C8; --b3:#BCBAB2;
+  --frame-bg:#0A0808; --frame-border:#000;
+
+  --f-body:'Plus Jakarta Sans',sans-serif;
+  --f-mono:'DM Mono',monospace;
+  --r-sm:6px; --r-md:12px; --r-lg:16px; --r-xl:24px; --r-pill:999px;
+  --shadow-phone:0 16px 48px rgba(0,0,0,0.20),0 4px 12px rgba(0,0,0,0.12);
+  --shadow-card:0 1px 2px rgba(20,20,20,0.04);
+  --shadow-card-lift:0 4px 16px rgba(20,20,20,0.10),0 1px 3px rgba(20,20,20,0.06);
+  --shadow-hero:0 8px 24px rgba(15,41,66,0.30),0 2px 6px rgba(15,41,66,0.20);
+  --shadow-paid:0 8px 24px rgba(122,31,191,0.30),0 2px 6px rgba(122,31,191,0.18);
+  --ph-w:288px; --ph-h:608px; --ph-r:38px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+.page{max-width:1500px;margin:0 auto;padding:48px 40px 96px;}
+
+.doc-header{padding-bottom:32px;margin-bottom:40px;border-bottom:2px solid var(--b1);}
+.doc-meta{display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap;}
+.doc-tag{font-family:var(--f-mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;padding:4px 11px;border-radius:3px;font-weight:600;}
+.doc-tag.prototype{background:var(--green-l);color:#0F5830;}
+.doc-tag.designer{background:#EAE8FF;color:#3A3288;}
+.doc-tag.android{background:#E8F4EA;color:#1F5E2A;}
+.doc-tag.wip{background:var(--gold-l);color:#6B5210;}
+.doc-tag.version{background:var(--navy);color:#fff;}
+.doc-tag.feature{background:var(--paid-l);color:var(--paid-d);}
+.doc-date{font-family:var(--f-mono);font-size:11px;color:var(--t2);margin-left:auto;font-weight:500;}
+.doc-title{font-size:34px;font-weight:700;color:var(--t1);letter-spacing:-0.025em;line-height:1.15;margin-bottom:10px;}
+.doc-subtitle{font-size:15px;color:var(--t1);font-weight:400;margin-bottom:30px;line-height:1.5;max-width:920px;}
+
+.doc-info{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--b1);border-radius:var(--r-md);overflow:hidden;background:white;}
+.doc-info-cell{padding:16px 20px;border-right:1px solid var(--b1);}
+.doc-info-cell:last-child{border-right:none;}
+.info-label{font-family:var(--f-mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--t2);margin-bottom:8px;font-weight:600;}
+.info-body{font-size:13px;color:var(--t1);line-height:1.55;}
+.flow-list{display:flex;flex-direction:column;gap:4px;}
+.flow-list-item{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--t1);line-height:1.45;}
+.flow-list-item::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--paid);flex-shrink:0;}
+
+.flow-section{margin-bottom:64px;}
+.flow-section-header{display:flex;align-items:center;gap:16px;margin-bottom:28px;}
+.flow-section-line{flex:1;height:1px;background:var(--b2);}
+.flow-section-title{font-family:var(--f-body);font-size:16px;font-weight:700;letter-spacing:-0.01em;color:#fff;background:var(--paid);padding:6px 14px;border-radius:4px;white-space:nowrap;}
+
+.phone-row{display:flex;align-items:flex-start;gap:0;overflow-x:auto;padding-bottom:12px;}
+.phone-row::-webkit-scrollbar{height:4px;}
+.phone-row::-webkit-scrollbar-track{background:var(--b1);border-radius:2px;}
+.phone-row::-webkit-scrollbar-thumb{background:var(--b3);border-radius:2px;}
+
+.screen-col{display:flex;flex-direction:column;align-items:center;gap:10px;flex-shrink:0;}
+.screen-label{font-family:var(--f-body);font-size:11px;font-weight:600;color:var(--t2);text-align:center;max-width:var(--ph-w);line-height:1.4;}
+
+.state-badge{font-family:var(--f-mono);font-size:10px;font-weight:500;padding:3px 9px;border-radius:3px;letter-spacing:0.04em;}
+.state-badge.happy{background:#EBF7F1;color:#1A6E3C;}
+.state-badge.paid{background:var(--paid-l);color:var(--paid-d);}
+.state-badge.error{background:var(--red-l);color:var(--red);}
+.state-badge.loading{background:#E8F0FA;color:#103868;}
+.state-badge.success{background:var(--green-l);color:#0F5830;}
+.state-badge.os{background:#ECECEC;color:#555;}
+.state-badge.gateway{background:#FFE4D0;color:#9C3F00;}
+.state-badge.interaction{background:#EAE8FF;color:#3A3288;}
+
+.flow-arrow{display:flex;flex-direction:column;align-items:center;flex-shrink:0;padding-top:calc(var(--ph-h)/2 - 16px);padding-left:6px;padding-right:6px;}
+.arrow-line{width:32px;height:1px;background:var(--b2);position:relative;}
+.arrow-line::after{content:'';position:absolute;right:-1px;top:-3px;border-left:5px solid var(--b2);border-top:3px solid transparent;border-bottom:3px solid transparent;}
+.arrow-label{font-family:var(--f-body);font-size:10px;font-weight:600;color:var(--t2);text-align:center;max-width:80px;line-height:1.35;margin-top:6px;}
+.arrow-label.deny{color:var(--red);}
+
+.phone{width:var(--ph-w);height:var(--ph-h);border-radius:var(--ph-r);background:var(--frame-bg);box-shadow:var(--shadow-phone);position:relative;overflow:hidden;border:2px solid var(--frame-border);flex-shrink:0;}
+.a-status{position:absolute;top:0;left:0;right:0;height:22px;background:var(--screen-bg);display:flex;align-items:center;justify-content:space-between;padding:0 16px;z-index:10;font-family:var(--f-body);font-size:9px;font-weight:600;color:var(--t1);}
+.a-nav{position:absolute;bottom:0;left:0;right:0;height:48px;background:white;border-top:1px solid var(--b1);display:flex;align-items:center;z-index:10;}
+.a-nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:5px 0;}
+.a-nav-icon{width:20px;height:20px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;}
+.a-nav-item.on .a-nav-icon{background:var(--green-l);}
+.a-nav-lbl{font-size:7px;color:var(--t4);font-weight:600;}
+.a-nav-item.on .a-nav-lbl{color:var(--green);}
+
+.screen{position:absolute;top:22px;bottom:48px;left:0;right:0;background:var(--screen-bg);overflow:hidden;display:flex;flex-direction:column;}
+.screen.no-nav{bottom:0;}
+
+.app-bar{padding:10px 16px 6px;background:var(--screen-bg);flex-shrink:0;display:flex;align-items:center;gap:10px;}
+.app-bar-back{font-size:18px;color:var(--t2);font-weight:600;line-height:1;}
+.app-bar-text{flex:1;}
+.app-bar-eyebrow{font-size:8px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:1px;line-height:1;}
+.app-bar-title{font-size:20px;font-weight:800;color:var(--t1);letter-spacing:-0.025em;line-height:1.05;}
+
+.seg-control{display:flex;background:#E0DCD0;border-radius:var(--r-pill);padding:3px;margin:8px 16px 10px;flex-shrink:0;}
+.seg-item{flex:1;padding:6px 8px;border-radius:var(--r-pill);font-size:11px;font-weight:600;color:var(--t3);text-align:center;display:flex;align-items:center;justify-content:center;gap:5px;}
+.seg-item.on{background:white;color:var(--t1);box-shadow:0 1px 2px rgba(0,0,0,0.10);}
+.seg-badge{background:var(--navy);color:white;font-size:8px;font-weight:700;padding:1px 5px;border-radius:var(--r-pill);min-width:16px;text-align:center;}
+.seg-item:not(.on) .seg-badge{background:var(--b3);color:white;}
+
+.offers-list{padding:0 16px 12px;display:flex;flex-direction:column;gap:8px;flex:1;overflow-y:auto;}
+.list-eyebrow{font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:0.1em;padding:4px 0 0;display:flex;align-items:center;gap:6px;}
+.list-eyebrow::before{content:'';width:14px;height:1px;background:var(--b2);}
+.list-eyebrow::after{content:'';flex:1;height:1px;background:var(--b2);}
+
+/* HERO CARD — paid variant */
+.offer-hero{
+  background:linear-gradient(135deg,var(--navy-xd) 0%,var(--navy) 55%,var(--navy-l) 100%);
+  border-radius:14px;padding:12px 14px;position:relative;overflow:hidden;
+  color:white;box-shadow:var(--shadow-hero);
+  display:flex;flex-direction:column;gap:8px;min-height:138px;
+}
+.offer-hero.paid{
+  background:linear-gradient(135deg,#2A0F4A 0%,var(--paid) 55%,#A04FE0 100%);
+  box-shadow:var(--shadow-paid);
+}
+.offer-hero::before{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(212,160,23,0.18) 0%,transparent 70%);}
+.offer-hero.paid::before{background:radial-gradient(circle,rgba(255,255,255,0.14) 0%,transparent 70%);}
+.offer-hero::after{content:'';position:absolute;bottom:-40px;left:-40px;width:110px;height:110px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,0.06) 0%,transparent 70%);}
+
+.hero-top{display:flex;align-items:center;justify-content:space-between;position:relative;z-index:2;}
+.hero-featured-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(212,160,23,0.22);border:1px solid rgba(212,160,23,0.45);color:#FFE5A8;padding:3px 8px;border-radius:var(--r-pill);font-size:8px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;}
+.hero-featured-badge::before{content:'★';font-size:9px;}
+.hero-paid-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.4);color:white;padding:3px 8px;border-radius:var(--r-pill);font-size:8px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;}
+.hero-paid-badge::before{content:'💎';font-size:9px;}
+.hero-merchant-pill{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);padding:3px 8px 3px 3px;border-radius:var(--r-pill);font-size:10px;font-weight:600;color:white;}
+.hero-merchant-logo{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0;letter-spacing:-0.03em;}
+.hero-merchant-logo.talabat{background:#FF5A00;color:white;}
+.hero-merchant-logo.elgameya{background:white;color:var(--paid);}
+.hero-merchant-logo.zara{background:white;color:#000;}
+
+.hero-discount{position:relative;z-index:2;display:flex;align-items:baseline;gap:6px;letter-spacing:-0.04em;flex:1;}
+.hero-discount-num{font-size:48px;font-weight:800;line-height:0.9;color:white;text-shadow:0 2px 8px rgba(0,0,0,0.15);}
+.hero-discount-unit{font-size:16px;font-weight:700;color:#FFE5A8;line-height:1;}
+.offer-hero.paid .hero-discount-unit{color:rgba(255,255,255,0.85);}
+
+.hero-bottom{display:flex;align-items:center;justify-content:space-between;position:relative;z-index:2;gap:8px;border-top:1px solid rgba(255,255,255,0.10);padding-top:8px;}
+.hero-offer-title{font-size:11px;font-weight:600;opacity:0.95;line-height:1.3;flex:1;min-width:0;}
+.hero-price{
+  display:inline-flex;align-items:center;gap:3px;
+  background:rgba(255,255,255,0.20);
+  border:1px solid rgba(255,255,255,0.40);
+  color:white;
+  padding:3px 9px;border-radius:var(--r-pill);
+  font-size:10px;font-weight:800;flex-shrink:0;letter-spacing:-0.01em;
+}
+.hero-expiration{display:inline-flex;align-items:center;gap:3px;background:rgba(255,80,80,0.18);border:1px solid rgba(255,120,120,0.35);color:#FFB8B8;padding:2px 7px;border-radius:var(--r-pill);font-size:9px;font-weight:700;flex-shrink:0;}
+
+/* REGULAR CARD — paid variant */
+.offer-card{background:white;border:1px solid var(--b1);border-radius:12px;box-shadow:var(--shadow-card);display:flex;align-items:stretch;min-height:78px;position:relative;}
+.card-left{background:var(--screen-bg);border-right:1px dashed var(--b2);padding:8px 12px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:74px;position:relative;border-radius:12px 0 0 12px;}
+.card-discount-num{font-size:20px;font-weight:800;color:var(--navy);letter-spacing:-0.03em;line-height:1;}
+.card-discount-unit{font-size:9px;font-weight:700;color:var(--navy);letter-spacing:0.05em;text-transform:uppercase;margin-top:3px;}
+.card-left::before,.card-left::after{content:'';position:absolute;right:-5px;width:10px;height:10px;border-radius:50%;background:var(--screen-bg);}
+.card-left::before{top:-5px;}
+.card-left::after{bottom:-5px;}
+
+.offer-card.paid .card-left{background:var(--paid-l);border-right-color:rgba(122,31,191,0.25);}
+.offer-card.paid .card-discount-num{color:var(--paid);}
+.offer-card.paid .card-discount-unit{color:var(--paid);}
+
+.card-right{flex:1;padding:10px 12px;display:flex;flex-direction:column;justify-content:center;gap:4px;min-width:0;}
+.card-merchant{display:flex;align-items:center;gap:5px;font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:0.05em;}
+.card-merchant-dot{width:12px;height:12px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:800;flex-shrink:0;}
+.card-merchant-dot.elgameya{background:var(--paid);color:white;}
+.card-merchant-dot.zara{background:#000;color:white;}
+.card-title{font-size:12px;font-weight:700;color:var(--t1);letter-spacing:-0.01em;line-height:1.25;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden;}
+.card-foot{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:2px;}
+.card-price-pill{
+  display:inline-flex;align-items:center;
+  background:var(--paid-l);color:var(--paid-d);
+  padding:2px 8px;border-radius:var(--r-pill);
+  font-size:9px;font-weight:800;letter-spacing:-0.01em;
+}
+.card-cta-link{font-size:10px;font-weight:700;color:var(--paid);display:inline-flex;align-items:center;gap:3px;letter-spacing:-0.005em;}
+.card-cta-link::after{content:'→';font-size:11px;}
+
+/* OFFER DETAIL SHEET */
+.overlay{position:absolute;inset:0;background:rgba(10,10,10,0.55);display:flex;align-items:flex-end;z-index:40;backdrop-filter:blur(3px);}
+.bottom-sheet{background:var(--screen-bg);border-radius:24px 24px 0 0;width:100%;padding:10px 16px 20px;box-shadow:0 -10px 36px rgba(0,0,0,0.25);max-height:92%;overflow-y:auto;}
+.bs-handle{width:36px;height:3px;background:var(--b2);border-radius:2px;margin:0 auto 14px;}
+
+.sheet-header{display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;}
+.sheet-merchant-logo{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;border:1px solid var(--b1);}
+.sheet-merchant-logo svg{width:100%;height:100%;display:block;}
+.sheet-merchant-info{flex:1;min-width:0;padding-top:2px;}
+.sheet-merchant-name{font-size:9px;color:var(--t3);font-weight:700;text-transform:uppercase;letter-spacing:0.06em;}
+.sheet-offer-title{font-size:14px;font-weight:700;color:var(--t1);line-height:1.3;margin-top:2px;letter-spacing:-0.015em;}
+.sheet-close{width:28px;height:28px;border-radius:50%;background:var(--screen-bg2);display:flex;align-items:center;justify-content:center;color:var(--t2);font-size:12px;flex-shrink:0;}
+
+.discount-hero{
+  background:linear-gradient(135deg,var(--navy-xd) 0%,var(--navy) 55%,var(--navy-l) 100%);
+  color:white;border-radius:14px;padding:18px 16px;margin-bottom:10px;
+  position:relative;overflow:hidden;text-align:center;
+}
+.discount-hero.paid{background:linear-gradient(135deg,#2A0F4A 0%,var(--paid) 55%,#A04FE0 100%);}
+.discount-hero::before{content:'';position:absolute;top:-50px;right:-50px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(212,160,23,0.20) 0%,transparent 70%);}
+.discount-hero.paid::before{background:radial-gradient(circle,rgba(255,255,255,0.16) 0%,transparent 70%);}
+.discount-hero-label{font-size:9px;font-weight:700;color:#FFE5A8;text-transform:uppercase;letter-spacing:0.15em;position:relative;z-index:1;margin-bottom:4px;}
+.discount-hero.paid .discount-hero-label{color:rgba(255,255,255,0.85);}
+.discount-hero-amount{font-size:42px;font-weight:800;letter-spacing:-0.04em;line-height:1;position:relative;z-index:1;display:flex;align-items:baseline;justify-content:center;gap:5px;}
+.discount-hero-amount .unit{font-size:16px;font-weight:700;color:#FFE5A8;}
+.discount-hero.paid .discount-hero-amount .unit{color:rgba(255,255,255,0.85);}
+.discount-hero-meta{display:inline-flex;align-items:center;gap:4px;background:rgba(255,80,80,0.18);border:1px solid rgba(255,120,120,0.35);color:#FFB8B8;padding:3px 10px;border-radius:var(--r-pill);font-size:10px;font-weight:700;margin-top:10px;position:relative;z-index:1;}
+.discount-hero.paid .discount-hero-meta{background:rgba(255,255,255,0.18);border-color:rgba(255,255,255,0.40);color:white;}
+
+.terms-block{background:white;border:1px solid var(--b1);border-radius:10px;padding:10px 12px;margin-bottom:12px;}
+.terms-label{font-size:9px;font-weight:700;color:var(--t3);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:5px;display:flex;align-items:center;gap:5px;}
+.terms-label::before{content:'';width:12px;height:1px;background:var(--b2);}
+.terms-text{font-size:11px;color:var(--t1);line-height:1.5;font-weight:500;}
+
+/* Price summary block — between discount hero and terms in paid offers */
+.price-summary{
+  background:white;border:1px solid var(--b1);border-radius:10px;
+  padding:12px;margin-bottom:12px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.price-summary-label{
+  font-size:11px;color:var(--t2);font-weight:600;
+}
+.price-summary-amount{
+  font-size:18px;font-weight:800;color:var(--t1);letter-spacing:-0.02em;
+  display:flex;align-items:baseline;gap:3px;
+}
+.price-summary-amount .currency{
+  font-size:11px;font-weight:700;color:var(--t2);
+}
+
+/* BUTTONS */
+.btn{height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:var(--f-body);font-size:13px;font-weight:700;border:none;width:100%;gap:6px;letter-spacing:-0.01em;}
+.btn-primary{background:var(--navy);color:white;}
+.btn-paid{background:var(--paid);color:white;}
+.btn-accent{background:var(--green);color:white;}
+.btn-outline{background:white;border:1.5px solid var(--b2);color:var(--t1);}
+.btn-ghost{background:transparent;color:var(--t2);font-weight:600;}
+.btn-disabled{background:var(--screen-bg3);color:var(--t4);}
+.btn-lg{height:46px;font-size:14px;}
+
+/* PAYMOB SCREENS */
+.paymob-screen{
+  flex:1;display:flex;flex-direction:column;
+  background:#FAFAFA;
+  overflow:hidden;
+}
+.paymob-bar{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 14px;background:white;
+  border-bottom:1px solid #E5E5E5;
+  flex-shrink:0;
+}
+.paymob-back{font-size:18px;color:var(--paymob-d);font-weight:600;line-height:1;}
+.paymob-brand{flex:1;display:flex;align-items:center;gap:6px;}
+.paymob-logo{
+  height:22px;display:flex;align-items:center;gap:4px;
+  font-family:var(--f-body);font-size:13px;font-weight:800;color:var(--paymob-d);
+  letter-spacing:-0.02em;
+}
+.paymob-logo::before{
+  content:'';width:18px;height:18px;border-radius:5px;
+  background:var(--paymob);
+  display:inline-block;
+}
+.paymob-secure{
+  display:inline-flex;align-items:center;gap:3px;
+  font-size:9px;font-weight:600;color:var(--t3);
+  background:#E8F5EE;padding:3px 7px;border-radius:var(--r-pill);
+}
+.paymob-secure::before{content:'🔒';font-size:9px;}
+
+.paymob-amount-block{
+  background:white;padding:18px 16px;
+  text-align:center;
+  border-bottom:1px solid #E5E5E5;
+}
+.paymob-amount-label{
+  font-size:10px;color:#666;font-weight:600;
+  text-transform:uppercase;letter-spacing:0.1em;
+  margin-bottom:4px;
+}
+.paymob-amount-value{
+  font-size:28px;font-weight:800;color:var(--paymob-d);
+  letter-spacing:-0.03em;line-height:1;
+  display:flex;align-items:baseline;justify-content:center;gap:4px;
+}
+.paymob-amount-value .currency{font-size:14px;font-weight:700;color:#666;}
+.paymob-merchant-ref{
+  font-size:10px;color:#888;margin-top:6px;
+  font-family:var(--f-mono);
+}
+
+.paymob-body{flex:1;overflow-y:auto;padding:14px 14px 18px;display:flex;flex-direction:column;gap:8px;}
+
+.paymob-section-label{
+  font-size:10px;font-weight:700;color:#444;
+  text-transform:uppercase;letter-spacing:0.1em;
+  margin-top:4px;margin-bottom:2px;
+}
+
+.paymob-method{
+  background:white;border:1.5px solid #E0E0E0;
+  border-radius:10px;padding:12px 14px;
+  display:flex;align-items:center;gap:12px;
+  position:relative;
+}
+.paymob-method.selected{
+  border-color:var(--paymob);
+  background:#FFF8F2;
+}
+.paymob-method-radio{
+  width:18px;height:18px;border-radius:50%;
+  border:2px solid #C8C8C8;background:white;
+  flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+}
+.paymob-method.selected .paymob-method-radio{
+  border-color:var(--paymob);
+}
+.paymob-method.selected .paymob-method-radio::after{
+  content:'';width:8px;height:8px;border-radius:50%;
+  background:var(--paymob);
+}
+.paymob-method-ico{
+  width:36px;height:24px;border-radius:5px;
+  background:#F0F0F0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:800;color:#444;
+  flex-shrink:0;
+  letter-spacing:-0.05em;
+}
+.paymob-method-ico.card{background:linear-gradient(135deg,#1A1F71 0%,#0D7BC4 100%);color:white;}
+.paymob-method-ico.voda{background:var(--vodafone);color:white;font-size:9px;letter-spacing:-0.02em;}
+.paymob-method-ico.fawry{background:#FCD006;color:#1A1A1A;font-size:9px;}
+.paymob-method-ico.instapay{background:linear-gradient(135deg,#5B2F94 0%,#E4007E 100%);color:white;font-size:8px;}
+.paymob-method-ico.applepay{background:#000;color:white;font-size:9px;}
+
+.paymob-method-body{flex:1;min-width:0;}
+.paymob-method-name{font-size:13px;font-weight:700;color:#1A1A1A;line-height:1.2;letter-spacing:-0.005em;}
+.paymob-method-sub{font-size:10px;color:#888;margin-top:1px;font-weight:500;}
+
+.paymob-footer{
+  padding:12px 14px;background:white;
+  border-top:1px solid #E5E5E5;
+  display:flex;flex-direction:column;gap:8px;
+  flex-shrink:0;
+}
+.paymob-btn{
+  height:46px;border-radius:10px;
+  background:var(--paymob);color:white;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:700;letter-spacing:-0.01em;
+}
+.paymob-trust-line{
+  display:flex;align-items:center;justify-content:center;gap:4px;
+  font-size:9px;color:#888;font-weight:500;
+}
+
+/* PAYMOB CARD FORM */
+.paymob-form{display:flex;flex-direction:column;gap:10px;padding:14px;}
+.paymob-form-label{font-size:11px;font-weight:600;color:#444;letter-spacing:-0.005em;}
+.paymob-form-input{
+  height:42px;border:1.5px solid #D0D0D0;
+  border-radius:8px;background:white;padding:0 12px;
+  display:flex;align-items:center;gap:8px;
+  font-family:var(--f-body);
+  font-size:13px;color:#1A1A1A;
+}
+.paymob-form-input.focus{border-color:var(--paymob);box-shadow:0 0 0 3px rgba(242,111,37,0.12);}
+.paymob-form-input.placeholder{color:#A8A8A8;}
+.paymob-form-row{display:flex;gap:8px;}
+.paymob-form-grp{flex:1;display:flex;flex-direction:column;gap:4px;}
+.paymob-card-brand{
+  display:flex;gap:4px;
+}
+.paymob-card-brand-ico{
+  width:24px;height:16px;border-radius:3px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:8px;font-weight:800;color:white;letter-spacing:-0.03em;
+}
+.paymob-card-brand-ico.visa{background:#1A1F71;}
+.paymob-card-brand-ico.mc{background:#EB001B;font-size:7px;}
+.paymob-card-brand-ico.meeza{background:#5B2F94;}
+
+/* PAYMOB WALLET (Vodafone Cash) */
+.paymob-wallet-card{
+  background:white;border:1.5px solid var(--vodafone);
+  border-radius:10px;padding:14px;
+  display:flex;align-items:center;gap:10px;
+}
+.paymob-wallet-ico{
+  width:42px;height:42px;border-radius:10px;
+  background:var(--vodafone);color:white;
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:800;letter-spacing:-0.02em;
+  flex-shrink:0;
+}
+.paymob-wallet-body{flex:1;min-width:0;}
+.paymob-wallet-name{font-size:13px;font-weight:700;color:#1A1A1A;line-height:1.2;}
+.paymob-wallet-sub{font-size:10px;color:#888;margin-top:1px;}
+
+/* PAYMOB OTP */
+.paymob-otp-row{display:flex;gap:6px;justify-content:center;padding:8px 0;}
+.paymob-otp-box{
+  width:38px;height:46px;border:1.5px solid #D0D0D0;
+  border-radius:8px;background:white;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;font-weight:700;color:#1A1A1A;
+}
+.paymob-otp-box.filled{border-color:var(--paymob);}
+.paymob-otp-box.active{border-color:var(--paymob);box-shadow:0 0 0 3px rgba(242,111,37,0.12);}
+
+/* PAYMOB PROCESSING */
+.paymob-processing{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:24px;text-align:center;gap:14px;background:#FAFAFA;
+}
+.paymob-spinner{
+  width:60px;height:60px;border-radius:50%;
+  border:4px solid #FFE4D0;border-top-color:var(--paymob);
+  animation:spin 1s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+.paymob-processing-ttl{font-size:15px;font-weight:700;color:#1A1A1A;letter-spacing:-0.01em;}
+.paymob-processing-sub{font-size:11px;color:#666;line-height:1.5;max-width:200px;}
+
+/* PAYMOB RESULT */
+.paymob-result{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:24px;text-align:center;gap:14px;background:white;
+}
+.paymob-result-ico{
+  width:72px;height:72px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:32px;
+  color:white;
+}
+.paymob-result-ico.success{background:linear-gradient(135deg,#2E8B57 0%,#1A6E3C 100%);}
+.paymob-result-ico.failure{background:linear-gradient(135deg,#C0392B 0%,#7A1810 100%);}
+.paymob-result-ttl{font-size:18px;font-weight:800;color:#1A1A1A;letter-spacing:-0.02em;}
+.paymob-result-sub{font-size:12px;color:#666;line-height:1.55;max-width:220px;}
+.paymob-result-ref{
+  font-family:var(--f-mono);font-size:10px;color:#888;
+  background:#F4F4F4;padding:5px 10px;border-radius:5px;
+  margin-top:4px;
+}
+
+/* RETURN TRANSITION */
+.return-transition{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:linear-gradient(180deg,var(--screen-bg) 0%,var(--screen-bg2) 100%);
+  padding:32px;text-align:center;gap:14px;
+}
+.return-transition-ico{
+  width:64px;height:64px;border-radius:18px;
+  background:var(--green);color:white;
+  display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;
+  box-shadow:0 8px 24px rgba(46,139,87,0.30);
+}
+.return-transition-text{font-size:14px;color:var(--t3);font-weight:600;}
+
+/* CODE REVEAL — same as v1 claim flow */
+.code-reveal{
+  background:linear-gradient(135deg,#FFF7E0 0%,#F5E9C0 100%);
+  border:1.5px dashed var(--gold);
+  border-radius:14px;padding:14px;margin-bottom:10px;
+  position:relative;text-align:center;
+}
+.code-reveal-label{font-size:9px;font-weight:700;color:var(--gold-d);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:6px;}
+.code-reveal-value{
+  font-family:var(--f-mono);font-size:22px;font-weight:700;
+  color:var(--t1);letter-spacing:0.06em;
+  background:white;padding:10px 14px;border-radius:8px;
+  border:1px solid var(--gold);
+  display:inline-block;
+  margin-bottom:8px;
+}
+.code-reveal-copy{
+  height:36px;background:var(--navy);color:white;
+  border-radius:8px;display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;gap:5px;
+}
+.code-reveal-copy::before{content:'📋';font-size:13px;}
+
+.toast{position:absolute;bottom:60px;left:14px;right:14px;background:#0F0E0C;color:white;border-radius:10px;padding:10px 14px;font-size:11px;font-weight:600;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,0.30);z-index:50;display:flex;align-items:center;justify-content:center;gap:6px;}
+
+/* FLOW NOTES */
+.flow-note{max-width:var(--ph-w);padding:10px 13px;border-radius:6px;font-family:var(--f-body);font-size:11px;font-weight:500;line-height:1.5;}
+.flow-note.decision{background:#FBF4DC;color:#6B5210;border-left:3px solid var(--gold);}
+.flow-note.new{background:var(--paid-l);color:var(--paid-d);border-left:3px solid var(--paid);}
+.flow-note.bug{background:var(--red-l);color:#7A1810;border-left:3px solid var(--red);}
+
+/* HANDOFF */
+.handoff{margin-top:64px;padding:36px;background:white;border:1px solid var(--b1);border-radius:var(--r-md);}
+.handoff-title{font-size:26px;font-weight:700;color:var(--t1);margin-bottom:8px;letter-spacing:-0.015em;}
+.handoff-sub{font-size:14px;color:var(--t2);margin-bottom:28px;line-height:1.5;}
+.handoff-sec{margin-top:28px;padding-top:24px;border-top:1px solid var(--b1);}
+.handoff-sec:first-of-type{border-top:none;padding-top:0;margin-top:0;}
+.handoff-h{font-size:18px;font-weight:700;color:var(--t1);margin-bottom:12px;}
+.handoff-p{font-size:14px;color:var(--t1);line-height:1.6;margin-bottom:8px;}
+.handoff-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.handoff-list li{font-size:14px;color:var(--t1);line-height:1.6;padding-left:16px;position:relative;}
+.handoff-list li::before{content:'—';position:absolute;left:0;color:var(--t3);font-weight:700;}
+
+.copy-table{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed;}
+.copy-table col.col-screen{width:25%;}
+.copy-table col.col-element{width:28%;}
+.copy-table col.col-en{width:35%;}
+.copy-table col.col-meta{width:12%;}
+.copy-table th{text-align:left;padding:10px 12px;border-bottom:2px solid var(--b2);font-size:11px;color:var(--t2);text-transform:uppercase;letter-spacing:0.06em;font-weight:700;background:var(--screen-bg);}
+.copy-table td{padding:10px 12px;border-bottom:1px solid var(--b1);vertical-align:top;color:var(--t1);line-height:1.55;word-wrap:break-word;}
+.copy-table td.screen-name{font-weight:700;color:var(--t1);background:var(--screen-bg);}
+.copy-table td.element-name{color:var(--t2);font-weight:500;}
+.copy-table td.en{font-size:12px;color:var(--t1);}
+.copy-table td.ar{font-size:12px;color:var(--t1);direction:rtl;text-align:right;font-family:var(--f-body);}
+.copy-table tr.group-start td{border-top:2px solid var(--b2);}
+
+.callout{padding:12px 14px;border-radius:0 var(--r-sm) var(--r-sm) 0;font-size:13px;line-height:1.55;margin-top:12px;}
+.callout.info{background:#EAF0FE;border-left:3px solid #4A80C0;color:#103868;}
+.callout.warn{background:var(--gold-l);border-left:3px solid var(--gold);color:#6B5210;}
+.callout.bug{background:var(--red-l);border-left:3px solid var(--red);color:#7A1810;}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="doc-header">
+  <div class="doc-meta">
+    <span class="doc-tag prototype">Prototype</span>
+    <span class="doc-tag designer">Designer brief</span>
+    <span class="doc-tag android">Android</span>
+    <span class="doc-tag feature">Paid Offers · Paymob</span>
+    <span class="doc-tag wip">Draft v1</span>
+    <span class="doc-tag version">DB · Paid Offers v1</span>
+    <span class="doc-date">29 April 2026</span>
+  </div>
+
+  <div class="doc-title">Paid Offers · Paymob checkout</div>
+  <div class="doc-subtitle">A new <code>claim_type: paid</code> alongside the existing free claim types. User pays via Paymob's hosted checkout (Card, Vodafone Cash, Fawry, InstaPay, BNPL) and on success the code reveals in the standard claim sheet. Single-step model — no extra tap after payment success.</div>
+
+  <div class="doc-info">
+    <div class="doc-info-cell">
+      <div class="info-label">The problem</div>
+      <div class="info-body">
+        Until now every offer in the catalog has been free. Partners with high-value deals (70%+ off, bundled value vouchers, time-limited exclusives) want a way to monetize discovery. Paid offers solve this by adding a payment gate before code reveal, using Paymob (Egypt's dominant gateway). The design challenge: make the price visible <em>before</em> tap, never spring a payment screen on a user who expected free, and route success cleanly back to the standard claim flow.
+      </div>
+    </div>
+    <div class="doc-info-cell">
+      <div class="info-label">Flows in this document</div>
+      <div class="flow-list">
+        <div class="flow-list-item">Browse — paid offers in the feed</div>
+        <div class="flow-list-item">Detail sheet · paid variant</div>
+        <div class="flow-list-item">Card payment — happy path</div>
+        <div class="flow-list-item">Vodafone Cash — happy path</div>
+        <div class="flow-list-item">Payment failure — return with toast</div>
+        <div class="flow-list-item">Reopen purchased offer from My Offers</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- FLOW 1 — BROWSE -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 1 — Browse · paid offers in the feed</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="phone-row">
+
+    <div class="screen-col">
+      <div class="screen-label">Available · paid offers visible alongside free</div>
+      <div class="state-badge happy">default</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="app-bar-text">
+              <div class="app-bar-eyebrow">Curated for you</div>
+              <div class="app-bar-title">Offers</div>
+            </div>
+          </div>
+          <div class="seg-control">
+            <div class="seg-item on">Available</div>
+            <div class="seg-item">My Offers <span class="seg-badge">2</span></div>
+          </div>
+          <div class="offers-list">
+
+            <div class="offer-hero paid">
+              <div class="hero-top">
+                <div class="hero-paid-badge">Premium</div>
+                <div class="hero-merchant-pill">
+                  <div class="hero-merchant-logo elgameya">E</div>
+                  Elgameya
+                </div>
+              </div>
+              <div class="hero-discount">
+                <div class="hero-discount-num">70</div>
+                <div class="hero-discount-unit">% OFF</div>
+              </div>
+              <div class="hero-bottom">
+                <div class="hero-offer-title">Annual savings plan voucher</div>
+                <div class="hero-price">50 EGP</div>
+              </div>
+            </div>
+
+            <div class="list-eyebrow">More for you</div>
+
+            <div class="offer-card">
+              <div class="card-left">
+                <div class="card-discount-num">15</div>
+                <div class="card-discount-unit">% off</div>
+              </div>
+              <div class="card-right">
+                <div class="card-merchant"><div class="card-merchant-dot" style="background:#004E9F;color:white">C</div>Carrefour</div>
+                <div class="card-title">Groceries & household</div>
+                <div class="card-foot">
+                  <div style="font-size:9px;color:var(--t3);font-weight:600">9 days left</div>
+                  <div style="font-size:10px;font-weight:700;color:var(--navy)">Get code <span style="font-size:11px">→</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="offer-card paid">
+              <div class="card-left">
+                <div class="card-discount-num">200</div>
+                <div class="card-discount-unit">EGP off</div>
+              </div>
+              <div class="card-right">
+                <div class="card-merchant"><div class="card-merchant-dot zara">Z</div>Zara</div>
+                <div class="card-title">Bundle: 500 EGP credit voucher</div>
+                <div class="card-foot">
+                  <div class="card-price-pill">100 EGP</div>
+                  <div class="card-cta-link">Unlock</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note new">Two paid-offer visual signals operate at the card level: <strong>purple gradient hero</strong> (replaces navy) and <strong>purple coupon-block</strong> on regular cards. The price is visible BEFORE tap — Featured hero uses a glassy white pill bottom-right ("50 EGP"), regular cards use a purple pill in the foot row. CTA copy changes too: "Unlock" instead of "Get code". A user can never tap into a paid offer expecting free.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- FLOW 2 — DETAIL SHEET PAID -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 2 — Detail sheet · paid variant</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="phone-row">
+
+    <div class="screen-col">
+      <div class="screen-label">Detail sheet · paid offer · price prominent</div>
+      <div class="state-badge paid">paid offer</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div style="opacity:0.25;flex:1;background:var(--screen-bg)"></div>
+          <div class="overlay">
+            <div class="bottom-sheet">
+              <div class="bs-handle"></div>
+              <div class="sheet-header">
+                <div class="sheet-merchant-logo" style="background:var(--paid);border-color:var(--paid)">
+                  <svg viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg"><text x="21" y="26" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="800" fill="white" text-anchor="middle" letter-spacing="-0.3">Elgameya</text></svg>
+                </div>
+                <div class="sheet-merchant-info">
+                  <div class="sheet-merchant-name">Elgameya · premium</div>
+                  <div class="sheet-offer-title">Annual savings plan voucher</div>
+                </div>
+                <div class="sheet-close">✕</div>
+              </div>
+              <div class="discount-hero paid">
+                <div class="discount-hero-label">You save</div>
+                <div class="discount-hero-amount">70<span class="unit">%</span></div>
+                <div class="discount-hero-meta">💎 Premium · 7 days to use</div>
+              </div>
+
+              <div class="price-summary">
+                <div>
+                  <div class="price-summary-label">You pay</div>
+                  <div style="font-size:9px;color:var(--t3);margin-top:1px">One-time, paid via Paymob</div>
+                </div>
+                <div class="price-summary-amount">50 <span class="currency">EGP</span></div>
+              </div>
+
+              <div class="terms-block">
+                <div class="terms-label">What you get</div>
+                <div class="terms-text">A unique code redeemable for 70% off your first annual savings plan with Elgameya. Valid within 7 days of purchase. Non-refundable.</div>
+              </div>
+              <div class="btn btn-paid btn-lg">Buy for 50 EGP →</div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav" style="opacity:0.25"></div>
+      </div>
+      <div class="flow-note new">Three differences from a free offer sheet: discount hero uses purple gradient, a <strong>price summary block</strong> sits between hero and terms (clear, separate, unmissable), and the CTA reads "<strong>Buy for 50 EGP →</strong>" with the price baked in. The terms block is renamed "What you get" because users are about to commit money — they need to know the deliverable.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- FLOW 3 — CARD PAYMENT HAPPY -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 3 — Card payment · happy path</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="phone-row">
+
+    <div class="screen-col">
+      <div class="screen-label">Paymob · payment method selector</div>
+      <div class="state-badge gateway">Paymob hosted</div>
+      <div class="phone">
+        <div class="a-status"><span>9:42</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="paymob-screen">
+            <div class="paymob-bar">
+              <div class="paymob-back">‹</div>
+              <div class="paymob-brand"><div class="paymob-logo">paymob</div></div>
+              <div class="paymob-secure">Secure</div>
+            </div>
+            <div class="paymob-amount-block">
+              <div class="paymob-amount-label">Total to pay</div>
+              <div class="paymob-amount-value">50.00 <span class="currency">EGP</span></div>
+              <div class="paymob-merchant-ref">MoneyMore · Order #MM-29A4F1</div>
+            </div>
+            <div class="paymob-body">
+              <div class="paymob-section-label">Choose payment method</div>
+
+              <div class="paymob-method selected">
+                <div class="paymob-method-radio"></div>
+                <div class="paymob-method-ico card">CARD</div>
+                <div class="paymob-method-body">
+                  <div class="paymob-method-name">Credit or Debit Card</div>
+                  <div class="paymob-method-sub">Visa, Mastercard, Meeza</div>
+                </div>
+              </div>
+
+              <div class="paymob-method">
+                <div class="paymob-method-radio"></div>
+                <div class="paymob-method-ico voda">vodafone<br>cash</div>
+                <div class="paymob-method-body">
+                  <div class="paymob-method-name">Vodafone Cash</div>
+                  <div class="paymob-method-sub">Pay from your wallet</div>
+                </div>
+              </div>
+
+              <div class="paymob-method">
+                <div class="paymob-method-radio"></div>
+                <div class="paymob-method-ico instapay">InstaPay</div>
+                <div class="paymob-method-body">
+                  <div class="paymob-method-name">InstaPay</div>
+                  <div class="paymob-method-sub">Pay from any Egyptian bank</div>
+                </div>
+              </div>
+
+              <div class="paymob-method">
+                <div class="paymob-method-radio"></div>
+                <div class="paymob-method-ico fawry">Fawry</div>
+                <div class="paymob-method-body">
+                  <div class="paymob-method-name">Fawry</div>
+                  <div class="paymob-method-sub">Pay in cash at any Fawry outlet</div>
+                </div>
+              </div>
+
+            </div>
+            <div class="paymob-footer">
+              <div class="paymob-btn">Continue</div>
+              <div class="paymob-trust-line">🔒 PCI DSS certified · 3DS protected</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note new">This is the Paymob hosted checkout — not designed by MoneyMore. Treat it as reference for handoff: engineering integrates via Paymob's iframe/redirect SDK. The orange brand, payment method list, and "Secure" badge are Paymob's own. MoneyMore is identified only by the order reference at the top. Worth showing the designer so they understand the visual handoff between our app and the gateway.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">Card selected → Continue</div>
+    </div>
+
+    <div class="screen-col">
+      <div class="screen-label">Paymob · card details form</div>
+      <div class="state-badge gateway">Paymob hosted</div>
+      <div class="phone">
+        <div class="a-status"><span>9:42</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="paymob-screen">
+            <div class="paymob-bar">
+              <div class="paymob-back">‹</div>
+              <div class="paymob-brand"><div class="paymob-logo">paymob</div></div>
+              <div class="paymob-secure">Secure</div>
+            </div>
+            <div class="paymob-amount-block">
+              <div class="paymob-amount-label">Total to pay</div>
+              <div class="paymob-amount-value">50.00 <span class="currency">EGP</span></div>
+            </div>
+            <div class="paymob-form">
+              <div class="paymob-section-label">Card details</div>
+
+              <div class="paymob-form-grp">
+                <div class="paymob-form-label">Card number</div>
+                <div class="paymob-form-input focus">
+                  <span style="flex:1">4242 4242 4242 4242</span>
+                  <div class="paymob-card-brand">
+                    <div class="paymob-card-brand-ico visa">VISA</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="paymob-form-row">
+                <div class="paymob-form-grp">
+                  <div class="paymob-form-label">Expiry</div>
+                  <div class="paymob-form-input"><span>12/27</span></div>
+                </div>
+                <div class="paymob-form-grp">
+                  <div class="paymob-form-label">CVV</div>
+                  <div class="paymob-form-input"><span>•••</span></div>
+                </div>
+              </div>
+
+              <div class="paymob-form-grp">
+                <div class="paymob-form-label">Cardholder name</div>
+                <div class="paymob-form-input"><span>AHMED HASSAN</span></div>
+              </div>
+
+              <div style="display:flex;gap:8px;align-items:center;padding:4px 0">
+                <div style="width:16px;height:16px;border:1.5px solid #C8C8C8;border-radius:3px;background:white"></div>
+                <div style="font-size:11px;color:#666;font-weight:500">Save card for future purchases</div>
+              </div>
+            </div>
+            <div class="paymob-footer">
+              <div class="paymob-btn">Pay 50.00 EGP</div>
+              <div class="paymob-trust-line">🔒 Card data never touches MoneyMore</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note decision">Paymob form — referenced from the live Paymob hosted checkout. Card number, expiry, CVV, name. Brand auto-detection (Visa/MC/Meeza) renders inline. Save-card checkbox is unticked by default. The "card data never touches MoneyMore" line is the trust message engineering will surface to satisfy PCI concerns.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-line"></div>
+      <div class="arrow-label">Pay → 3DS</div>
+    </div>
+
+    <div class="screen-col">
+      <div class="screen-label">Paymob · 3DS verification (bank OTP)</div>
+      <div class="state-badge gateway">3DS / OTP</div>
+      <div class="phone">
+        <div class="a-status"><span>9:43</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="paymob-screen">
+            <div class="paymob-bar">
+              <div class="paymob-back">‹</div>
+              <div class="paymob-brand"><div class="paymob-logo">paymob</div></div>
+              <div class="paymob-secure">Secure</div>
+            </div>
+            <div style="background:white;padding:24px 16px;text-align:center;">
+              <div style="width:48px;height:48px;border-radius:50%;background:#E8F0FA;color:#103868;display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto 12px;">🛡</div>
+              <div style="font-size:15px;font-weight:700;color:#1A1A1A;margin-bottom:5px;letter-spacing:-0.01em;">Bank verification</div>
+              <div style="font-size:11px;color:#666;line-height:1.5;max-width:220px;margin:0 auto;">Enter the 6-digit code sent to your bank-registered mobile number ending in 4523.</div>
+            </div>
+            <div class="paymob-form" style="padding-top:14px">
+              <div class="paymob-otp-row">
+                <div class="paymob-otp-box filled">4</div>
+                <div class="paymob-otp-box filled">8</div>
+                <div class="paymob-otp-box filled">2</div>
+                <div class="paymob-otp-box filled">1</div>
+                <div class="paymob-otp-box filled">9</div>
+                <div class="paymob-otp-box active">_</div>
+              </div>
+              <div style="text-align:center;margin-top:6px">
+                <span style="font-size:10px;color:#666;font-weight:500">Didn't get it? <span style="color:var(--paymob);font-weight:700;text-decoration:underline">Resend in 0:24</span></span>
+              </div>
+            </div>
+            <div class="paymob-footer">
+              <div class="paymob-btn">Verify</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note new">3DS step — issuer-driven, surfaced through Paymob's iframe. The OTP is sent by the user's bank, not Paymob, not MoneyMore. Including this in the prototype because the designer should know it exists and that we don't control its layout. Bank OTPs in Egypt are typically 6 digits, valid 1–3 minutes.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">verifying</div>
+    </div>
+
+    <div class="screen-col">
+      <div class="screen-label">Paymob · processing</div>
+      <div class="state-badge loading">processing</div>
+      <div class="phone">
+        <div class="a-status"><span>9:43</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="paymob-screen">
+            <div class="paymob-bar">
+              <div class="paymob-brand"><div class="paymob-logo">paymob</div></div>
+              <div class="paymob-secure">Secure</div>
+            </div>
+            <div class="paymob-processing">
+              <div class="paymob-spinner"></div>
+              <div class="paymob-processing-ttl">Processing your payment</div>
+              <div class="paymob-processing-sub">Please don't close or refresh this page. This usually takes a few seconds.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note decision">Don't close, don't refresh — load-bearing message during the small window between bank confirmation and Paymob's webhook to our backend. If the user backs out here, they may have paid but not get the offer. Engineering needs to handle this case via reconciliation (see handoff).</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">paid ✓</div>
+    </div>
+
+    <div class="screen-col">
+      <div class="screen-label">Paymob · success screen</div>
+      <div class="state-badge success">paid</div>
+      <div class="phone">
+        <div class="a-status"><span>9:43</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="paymob-screen">
+            <div class="paymob-bar">
+              <div class="paymob-brand"><div class="paymob-logo">paymob</div></div>
+              <div class="paymob-secure">Secure</div>
+            </div>
+            <div class="paymob-result">
+              <div class="paymob-result-ico success">✓</div>
+              <div class="paymob-result-ttl">Payment successful</div>
+              <div class="paymob-result-sub">50.00 EGP charged to your Visa ending 4242. Returning you to MoneyMore now.</div>
+              <div class="paymob-result-ref">Ref: MM-29A4F1 · 9:43 AM</div>
+              <div class="paymob-btn" style="margin-top:8px;max-width:200px">Return to MoneyMore</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note decision">Paymob's success page — user usually auto-redirected after 2-3 seconds, but a manual button gives them a fallback if redirect fails. Reference number is shown for customer support reference.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">returning</div>
+    </div>
+
+    <div class="screen-col">
+      <div class="screen-label">Return transition · brief</div>
+      <div class="state-badge loading">returning</div>
+      <div class="phone">
+        <div class="a-status"><span>9:43</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="return-transition">
+            <div class="return-transition-ico">M</div>
+            <div class="return-transition-text">Unlocking your code…</div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note new">Brief transition while we deep-link back into the app and reconcile the payment with our backend. MoneyMore brand, friendly copy. Under 1 second in the happy path. Falls back to the offer sheet with code revealed (next phone).</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">code revealed</div>
+    </div>
+
+    <div class="screen-col">
+      <div class="screen-label">Sheet · code revealed (post-payment)</div>
+      <div class="state-badge success">unlocked</div>
+      <div class="phone">
+        <div class="a-status"><span>9:43</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar" style="opacity:0.25">
+            <div class="app-bar-text"><div class="app-bar-title">Offers</div></div>
+          </div>
+          <div style="opacity:0.25;flex:1;background:var(--screen-bg)"></div>
+          <div class="overlay">
+            <div class="bottom-sheet">
+              <div class="bs-handle"></div>
+              <div class="sheet-header">
+                <div class="sheet-merchant-logo" style="background:var(--paid);border-color:var(--paid)">
+                  <svg viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg"><text x="21" y="26" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="800" fill="white" text-anchor="middle" letter-spacing="-0.3">Elgameya</text></svg>
+                </div>
+                <div class="sheet-merchant-info">
+                  <div class="sheet-merchant-name">Elgameya · purchased</div>
+                  <div class="sheet-offer-title">Annual savings plan voucher</div>
+                </div>
+                <div class="sheet-close">✕</div>
+              </div>
+              <div class="discount-hero paid">
+                <div class="discount-hero-label">✓ Paid · you save</div>
+                <div class="discount-hero-amount">70<span class="unit">%</span></div>
+                <div class="discount-hero-meta">⏱ 7 days to use</div>
+              </div>
+
+              <div class="code-reveal">
+                <div class="code-reveal-label">Your code</div>
+                <div class="code-reveal-value">ELG70-9F4A2X</div>
+                <div class="code-reveal-copy">Copy code</div>
+              </div>
+
+              <div style="background:white;border:1px solid var(--b1);border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:8px">
+                <div style="font-size:14px">🧾</div>
+                <div style="flex:1">
+                  <div style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:0.06em">Receipt</div>
+                  <div style="font-size:11px;color:var(--t1);margin-top:1px">50 EGP · Visa ending 4242 · 9:43 AM</div>
+                </div>
+                <div style="font-size:10px;color:var(--navy);font-weight:700">View →</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav" style="opacity:0.25"></div>
+      </div>
+      <div class="flow-note new">Single-step model — code revealed immediately on return, no extra "claim" tap needed. The user has already committed. The hero label now reads "✓ Paid · you save", merchant suffix shows "purchased". A receipt row below the code lets the user verify the charge — important for paid offers that aren't there for free ones.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- FLOW 4 — VODAFONE CASH HAPPY -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 4 — Vodafone Cash · happy path</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="phone-row">
+
+    <div class="screen-col">
+      <div class="screen-label">Paymob · method selector (Voda picked)</div>
+      <div class="state-badge gateway">Paymob hosted</div>
+      <div class="phone">
+        <div class="a-status"><span>9:42</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="paymob-screen">
+            <div class="paymob-bar">
+              <div class="paymob-back">‹</div>
+              <div class="paymob-brand"><div class="paymob-logo">paymob</div></div>
+              <div class="paymob-secure">Secure</div>
+            </div>
+            <div class="paymob-amount-block">
+              <div class="paymob-amount-label">Total to pay</div>
+              <div class="paymob-amount-value">50.00 <span class="currency">EGP</span></div>
+              <div class="paymob-merchant-ref">MoneyMore · Order #MM-29A4F1</div>
+            </div>
+            <div class="paymob-body">
+              <div class="paymob-section-label">Choose payment method</div>
+
+              <div class="paymob-method">
+                <div class="paymob-method-radio"></div>
+                <div class="paymob-method-ico card">CARD</div>
+                <div class="paymob-method-body">
+                  <div class="paymob-method-name">Credit or Debit Card</div>
+                  <div class="paymob-method-sub">Visa, Mastercard, Meeza</div>
+                </div>
+              </div>
+
+              <div class="paymob-method selected">
+                <div class="paymob-method-radio"></div>
+                <div class="paymob-method-ico voda">vodafone<br>cash</div>
+                <div class="paymob-method-body">
+                  <div class="paymob-method-name">Vodafone Cash</div>
+                  <div class="paymob-method-sub">Pay from your wallet</div>
+                </div>
+              </div>
+
+              <div class="paymob-method">
+                <div class="paymob-method-radio"></div>
+                <div class="paymob-method-ico instapay">InstaPay</div>
+                <div class="paymob-method-body">
+                  <div class="paymob-method-name">InstaPay</div>
+                  <div class="paymob-method-sub">Pay from any Egyptian bank</div>
+                </div>
+              </div>
+
+            </div>
+            <div class="paymob-footer">
+              <div class="paymob-btn">Continue</div>
+              <div class="paymob-trust-line">🔒 PCI DSS certified · 3DS protected</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">Continue</div>
+    </div>
+
+    <div class="screen-col">
+      <div class="screen-label">Paymob · Vodafone Cash phone entry</div>
+      <div class="state-badge gateway">wallet auth</div>
+      <div class="phone">
+        <div class="a-status"><span>9:42</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="paymob-screen">
+            <div class="paymob-bar">
+              <div class="paymob-back">‹</div>
+              <div class="paymob-brand"><div class="paymob-logo">paymob</div></div>
+              <div class="paymob-secure">Secure</div>
+            </div>
+            <div class="paymob-amount-block">
+              <div class="paymob-amount-label">Total to pay</div>
+              <div class="paymob-amount-value">50.00 <span class="currency">EGP</span></div>
+            </div>
+            <div class="paymob-form">
+              <div class="paymob-wallet-card">
+                <div class="paymob-wallet-ico">VF<br>cash</div>
+                <div class="paymob-wallet-body">
+                  <div class="paymob-wallet-name">Vodafone Cash</div>
+                  <div class="paymob-wallet-sub">Egyptian mobile wallet</div>
+                </div>
+              </div>
+
+              <div class="paymob-form-grp">
+                <div class="paymob-form-label">Wallet mobile number</div>
+                <div class="paymob-form-input focus">
+                  <span style="color:#888;font-weight:600">+20</span>
+                  <span style="flex:1">010 1234 5678</span>
+                </div>
+              </div>
+
+              <div style="padding:10px 12px;background:#FFF4E0;border:1px solid #F5D78A;border-radius:8px;display:flex;align-items:flex-start;gap:8px">
+                <div style="font-size:12px;color:#8A6510">ℹ</div>
+                <div style="font-size:10.5px;color:#8A6510;line-height:1.45;font-weight:500">You'll receive a payment confirmation prompt from Vodafone on this number. Approve it to complete payment.</div>
+              </div>
+            </div>
+            <div class="paymob-footer">
+              <div class="paymob-btn">Send payment request</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note new">Vodafone Cash flow — user enters their wallet phone number, Paymob triggers a request to Vodafone, and the user gets a payment confirmation prompt on their device (separate from the app). The inline info block explains the next step before it happens — important because Vodafone Cash users often expect a single-flow when really there's a hop to the Vodafone system.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">approve on Vodafone side</div>
+    </div>
+
+    <div class="screen-col">
+      <div class="screen-label">Paymob · waiting for wallet approval</div>
+      <div class="state-badge loading">awaiting approval</div>
+      <div class="phone">
+        <div class="a-status"><span>9:43</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="paymob-screen">
+            <div class="paymob-bar">
+              <div class="paymob-brand"><div class="paymob-logo">paymob</div></div>
+              <div class="paymob-secure">Secure</div>
+            </div>
+            <div class="paymob-processing">
+              <div class="paymob-spinner"></div>
+              <div class="paymob-processing-ttl">Waiting for your approval</div>
+              <div class="paymob-processing-sub">Check your phone — Vodafone sent a payment confirmation. Approve it to complete this purchase.</div>
+              <div style="font-size:10px;color:#888;font-weight:500;margin-top:4px">Times out in 2:47</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note decision">Vodafone Cash adds a wait state that doesn't exist in card flow — user has to switch apps to approve. Paymob handles this with a countdown timer (usually 3-5 minutes before timeout). If timer hits 0 without approval, treated as failure.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">approved ✓</div>
+    </div>
+
+    <div class="screen-col">
+      <div class="screen-label">Paymob · success · same as card path</div>
+      <div class="state-badge success">paid</div>
+      <div class="phone">
+        <div class="a-status"><span>9:43</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="paymob-screen">
+            <div class="paymob-bar">
+              <div class="paymob-brand"><div class="paymob-logo">paymob</div></div>
+              <div class="paymob-secure">Secure</div>
+            </div>
+            <div class="paymob-result">
+              <div class="paymob-result-ico success">✓</div>
+              <div class="paymob-result-ttl">Payment successful</div>
+              <div class="paymob-result-sub">50.00 EGP charged to your Vodafone Cash wallet ending 5678. Returning you to MoneyMore now.</div>
+              <div class="paymob-result-ref">Ref: MM-29A4F1 · 9:43 AM</div>
+              <div class="paymob-btn" style="margin-top:8px;max-width:200px">Return to MoneyMore</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note decision">From here onward Vodafone Cash and Card flows merge — same success screen, same return transition, same code-reveal sheet on landing. The return flow is identical regardless of payment method.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- FLOW 5 — PAYMENT FAILURE -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 5 — Payment failure · return with toast</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="phone-row">
+
+    <div class="screen-col">
+      <div class="screen-label">Paymob · failure screen</div>
+      <div class="state-badge error">declined</div>
+      <div class="phone">
+        <div class="a-status"><span>9:43</span><span>▲▲ 🔋</span></div>
+        <div class="screen no-nav">
+          <div class="paymob-screen">
+            <div class="paymob-bar">
+              <div class="paymob-brand"><div class="paymob-logo">paymob</div></div>
+              <div class="paymob-secure">Secure</div>
+            </div>
+            <div class="paymob-result">
+              <div class="paymob-result-ico failure">✕</div>
+              <div class="paymob-result-ttl">Payment failed</div>
+              <div class="paymob-result-sub">Your bank declined this payment. No charge was made. You can try a different card or payment method.</div>
+              <div class="paymob-result-ref">Ref: MM-29A4F2 · 9:43 AM · Code: declined_by_issuer</div>
+              <div style="display:flex;flex-direction:column;gap:8px;width:100%;max-width:220px;margin-top:8px">
+                <div class="paymob-btn">Try again</div>
+                <div style="height:42px;border-radius:10px;background:white;border:1.5px solid #D0D0D0;color:#1A1A1A;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700">Cancel and return</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-note new">Paymob failure screen — two paths offered: Try again (loops back to method selector) or Cancel and return (deep-links back to MoneyMore). The "No charge was made" reassurance is critical — failed payments that ambiguously charged is the worst-case UX.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">tap Cancel</div>
+    </div>
+
+    <div class="screen-col">
+      <div class="screen-label">Return · sheet stays open with failure toast</div>
+      <div class="state-badge error">payment failed</div>
+      <div class="phone">
+        <div class="a-status"><span>9:43</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar" style="opacity:0.25">
+            <div class="app-bar-text"><div class="app-bar-title">Offers</div></div>
+          </div>
+          <div style="opacity:0.25;flex:1;background:var(--screen-bg)"></div>
+          <div class="overlay">
+            <div class="bottom-sheet">
+              <div class="bs-handle"></div>
+              <div class="sheet-header">
+                <div class="sheet-merchant-logo" style="background:var(--paid);border-color:var(--paid)">
+                  <svg viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg"><text x="21" y="26" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="800" fill="white" text-anchor="middle" letter-spacing="-0.3">Elgameya</text></svg>
+                </div>
+                <div class="sheet-merchant-info">
+                  <div class="sheet-merchant-name">Elgameya · premium</div>
+                  <div class="sheet-offer-title">Annual savings plan voucher</div>
+                </div>
+                <div class="sheet-close">✕</div>
+              </div>
+              <div class="discount-hero paid">
+                <div class="discount-hero-label">You save</div>
+                <div class="discount-hero-amount">70<span class="unit">%</span></div>
+                <div class="discount-hero-meta">💎 Premium · 7 days to use</div>
+              </div>
+
+              <div class="price-summary">
+                <div>
+                  <div class="price-summary-label">You pay</div>
+                  <div style="font-size:9px;color:var(--t3);margin-top:1px">One-time, paid via Paymob</div>
+                </div>
+                <div class="price-summary-amount">50 <span class="currency">EGP</span></div>
+              </div>
+
+              <div class="btn btn-paid btn-lg">Buy for 50 EGP →</div>
+            </div>
+          </div>
+          <div class="toast" style="bottom:40px;background:var(--red-d)">Payment didn't go through. No charge was made.</div>
+        </div>
+        <div class="a-nav" style="opacity:0.25"></div>
+      </div>
+      <div class="flow-note new">Sheet returns to pre-purchase state. CTA stays available — user can try again immediately. Red toast confirms no charge was made (same reassurance language as Paymob's failure page, repeated for emphasis). The terms block is dropped here to keep the toast above the fold.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- FLOW 6 — REOPEN PURCHASED -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 6 — Reopen purchased offer from My Offers</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="phone-row">
+
+    <div class="screen-col">
+      <div class="screen-label">My Offers · purchased offer in Still valid</div>
+      <div class="state-badge happy">default</div>
+      <div class="phone">
+        <div class="a-status"><span>10:15</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar">
+            <div class="app-bar-text">
+              <div class="app-bar-eyebrow">Saved by you</div>
+              <div class="app-bar-title">Offers</div>
+            </div>
+          </div>
+          <div class="seg-control">
+            <div class="seg-item">Available</div>
+            <div class="seg-item on">My Offers <span class="seg-badge">3</span></div>
+          </div>
+          <div class="offers-list">
+
+            <div style="font-size:9px;font-weight:700;color:var(--t3);letter-spacing:0.1em;text-transform:uppercase;padding:4px 0;display:flex;align-items:center;gap:6px">Still valid<span style="flex:1;height:1px;background:var(--b1)"></span></div>
+
+            <div class="offer-card paid">
+              <div class="card-left">
+                <div class="card-discount-num">70</div>
+                <div class="card-discount-unit">% off</div>
+              </div>
+              <div class="card-right">
+                <div class="card-merchant"><div class="card-merchant-dot elgameya">E</div>Elgameya · paid</div>
+                <div class="card-title">Annual savings plan voucher</div>
+                <div class="card-foot">
+                  <div style="font-size:9px;color:var(--t3);font-weight:600">⏱ 6 days, 23h left</div>
+                  <div class="card-cta-link" style="color:var(--paid)">View code</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="offer-card">
+              <div class="card-left">
+                <div class="card-discount-num">25</div>
+                <div class="card-discount-unit">% off</div>
+              </div>
+              <div class="card-right">
+                <div class="card-merchant"><div class="card-merchant-dot" style="background:#FF5A00;color:white">T</div>Talabat</div>
+                <div class="card-title">Your next order</div>
+                <div class="card-foot">
+                  <div style="font-size:9px;color:var(--red);font-weight:600">⏱ 6 hours left</div>
+                  <div style="font-size:10px;color:var(--navy);font-weight:700">View code →</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="a-nav">
+          <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+          <div class="a-nav-item on"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+          <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+        </div>
+      </div>
+      <div class="flow-note decision">Purchased offers appear in My Offers · Still valid alongside free claimed offers. The purple coupon block distinguishes them visually. Merchant suffix changes from "premium" (pre-buy) to "paid" (post-buy) — useful state signal.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">tap card</div>
+    </div>
+
+    <div class="screen-col">
+      <div class="screen-label">Sheet · re-revealed code (no new charge)</div>
+      <div class="state-badge happy">reopened</div>
+      <div class="phone">
+        <div class="a-status"><span>10:15</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div style="opacity:0.25;flex:1;background:var(--screen-bg)"></div>
+          <div class="overlay">
+            <div class="bottom-sheet">
+              <div class="bs-handle"></div>
+              <div class="sheet-header">
+                <div class="sheet-merchant-logo" style="background:var(--paid);border-color:var(--paid)">
+                  <svg viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg"><text x="21" y="26" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="800" fill="white" text-anchor="middle" letter-spacing="-0.3">Elgameya</text></svg>
+                </div>
+                <div class="sheet-merchant-info">
+                  <div class="sheet-merchant-name">Elgameya · purchased</div>
+                  <div class="sheet-offer-title">Annual savings plan voucher</div>
+                </div>
+                <div class="sheet-close">✕</div>
+              </div>
+              <div class="discount-hero paid">
+                <div class="discount-hero-label">✓ Paid · you save</div>
+                <div class="discount-hero-amount">70<span class="unit">%</span></div>
+                <div class="discount-hero-meta">⏱ 6 days, 23h left</div>
+              </div>
+
+              <div class="code-reveal">
+                <div class="code-reveal-label">Your code</div>
+                <div class="code-reveal-value">ELG70-9F4A2X</div>
+                <div class="code-reveal-copy">Copy code</div>
+              </div>
+
+              <div style="background:white;border:1px solid var(--b1);border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:8px">
+                <div style="font-size:14px">🧾</div>
+                <div style="flex:1">
+                  <div style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:0.06em">Receipt</div>
+                  <div style="font-size:11px;color:var(--t1);margin-top:1px">50 EGP · Visa ending 4242 · 9:43 AM</div>
+                </div>
+                <div style="font-size:10px;color:var(--navy);font-weight:700">View →</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav" style="opacity:0.25"></div>
+      </div>
+      <div class="flow-note new">Reopening a purchased offer does NOT call /claim again — the code is bound to the user at first purchase. Sheet renders identically to the post-payment state from Flow 3. Receipt row stays visible so the user always knows what they paid.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- HANDOFF -->
+<div class="handoff">
+  <div class="handoff-title">Handoff</div>
+  <div class="handoff-sub">Designer reference for Paid Offers v1 (Android). Covers the MoneyMore-authored screens (card, sheet, code reveal, receipt, error toast) and references the Paymob hosted checkout for context — the gateway is integrated by engineering and not designed by us.</div>
+
+  <div class="handoff-sec">
+    <div class="handoff-h">What MoneyMore designs · what Paymob designs</div>
+    <ul class="handoff-list">
+      <li><strong>MoneyMore designs:</strong> offer card paid variant (purple gradient hero / purple coupon block / price pill / "Unlock" CTA), detail sheet paid variant (price summary block / "Buy for X EGP" CTA / "What you get" terms), return transition screen, post-payment sheet (code reveal + receipt row), payment failure toast, My Offers paid card.</li>
+      <li><strong>Paymob designs:</strong> method selector, card form, 3DS OTP prompt, wallet phone entry, processing screen, success screen, failure screen. The Paymob screens in this prototype are reference only — they show what the user will see, but engineering integrates Paymob's SDK without customising those screens.</li>
+      <li><strong>The handoff between us and Paymob:</strong> we redirect out (or open a webview) on "Buy for X EGP" tap; we get a deep-link callback to a known URL with a status code; we reconcile with our backend and render the code reveal or failure toast.</li>
+    </ul>
+  </div>
+
+  <div class="handoff-sec">
+    <div class="handoff-h">Copy · English + Arabic (Arabic pending native-speaker review)</div>
+
+    <table class="copy-table" style="margin-top:12px">
+      <colgroup>
+        <col class="col-screen"><col class="col-element"><col class="col-en"><col class="col-meta">
+      </colgroup>
+      <thead><tr><th>Screen</th><th>Element</th><th>English</th><th>Arabic</th></tr></thead>
+      <tbody>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="4">Offer card · paid variant</td>
+          <td class="element-name">Featured hero badge</td><td class="en">Premium</td><td class="ar">مميّز</td>
+        </tr>
+        <tr><td class="element-name">Featured hero price pill</td><td class="en">{price} EGP</td><td class="ar">{price} جنيه</td></tr>
+        <tr><td class="element-name">Regular card price pill</td><td class="en">{price} EGP</td><td class="ar">{price} جنيه</td></tr>
+        <tr><td class="element-name">Regular card CTA</td><td class="en">Unlock</td><td class="ar">افتح العرض</td></tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="6">Detail sheet · paid (pre-purchase)</td>
+          <td class="element-name">Sheet header merchant suffix</td><td class="en">{merchant} · premium</td><td class="ar">{merchant} · مميّز</td>
+        </tr>
+        <tr><td class="element-name">Discount hero meta</td><td class="en">💎 Premium · {days} days to use</td><td class="ar">💎 مميّز · صالح لمدة {days} أيام</td></tr>
+        <tr><td class="element-name">Price summary label</td><td class="en">You pay</td><td class="ar">إنت بتدفع</td></tr>
+        <tr><td class="element-name">Price summary subtext</td><td class="en">One-time, paid via Paymob</td><td class="ar">مرة واحدة، الدفع عن طريق Paymob</td></tr>
+        <tr><td class="element-name">Terms block label</td><td class="en">What you get</td><td class="ar">إيه اللي هتاخده</td></tr>
+        <tr><td class="element-name">Primary CTA</td><td class="en">Buy for {price} EGP →</td><td class="ar">اشتري بـ {price} جنيه ←</td></tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="2">Return transition</td>
+          <td class="element-name">Loading text (success path)</td><td class="en">Unlocking your code…</td><td class="ar">جاري فتح الكود…</td>
+        </tr>
+        <tr><td class="element-name">Loading text (failure path)</td><td class="en">Returning to MoneyMore…</td><td class="ar">جاري الرجوع إلى MoneyMore…</td></tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="6">Detail sheet · paid (post-purchase)</td>
+          <td class="element-name">Sheet header merchant suffix</td><td class="en">{merchant} · purchased</td><td class="ar">{merchant} · اشتريته</td>
+        </tr>
+        <tr><td class="element-name">Discount hero label</td><td class="en">✓ Paid · you save</td><td class="ar">✓ مدفوع · إنت بتوفّر</td></tr>
+        <tr><td class="element-name">Code reveal label</td><td class="en">Your code</td><td class="ar">الكود بتاعك</td></tr>
+        <tr><td class="element-name">Copy CTA</td><td class="en">Copy code</td><td class="ar">انسخ الكود</td></tr>
+        <tr><td class="element-name">Receipt row label</td><td class="en">Receipt</td><td class="ar">إيصال</td></tr>
+        <tr><td class="element-name">Receipt detail (templated)</td><td class="en">{amount} EGP · {payment_method} · {time}</td><td class="ar">{amount} جنيه · {payment_method} · {time}</td></tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="3">Payment failure</td>
+          <td class="element-name">Return toast</td><td class="en">Payment didn't go through. No charge was made.</td><td class="ar">الدفع ما تمّش. ما اتخصمش أي مبلغ.</td>
+        </tr>
+        <tr><td class="element-name">Receipt error variant</td><td class="en">Payment retry · {time}</td><td class="ar">إعادة محاولة الدفع · {time}</td></tr>
+        <tr><td class="element-name">Sheet header merchant suffix (no change)</td><td class="en">{merchant} · premium</td><td class="ar">{merchant} · مميّز</td></tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="2">My Offers · paid card</td>
+          <td class="element-name">Merchant suffix</td><td class="en">{merchant} · paid</td><td class="ar">{merchant} · مدفوع</td>
+        </tr>
+        <tr><td class="element-name">Card CTA</td><td class="en">View code</td><td class="ar">شوف الكود</td></tr>
+
+      </tbody>
+    </table>
+    <div class="callout info">
+      <strong>Templating note:</strong> All <code>{price}</code>, <code>{merchant}</code>, <code>{days}</code>, <code>{amount}</code>, <code>{payment_method}</code>, <code>{time}</code> values come from the offer's catalog payload or the Paymob webhook response. Arabic plural agreement for "{days} days" follows the same rules as the parent brief's countdown copy.
+    </div>
+  </div>
+
+  <div class="handoff-sec">
+    <div class="handoff-h">Engineering · critical race conditions to handle</div>
+    <div class="callout bug">Paid offers introduce a new failure mode: payment succeeded but app closed before code allocation. These are the cases that must be handled or the user pays and gets nothing.</div>
+    <ul class="handoff-list" style="margin-top:12px">
+      <li><strong>Payment succeeded, app killed before return.</strong> On next app open, reconcile with Paymob webhook + backend ledger. If a successful payment exists with no claim, allocate code and notify user via push: "Your Elgameya code is ready."</li>
+      <li><strong>Payment ambiguous (timeout, network drop during processing).</strong> Treat as "we'll check and let you know" — don't show success or failure. Push the user the result once the backend reconciles.</li>
+      <li><strong>Idempotency on the /claim endpoint.</strong> Reopening a purchased offer must NEVER trigger a new /claim or new payment. Bind the code to (user, offer) on first successful payment.</li>
+      <li><strong>Double-tap on Buy for X EGP.</strong> Disable the CTA on first tap until the gateway loads — avoid duplicate orders.</li>
+      <li><strong>Refunds are out of scope for v1.</strong> If a user reports a problem with a paid offer, customer support handles it manually via Paymob's dashboard. Worth surfacing in the receipt row that this is the case.</li>
+      <li><strong>Save-card UX (Paymob feature).</strong> Paymob can store cards for repeat purchases. v1 leaves this disabled in the form (unchecked) — revisit for v2.</li>
+    </ul>
+  </div>
+
+  <div class="handoff-sec">
+    <div class="handoff-h">Accessibility — what changes what you draw</div>
+    <ul class="handoff-list">
+      <li><strong>Price pill on the card needs to be announced before the CTA.</strong> Screen reader order: discount → merchant → title → price → CTA. So the user knows it's paid before being prompted to tap.</li>
+      <li><strong>"Buy for {price} EGP" CTA must say the full price out loud</strong> — not "Buy now" with the price as a separate label. Bundle it.</li>
+      <li><strong>The receipt row is informational, not interactive in v1.</strong> If we add "View receipt" detail in v2, that becomes a tappable target needing 44×44px.</li>
+      <li><strong>Failure toast colour vs text.</strong> Red toast plus explicit "Payment didn't go through" — never colour alone signalling failure.</li>
+      <li><strong>Paymob screens are not in MoneyMore's a11y scope.</strong> Engineering should still test them but Paymob owns those surfaces. If a user reports an a11y issue on Paymob screens, escalate to Paymob.</li>
+    </ul>
+  </div>
+
+</div>
+
+</div>
+</body>
+</html>
