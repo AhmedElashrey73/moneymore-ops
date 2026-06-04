@@ -500,6 +500,42 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
 .skel-hero{height:138px;border-radius:14px;}
 .skel-card{height:78px;border-radius:12px;}
 
+/* Bottom-sheet skeleton — for loading state */
+.skel-logo{width:42px;height:42px;border-radius:11px;flex-shrink:0;}
+.skel-line{height:11px;border-radius:5px;}
+.skel-line.s{width:35%;}
+.skel-line.m{width:65%;}
+.skel-line.l{width:85%;}
+.skel-line.xl{width:100%;}
+.skel-discount-hero{height:118px;border-radius:14px;margin-bottom:10px;}
+.skel-terms{height:62px;border-radius:10px;margin-bottom:12px;}
+.skel-cta{height:46px;border-radius:10px;}
+
+/* Sheet error state */
+.sheet-error{
+  display:flex;flex-direction:column;align-items:center;
+  padding:24px 16px 18px;text-align:center;gap:10px;
+}
+.sheet-error-ico{
+  width:56px;height:56px;border-radius:50%;
+  background:var(--red-l);color:var(--red);
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;margin-bottom:4px;
+}
+.sheet-error-ico.notfound{background:var(--screen-bg2);color:var(--t3);}
+.sheet-error-ttl{
+  font-size:15px;font-weight:700;color:var(--t1);
+  letter-spacing:-0.015em;line-height:1.25;
+}
+.sheet-error-body{
+  font-size:11.5px;color:var(--t3);line-height:1.5;
+  max-width:220px;margin-bottom:6px;font-weight:500;
+}
+.sheet-error-actions{
+  display:flex;flex-direction:column;gap:8px;
+  width:100%;margin-top:4px;
+}
+
 /* FLOW NOTES */
 .flow-note{max-width:var(--ph-w);padding:10px 13px;border-radius:6px;font-family:var(--f-body);font-size:11px;font-weight:500;line-height:1.5;}
 .flow-note.decision{background:#FBF4DC;color:#6B5210;border-left:3px solid var(--gold);}
@@ -544,7 +580,7 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
     <span class="doc-tag prototype">Prototype</span>
     <span class="doc-tag designer">Designer brief</span>
     <span class="doc-tag android">Android</span>
-    <span class="doc-tag wip">Draft v7 · with logos</span>
+    <span class="doc-tag wip">Draft v8 · with logos</span>
     <span class="doc-tag version">DB · Offers v1</span>
     <span class="doc-date">29 April 2026</span>
   </div>
@@ -568,6 +604,7 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
         <div class="flow-list-item">Review claimed offers in My Offers</div>
         <div class="flow-list-item">Edge states — empty, offline, fetch failed, capped</div>
         <div class="flow-list-item">Receive offer push</div>
+        <div class="flow-list-item">Detail sheet — loading & error states</div>
       </div>
     </div>
   </div>
@@ -1834,10 +1871,332 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
 </div>
 
 
-<!-- FLOW 7 — Arabic RTL -->
+<!-- FLOW 7 — Detail sheet loading & error states -->
 <div class="flow-section">
   <div class="flow-section-header">
-    <div class="flow-section-title">Flow 7 — Arabic RTL · stacked card layout</div>
+    <div class="flow-section-title">Flow 7 — Detail sheet · loading & error states</div>
+    <div class="flow-section-line"></div>
+  </div>
+
+  <div class="phone-row">
+
+    <div class="screen-col">
+      <div class="screen-label">Sheet · loading (skeleton)</div>
+      <div class="state-badge loading">fetching</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar" style="opacity:0.25">
+            <div class="app-bar-eyebrow">Curated for you</div>
+            <div class="app-bar-title">Offers</div>
+          </div>
+          <div style="opacity:0.25;flex:1;background:var(--screen-bg)"></div>
+          <div class="overlay">
+            <div class="bottom-sheet">
+              <div class="bs-handle"></div>
+
+              <!-- Sheet header skeleton — logo + 2 lines + close placeholder -->
+              <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:14px">
+                <div class="skel skel-logo"></div>
+                <div style="flex:1;min-width:0;padding-top:4px;display:flex;flex-direction:column;gap:6px">
+                  <div class="skel skel-line s"></div>
+                  <div class="skel skel-line l"></div>
+                </div>
+                <div style="width:28px;height:28px;border-radius:50%;background:var(--screen-bg2);display:flex;align-items:center;justify-content:center;color:var(--t2);font-size:12px;flex-shrink:0">✕</div>
+              </div>
+
+              <!-- Discount hero skeleton -->
+              <div class="skel skel-discount-hero"></div>
+
+              <!-- Terms block skeleton -->
+              <div class="skel skel-terms"></div>
+
+              <!-- CTA skeleton -->
+              <div class="skel skel-cta"></div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav" style="opacity:0.25"></div>
+      </div>
+      <div class="flow-note new">Sheet opens with skeleton scaffolding while GET /offers/{offer_id} is in flight. Shape matches the eventual content — logo + header lines + hero + terms + CTA — so the swap to real content feels seamless when data arrives. Close button stays interactive (skeleton doesn't trap the user). Fires when user lands on sheet from a push deep-link before the catalog payload is cached, or on a slow network.</div>
+    </div>
+
+    <div class="flow-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">data loaded</div>
+    </div>
+
+    <div class="screen-col">
+      <div class="screen-label">Sheet · loaded (reference)</div>
+      <div class="state-badge happy">loaded</div>
+      <div class="phone">
+        <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+        <div class="screen">
+          <div class="app-bar" style="opacity:0.25">
+            <div class="app-bar-eyebrow">Curated for you</div>
+            <div class="app-bar-title">Offers</div>
+          </div>
+          <div style="opacity:0.25;flex:1;background:var(--screen-bg)"></div>
+          <div class="overlay">
+            <div class="bottom-sheet">
+              <div class="bs-handle"></div>
+              <div class="sheet-header">
+                <div class="sheet-merchant-logo talabat"><svg viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg"><text x="21" y="26" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="800" fill="white" text-anchor="middle" letter-spacing="-0.5">talabat</text></svg></div>
+                <div class="sheet-merchant-info">
+                  <div class="sheet-merchant-name">Talabat</div>
+                  <div class="sheet-offer-title">25% off your next order</div>
+                </div>
+                <div class="sheet-close">✕</div>
+              </div>
+              <div class="discount-hero">
+                <div class="discount-hero-label">You save</div>
+                <div class="discount-hero-amount">25<span class="unit">%</span></div>
+                <div class="discount-hero-meta">⏱ 6 hours left to use</div>
+              </div>
+              <div class="terms-block">
+                <div class="terms-label">Terms</div>
+                <div class="terms-text">Valid on orders ≥ 100 EGP. One use per customer. Excludes pharmacy and Talabat Mart.</div>
+              </div>
+              <div class="btn btn-primary btn-lg">Get code</div>
+            </div>
+          </div>
+        </div>
+        <div class="a-nav" style="opacity:0.25"></div>
+      </div>
+      <div class="flow-note decision">Loaded state for reference — same as Flow 2's pre-claim sheet. Shown here to compare skeleton dimensions against final content.</div>
+    </div>
+
+  </div>
+
+  <div style="margin-top:36px;padding-top:24px;border-top:1px dashed var(--b2);">
+    <div style="font-family:var(--f-mono);font-size:10px;font-weight:600;color:var(--t3);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:18px;">Error · generic fetch failure (network / 500)</div>
+
+    <div class="phone-row">
+
+      <div class="screen-col">
+        <div class="screen-label">Sheet · loading</div>
+        <div class="state-badge loading">fetching</div>
+        <div class="phone">
+          <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+          <div class="screen">
+            <div class="app-bar" style="opacity:0.25">
+              <div class="app-bar-eyebrow">Curated for you</div>
+              <div class="app-bar-title">Offers</div>
+            </div>
+            <div style="opacity:0.25;flex:1;background:var(--screen-bg)"></div>
+            <div class="overlay">
+              <div class="bottom-sheet">
+                <div class="bs-handle"></div>
+                <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:14px">
+                  <div class="skel skel-logo"></div>
+                  <div style="flex:1;min-width:0;padding-top:4px;display:flex;flex-direction:column;gap:6px">
+                    <div class="skel skel-line s"></div>
+                    <div class="skel skel-line l"></div>
+                  </div>
+                  <div style="width:28px;height:28px;border-radius:50%;background:var(--screen-bg2);display:flex;align-items:center;justify-content:center;color:var(--t2);font-size:12px;flex-shrink:0">✕</div>
+                </div>
+                <div class="skel skel-discount-hero"></div>
+                <div class="skel skel-terms"></div>
+                <div class="skel skel-cta"></div>
+              </div>
+            </div>
+          </div>
+          <div class="a-nav" style="opacity:0.25"></div>
+        </div>
+      </div>
+
+      <div class="flow-arrow">
+        <div class="arrow-line"></div>
+        <div class="arrow-label deny" style="color:var(--red)">fetch fails</div>
+      </div>
+
+      <div class="screen-col">
+        <div class="screen-label">Sheet · error with retry</div>
+        <div class="state-badge error">fetch failed</div>
+        <div class="phone">
+          <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+          <div class="screen">
+            <div class="app-bar" style="opacity:0.25">
+              <div class="app-bar-eyebrow">Curated for you</div>
+              <div class="app-bar-title">Offers</div>
+            </div>
+            <div style="opacity:0.25;flex:1;background:var(--screen-bg)"></div>
+            <div class="overlay">
+              <div class="bottom-sheet">
+                <div class="bs-handle"></div>
+                <div style="display:flex;justify-content:flex-end;margin-bottom:6px">
+                  <div class="sheet-close">✕</div>
+                </div>
+                <div class="sheet-error">
+                  <div class="sheet-error-ico">⚠</div>
+                  <div class="sheet-error-ttl">Couldn't load this offer</div>
+                  <div class="sheet-error-body">Check your connection and try again.</div>
+                </div>
+                <div class="sheet-error-actions">
+                  <div class="btn btn-primary btn-lg">Try again</div>
+                  <div class="btn btn-outline">Close</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="a-nav" style="opacity:0.25"></div>
+        </div>
+        <div class="flow-note new">Fires when GET /offers/{offer_id} returns a non-2xx error code other than 404/410 — network failure, server 500, timeout. Retry CTA re-fires the request and returns to the loading state. Close dismisses the sheet without claiming. Sheet structure is intentionally minimal here: header is gone, only a small ✕ remains in the top-right since there's no merchant context to display.</div>
+      </div>
+
+      <div class="flow-arrow">
+        <div class="arrow-line"></div>
+        <div class="arrow-label">tap Try again</div>
+      </div>
+
+      <div class="screen-col">
+        <div class="screen-label">Sheet · retrying</div>
+        <div class="state-badge loading">re-fetching</div>
+        <div class="phone">
+          <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+          <div class="screen">
+            <div class="app-bar" style="opacity:0.25">
+              <div class="app-bar-eyebrow">Curated for you</div>
+              <div class="app-bar-title">Offers</div>
+            </div>
+            <div style="opacity:0.25;flex:1;background:var(--screen-bg)"></div>
+            <div class="overlay">
+              <div class="bottom-sheet">
+                <div class="bs-handle"></div>
+                <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:14px">
+                  <div class="skel skel-logo"></div>
+                  <div style="flex:1;min-width:0;padding-top:4px;display:flex;flex-direction:column;gap:6px">
+                    <div class="skel skel-line s"></div>
+                    <div class="skel skel-line l"></div>
+                  </div>
+                  <div style="width:28px;height:28px;border-radius:50%;background:var(--screen-bg2);display:flex;align-items:center;justify-content:center;color:var(--t2);font-size:12px;flex-shrink:0">✕</div>
+                </div>
+                <div class="skel skel-discount-hero"></div>
+                <div class="skel skel-terms"></div>
+                <div class="skel skel-cta"></div>
+              </div>
+            </div>
+          </div>
+          <div class="a-nav" style="opacity:0.25"></div>
+        </div>
+        <div class="flow-note decision">Tap Try again returns to the loading skeleton — same state as initial open. From here it either resolves to loaded content (happy path) or back to the error state. No exponential backoff or retry counter in v1 — user can keep tapping Try again indefinitely.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div style="margin-top:36px;padding-top:24px;border-top:1px dashed var(--b2);">
+    <div style="font-family:var(--f-mono);font-size:10px;font-weight:600;color:var(--t3);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:18px;">Error · offer not found (404 / 410)</div>
+
+    <div class="phone-row">
+
+      <div class="screen-col">
+        <div class="screen-label">Sheet · offer no longer available</div>
+        <div class="state-badge error">not found</div>
+        <div class="phone">
+          <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+          <div class="screen">
+            <div class="app-bar" style="opacity:0.25">
+              <div class="app-bar-eyebrow">Curated for you</div>
+              <div class="app-bar-title">Offers</div>
+            </div>
+            <div style="opacity:0.25;flex:1;background:var(--screen-bg)"></div>
+            <div class="overlay">
+              <div class="bottom-sheet">
+                <div class="bs-handle"></div>
+                <div style="display:flex;justify-content:flex-end;margin-bottom:6px">
+                  <div class="sheet-close">✕</div>
+                </div>
+                <div class="sheet-error">
+                  <div class="sheet-error-ico notfound">🔍</div>
+                  <div class="sheet-error-ttl">This offer is no longer available</div>
+                  <div class="sheet-error-body">It may have been claimed by everyone or pulled by the merchant.</div>
+                </div>
+                <div class="sheet-error-actions">
+                  <div class="btn btn-primary btn-lg">Browse Available</div>
+                  <div class="btn btn-outline">Close</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="a-nav" style="opacity:0.25"></div>
+        </div>
+        <div class="flow-note new">Distinct sub-case: GET returns 404 (offer never existed or was deleted) or 410 (offer existed but is permanently gone). Retry would be pointless — instead the primary CTA routes the user back to Available where they can find live offers. The 🔍 icon and muted grey treatment signal "not your network, not a transient problem" — a different mental model from the warn ⚠ icon used in the generic error.</div>
+      </div>
+
+      <div class="flow-arrow">
+        <div class="arrow-line"></div>
+        <div class="arrow-label">Browse</div>
+      </div>
+
+      <div class="screen-col">
+        <div class="screen-label">Lands on Available</div>
+        <div class="state-badge happy">Available</div>
+        <div class="phone">
+          <div class="a-status"><span>9:41</span><span>▲▲ 🔋</span></div>
+          <div class="screen">
+            <div class="app-bar">
+              <div class="app-bar-eyebrow">Curated for you</div>
+              <div class="app-bar-title">Offers</div>
+            </div>
+            <div class="seg-control">
+              <div class="seg-item on">Available</div>
+              <div class="seg-item">My Offers <span class="seg-badge">2</span></div>
+            </div>
+            <div class="offers-list">
+              <div class="offer-hero">
+                <div class="hero-top">
+                  <div class="hero-featured-badge">Featured</div>
+                  <div class="hero-merchant-pill">
+                    <div class="hero-merchant-logo talabat">T</div>
+                    Talabat
+                  </div>
+                </div>
+                <div class="hero-discount">
+                  <div class="hero-discount-num">25</div>
+                  <div class="hero-discount-unit">% OFF</div>
+                </div>
+                <div class="hero-bottom">
+                  <div class="hero-offer-title">Your next order, any cuisine</div>
+                  <div class="hero-expiration">⏱ 6h left</div>
+                </div>
+              </div>
+              <div class="offer-card">
+                <div class="card-left">
+                  <div class="card-discount-num">15</div>
+                  <div class="card-discount-unit">% off</div>
+                </div>
+                <div class="card-right">
+                  <div class="card-merchant"><div class="card-merchant-dot carrefour">C</div>Carrefour</div>
+                  <div class="card-title">Groceries & household</div>
+                  <div class="card-foot">
+                    <div class="card-expiration">9 days left</div>
+                    <div class="card-cta-link">Get code</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="a-nav">
+            <div class="a-nav-item"><div class="a-nav-icon">🏠</div><div class="a-nav-lbl">Home</div></div>
+            <div class="a-nav-item"><div class="a-nav-icon">↕</div><div class="a-nav-lbl">Transactions</div></div>
+            <div class="a-nav-item"><div class="a-nav-icon">🎯</div><div class="a-nav-lbl">Budgets</div></div>
+            <div class="a-nav-item on"><div class="a-nav-icon">🎁</div><div class="a-nav-lbl">Offers</div></div>
+            <div class="a-nav-item"><div class="a-nav-icon">👤</div><div class="a-nav-lbl">Profile</div></div>
+          </div>
+        </div>
+        <div class="flow-note decision">Browse Available closes the sheet and ensures the Available segment is selected. Same destination as the "Browse Available" CTA in the missed-offer state from Flow 6 — consistent recovery pattern for dead-end states.</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- FLOW 8 — Arabic RTL -->
+<div class="flow-section">
+  <div class="flow-section-header">
+    <div class="flow-section-title">Flow 8 — Arabic RTL · stacked card layout</div>
     <div class="flow-section-line"></div>
   </div>
 
@@ -2092,6 +2451,21 @@ body{background:var(--page-bg);font-family:var(--f-body);color:var(--t1);font-si
         <tr><td class="element-name">Hero body</td><td class="en">This offer expired before you got to it. Check Available for what's live now.</td><td class="ar">العرض ده انتهى قبل ما توصله. شوف اللي متاح دلوقتي.</td></tr>
         <tr><td class="element-name">What you missed label</td><td class="en">What you missed</td><td class="ar">اللي فاتك</td></tr>
         <tr><td class="element-name">Primary CTA</td><td class="en">Browse Available</td><td class="ar">شوف اللي متاح</td></tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="4">Detail sheet · error states</td>
+          <td class="element-name">Generic fetch fail · headline</td><td class="en">Couldn't load this offer</td><td class="ar">معرفناش نحمّل العرض ده</td>
+        </tr>
+        <tr><td class="element-name">Generic fetch fail · body</td><td class="en">Check your connection and try again.</td><td class="ar">اتأكد من اتصالك بالإنترنت وحاول تاني.</td></tr>
+        <tr><td class="element-name">Generic fetch fail · primary CTA</td><td class="en">Try again</td><td class="ar">حاول تاني</td></tr>
+        <tr><td class="element-name">Generic fetch fail · secondary CTA</td><td class="en">Close</td><td class="ar">إغلاق</td></tr>
+
+        <tr class="group-start">
+          <td class="screen-name" rowspan="3">Detail sheet · not found</td>
+          <td class="element-name">Not found · headline</td><td class="en">This offer is no longer available</td><td class="ar">العرض ده مش متاح تاني</td>
+        </tr>
+        <tr><td class="element-name">Not found · body</td><td class="en">It may have been claimed by everyone or pulled by the merchant.</td><td class="ar">يمكن خلصت الأكواد أو التاجر شال العرض.</td></tr>
+        <tr><td class="element-name">Not found · primary CTA</td><td class="en">Browse Available</td><td class="ar">شوف اللي متاح</td></tr>
       </tbody>
     </table>
 
