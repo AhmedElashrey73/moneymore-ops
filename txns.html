@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MoneyMore Transaction Bottom Sheet Enhancement</title>
+<style>
+  :root{--bg:#061824;--sheet:#17212d;--text:#f5f7fb;--muted:#9aa5b3;--line:#8d99a8;--green:#6cff9a;--teal:#31d0cb;--tealDark:#1b5c64;--danger:#ff745f;}
+  *{box-sizing:border-box} body{margin:0;background:#0b121b;font-family:Inter,Arial,sans-serif;color:var(--text);display:flex;gap:28px;align-items:flex-start;justify-content:center;padding:28px;}
+  .panel{width:390px}.caption{font-weight:800;margin:0 0 12px;font-size:18px}.hint{color:#b8c0cc;margin:0 0 16px;line-height:1.45;font-size:14px}
+  .phone{width:390px;height:844px;border-radius:34px;background:var(--bg);overflow:hidden;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.45);border:1px solid #243342;}
+  .status{height:48px;padding:14px 22px;display:flex;justify-content:space-between;color:white;font-weight:700}.page{padding:34px 22px 0}.title{font-size:30px;font-weight:800;margin-bottom:22px}.search{height:52px;border:1px solid #74808d;border-radius:18px;color:#566472;display:flex;align-items:center;padding:0 16px;font-size:18px}.tx{margin-top:22px;cursor:pointer;background:#102331;border-radius:18px;padding:16px;display:flex;justify-content:space-between;align-items:center}.tx b{font-size:18px}.tx span{color:#a9b2bf;font-size:13px}.amountGreen{color:var(--green);font-size:18px;font-weight:800}.overlay{position:absolute;inset:0;background:rgba(0,0,0,.18)}
+  .sheet{position:absolute;left:0;right:0;bottom:0;background:var(--sheet);border-radius:28px 28px 0 0;padding:14px 20px 28px;box-shadow:0 -12px 40px rgba(0,0,0,.35)}
+  .details{height:620px}.edit{height:704px;overflow:auto}.handle{width:58px;height:5px;background:#b9c0c9;border-radius:999px;margin:0 auto 24px}.close{position:absolute;right:22px;top:38px;font-size:34px;color:white}.sheet h2{text-align:center;margin:0 0 34px;font-size:22px}.merchant{font-size:30px;font-weight:900;margin-bottom:8px}.source{color:var(--muted);font-size:17px;margin-bottom:28px}.bigrow{display:flex;align-items:end;justify-content:space-between}.money{font-size:44px;color:var(--green);font-weight:900}.currency{font-size:18px;color:var(--green);margin-left:6px}.pill{background:#28443b;color:#c4ffd1;border:1px solid #55b974;border-radius:18px;padding:8px 12px;font-weight:800}.date{color:#a9b2bf;margin:24px 0;font-size:16px}.line{display:flex;justify-content:space-between;align-items:center;margin:18px 0}.label{font-weight:800;font-size:17px}.noteBox{border:1px solid var(--line);border-radius:18px;padding:14px 14px 16px;margin:24px 0;background:#1a2531;cursor:pointer}.noteBox .top{font-weight:800}.noteBox .ph{color:var(--teal);margin-top:18px;font-size:18px;font-weight:800}.btn{height:58px;border-radius:26px;border:1px solid #aab2bd;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;background:transparent;color:white;width:100%;margin-top:16px;cursor:pointer}.primary{background:var(--teal);border:none;color:#07151c}.danger{border-color:#9d4e51;color:var(--danger)}
+  .field{margin-bottom:18px}.field label{display:block;font-size:17px;font-weight:800;margin-bottom:9px}.input,.textInput{width:100%;border:1px solid var(--line);border-radius:16px;min-height:56px;padding:16px;background:#1a2531;color:white;font-size:17px;outline:none}.input{display:flex;justify-content:space-between;align-items:center}.textInput:focus,.noteInput:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(49,208,203,.12)}.noteInput{width:100%;height:104px;resize:none;border:1px solid var(--line);border-radius:16px;padding:16px;background:#1a2531;color:white;font-size:17px;outline:none;font-family:inherit}.noteInput::placeholder,.textInput::placeholder{color:#7d8998}.amountRow{display:flex;align-items:center}.amountRow input{border:0;background:transparent;color:white;font-size:17px;outline:0;width:100%}.twocol{display:grid;grid-template-columns:1fr 1fr;gap:18px}.typeControl{border:1px solid #3d4a59;border-radius:28px;display:grid;grid-template-columns:repeat(3,1fr);padding:8px;gap:8px}.type{border:0;border-radius:22px;text-align:center;padding:13px 6px;background:transparent;color:white;font-weight:800;font-size:16px;cursor:pointer}.type.active{background:var(--tealDark);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}.helper{color:#98a3b0;font-size:12px;margin-top:7px}.savebar{position:sticky;bottom:0;background:linear-gradient(transparent,#17212d 15%);padding-top:16px}.note{background:#112434;border-radius:16px;padding:14px;margin-top:14px;border-left:3px solid var(--teal);font-size:14px;color:#d7dee8;line-height:1.45}
+
+  .switchWrap{display:flex;align-items:center;gap:10px;cursor:pointer}.switch{width:54px;height:32px;border-radius:999px;background:#42505f;border:1px solid #6f7b88;position:relative;transition:.2s}.switch:before{content:'';position:absolute;width:24px;height:24px;border-radius:50%;background:white;left:4px;top:3px;transition:.2s}.switch.on{background:var(--teal);border-color:var(--teal)}.switch.on:before{left:24px}.switchText{font-weight:800;color:#cbd5e1;font-size:13px;min-width:28px}.switch.on + .switchText{color:var(--teal)}
+  .selectField{cursor:pointer;position:relative}.categorySelect.placeholder .categoryValue{color:#7d8998}.categorySelect.error{border-color:var(--danger);box-shadow:0 0 0 3px rgba(255,116,95,.10)}.fieldError{display:none;color:var(--danger);font-size:12px;font-weight:700;margin-top:7px}.fieldError.show{display:block}.categoryOverlay{position:absolute;inset:0;background:rgba(0,0,0,.35);display:none;align-items:flex-end;z-index:10}.categoryOverlay.open{display:flex}.categorySheet{width:100%;background:#17212d;border-radius:28px 28px 0 0;padding:14px 20px 24px;box-shadow:0 -12px 40px rgba(0,0,0,.35);max-height:520px;overflow:auto}.categorySheet h3{text-align:center;margin:0 0 20px;font-size:20px}.categoryOption{width:100%;border:1px solid #41505f;background:#1a2531;color:white;border-radius:18px;min-height:56px;margin-bottom:10px;padding:0 16px;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:space-between;cursor:pointer}.categoryOption.active{border-color:var(--teal);box-shadow:0 0 0 3px rgba(49,208,203,.10)}.check{color:var(--teal);font-weight:900}.categoryClose{position:absolute;right:22px;top:28px;font-size:32px;color:white;cursor:pointer}
+</style>
+</head>
+<body>
+  <div class="panel">
+    <p class="caption">1. Transaction Details Bottom Sheet</p>
+    <p class="hint">Tap “Add a note”. It opens edit mode directly and focuses the note field.</p>
+    <div class="phone">
+      <div class="status"><span>11:41</span><span>▰ 4G ▱</span></div>
+      <div class="page"><div class="title">Transactions</div><div class="search">⌕ &nbsp; Search merchant or amount</div><div class="tx" onclick="openDetailsSheet(this)"><div><b>Krispy Kreme</b><br><span>28 Jun 2026, 9:38 PM</span></div><div class="amountGreen">159 EGP</div></div></div>
+      <div class="overlay" id="detailsOverlay" onclick="closeDetailsFromOverlay(event)"></div>
+      <div class="sheet details" id="detailsSheet">
+        <div class="handle"></div><div class="close">×</div><h2>Transaction Details</h2>
+        <div class="merchant">Krispy Kreme</div><div class="source">From SMS</div>
+        <div class="bigrow"><div><span class="money">159</span><span class="currency">EGP</span></div><div class="pill">Expense</div></div>
+        <div class="date">28 Jun 2026, 9:38 PM</div>
+        <div class="line"><div class="label">Category</div><div class="pill">Restaurants & Cafés</div></div>
+        <div class="line"><div><div class="label">Mark as internal transfer</div><div style="color:#98a3b0;margin-top:4px">Won’t count as spending or income.</div></div><div class="switchWrap" onclick="toggleInternalTransfer(event)"><div class="switch" id="internalSwitchStatic"></div><div class="switchText">Off</div></div></div>
+        <div class="noteBox" onclick="showEdit(true)"><div class="top">Note <span style="color:#9aa5b3;font-weight:500">(Optional)</span></div><div class="ph">+ Add a note</div></div>
+        <button class="btn" onclick="showEdit(false)">✎ &nbsp; Edit</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <p class="caption">2. Edit Transaction Bottom Sheet</p>
+    <p class="hint">Fields now follow the requested order. The note field is always visible and accepts input.</p>
+    <div class="phone">
+      <div class="status"><span>11:41</span><span>▰ 4G ▱</span></div>
+      <div class="page"><div class="title">Transactions</div><div class="search">⌕ &nbsp; Search merchant or amount</div></div><div class="overlay"></div>
+      <div class="sheet edit" id="editTemplate">
+        <div class="handle"></div><div class="close">×</div><h2>Edit transaction</h2>
+        <div class="field"><label>Merchant name</label><input class="textInput" value="Krispy Kreme" /></div>
+        <div class="field"><label>Amount</label><div class="input amountRow"><input value="159" inputmode="decimal" /><span>EGP</span></div></div>
+        <div class="field"><label>Transaction type</label><div class="typeControl"><button class="type active" type="button">Expense</button><button class="type" type="button">Income</button><button class="type" type="button">Transfer</button></div><div class="helper">Selecting a button changes the transaction type.</div></div>
+        <div class="field"><label>Date &amp; Time</label><div class="twocol"><div><label>Date</label><input class="textInput" value="28 Jun 2026" /></div><div><label>Time</label><input class="textInput" value="9:38 PM" /></div></div></div>
+        <div class="field categoryField"><label>Category</label><div class="input selectField categorySelect" onclick="openCategory(this)"><span class="categoryValue">Restaurants &amp; Cafés</span><span>⌄</span></div><div class="fieldError">Category is required after changing the transaction type.</div></div>
+        <div class="field"><label>Add a note</label><textarea class="noteInput" id="notesField" placeholder="Type your note here"></textarea></div>
+        <div class="savebar"><button class="btn primary">Save</button><button class="btn danger">Delete</button></div>
+      </div>
+    </div>
+    <div class="note"><b>Prototype behavior:</b> Income, Expense, and Transfer are clickable. Changing the transaction type clears Category, opens the Category picker, and blocks Save until a new category is selected. Expense and Income show the original category list plus Transfer and Internal Transfer. Transfer shows only Transfer and Internal Transfer.</div>
+  </div>
+<script>
+const allCategories=['Restaurants & Cafés','Groceries','Shopping','Transportation','Bills & Utilities','Health','Entertainment','Other','Transfer','Internal Transfer'];
+const categoriesByType={
+  Expense:allCategories,
+  Income:allCategories,
+  Transfer:['Transfer','Internal Transfer']
+};
+let savedNote='';
+let savedCategory='Restaurants & Cafés';
+let savedType='Expense';
+let savedInternalTransfer=false;
+let savedMerchant='Krispy Kreme';
+let savedAmount='159';
+let savedDate='28 Jun 2026';
+let savedTime='9:38 PM';
+
+function detailsMarkup(){
+  const noteContent = savedNote
+    ? `<div class="ph" style="color:#d7dee8;font-weight:600;line-height:1.45">${escapeHtml(savedNote)}</div>`
+    : `<div class="ph">+ Add a note</div>`;
+  return `
+    <div class="handle"></div><div class="close">×</div><h2>Transaction Details</h2>
+    <div class="merchant">${escapeHtml(savedMerchant)}</div><div class="source">From SMS</div>
+    <div class="bigrow"><div><span class="money">${escapeHtml(savedAmount)}</span><span class="currency">EGP</span></div><div class="pill">${escapeHtml(savedType)}</div></div>
+    <div class="date">${escapeHtml(savedDate)}, ${escapeHtml(savedTime)}</div>
+    <div class="line"><div class="label">Category</div><div class="pill">${escapeHtml(savedCategory)}</div></div>
+    <div class="line"><div><div class="label">Mark as internal transfer</div><div style="color:#98a3b0;margin-top:4px">Won’t count as spending or income.</div></div><div class="switchWrap" onclick="toggleInternalTransfer(event)"><div class="switch ${savedInternalTransfer ? 'on' : ''}"></div><div class="switchText">${savedInternalTransfer ? 'On' : 'Off'}</div></div></div>
+    <div class="noteBox" onclick="showEdit(true)"><div class="top">Note <span style="color:#9aa5b3;font-weight:500">(Optional)</span></div>${noteContent}</div>
+    <button class="btn" onclick="showEdit(false)">✎ &nbsp; Edit</button>`;
+}
+function escapeHtml(value){
+  return String(value).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[c]));
+}
+function renderDetailsSheet(){
+  const details=document.getElementById('detailsSheet');
+  details.innerHTML=detailsMarkup();
+  details.className='sheet details';
+  bindClose(details);
+}
+function openDetailsSheet(el){
+  const phone=el.closest('.phone');
+  const overlay=phone.querySelector('.overlay');
+  const details=document.getElementById('detailsSheet');
+  renderDetailsSheet();
+  if(overlay) overlay.style.display='block';
+  details.style.display='block';
+}
+function closeDetailsFromOverlay(event){
+  if(event.target.classList.contains('overlay')){
+    const sheet=document.getElementById('detailsSheet');
+    if(sheet) sheet.style.display='none';
+    event.target.style.display='none';
+  }
+}
+
+function toggleInternalTransfer(event){
+  event.stopPropagation();
+  savedInternalTransfer=!savedInternalTransfer;
+  if(savedInternalTransfer){
+    savedType='Transfer';
+    savedCategory='Internal Transfer';
+  }else{
+    savedType='Expense';
+    savedCategory='Restaurants & Cafés';
+  }
+  renderDetailsSheet();
+}
+function getSelectedType(scope){
+  return scope.querySelector('.type.active')?.textContent.trim() || savedType;
+}
+function currentCategory(scope){
+  const val=scope.querySelector('.categoryValue')?.textContent.trim() || '';
+  return val === 'Select Category' ? '' : val;
+}
+function ensureCategoryOverlay(phone){
+  let overlay=phone.querySelector('.categoryOverlay');
+  if(overlay) return overlay;
+  overlay=document.createElement('div');
+  overlay.className='categoryOverlay';
+  overlay.innerHTML=`<div class="categorySheet"><div class="handle"></div><div class="categoryClose" onclick="closeCategory(this)">×</div><h3>Select category</h3><div class="categoryList"></div></div>`;
+  phone.appendChild(overlay);
+  overlay.addEventListener('click',e=>{if(e.target===overlay) overlay.classList.remove('open')});
+  return overlay;
+}
+function openCategory(el){
+  const phone=el.closest('.phone');
+  const scope=el.closest('.sheet');
+  const overlay=ensureCategoryOverlay(phone);
+  const list=overlay.querySelector('.categoryList');
+  const selected=currentCategory(scope);
+  const type=getSelectedType(scope);
+  list.innerHTML=(categoriesByType[type]||categoriesByType.Expense).map(cat=>`<button class="categoryOption ${cat===selected?'active':''}" type="button" onclick="selectCategory(this)"><span>${cat}</span><span class="check">${cat===selected?'✓':''}</span></button>`).join('');
+  overlay.classList.add('open');
+}
+function closeCategory(el){
+  el.closest('.categoryOverlay').classList.remove('open');
+}
+function selectCategory(btn){
+  const overlay=btn.closest('.categoryOverlay');
+  const phone=overlay.closest('.phone');
+  const cat=btn.querySelector('span').textContent.trim();
+  const sheet=phone.querySelector('.sheet.edit');
+  if(sheet){
+    const val=sheet.querySelector('.categoryValue');
+    if(val) val.textContent=cat;
+    setCategoryRequired(sheet,false);
+  }
+  overlay.classList.remove('open');
+}
+function setCategoryRequired(scope, required){
+  const select=scope.querySelector('.categorySelect');
+  const value=scope.querySelector('.categoryValue');
+  const err=scope.querySelector('.fieldError');
+  if(!select || !value) return;
+  scope.dataset.categoryRequired = required ? 'true' : 'false';
+  if(required){
+    value.textContent='Select Category';
+    select.classList.add('placeholder','error');
+    if(err) err.classList.add('show');
+  }else{
+    select.classList.remove('placeholder','error');
+    if(err) err.classList.remove('show');
+  }
+}
+function openCategoryForScope(scope){
+  const select=scope.querySelector('.categorySelect');
+  if(select) openCategory(select);
+}
+function syncCategoryForType(scope){
+  setCategoryRequired(scope,true);
+  setTimeout(()=>openCategoryForScope(scope),120);
+}
+function bindTypes(scope){
+  scope.querySelectorAll('.type').forEach(btn=>{
+    btn.onclick=()=>{
+      const previous=getSelectedType(scope);
+      scope.querySelectorAll('.type').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      const next=getSelectedType(scope);
+      if(previous!==next){ syncCategoryForType(scope); }
+    };
+  });
+}
+function bindSave(scope){
+  const saveBtn=scope.querySelector('.btn.primary');
+  if(!saveBtn) return;
+  saveBtn.onclick=()=>saveTransaction(scope);
+}
+function saveTransaction(scope){
+  if(!currentCategory(scope)){
+    setCategoryRequired(scope,true);
+    openCategoryForScope(scope);
+    return;
+  }
+  const inputs=scope.querySelectorAll('.textInput');
+  const amountInput=scope.querySelector('.amountRow input');
+  const note=scope.querySelector('.noteInput');
+  if(inputs[0]) savedMerchant=inputs[0].value.trim() || savedMerchant;
+  if(amountInput) savedAmount=amountInput.value.trim() || savedAmount;
+  if(inputs[1]) savedDate=inputs[1].value.trim() || savedDate;
+  if(inputs[2]) savedTime=inputs[2].value.trim() || savedTime;
+  savedType=getSelectedType(scope);
+  savedCategory=currentCategory(scope);
+  savedInternalTransfer=(savedType==='Transfer' && savedCategory==='Internal Transfer');
+  savedNote=note ? note.value.trim() : savedNote;
+
+  const phone=scope.closest('.phone');
+  const overlay=phone.querySelector('.overlay');
+  renderDetailsSheet();
+  const details=document.getElementById('detailsSheet');
+  details.style.display='none';
+  if(overlay) overlay.style.display='none';
+}
+function bindClose(scope){
+  const closeBtn=scope.querySelector('.close');
+  if(closeBtn) closeBtn.onclick=()=>{
+    scope.style.display='none';
+    const overlay=scope.closest('.phone')?.querySelector('.overlay');
+    if(overlay) overlay.style.display='none';
+  };
+}
+function bindSheet(scope){
+  bindTypes(scope);
+  bindSave(scope);
+  bindClose(scope);
+}
+function showEdit(focusNote){
+  const details=document.getElementById('detailsSheet');
+  const template=document.getElementById('editTemplate');
+  details.innerHTML=template.innerHTML;
+  details.className='sheet edit';
+  details.style.display='block';
+  details.dataset.originalType=savedType;
+  details.dataset.categoryRequired='false';
+
+  const textInputs=details.querySelectorAll('.textInput');
+  const amountInput=details.querySelector('.amountRow input');
+  if(textInputs[0]) textInputs[0].value=savedMerchant;
+  if(amountInput) amountInput.value=savedAmount;
+  if(textInputs[1]) textInputs[1].value=savedDate;
+  if(textInputs[2]) textInputs[2].value=savedTime;
+  details.querySelectorAll('.type').forEach(b=>b.classList.toggle('active', b.textContent.trim()===savedType));
+  const cat=details.querySelector('.categoryValue');
+  if(cat) cat.textContent=savedCategory;
+  setCategoryRequired(details,false);
+  const note=details.querySelector('.noteInput');
+  if(note) note.value=savedNote;
+  bindSheet(details);
+  setTimeout(()=>{
+    const note=details.querySelector('.noteInput');
+    if(focusNote && note){ note.focus(); note.scrollIntoView({block:'center',behavior:'smooth'}); }
+  },80);
+}
+
+bindSheet(document.getElementById('editTemplate'));
+renderDetailsSheet();
+</script>
+</body>
+</html>
